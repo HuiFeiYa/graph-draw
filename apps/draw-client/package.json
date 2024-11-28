@@ -7,9 +7,8 @@
   "type": "module",
   "main": "electron/main.js",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
+    "build:all": "vite build && pnpm run electron:build",
     "electron:dev": "vite dev & electron --trace-warnings .",
     "electron:build": "electron-builder"
   },
@@ -56,11 +55,13 @@
     }
   },
   "dependencies": {
+    "@hfdraw/graph": "workspace:^",
     "@hfdraw/utils": "workspace:^",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "cross-env": "^7.0.3",
     "electron": "^33.2.0",
     "electron-builder": "^25.1.8",
     "fs-extra": "^11.2.0",

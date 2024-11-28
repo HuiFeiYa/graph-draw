@@ -1,20 +1,13 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 import { add } from '@hfdraw/utils'
+import {GraphView} from '@hfdraw/graph'
+import HelloWorld from './components/HelloWorld.vue'
 const res = add(1,2)
 console.log('res:', res)
 </script>
 
 <template>
-  hahaha
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
+  <GraphView/>
   <HelloWorld msg="Vite + Vue" />
 </template>
 

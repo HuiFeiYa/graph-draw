@@ -1,1 +1,8 @@
-{}
+{
+  "name": "@hfdraw/graph",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "exports": {
+    ".": "./src/main.js"
+  }
+}

@@ -16,6 +16,7 @@ function createWindow() {
     },
   });
   const localPath = getPath('../dist/index.html');
+  // process.env.VITE_DEV_SERVER_URL = ''
   console.log('process.env.VITE_DEV_SERVER_URL:', process.env.VITE_DEV_SERVER_URL)
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(process.env.VITE_DEV_SERVER_URL);
