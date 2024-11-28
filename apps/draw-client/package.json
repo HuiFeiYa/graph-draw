@@ -2,20 +2,67 @@
   "name": "draw-client",
   "private": true,
   "version": "0.0.0",
+  "description": "绘图工具使用 svg",
+  "author": "Hui Fei",
   "type": "module",
   "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "electron:dev": "vite dev & electron ."
+    "electron:dev": "vite dev & electron --trace-warnings .",
+    "electron:build": "electron-builder"
+  },
+  "build": {
+    "appId": "hfdraw01",
+    "productName": "会飞绘图",
+    "directories": {
+      "output": "release/"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/*",
+      "electron/main.js",
+      "electron/preload/index.js",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "artifactName": "${productName}-Win-${version}-${arch}.${ext}",
+      "publisherName": "App by Troye",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
   },
   "dependencies": {
-    "electron": "^33.2.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "fs-extra": "^11.2.0",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "vite": "^6.0.1",
     "vite-plugin-electron": "^0.29.0"
