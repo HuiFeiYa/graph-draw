@@ -1,7 +1,24 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import electron from 'vite-plugin-electron/simple';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-})
+  plugins: [
+    vue(),
+    electron({
+      main: {
+        entry: './electron/main.js',
+      },
+      preload: {
+        input: './electron/preload/index.js',
+        outDir: '.',
+        esbuildPluginOptions: {
+          target: 'es2020',
+        },
+      },
+    }),
+  ],
+  server: {
+    port: 3000,
+  },
+});

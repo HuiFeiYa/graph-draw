@@ -3,11 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "electron:dev": "electron -r ts-node/register ./electron/main"
+    "electron:dev": "vite dev & electron ."
   },
   "dependencies": {
     "electron": "^33.2.0",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
     "ts-node": "^10.9.2",
-    "vite": "^6.0.1"
+    "vite": "^6.0.1",
+    "vite-plugin-electron": "^0.29.0"
   }
 }
