@@ -1,5 +1,8 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import { add } from '@hfdraw/utils'
+const res = add(1,2)
+console.log('res:', res)
 </script>
 
 <template>
