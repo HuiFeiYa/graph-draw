@@ -51,7 +51,8 @@
             "x64"
           ]
         }
-      ]
+      ],
+      "icon": "dist/icon.png"
     }
   },
   "dependencies": {
