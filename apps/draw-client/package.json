@@ -61,13 +61,17 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
-    "cross-env": "^7.0.3",
-    "electron": "^33.2.0",
+    "electron": "33.2.0",
     "electron-builder": "^25.1.8",
     "fs-extra": "^11.2.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "vite": "^6.0.1",
     "vite-plugin-electron": "^0.29.0"
+  },
+  "workspaces": {
+    "nohoist": [
+      "electron"
+    ]
   }
 }
