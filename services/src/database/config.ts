@@ -22,10 +22,7 @@ export const dbConfig: TypeOrmModuleOptions = {
     ],
     // multipleStatements: true,
     synchronize: process.env.AppEnv === 'dev', //
-    // dropSchema: true,
-    extra: {
-      nativeBinding: process.env.AppEnv === 'dev' ? 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' : driverMap[process.platform]
-    }
+
   
     // prepareDatabase: (db) => {
     //   console.log(db);
