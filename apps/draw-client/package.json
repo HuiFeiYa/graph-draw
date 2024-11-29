@@ -24,7 +24,8 @@
       "electron/main.js",
       "electron/preload/index.js",
       "package.json",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "nodeServer/**/*"
     ],
     "win": {
       "artifactName": "${productName}-Win-${version}-${arch}.${ext}",
