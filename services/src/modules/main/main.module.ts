@@ -10,5 +10,6 @@ import { ApplicationProject } from 'src/entities/applicationProject.entity';
   ],
   controllers: [MainController],
   providers: [MainService],
+  exports: [MainService]
 })
 export class MainModule {}

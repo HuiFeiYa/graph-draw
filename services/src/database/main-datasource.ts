@@ -1,4 +1,5 @@
 import  {  resolve } from 'path';
+import { SystemEntityList } from 'src/entities';
 import { ApplicationProject } from 'src/entities/applicationProject.entity';
 import { DataSource } from 'typeorm';
 const databasePath = resolve(__dirname, './db/a.db');
@@ -8,7 +9,7 @@ export const MainDataSource = new DataSource({
     type: 'better-sqlite3',
     // database: './main-db.sqlite', // 主数据库文件路径
     database: databasePath, // 主数据库文件路径
-    entities: [ApplicationProject], // 主数据库实体
+    entities: SystemEntityList, // 主数据库实体
     synchronize: true, // 开发环境中开启同步表结构，生产环境应关闭
     logging: true,
 });
