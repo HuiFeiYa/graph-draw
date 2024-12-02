@@ -1,4 +1,3 @@
-import { existsSync } from "fs";
 import { resolve } from "path";
 import { DataSource } from "typeorm";
 import { getUid } from "./common";
@@ -50,3 +49,5 @@ export class PCM {
     return pcm.getConnection();
   }
 }
+
+export const pcm = new PCM();

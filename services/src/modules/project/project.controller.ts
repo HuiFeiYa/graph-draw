@@ -6,7 +6,7 @@ import { getUid } from 'src/utils/common';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
   @Post('open')
-  async openProjectNew(@Body() dto) {
+  async openProjectNew() {
     await this.projectService.openProject_New();
   }
   @Post('create')
