@@ -6,6 +6,7 @@ import { resourceUtil } from "./ResourceUtil";
 
 export class ProjectConnectionManager {
   pcmMap = new Map<string, ProjectConnectionManager>()
+  connection: DataSource
   constructor(public dataBaseName:string) {
   }
     /**
@@ -24,9 +25,17 @@ export class ProjectConnectionManager {
     return dataSource;
   }
   async getConnection() {
-    const connection = await this.createProjectConnection(this.dataBaseName)
-    await connection.initialize()
-    return connection;
+    if (this.connection) {
+      if (!this.connection.isInitialized ) {
+        await this.connection.initialize();
+      }
+      return this.connection;
+    } else {
+      const connection = await this.createProjectConnection(this.dataBaseName)
+      await connection.initialize()
+      this.connection = connection;
+      return connection;
+    }
   }
 }
 
@@ -37,7 +46,9 @@ export class PCM {
   }
   getPcmByProjectId(projectId:string) {
     const dataBaseName = resourceUtil.getProjectDbName(projectId);
-    return this.pcmMap.get(dataBaseName);
+    this.addPcm(dataBaseName);
+    const pcm = this.pcmMap.get(dataBaseName);
+    return pcm.getConnection()
   }
   addPcm(dataBaseName:string) {
     if (this.pcmMap.has(dataBaseName)) return;

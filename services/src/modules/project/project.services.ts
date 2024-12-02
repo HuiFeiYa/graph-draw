@@ -6,12 +6,10 @@ import { resourceUtil } from 'src/utils/ResourceUtil';
 import { pcm } from 'src/utils/ConnectionManager';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
+import { projectUtil } from './ProjectUtil';
 @Injectable()
 export class ProjectService {
   constructor(private mainService: MainService) {}
-  openProject_New(): string {
-    return 'Hello World!';
-  }
   async createProject(dto) {
     await this.mainService.createProject(dto);
   }
@@ -36,5 +34,19 @@ export class ProjectService {
     const projectDbBuffer = sqlite.serialize();
     zip.file(projectZipFileName.projectDB, projectDbBuffer);
     return zip.generateAsync({ type: 'uint8array', compression:'DEFLATE', compressionOptions: { level: 3 } })
+  }
+
+  async openProject(dto) {
+    const { filePath } = dto;
+    const zip = await projectUtil.getZipByFilePath(filePath);
+    // const buffer = await readFile(filePath);
+    const projectStr = await zip.file(projectZipFileName.config).async('string');
+    const project = JSON.parse(projectStr)
+    const projectDbFilePath = resourceUtil.getProjectDbFilePath(project.projectId);
+    if (zip.files[projectZipFileName.projectDB]) {
+      const projectDBFile = zip.file(projectZipFileName.projectDB);
+        const buffer = await projectDBFile.async('uint8array');
+        await writeFile(projectDbFilePath, buffer);
+    }
   }
 }

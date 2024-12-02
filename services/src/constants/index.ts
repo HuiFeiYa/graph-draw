@@ -7,3 +7,9 @@ export const projectZipFileName = {
     config: 'config.json',
     projectDB: "project.db"
 }
+
+export enum ErrorLevel {
+    WARN = 'WARN',
+    INFO = 'INFO',
+    ERROR = 'ERROR',
+  }
