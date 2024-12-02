@@ -11,9 +11,15 @@ export class ApplicationProject {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({
+    type: String,
+    nullable: false
+  })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({
+    type: String,
+    nullable: false
+  })
   updatedAt: Date;
 }

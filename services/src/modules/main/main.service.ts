@@ -8,11 +8,16 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class MainService {
   constructor(
-    @InjectRepository(ApplicationProject, MAIN_DATA_SOURCE_NAME) // 指定主数据库
+    @InjectRepository(ApplicationProject) // 指定主数据库
     private appRepository: Repository<ApplicationProject>,
   ) {}
 
   getProject(){
     return this.appRepository.find();
+  }
+  async createProject(dto) {
+    const project = new ApplicationProject();
+    Object.assign(project, dto)
+    await this.appRepository.save(project);
   }
 }
