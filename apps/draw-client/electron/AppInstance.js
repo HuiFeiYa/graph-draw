@@ -3,12 +3,14 @@ const { app } = require("electron");
 const fs = require("fs");
 const fork = require("child_process").fork;
 const dayjs = require("dayjs");
+console.log('process.env', process.env)
+const isDevelopment = process.env.NODE_ENV === 'development'
 class AppInstance {
   async start() {
     this.startNodeServer();
   }
   async startNodeServer() {
-    const nodeScript = resolve(__dirname, "../nodeServer/main.js");
+    const nodeScript = resolve(__dirname, isDevelopment ? "../public/nodeServer/main.js" : "../dist/nodeServer/main.js");
     console.log("nodeScript:", nodeScript);
     const subProcess = fork(
       nodeScript,
@@ -23,7 +25,7 @@ class AppInstance {
     console.log("-------------");
     subProcess.stdout &&
       subProcess.stdout.on("data", (str) => {
-        console.log("subProcess:", str);
+        console.log("subProcess:", str.toString());
         fs.appendFile(
           logPath,
           dayjs().format("YYYY-MM-DD HH:mm:ss") + " " + str.toString(),
