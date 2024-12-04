@@ -1,12 +1,9 @@
-import { fileURLToPath } from 'url';
-import { resolve, dirname  } from "path";
-import { app } from "electron";
-import { appendFile } from "fs/promises";
-import { fork  } from 'child_process';
-import dayjs from "dayjs";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-export class AppInstance {
+const { resolve } = require("path");
+const { app } = require("electron");
+const fs = require("fs");
+const fork = require("child_process").fork;
+const dayjs = require("dayjs");
+class AppInstance {
   async start() {
     this.startNodeServer();
   }
@@ -21,17 +18,13 @@ export class AppInstance {
         stdio: "pipe",
       }
     );
-    const userDataPath = app.getPath("userData");
-    const logDir = resolve(userDataPath, "../logs");
-    console.log("userDataPath:", userDataPath);
-    console.log("logDir:", logDir);
-    const logPath = resolve(
-      logDir,
-      "hfdraw." + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".log"
-    );
+    // C:\Users\admin\AppData\Roaming\draw-client
+    const { logPath } = this.createLogger();
+    console.log("-------------");
     subProcess.stdout &&
       subProcess.stdout.on("data", (str) => {
-        appendFile(
+        console.log("subProcess:", str);
+        fs.appendFile(
           logPath,
           dayjs().format("YYYY-MM-DD HH:mm:ss") + " " + str.toString(),
           { flag: "a" },
@@ -44,7 +37,7 @@ export class AppInstance {
       subProcess.stderr.on("data", (err) => {
         console.error("node error:", err.toString());
 
-        appendFile(
+        fs.appendFile(
           logPath,
           dayjs().format("YYYY-MM-DD HH:mm:ss") +
             " " +
@@ -59,4 +52,29 @@ export class AppInstance {
       });
     console.log("await service ready");
   }
+  createLogger() {
+    const userDataPath = app.getPath("userData");
+    const logDir = resolve(userDataPath, "./logs");
+    let options = {
+      flags: "a", // append模式
+      encoding: "utf8", // utf8编码
+    };
+    console.log("logDir:", logDir);
+    // 确保日志目录存在
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+    const logPath = resolve(
+      logDir,
+      "hfdraw." + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".log"
+    );
+    console.log("logPath:", logPath);
+    return {
+      logPath,
+    };
+  }
 }
+
+module.exports = {
+  AppInstance,
+};

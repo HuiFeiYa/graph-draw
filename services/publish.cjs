@@ -7,7 +7,10 @@ const rimraf = require('rimraf');
 const sourceDir = path.resolve(__dirname, 'dist');
 // 目标目录路径
 const targetDir = path.resolve(__dirname, '../apps/draw-client/nodeServer');
-
+// const node_modulesDir = path.resolve(__dirname, 'node_modules');
+// const targetNode_modulesDir = path.resolve(__dirname, '../apps/draw-client/nodeServer/node_modules');
+const packageJSONPath = path.resolve(__dirname, './package.json')
+const yarnLockPath = path.resolve(__dirname, './yarn.lock')
 // 清空目标目录
 function clearTargetDirectory(targetDir) {
   return new Promise((resolve, reject) => {
@@ -75,7 +78,11 @@ async function main() {
   try {
     await clearTargetDirectory(targetDir);
     await copyDirectory(sourceDir, targetDir);
-    console.log('复制完成');
+    await copyDirectory(packageJSONPath, targetDir)
+    await copyDirectory(yarnLockPath, targetDir)
+    console.log('复制dist完成');
+    // await copyDirectory(node_modulesDir, targetNode_modulesDir);
+    // console.log('复制全部完成');
   } catch (err) {
     console.error('发生错误:', err);
   }

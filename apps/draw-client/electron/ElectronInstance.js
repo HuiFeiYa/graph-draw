@@ -1,6 +1,7 @@
-import { app } from "electron";
-import { AppInstance } from './AppInstance.js'
-export class ElectronInstance {
+
+const app = require('electron').app;
+const {AppInstance} = require('./AppInstance.js');
+class ElectronInstance {
     start() {
         this.bindListener()
     }
@@ -23,9 +24,10 @@ export class ElectronInstance {
   }
 }
 
-
-export const electronInstance = new ElectronInstance();
-
+const electronInstance = new ElectronInstance();
+module.exports = {
+    electronInstance
+}
 process.on("uncaughtException", (err, origin) => {
   console.error(err);
   console.log(origin);

@@ -1,22 +1,24 @@
-import { app, BrowserWindow, session, Menu  } from 'electron';
-import { join } from 'path';
-import { electronInstance } from "./ElectronInstance.js";
+const { app, BrowserWindow, session, Menu } = require('electron');
+const path = require('path');
+const {electronInstance} = require("./ElectronInstance.js");
+
 const getPath = (...args) => {
-  return join(new URL('.', import.meta.url).pathname, ...args);
+  // return join(new URL('.', import.meta.url).pathname, ...args);
+  return path.join(__dirname, ...args);
 }
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: {
-      preload: getPath('./preload/index.js'),
-      nodeIntegration: false, // 禁用 Node 集成
-      contextIsolation: true, // 启用上下文隔离
-       sandbox: true,
-    },
+    // webPreferences: {
+    //   preload: getPath('./preload/index.js'),
+    //   nodeIntegration: false, // 禁用 Node 集成
+    //   contextIsolation: true, // 启用上下文隔离
+    //    sandbox: true,
+    // },
   });
   const localPath = getPath('../dist/index.html');
-  process.env.VITE_DEV_SERVER_URL = ''
+  // process.env.VITE_DEV_SERVER_URL = ''
   console.log('process.env.VITE_DEV_SERVER_URL:', process.env.VITE_DEV_SERVER_URL)
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(process.env.VITE_DEV_SERVER_URL);
@@ -57,7 +59,7 @@ Menu.setApplicationMenu(menu);
 
 app.whenReady().then(() => {
   createWindow();
-
+  console.log('Electron 内置的 Node.js 版本:', process.versions.node);
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
