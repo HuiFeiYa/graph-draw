@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import electron from 'vite-plugin-electron/simple';
-
+import { resolve } from 'path';
+console.log("resolve(__dirname, 'src')",resolve(__dirname, 'src'))
 export default defineConfig({
   plugins: [
     vue(),
@@ -21,4 +22,9 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'), // 设置 @ 别名指向 src 目录
+    },
+  }
 });
