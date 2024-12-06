@@ -10,13 +10,15 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    // webPreferences: {
-    //   preload: getPath('./preload/index.js'),
-    //   nodeIntegration: false, // 禁用 Node 集成
-    //   contextIsolation: true, // 启用上下文隔离
-    //    sandbox: true,
-    // },
+    webPreferences: {
+      preload: getPath('./preload/index.js'),
+      nodeIntegration: false, // 禁用 Node 集成
+      contextIsolation: true, // 启用上下文隔离
+       sandbox: true,
+    },
   });
+  // 隐藏菜单栏
+  Menu.setApplicationMenu(null)
   const localPath = getPath('../dist/index.html');
   // process.env.VITE_DEV_SERVER_URL = ''
   console.log('process.env.VITE_DEV_SERVER_URL:', process.env.VITE_DEV_SERVER_URL)
@@ -28,23 +30,9 @@ function createWindow() {
   }
 
   electronInstance.start();
-// 创建菜单模板
-const template = [
-  {
-    label: 'View',
-    submenu: [
-      {
-        label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
-        click: () => win.reload(),
-      },
-    ],
-  },
-];
 
-// 创建菜单
-const menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
+
+
   // 打开开发者工具
   win.webContents.openDevTools();
   // 设置允许加载本地资源的权限

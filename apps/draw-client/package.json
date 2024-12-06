@@ -9,7 +9,7 @@
   "scripts": {
     "build": "vite build",
     "build:all": "vite build && pnpm run electron:build",
-    "dev": "vite dev & electron --trace-warnings .",
+    "dev": "vite dev & electron --inspect=5858 .",
     "electron:build": "electron-builder",
     "rebuild": "electron-rebuild -f -w better-sqlite3"
   },

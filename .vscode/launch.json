@@ -1,15 +1,32 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Attach NestJS WS",
-            "port": 9229,
-            "restart": true,
-          },
-    ]
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach NestJS WS",
+      "port": 9229,
+      "restart": true
+    },
+    {
+        "name": "Debug Main Process",
+        "request": "launch",
+        "runtimeArgs": [
+            "--prefix",  // 指定子包目录
+            "${workspaceFolder}/apps/draw-client",  // 子包目录路径
+            "run-script", // 执行 package scripts
+            "dev" // dev 脚本
+        ],
+        "runtimeExecutable": "npm",
+        "skipFiles": [
+            "<node_internals>/**"
+        ],
+        "type": "node",
+        // 调试器在程序启动时立即暂停
+        "stopOnEntry": true
+    }
+  ]
 }

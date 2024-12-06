@@ -6,7 +6,7 @@ const rimraf = require('rimraf');
 // 源目录路径
 const sourceDir = path.resolve(__dirname, 'dist');
 // 目标目录路径
-const targetDir = path.resolve(__dirname, '../apps/draw-client/nodeServer');
+const targetDir = path.resolve(__dirname, '../apps/draw-client/public/nodeServer');
 // const node_modulesDir = path.resolve(__dirname, 'node_modules');
 // const targetNode_modulesDir = path.resolve(__dirname, '../apps/draw-client/nodeServer/node_modules');
 const packageJSONPath = path.resolve(__dirname, './package.json')
