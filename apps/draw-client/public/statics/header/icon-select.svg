@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 32</title>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#DEDEDE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="10.16导出图片功能优化&amp;参考线功能" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组-31">
+            <rect id="矩形" x="0" y="0" width="16" height="16"></rect>
+            <rect id="矩形" stroke="#404E57" fill="url(#linearGradient-1)" x="3.5" y="1.5" width="10" height="10" rx="1"></rect>
+            <rect id="矩形" stroke="#404E57" fill="url(#linearGradient-1)" x="1.5" y="3.5" width="10" height="10" rx="1"></rect>
+            <polyline id="路径-3" stroke="#404E57" points="3.89251818 8.5 5.91931602 10.3982793 9.10748182 6.60172071"></polyline>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconmd</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="66.8551025%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#CFCDCA" offset="0%"></stop>
+            <stop stop-color="#776A53" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="66.8551025%" y2="50%" id="linearGradient-3">
+            <stop stop-color="#7E8DB3" offset="0%"></stop>
+            <stop stop-color="#7E8DB3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#7E8DB3" offset="0%"></stop>
+            <stop stop-color="#7E8DB3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="32.3582614%" y1="37.1142251%" x2="57.5730382%" y2="109.556522%" id="linearGradient-6">
+            <stop stop-color="#786A53" offset="0%"></stop>
+            <stop stop-color="#B6B0A7" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="32.3582614%" y1="37.1142251%" x2="57.5730382%" y2="109.556522%" id="linearGradient-7">
+            <stop stop-color="#7E8DB3" offset="0%"></stop>
+            <stop stop-color="#7E8DB3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon补充" transform="translate(-31, -35)">
+            <g id="topiconmd" transform="translate(31, 35)">
+                <rect id="矩形" fill="#D8D8D8" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <polygon id="矩形" fill="url(#linearGradient-1)" points="3 2 13 2 13 12.9971924 12 14 3 14"></polygon>
+                <g id="编组-86" transform="translate(8, 8) scale(-1, 1) rotate(-180) translate(-8, -8)translate(2, 1)">
+                    <g id="编组-47备份-3" transform="translate(-0, 0)">
+                        <polygon id="Background备份-29" fill="url(#linearGradient-3)" transform="translate(11.5, 10.5) rotate(90) translate(-11.5, -10.5)" points="9 10 14 10 14 11 9 11"></polygon>
+                        <polygon id="矩形备份-40" fill="url(#linearGradient-5)" transform="translate(3.5, 0.5) scale(1, -1) rotate(-270) translate(-3.5, -0.5)" points="3 -2 4 -2 4 3 3 3"></polygon>
+                        <path d="M1,0 L1,12.999 L12,13 L11.9877698,14 L-2.48689958e-14,14 L0.0122301584,13 L0.929,12.999 L0.00558454904,12.986715 L8.84181617e-13,1.2246468e-16 L1,0 Z" id="形状结合" fill="url(#linearGradient-7)"></path>
+                    </g>
+                </g>
+                <path d="M10.1462914,4.98870551 L10.1407068,9.98359591 L9.14629136,9.98870551 L9.15015435,5.98770551 L6.89472403,5.98312096 L6.89215435,4.98870551 L9.22315435,4.99370551 L10.1462914,4.98870551 Z" id="形状结合" fill="#2CA8FE" transform="translate(8.5192, 7.4887) scale(1, -1) rotate(-45) translate(-8.5192, -7.4887)"></path>
+                <polygon id="矩形备份-45" fill="#FF5A53" transform="translate(12.5026, 13.4994) scale(-1, 1) translate(-12.5026, -13.4994)" points="11.005188 11.9988098 14 15 11.005188 15"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

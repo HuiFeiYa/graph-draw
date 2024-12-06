@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconopenall</title>
+    <g id="-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M-Design顶部菜单" transform="translate(-462.000000, -263.000000)">
+            <g id="顶部导航-图表" transform="translate(66.000000, 253.000000)">
+                <g id="topiconopenall" transform="translate(396.000000, 10.000000)">
+                    <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="3.63797881e-12" y="0" width="16" height="16"></rect>
+                    <g id="编组-34" transform="translate(0.000000, 1.000000)">
+                        <g id="编组-29">
+                            <polygon id="矩形" fill="#FFFFFF" style="mix-blend-mode: screen;" points="1 1 14 1 14 14 1 14"></polygon>
+                            <path d="M14.8625001,14.9983263 L14.8625001,0 L0,0 L0,14.9983263 L11.3017854,14.9983263 L14.8625001,14.9983263 Z M1,14 L1.00178235,5 L1,1 L14,1 L14,14.0288544 L1,14 Z" id="形状" fill="#A1A1A1"></path>
+                            <polygon id="矩形" fill="#A1A1A1" points="1 1 7 1 5.29149519 4 1 4"></polygon>
+                            <polygon id="矩形" fill="#FFFFFF" points="1 1 6 1 4.82677714 3 1 3"></polygon>
+                        </g>
+                        <path d="M6,10 L12,10 L12,11 L6,11 L6,10 Z M6,8 L12,8 L12,9 L6,9 L6,8 Z M6,6 L12,6 L12,7 L6,7 L6,6 Z M4,10 L3,10 L3,11 L4,11 L4,10 Z M4,8 L3,8 L3,9 L4,9 L4,8 Z M4,6 L3,6 L3,7 L4,7 L4,6 Z" id="形状" fill="#2EA2CB" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

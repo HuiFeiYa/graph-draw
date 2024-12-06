@@ -3,15 +3,28 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 // 定义路由规则
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: () => import('../views/Home.vue'),
+    path: "/",
+    name: "index",
+    redirect: "/layout/home",
   },
   {
-    path: '/test',
-    name: 'Test',
-    component: () => import('../views/Test.vue'),
+    path: '/layout',
+    component: () => import('../components/Layout.vue'),
+    name: "layout",
+    children: [
+      {
+        path: 'home',
+        name: 'Home',
+        component: () => import('../views/Home.vue'),
+      },
+      {
+        path: '/test',
+        name: 'Test',
+        component: () => import('../views/Test.vue'),
+      }
+    ]
   },
+  
 ];
 
 // 创建路由器实例

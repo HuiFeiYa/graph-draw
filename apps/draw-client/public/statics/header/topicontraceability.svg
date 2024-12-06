@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topicontraceability</title>
+    <g id="页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M-Design顶部菜单" transform="translate(-583.000000, -377.000000)">
+            <g id="顶部导航-分析" transform="translate(66.000000, 367.000000)">
+                <g id="topicontraceability" transform="translate(517.000000, 10.000000)">
+                    <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="3.63797881e-12" y="0" width="16" height="16"></rect>
+                    <g id="编组-29" transform="translate(0.000000, 1.000000)">
+                        <polygon id="矩形" fill="#FFFFFF" style="mix-blend-mode: screen;" points="1 1 14 1 14 14 1 14"></polygon>
+                        <path d="M14.8625001,14.9983263 L14.8625001,0 L0,0 L0,14.9983263 L11.3017854,14.9983263 L14.8625001,14.9983263 Z M1,14 L1.00178235,5 L1,1 L14,1 L14,14.0288544 L1,14 Z" id="形状" fill="#7E8DB3"></path>
+                    </g>
+                    <path d="M8.00027819,5 L9.15006281,6.15034786 L6.82736206,8.12683105 L7.49916315,8.81768799 L9.8494306,6.8497854 L11,8.00013325 L11,5 L8.00027819,5 Z M6.00036603,5 L3,5 L3,8.00013325 L4.1505577,6.8497854 L6.49966179,9.20032713 L6.49966179,13 L7.4995183,13 L7.4995183,8.80036404 L4.8498552,6.15034786 L6.00036603,5 Z" id="形状" fill="#7E8DB3" fill-rule="nonzero" transform="translate(7.000000, 9.000000) rotate(90.000000) translate(-7.000000, -9.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconchart</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon尺寸调整" transform="translate(-1005, -9)" fill-rule="nonzero">
+            <g id="topiconchart" transform="translate(1005, 9)">
+                <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <g id="编组-29">
+                    <polygon id="矩形" fill="url(#linearGradient-1)" points="1 1 15 1 15 15 1 15"></polygon>
+                    <path d="M16,16 L16,0 L0,0 L0,16 L12.1667664,16 L16,16 Z M1,14.9689948 L1.00191945,5.29815226 L1,1 L15,1 L15,15 L1,14.9689948 Z" id="形状" fill="#7E8DB3"></path>
+                </g>
+                <path d="M7.55555555,7.55555555 L4.44444445,7.55555555 C4.17777778,7.55555555 4,7.73333334 4,8 L4,11.5555555 C4,11.8222222 4.17777778,12 4.44444445,12 L11.5555555,12 C11.8222222,12 12,11.8222222 12,11.5555555 L12,4.44444445 C12,4.17777778 11.8222222,4 11.5555555,4 L8,4 C7.73333334,4 7.55555555,4.17777778 7.55555555,4.44444445 L7.55555555,7.55555555 Z M5.14285714,8.57142857 L7.42857143,8.57142857 L7.42857143,10.8571429 L5.14285714,10.8571429 L5.14285714,8.57142857 Z M10.8571429,10.8571429 L8.57142857,10.8571429 L8.57142857,8.57142857 L10.8571429,8.57142857 L10.8571429,10.8571429 Z M10.8571429,5.14285714 L10.8571429,7.42857143 L8.57142857,7.42857143 L8.57142857,5.14285714 L10.8571429,5.14285714 Z" id="形状" fill="#2CA8FE"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconupdate</title>
+    <defs>
+        <linearGradient x1="89.2181396%" y1="75.5386353%" x2="21.4660645%" y2="20.3933716%" id="linearGradient-1">
+            <stop stop-color="#FFF5D2" offset="0%"></stop>
+            <stop stop-color="#E9C64E" offset="41.0153994%"></stop>
+            <stop stop-color="#FBD781" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="59.480968%" y1="110.482007%" x2="41.0111751%" y2="17.0479044%" id="linearGradient-2">
+            <stop stop-color="#AA8E44" offset="0%"></stop>
+            <stop stop-color="#988421" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M-Design顶部菜单" transform="translate(-680.000000, -947.000000)" fill-rule="nonzero">
+            <g id="顶部导航-协同" transform="translate(67.000000, 937.000000)">
+                <g id="topiconupdate" transform="translate(613.000000, 10.000000)">
+                    <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                    <path d="M8.22461837,2.28768737 L14.1601168,8.57115628 L10.9684865,8.57115629 L10.9684865,13.5 L5.44592591,13.5 L5.44592591,8.57115629 L1.76951285,8.57115629 L8.22461837,2.28768737 Z" id="形状" stroke="url(#linearGradient-2)" fill="url(#linearGradient-1)" transform="translate(8.000000, 8.000000) rotate(180.000000) translate(-8.000000, -8.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

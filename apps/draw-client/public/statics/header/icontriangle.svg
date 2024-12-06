@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="8px" viewBox="0 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icontriangle</title>
+    <g id="页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M-Design顶部菜单" transform="translate(-750.000000, -153.000000)" fill-rule="nonzero">
+            <g id="顶部导航" transform="translate(66.000000, 139.000000)">
+                <g id="icontriangle" transform="translate(688.000000, 18.000000) rotate(90.000000) translate(-688.000000, -18.000000) translate(684.000000, 14.000000)">
+                    <rect id="矩形" fill="#000000" opacity="0" x="0" y="9.59590206e-13" width="8" height="8"></rect>
+                    <polygon id="路径" fill="#96A1B9" points="3 7 3 1 7 4"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

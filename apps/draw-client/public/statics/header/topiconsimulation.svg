@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconsimulation</title>
+    <g id="控件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部导航" transform="translate(-467.000000, -10.000000)">
+            <g id="topiconsimulation" transform="translate(467.000000, 10.000000)">
+                <g id="导出" transform="translate(8.000000, 8.000000) scale(-1, 1) rotate(-360.000000) translate(-8.000000, -8.000000) ">
+                    <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="4.30860546e-13" y="0" width="16" height="16"></rect>
+                    <polygon id="形状" fill="#FFFFFF" points="1 2 1 15 15 15 15 2"></polygon>
+                    <path d="M14,16 C14.5833333,16 15,15.5357143 15,15 L15,6.35714285 L14,6.35714285 L14,15 L2,15 L2,2 L14,2 L14,6.35714285 L15,6.35714285 L15,2 C15,1.56184858 14.4430198,0.999999998 14,0.999999998 L2,0.999999998 C1.41666667,0.999999998 1,1.46428571 1,2 L1,15 C1,15.5357143 1.41666667,16 2,16 C4.69724415,16 8.69724415,16 14,16 Z" id="路径" fill="#5C6A8E" fill-rule="nonzero" transform="translate(8.000000, 8.500000) rotate(-180.000000) translate(-8.000000, -8.500000) "></path>
+                </g>
+                <path d="M8,10 L8,9 L12,9 L12,10 L8,10 Z M8,12 L8,11 L12,11 L12,12 L8,12 Z M12,6 L8,6 L8,5 L12,5 L12,6 Z M6.82842712,9 L7.53553391,9.70710678 L6.475,10.767 L7.53553391,11.8284271 L6.82842712,12.5355339 L5.768,11.475 L4.70710678,12.5355339 L4,11.8284271 L5.06,10.767 L4,9.70710678 L4.70710678,9 L5.768,10.06 L6.82842712,9 Z M6,3.5 L6,5 L7.5,5 L7.5,6 L6,6 L6,7.5 L4.9967041,7.5 L4.9967041,6 L3.5,6 L3.5,5 L4.9967041,5 L4.9967041,3.5 L6,3.5 Z" id="形状" fill="#2EA2CB"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 3</title>
+    <defs>
+        <linearGradient x1="50%" y1="7.61309003%" x2="50%" y2="98.1534091%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="客户端主菜单调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="客户端主菜单调整-新增“模型库”、“仿真设置”、“快捷键助手”icon" transform="translate(-873, -10)">
+            <g id="编组-3" transform="translate(873, 10)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <g id="编组-6" transform="translate(1.0787, 1.0499)">
+                    <polygon id="路径-4" stroke="#7E8DB3" fill="url(#linearGradient-1)" points="7.58834614 0.478788865 7.58752796 7.56963887 0.480943662 7.56963887 0.480795877 13.4787889 13.4806141 13.4787889 13.4806141 0.478788865"></polygon>
+                    <path d="M5.5,0.5 L5.5,5.5 L0.5,5.5 L0.5,0.5 L5.5,0.5 Z" id="矩形" stroke="#7E8DB3" fill="url(#linearGradient-2)"></path>
+                    <polyline id="路径-5" stroke="#2CA8FE" points="10.5191697 3.98350371 10.5191697 10.422849 5.64450966 10.422849"></polyline>
+                    <polygon id="路径-6" fill="#2CA8FE" points="5.99706344 8.89035663 3.99706344 10.3606094 5.99706344 11.8903566"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

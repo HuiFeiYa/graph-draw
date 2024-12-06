@@ -30,11 +30,6 @@ async function createApplication() {
   <button @click="getApplication">获取项目</button> -->
 
   <div class="v-app-container">
-    <!-- 导航栏 -->
-    <nav>
-      <router-link to="/">首页</router-link> |
-      <router-link to="/test">test</router-link>
-    </nav>
     <router-view />
   </div>
 </template>

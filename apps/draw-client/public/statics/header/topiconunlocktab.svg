@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_取消冻结标签页</title>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#DEDEDE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#DEDEDE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_取消冻结标签页">
+            <g id="jx">
+                <rect id="矩形" fill="#C5C5C5" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <path d="M8.74513939,0.552117908 L7.70361548,4.47200923 L10.7534851,9.39504345 L1.55166196,9.91037377 L4.30390696,4.41499816 L2.93653975,0.995295692 L8.74513939,0.552117908 Z" id="形状结合" stroke="#4C4C4C" fill="url(#linearGradient-1)"></path>
+                <line x1="3.3670995" y1="1.98048484" x2="8.68473357" y2="1.98048484" id="路径-2" stroke="#4C4C4C"></line>
+                <line x1="6.00470032" y1="10.4578293" x2="6" y2="15.4073332" id="路径" stroke="#4C4C4C" stroke-linecap="round"></line>
+            </g>
+            <g id="取消" transform="translate(8.600000, 8.600000)" stroke="#4C4C4C">
+                <path d="M3.4,0 C3.859,0 4.304,0.09 4.723,0.267 C5.128,0.438 5.491,0.683 5.804,0.996 C6.116,1.308 6.362,1.672 6.533,2.077 C6.71,2.496 6.8,2.941 6.8,3.4 C6.8,3.859 6.71,4.304 6.533,4.723 C6.362,5.128 6.117,5.491 5.804,5.804 C5.492,6.116 5.128,6.362 4.723,6.533 C4.304,6.71 3.859,6.8 3.4,6.8 C2.941,6.8 2.496,6.71 2.077,6.533 C1.672,6.362 1.309,6.117 0.996,5.804 C0.684,5.492 0.438,5.128 0.267,4.723 C0.09,4.304 0,3.859 0,3.4 C0,2.941 0.09,2.496 0.267,2.077 C0.438,1.672 0.683,1.309 0.996,0.996 C1.308,0.684 1.672,0.438 2.077,0.267 C2.496,0.09 2.941,0 3.4,0" id="形状" stroke-width="0.8" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+                <line x1="1.92105412" y1="3.4" x2="4.91933112" y2="3.4" id="路径-3" stroke-width="0.7" stroke-linecap="round" transform="translate(3.420193, 3.400000) rotate(45.000000) translate(-3.420193, -3.400000) "></line>
+                <line x1="1.92105412" y1="3.4" x2="4.91933112" y2="3.4" id="路径-3备份" stroke-width="0.7" stroke-linecap="round" transform="translate(3.420193, 3.400000) scale(-1, 1) rotate(45.000000) translate(-3.420193, -3.400000) "></line>
+            </g>
+        </g>
+    </g>
+</svg>

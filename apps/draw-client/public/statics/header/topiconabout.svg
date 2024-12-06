@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconabout备份</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon尺寸调整" transform="translate(-956, -9)" fill-rule="nonzero">
+            <g id="topiconabout备份" transform="translate(956, 9)">
+                <rect id="矩形" fill="#000000" opacity="0" x="3.63797881e-12" y="0" width="16" height="16"></rect>
+                <g id="编组-29">
+                    <polygon id="矩形" fill="url(#linearGradient-1)" points="1 1 15 1 15 15 1 15"></polygon>
+                    <path d="M16,16 L16,0 L0,0 L0,16 L12.1667664,16 L16,16 Z M1,14.9689948 L1.00191945,5.29815226 L1,1 L15,1 L15,15 L1,14.9689948 Z" id="形状" fill="#7E8DB3"></path>
+                </g>
+                <path d="M7.96044496,7 C7.59819317,7 7.30434431,7.14512523 7.30434431,7.32397163 L7.30434431,11.6450196 C7.30434431,11.8242348 7.59819317,11.9690527 7.96044496,11.9690527 C8.3225474,11.9690527 8.61684431,11.8242348 8.61684431,11.6450196 L8.61684431,7.32397163 C8.61684431,7.14512523 8.32257229,7 7.96044496,7 Z" id="路径" fill="#2CA8FE"></path>
+                <path d="M7.10434431,4.90114746 C7.10434431,4.40357666 7.50790388,4 8.00554304,4 C8.50331892,4 8.90665632,4.40357666 8.90665632,4.90114746 C8.90665632,5.39876953 8.50333601,5.80226074 8.00554304,5.80226074 C7.50788679,5.80226074 7.10434431,5.3989917 7.10434431,4.90114746 Z" id="路径" fill="#2CA8FE"></path>
+            </g>
+        </g>
+    </g>
+</svg>

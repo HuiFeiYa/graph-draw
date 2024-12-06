@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 4</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="98.3391608%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon尺寸调整" transform="translate(-812, -10)">
+            <g id="编组-4" transform="translate(812, 10)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <g id="编组-2" transform="translate(1, 0.9471)">
+                    <g id="模型库-(1)" fill="#7E8DB3">
+                        <polygon id="矩形" points="2.30038211e-13 2.08614153 14 2.08614153 14 14.0861415 2.30038211e-13 14.0861415"></polygon>
+                        <path d="M12.532795,1.5704965 L12.532795,1 C12.532795,0.44771525 12.159699,0 11.6994617,0 L2.30597202,0 C1.84573473,0 1.47263868,0.44771525 1.47263868,1 L1.47263868,1.5694965 L12.532795,1.5704965 Z" id="路径" fill-rule="nonzero"></path>
+                    </g>
+                    <polygon id="矩形" fill="url(#linearGradient-1)" points="1 3.26151136 13 3.26151136 13 12.8723091 1 12.8723091"></polygon>
+                    <polygon id="矩形" fill="#1890FF" points="5.51810065 5.05339673 8.51810065 5.05339673 8.51810065 7.05339673 5.51810065 7.05339673"></polygon>
+                    <rect id="矩形" fill="#1890FF" x="6" y="9.05339673" width="2" height="2"></rect>
+                    <rect id="矩形" fill="#1890FF" x="3" y="9.05339673" width="2" height="2"></rect>
+                    <rect id="矩形" fill="#1890FF" x="9" y="9.05339673" width="2" height="2"></rect>
+                    <line x1="7" y1="6.60463178" x2="7" y2="10.6046318" id="路径-7" stroke="#1890FF" stroke-width="0.5"></line>
+                    <path d="M4,10.1138282 L4,8.05339673 L10,8.05339673 C10,9.38673006 10,10.0533967 10,10.0533967" id="路径-8" stroke="#1890FF" stroke-width="0.5"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconpr</title>
+    <g id="控件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部导航" transform="translate(-705.000000, -10.000000)">
+            <g id="topiconpr" transform="translate(705.000000, 10.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="3.63797881e-12" y="0" width="16" height="16"></rect>
+                <g id="编组-34" transform="translate(0.000000, 1.000000)">
+                    <g id="编组-29">
+                        <polygon id="矩形" fill="#FFFFFF" style="mix-blend-mode: screen;" points="1 1 14 1 14 14 1 14"></polygon>
+                        <path d="M14.8625001,14.9983263 L14.8625001,0 L0,0 L0,14.9983263 L11.3017854,14.9983263 L14.8625001,14.9983263 Z M1,14 L1.00178235,5 L1,1 L14,1 L14,14.0288544 L1,14 Z" id="形状" fill="#7E8DB3"></path>
+                    </g>
+                    <polygon id="形状" fill="#2CA8FE" points="13.9999977 1 1 1 1 4 13.9999977 4"></polygon>
+                    <polygon id="路径" fill="#2781C3" points="1 4 14 4 14 5 1 5"></polygon>
+                </g>
+                <polygon id="路径" fill="#ABE6FF" points="11 3 12 3 12 4 11 4"></polygon>
+                <path d="M10.0684716,10.361277 L5.44190912,7.00190198 C5.27628412,6.88158948 5.04659662,6.99877698 5.04659662,7.20346448 L5.04659662,13.9222145 C5.04659662,14.126902 5.27784662,14.242527 5.44190912,14.123777 L10.0684716,10.764402 C10.2059716,10.664402 10.2059716,10.461277 10.0684716,10.361277 Z M6.04347162,8.67065198 L8.64815912,10.5628395 L6.04347162,12.455027 L6.04347162,8.67065198 Z" id="形状" fill="#5C6A8E" fill-rule="nonzero" transform="translate(7.609097, 10.562500) rotate(-90.000000) translate(-7.609097, -10.562500) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
