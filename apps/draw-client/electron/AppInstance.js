@@ -1,5 +1,5 @@
 const { resolve } = require("path");
-const { app } = require("electron");
+const { app, Menu, BrowserWindow } = require("electron");
 const fs = require("fs");
 const fork = require("child_process").fork;
 const dayjs = require("dayjs");
@@ -7,7 +7,32 @@ console.log('process.env', process.env)
 const isDevelopment = process.env.NODE_ENV === 'development'
 class AppInstance {
   async start() {
-    this.startNodeServer();
+    await this.startNodeServer();
+    await this.createMainWindow();
+  }
+  async createMainWindow() {
+    const win = new BrowserWindow({
+      width: 800,
+      height: 600,
+      webPreferences: {
+        preload: resolve(__dirname, './preload/index.js'),
+        nodeIntegration: false, // 禁用 Node 集成
+        contextIsolation: true, // 启用上下文隔离
+         sandbox: true,
+      },
+    });
+    Menu.setApplicationMenu(null)
+
+  // process.env.VITE_DEV_SERVER_URL = ''
+
+    if (process.env.VITE_DEV_SERVER_URL) {
+      win.loadURL(process.env.VITE_DEV_SERVER_URL);
+    } else {
+  const localPath = resolve(__dirname, '../dist/index.html');
+
+      console.log('localPath:',`file://${localPath}`)
+      win.loadURL(`file://${localPath}`);
+    }
   }
   async startNodeServer() {
     const nodeScript = resolve(__dirname, isDevelopment ? "../public/nodeServer/main.js" : "../dist/nodeServer/main.js");
