@@ -24,7 +24,7 @@ export const Common = [
   {
     label: "另存为",
     notShowLabel: true,
-    value: ActionKey.saveAsProject,
+    value: 'saveAsProject',
     get disabled() {
       return false;
     },
@@ -81,7 +81,7 @@ export const Common = [
   },
   {
     label: '刷新',
-    value: ActionKey.toolRefresh,
+    value: 'toolRefresh',
     notShowLabel: true,
     get disabled() {
       return false;
@@ -95,11 +95,6 @@ function concatChildren(...args) {
     args.forEach(arg => {
       arg.forEach(children => {
         // 获取快捷键（不监听，只进行tips的显示）
-  
-        const keyboard = actionManager.getFirstBindKey(children.value, KeyboardEventArea.Global);
-        if (keyboard) {
-          children.keyboard = keyboard;
-        }
         res.push(children);
       });
       // 添加竖直分割线,用type

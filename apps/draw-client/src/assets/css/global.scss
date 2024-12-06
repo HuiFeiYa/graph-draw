@@ -1,0 +1,538 @@
+@use './theme';
+$theme-color: #1890ff; 
+@for $i from 1 through 200 {
+	.g-m-#{$i} { margin: 1px * $i; }
+	.g-m-t-#{$i} { margin-top: 1px * $i; }
+	.g-m-b-#{$i} { margin-bottom: 1px * $i; }
+	.g-m-l-#{$i} { margin-left: 1px * $i; }
+	.g-m-r-#{$i} { margin-right: 1px * $i; }
+	.g-m-tb-#{$i} { 
+		margin-top: 1px * $i; 
+		margin-bottom: 1px * $i; 
+	}
+	.g-m-lr-#{$i} { 
+		margin-left: 1px * $i; 
+		margin-right: 1px * $i; 
+	}
+	.g-pd-#{$i} { padding: 1px * $i; }
+	.g-pd-t-#{$i} { padding-top: 1px * $i; }
+	.g-pd-b-#{$i} { padding-bottom: 1px * $i; }
+	.g-pd-l-#{$i} { padding-left: 1px * $i; }
+	.g-pd-r-#{$i} { padding-right: 1px * $i; }
+	.g-pd-tb-#{$i} { 
+		padding-top: 1px * $i; 
+		padding-bottom: 1px * $i; 
+	}
+	.g-pd-lr-#{$i} {
+		padding-left: 1px * $i; 
+		padding-right: 1px * $i; 
+	}
+
+	.g-br-#{$i} {
+		border-radius: 0px * $i;
+	}
+	.g-circle-#{$i} {
+		display: inline-block;
+		width: 1px * $i;
+		height: 1px * $i;
+		border-radius: 50%;
+	}
+	
+}
+@for $i from 12 through 36 {
+	.g-fs-#{$i} {
+		font-size: 1px * $i;
+	}
+	.g-lh-#{$i} {
+		line-height: 1px * $i;
+	}
+  .g-w-#{$i} {
+		width: 1px * $i;
+	}
+  .g-h-#{$i} {
+		height: 1px * $i;
+	}
+  .g-l-#{$i} {
+		left: 1px * $i;
+	}
+  .g-r-#{$i} {
+		right: 1px * $i;
+	}
+  .g-t-#{$i} {
+		top: 1px * $i;
+	}
+}
+
+@for $i from 1 through 10 {
+  .g-l-#{$i} {
+		left: 1px * $i;
+	}
+  .g-r-#{$i} {
+		right: 1px * $i;
+	}
+  .g-t-#{$i} {
+		top: 1px * $i;
+	}
+  .gap-#{$i} {
+    gap: 1px * $i;
+  }
+}
+
+
+.g-block{
+	display: block;
+}
+.g-inline{
+	display: inline;
+}
+.g-inline-block{
+	display: inline-block;
+}
+.g-inline-flex{
+	display: inline-flex
+}
+
+.g-flex {
+	display: flex;
+}
+.g-jc-c {
+	display: flex;
+	justify-content: center;
+}
+.g-jc-sb {
+	display: flex;
+	justify-content: space-between;
+}
+.g-jc-sa {
+	display: flex;
+	justify-content: space-around;
+}
+.g-ai-c {
+	display: flex;
+	align-items: center;
+}
+.g-ac-s {
+	display: flex;
+	align-content: flex-start;
+}
+.g-fd-c {
+	display: flex;
+	flex-direction: column;
+}
+.g-flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.g-flex-auto,.g-flex-1 {
+	flex: 1 1 auto;
+}
+.g-flex-1-1 {
+	flex: 1 1 1px;
+}
+.g-flex-none,.g-flex-0 {
+	flex: 0 0 auto;
+}
+.g-flex-2{
+	flex: 2 2 auto;
+}
+.g-flex-wrap {
+	flex-wrap: wrap;
+}
+
+.g-tc {
+	text-align: center;
+}
+.g-tl {
+	text-align: left;
+}
+.g-tr {
+	text-align: right;
+}
+
+.g-fr {
+	float: right;
+}
+.g-fl {
+	float: left;
+}
+
+.g-relative {
+	position: relative;
+}
+.g-absolute {
+	position: absolute;
+}
+.g-fixed {
+	position: fixed;
+}
+.g-pointer {
+	cursor: pointer;
+}
+
+
+.g-fw-w {
+    flex-wrap: wrap;
+}
+
+.g-bold {
+	font-weight: 500;
+}
+.g-bolder {
+	font-weight: 600;
+}
+.g-one-line {
+	overflow: hidden; 
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.g-two-line {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+.g-rotate-90 {
+	transform: rotate(90deg);
+}
+.g-rotate--90 {
+	transform: rotate(-90deg);
+}
+.g-ov-auto {
+	overflow: auto;
+}
+.g-ov-overlay {
+	overflow: overlay;
+}
+.g-ov-hidden{
+	overflow: hidden;
+}
+.g-ov-visible{
+	overflow: visible;
+}
+
+.clearfix:before,
+.clearfix:after {
+	content: "";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	*zoom: 1;
+}
+.g-right-4{
+  position: absolute;
+  right: 8px;
+}
+.g-custom-triangle {
+  width: 0;
+  height: 0;
+  border-top: 4px solid #96A1B9;
+  border-left: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+.g-hide-scroll {
+	&::-webkit-scrollbar {
+		display: none; /* Chrome Safari */
+	}
+}
+.g-disabled {
+  filter: grayscale(85%) !important;
+  color: #c1c5cb !important;
+  cursor: not-allowed !important;
+}
+
+.g-focus {
+  outline: none;
+}
+
+.g-tip {
+  width: 8px;
+  height: 8px;
+  background: #E52021;
+  position: absolute;
+  right: -7px;
+  top: -4px;
+  border-radius: 50%;
+}
+
+.g-theme-color {color: #1890ff}
+
+.g-graph-keyword {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: -3px
+}
+#webpack-dev-server-client-overlay {
+  display:none;
+}
+
+.g-clear-icon {
+  width: 15px;
+  height: 15px;
+  filter: grayscale(100%);
+}
+.g-clear-button{
+  &:hover{
+    .g-clear-icon {
+      filter: none;
+    }
+  }
+}
+
+.g-header-cell {
+  color: #000;
+  background-color: #E6E6E6 !important;
+  .cell {
+    white-space: nowrap;
+    overflow: hidden;
+    justify-content: center;
+    line-height: 23px;
+  }
+}
+
+.g-model-icon {
+  width: 16px;
+  height: 16px;
+}
+
+// 以下4.3.2 ui查找新增全局样式
+// 先合并样式，后期可以进一步把组件抽象出来
+.g-formitem-label {
+  width: 100px;
+  text-align: right;
+  padding-right: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.g-formitem-content {
+  flex: 1;
+  width: calc(100% - 100px);
+  display: flex;
+  .g-formitem-input {
+    display: inline-block;
+    height: 26px;
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    line-height: 26px;
+    padding-left: 12px;
+    width: calc(100% - 120px);
+  }
+  .g-formitem-suffixbtn {
+    display: inline-block;
+    background: #ECF4FF;
+    border: 1px solid #E0E0E0;
+    border-left: none;
+    width: 120px;
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 26px;
+    height: 26px;
+    text-align: center;
+  }
+}
+// input 右侧导入文件btn
+.g-import-file-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  cursor: pointer;
+  &.disabled {
+    cursor: not-allowed;
+  }
+}
+// 项目/图表/属性/标签 toolbar
+.g-toolbar-between {
+  border-bottom: 1px solid #e9e9e9;
+  background: #f4f8ff;
+  height: 28px;
+  padding: 6px 8px;
+  display: flex;
+  justify-content: space-between;
+  &._BackGroundWhite{
+    background-color: white;
+  }
+  &.is_ipc {
+    border-bottom: none;
+    padding: 0;
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10px;
+    height: auto;
+  }
+  .g-toolbar-left, .g-toolbar-right {
+    display: inline-flex;
+    align-items: center;
+    .g-img-box {
+      margin-right: 8px;
+      cursor: pointer;
+      width: 14px;
+      height: 14px;
+      border: 1px solid transparent;
+      text-align: center;
+      padding: 0 1px;
+      box-sizing: content-box;
+      img { width: 100%; }
+    }
+    .g-img-box-group {
+      margin-right: 0;
+      cursor: pointer;
+      height: 14px;
+      line-height: 14px;
+      display: inline-flex;
+      align-items: center;
+      .g-img-content {
+        cursor: pointer;
+        width: 14px;
+        height: 14px;
+      }
+      .g-img-arrow {
+        margin-left: 3px;
+      }
+      .g-txt {
+        height: 14px;
+        line-height: 14px;
+        display: inline-block;
+      }
+    }
+  }
+  .g-toolbar-right {
+    .el-input {
+      z-index: 99;
+      width: 16px;
+    }
+
+    .el-input__inner {
+      padding: 0;
+      width: 0px;
+    }
+
+    i.el-icon.el-select__caret.el-input__icon {
+      width: 0px;
+      height: 0px;
+      top: 4px;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 4px solid #2f2f2f;
+      font-size: 0px;
+      line-height: 0px;
+    }
+
+    .el-select-dropdown__empty {
+      width: 150px;
+    }
+
+    .c-dropdown-menu {
+      color: red;
+    }
+  }
+}
+// 分步表单
+.g-step-form {
+  .g-step-header {
+    padding: 24px 15vw;
+    .steps_comp {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      // 初始step
+      .step_content {
+        display: flex;
+        align-items: center;
+        width: 100px;
+        &.is_last {
+          width: 100px;
+          flex: 0 0 100px;
+        }
+
+        .step_icon {
+          display: inline-block;
+          border-radius: 50%;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          width: 30px;
+          height: 30px;
+          padding: 5px;
+          text-align: center;
+
+          .step_index {
+            font-size: 14px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            color: rgba(0, 0, 0, 0.15);
+          }
+        }
+
+        .step_label {
+          margin-left: 10px;
+          font-size: 14px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: bold;
+          width: 60px;
+        }
+
+        .step_line {
+          display: inline-block;
+          height: 1px;
+          width: 200px;
+          background-color: rgba(0, 0, 0, 0.15);
+          margin: 0 15px;
+        }
+      }
+      // 当前step
+      .is_current {
+        color: $theme-color;
+        .step_icon {
+          background-color: $theme-color;
+
+          .step_index {
+            color: white;
+          }
+
+          svg {
+            color: white;
+          }
+        }
+      }
+      //已经完成的step
+      .is_success {
+        color: $theme-color;
+        .step_icon {
+          background-color: $theme-color;
+          .step_index {
+            color: white;
+          }
+        }
+
+        .step_line {
+          background-color: $theme-color;
+        }
+      }
+    }
+  }
+  .g-step-content {
+    padding: 0 24px 24px;
+    flex: 1 1 100px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+// 横向操作按钮组合
+.g-footer-button {
+  display: flex;
+  justify-content: flex-start;
+}
+
+// 表格边框宽度
+.el-table--border .el-table__inner-wrapper::after {
+  height: 0.5px;
+}
+.el-table__inner-wrapper::before {
+  height: 0.5px;
+}

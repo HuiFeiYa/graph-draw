@@ -13,6 +13,7 @@ class AppInstance {
     const win = new BrowserWindow({
       width: 800,
       height: 600,
+      frame: false,
       webPreferences: {
         preload: resolve(__dirname, './preload/index.js'),
         nodeIntegration: false, // 禁用 Node 集成

@@ -1,32 +1,47 @@
 <template>
-    <div class="v-header">
-        <div class="_header-top">
-            <div class="g-flex">
-                <span v-for="item in headerMenus.filter(it => !it.hide)" :key="item.enName" class="_header-menu"
-                    :class="{ disabled: item.disabled, 'is-active': item.enName === activeTab }"
-                    @click="onClickHeader(item)">
-                    <span class="custom-tabs-label">
-                        <span>
-                            {{ item.cnName + '(' + item.enName[0] + ')' }}
-                            <span v-if="item.children.some(child => child.showTip)" class="g-tip"></span>
-                        </span>
-                    </span>
-                </span>
-            </div>
-        </div>
+  <div class="v-header">
+    <div class="_header-top">
+      <div class="g-flex">
+        <span v-for="item in headerMenus.filter(it => !it.hide)" :key="item.enName" class="_header-menu"
+          :class="{ disabled: item.disabled, 'is-active': item.enName === activeTab }" @click="onClickHeader(item)">
+          <span class="custom-tabs-label">
+            <span>
+              {{ item.cnName + '(' + item.enName[0] + ')' }}
+              <span v-if="item.children.some(child => child.showTip)" class="g-tip"></span>
+            </span>
+          </span>
+        </span>
+      </div>
     </div>
+    <div class="_header-content">
+      <div v-for="child in (activeHeaderMenu?.children || [])"
+        :key="child.value" :class="{ _select: child.type == 'select', _item: child.type !== 'splitLine' }">
+        <m-header-split-line v-if="child.type == 'splitLine'" />
+        <m-header-button v-if="!child.type" :data="child" @click="handleClick(child)" />
+      </div>
+    </div>
+  </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { headerMenus } from './menuItem/index.js'
+import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
+import MHeaderButton from './headerComponents/HeaderButton.vue';
 let activeTab = ref('Project');
+
+const activeHeaderMenu = computed(() => {
+  return headerMenus.find(it => it.enName === activeTab.value);
+});
+console.log('activeHeaderMenu:', activeHeaderMenu)
 </script>
 <style lang="scss">
 @use '@/assets/css/theme' as *;
+
 .v-header {
   position: relative;
   border-bottom: 1px solid #C4C1C2;
   overflow: hidden;
+
   ._header-top {
     height: 24px;
     background-color: $frame-title-bg-color;
@@ -34,18 +49,21 @@ let activeTab = ref('Project');
     display: flex;
     justify-content: space-between;
     overflow: hidden;
+
     ._header-menu {
       height: 24px;
-      padding: 4px 12px ;
+      padding: 4px 12px;
       line-height: 16px;
       text-align: center;
       font-size: 12px;
       color: #ffffff;
       min-width: 66px;
       cursor: pointer;
+
       &.disabled {
         color: #90A8CF;
       }
+
       &.is-active {
         color: rgba(0, 0, 0, 0.85);
         background-color: $toolbar-bg-color;
@@ -53,17 +71,20 @@ let activeTab = ref('Project');
       }
     }
   }
+
   ._header-content {
     height: 36px;
     background-color: $toolbar-bg-color;
     padding: 0px 8px;
     display: flex;
     overflow: hidden;
+
     ._item {
       position: relative;
-      border: 1px solid rgba(0,0,0,0);
+      border: 1px solid rgba(0, 0, 0, 0);
       margin-top: 6px;
       height: 26px;
+
       &._select {
         margin-top: 3px;
         height: 32px;
@@ -72,6 +93,7 @@ let activeTab = ref('Project');
 
       color: #5f6c88;
       font-size: 11px;
+
       &:hover {
         background-color: $item-active-bg-color;
         box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),

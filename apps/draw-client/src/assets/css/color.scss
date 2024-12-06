@@ -1,0 +1,29 @@
+$black-0:#000;
+$black-11:#111111;
+$black-12:#121212;
+$black-3a:#3a3a3a;
+$black-6:#666666;
+$black-9:#999999;
+$black-a:#aaaaaa;
+$black-eb:#ebebeb;
+$black-ed:#ededed;
+$black-f9:#f9f9f9;
+$blue-mid:#1890FF;
+$green-mid:#43af62;
+$yellow-mid:#f7b500;
+$red-mid:#dc2828;
+$red-light:#ffece7;
+$white:#fff;
+
+@each $color,$name in ($black-0,black-0),($black-12,black-12),($black-3a,black-3a),($black-11,black-11),
+($black-6,black-6),($black-9,black-9),($black-a,black-a),($black-eb,black-eb),
+($black-ed,black-ed),($black-f9,black-f9),($blue-mid,blue-mid),($green-mid,green-mid),
+($yellow-mid,yellow-mid),($red-mid,red-mid),($red-light,red-light),($white,"white") {
+    .g-c-#{$name} {
+        color: $color;
+    }
+    .g-bg-#{$name} {
+        background-color: $color;
+    }
+}
+
