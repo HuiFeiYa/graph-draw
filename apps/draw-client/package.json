@@ -9,6 +9,7 @@
   "scripts": {
     "build": "vite build",
     "build:all": "vite build && pnpm run electron:build",
+    "start": "vite dev",
     "dev": "vite dev & electron --inspect=5858 .",
     "electron:build": "electron-builder",
     "rebuild": "electron-rebuild -f -w better-sqlite3"
@@ -60,7 +61,8 @@
     "@hfdraw/graph": "workspace:^",
     "@hfdraw/utils": "workspace:^",
     "dayjs": "^1.11.13",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",

@@ -3,7 +3,6 @@ const { app, Menu, BrowserWindow } = require("electron");
 const fs = require("fs");
 const fork = require("child_process").fork;
 const dayjs = require("dayjs");
-console.log('process.env', process.env)
 const isDevelopment = process.env.NODE_ENV === 'development'
 class AppInstance {
   async start() {
@@ -20,6 +19,7 @@ class AppInstance {
         contextIsolation: true, // 启用上下文隔离
          sandbox: true,
       },
+      title: "Design"
     });
     Menu.setApplicationMenu(null)
 
