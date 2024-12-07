@@ -110,7 +110,43 @@ const File = [
     },
     icon: "statics/header/topiconexport.svg",
     // type: "dropdown",
-  }
+  },
+  {
+    label: "选择",
+    value: 'select',
+    icon: "statics/header/arrow1.svg",
+    selectStatus: true, // 是否需要选中状态
+  },
+  {
+    label: "矩形",
+    value: 'rect',
+    icon: "statics/header/rect.svg",
+    selectStatus: true, // 是否需要选中状态
+  },
+  {
+    label: "菱形",
+    value: 'lingxing',
+    icon: "statics/header/lengxing.svg",
+    selectStatus: true, // 是否需要选中状态
+  },
+  {
+    label: "圆形",
+    value: 'circle',
+    icon: "statics/header/circle.svg",
+    selectStatus: true, // 是否需要选中状态
+  },
+  {
+    label: "箭头",
+    value: 'long-arrow',
+    icon: "statics/header/long-arrow.svg",
+    selectStatus: true, // 是否需要选中状态
+  },
+  {
+    label: "文本",
+    value: 'text',
+    icon: "statics/header/input-method-line.svg",
+    selectStatus: true, // 是否需要选中状态
+  },
 ]
 
 /**

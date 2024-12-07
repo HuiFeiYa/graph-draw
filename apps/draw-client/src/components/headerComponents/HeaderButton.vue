@@ -1,5 +1,5 @@
 <template>
-  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled }">
+  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled,'selected': isSelected }">
     <el-tooltip
       :show-after="500"
       placement="bottom"
@@ -17,7 +17,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-defineProps<{
+import { computed } from 'vue';
+
+const props = defineProps<{
   data: {
     value: string
     icon: string
@@ -28,8 +30,13 @@ defineProps<{
     hide?: boolean
     type?: string
     keyboard?: string
-  }
+  },
+  selectButtonValue?: string
 }>();
+const isSelected = computed(()=> {
+  return props.selectButtonValue === props.data.value;
+})
+console.log('isSelected', isSelected)
 </script>
 <style lang="scss" scoped>
 .v-header-btn {
@@ -46,5 +53,9 @@ defineProps<{
       background-size: 100%;
     }
   }
+ 
 }
+.v-header-btn.selected {
+    background-color: #0000ff30;
+  }
 </style>

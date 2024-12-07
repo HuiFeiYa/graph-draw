@@ -17,7 +17,7 @@
       <div v-for="child in (activeHeaderMenu?.children || [])"
         :key="child.value" :class="{ _select: child.type == 'select', _item: child.type !== 'splitLine' }">
         <m-header-split-line v-if="child.type == 'splitLine'" />
-        <m-header-button v-if="!child.type" :data="child" @click="handleClick(child)" />
+        <m-header-button v-if="!child.type" :selectButtonValue="selectButtonValue" :data="child" @click="handleClick(child)" />
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@ import { headerMenus } from './menuItem/index.js'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 import MHeaderButton from './headerComponents/HeaderButton.vue';
 let activeTab = ref('Project');
-
+let selectButtonValue = ref('');
 const activeHeaderMenu = computed(() => {
   return headerMenus.find(it => it.enName === activeTab.value);
 });
@@ -37,6 +37,13 @@ console.log('activeHeaderMenu:', activeHeaderMenu)
 function onClickHeader(headerMenu) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
+}
+function handleClick(child) {
+  if (child.selectStatus) {
+    selectButtonValue.value = child.value
+  } else {
+    selectButtonValue.value = ''
+  }
 }
 </script>
 <style lang="scss">
