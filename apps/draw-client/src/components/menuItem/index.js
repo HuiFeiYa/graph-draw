@@ -86,38 +86,99 @@ export const Common = [
     get disabled() {
       return false;
     },
-    icon: 'statics/icons/table/toolbarfresh.svg',
+    icon: 'statics/header/toolbarfresh.svg',
   }
 ]
 
-function concatChildren(...args) {
-    const res = [];
-    args.forEach(arg => {
-      arg.forEach(children => {
-        // 获取快捷键（不监听，只进行tips的显示）
-        res.push(children);
-      });
-      // 添加竖直分割线,用type
-      res.push({
-        value: "splitLine",
-        icon: "",
-        label: "",
-        type: "splitLine"
-      });
-    });
-    res.pop();
-    return res;
+// 项目特有的菜单
+const File = [
+  {
+    label: "关闭",
+    value: "closeProject",
+    icon: "statics/header/topiconclose.svg",
+    // type: 'dropdown-arrow',
+    get disabled() {
+      return false;
+    }
+  },
+  {
+    label: "导出",
+    value: "export",
+    get disabled() {
+      return false;
+
+    },
+    icon: "statics/header/topiconexport.svg",
+    // type: "dropdown",
   }
+]
+
+/**
+ * 帮助
+ */
+export const Help = [
+  {
+    label: "使用手册",
+    value: "openDocument",
+    icon: "statics/header/topiconqa.svg",
+    get path() {
+      return false;
+    }
+  },
+  {
+    label: "关于",
+    value: "about",
+    get disabled() {
+      return false;
+    },
+    get showTip() {
+      return false;
+    },
+    icon: "statics/header/topiconabout.svg"
+  }
+]
 export const headerMenus = [
     {
-      cnName: "project",
+      cnName: "项目",
       enName: "Project",
       get disabled() {
-        return !app.isAppActive;
+        return false;
       },
       get hide() {
         return false;
       },
-      children: concatChildren(Common, [])
+      children: concatChildren(Common, File)
+    },
+    {
+      cnName: "帮助",
+      enName: "Help",
+      children: concatChildren(Common, Help),
+      get disabled() {
+        return false;
+      },
+      get hide() {
+        return false;
+      },
     }
 ]
+
+
+
+function concatChildren(...args) {
+  const res = [];
+  args.forEach(arg => {
+    arg.forEach(children => {
+      // 获取快捷键（不监听，只进行tips的显示）
+      res.push(children);
+    });
+    // 添加竖直分割线,用type
+    res.push({
+      value: "splitLine",
+      icon: "",
+      label: "",
+      type: "splitLine"
+    });
+  });
+  res.pop();
+  return res;
+}

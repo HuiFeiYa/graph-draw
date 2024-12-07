@@ -33,6 +33,11 @@ const activeHeaderMenu = computed(() => {
   return headerMenus.find(it => it.enName === activeTab.value);
 });
 console.log('activeHeaderMenu:', activeHeaderMenu)
+
+function onClickHeader(headerMenu) {
+  if (headerMenu.disabled) return;
+  activeTab.value = headerMenu.enName;
+}
 </script>
 <style lang="scss">
 @use '@/assets/css/theme' as *;
