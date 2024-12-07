@@ -1,13 +1,15 @@
 <template>
     <div class="v-layout">
+        <m-window-bar />
+        <m-header  class="v-layout-header"/>
         <div class="_layout-content" @dragover.stop.prevent >
-            <m-header  class="v-layout-header"/>
             <router-view />
         </div>
     </div>
 </template>
 <script setup>
 import MHeader from './Header.vue'
+import MWindowBar from './WindowBar.vue';
 </script>
 <style lang="scss">
 .v-layout {

@@ -1,4 +1,5 @@
-@use './theme';
-@use './color';
-@use './reset';
-@use './global';
+// 如果你希望暴露所有变量而不使用模块名前缀，可以在 @use 时使用 as * 来暴露所有内容：
+@use './theme' as *;
+@use './color' as *;
+@use './reset' as *;
+@use './global' as *;
