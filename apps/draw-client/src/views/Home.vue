@@ -1,10 +1,10 @@
 <template>
     <div>
-      <h1>首页</h1>
+      <Siderbar  />
       
     </div>
   </template>
   
-  <script>
-
+  <script setup>
+  import Siderbar from '../editor/components/SiderBar.vue'
   </script>

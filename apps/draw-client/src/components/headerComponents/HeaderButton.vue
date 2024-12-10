@@ -36,7 +36,6 @@ const props = defineProps<{
 const isSelected = computed(()=> {
   return props.selectButtonValue === props.data.value;
 })
-console.log('isSelected', isSelected)
 </script>
 <style lang="scss" scoped>
 .v-header-btn {
