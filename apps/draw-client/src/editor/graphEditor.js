@@ -1,9 +1,8 @@
 import { reactive } from "vue";
-import { GraphModel } from "../graph/models/graphModel";
 import { GraphOption } from "./graphOption";
 import { SiderBarDropModel } from "./SiderBarDropModel";
 const graphOption = new GraphOption()
-export const graph = reactive(new GraphModel(graphOption));
+export const graph = reactive({});
 export class GraphEditor {
   graphOption;
 
@@ -13,11 +12,11 @@ export class GraphEditor {
   siderBarDropModel
   constructor(tab) {
     this.graph = graph;
-    graph.init();
+    // graph.init();
     this.init()
   }
   init() {
-    this.tab.siderBarDropModel = reactive(new SiderBarDropModel(this.graph)) ;
+    // this.tab.siderBarDropModel = reactive(new SiderBarDropModel(this.graph)) ;
   }
   addShapes(shapeList) {
     shapeList.forEach(shape => {

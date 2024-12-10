@@ -1,9 +1,4 @@
-import { GraphModel } from "../graph/models/graphModel"
-import { addShapesService } from "../graph/service"
-import { SiderBarDropRunner } from "../graph/shape/behavior/SiderBarDropRunner"
-import { EventType, MetaclassType, SiderbarItemKey } from "../graph/shape/constant"
-import { Shape } from "../graph/types"
-import { Point } from "../graph/util/Point"
+// import { Point } from "../graph/util/Point"
 const StartMoveSource = {
   SiderBar : 'SiderBar', // SiderBar 拖拽移动
   Shape : 'Shape', // 图形移动
@@ -14,10 +9,9 @@ export class SiderBarDropModel {
   /** 是否在画布中 */
   isPointInDiagram = false
 
-  iconPosition = new Point()
+  // iconPosition = new Point()
   visible = false
   siderbarItem
-  dropRunner = new SiderBarDropRunner()
   clearEvents
   constructor(graph,tab) {
     this.graph = graph;
@@ -79,7 +73,7 @@ export class SiderBarDropModel {
     // 获取对应的behavior，创建对应的shape
     await this.dropRunner.run(sidebarKey, { point, parentId: this.graph.rootShape.id })
     const { createdShapes, affectedShapes } = this.dropRunner
-    addShapesService(createdShapes, affectedShapes)
+    // addShapesService(createdShapes, affectedShapes)
     // 默认选中创建的元素
     this.graph.moveModel.startMove(evt, StartMoveSource.SiderBar, createdShapes[0])
   }

@@ -37,7 +37,7 @@ const onDragstart = (event) => {
   padding: 0 10px;
   flex-shrink: 0;
   box-sizing: border-box;
-  height: 100vh;
+  height: 100%;
 }
 
 .collapse {
