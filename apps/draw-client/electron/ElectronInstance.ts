@@ -1,6 +1,7 @@
 const { globalShortcut, BrowserWindow } = require("electron");
-const { AppInstance } = require("./AppInstance.js");
+const { AppInstance } = require("./AppInstance");
 class ElectronInstance {
+  appInstance: any
   start() {
     this.initShortcut();
     this.bindListener();

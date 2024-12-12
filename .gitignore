@@ -1,3 +1,4 @@
 node_modules/
 dist/
 apps/draw-client/dist-electron/
+dist-a

@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron');
-const {electronInstance} = require("./ElectronInstance.js");
+const {electronInstance} = require("./ElectronInstance");
 
 app.whenReady().then(() => {
   electronInstance.start();
@@ -9,7 +9,7 @@ app.whenReady().then(() => {
       electronInstance.start();
     }
   });
-}).catch((error) => {
+}).catch((error:any) => {
   console.error('Failed to initialize app:', error);
 });;
 
@@ -18,3 +18,4 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+export {}

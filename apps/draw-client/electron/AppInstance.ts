@@ -106,3 +106,4 @@ class AppInstance {
 module.exports = {
   AppInstance,
 };
+export {}

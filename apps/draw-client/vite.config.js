@@ -8,10 +8,10 @@ export default defineConfig({
     vue(),
     electron({
       main: {
-        entry: './electron/main.js',
+        entry: './dist-a/main.js',
       },
       preload: {
-        input: './electron/preload/index.js',
+        input: './dist-a/preload/index.js',
         outDir: '.',
         esbuildPluginOptions: {
           target: 'es2020',
