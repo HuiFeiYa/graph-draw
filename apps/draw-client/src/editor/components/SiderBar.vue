@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { SideBarWidth, siderBarList } from '@/constants/config.js';
+import { SideBarWidth, siderBarList } from '@/constants/config';
 const props = defineProps();
 const active = ref("common");
 

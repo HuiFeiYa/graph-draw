@@ -3,7 +3,7 @@ import { onMounted } from 'vue'
 import { add } from '@hfdraw/utils'
 import { GraphView } from '@hfdraw/graph'
 import { modelService } from '@/util/ModelService'
-import { generateRandomNumber } from '@/util/common.js'
+import { generateRandomNumber } from '@/util/common'
 
 const res = add(1, 2)
 console.log('res:', res)

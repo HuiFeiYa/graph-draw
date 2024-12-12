@@ -30,9 +30,6 @@ export const Common = [
     },
     icon: "statics/header/savaAs.svg",
     get hide() {
-      if (app.activeProject?.config.online) {
-        return true;
-      }
       return false;
     }
   },
@@ -201,7 +198,7 @@ export const headerMenus = [
 
 
 function concatChildren(...args) {
-  const res = [];
+  const res:Object[] = [];
   args.forEach(arg => {
     arg.forEach(children => {
       // 获取快捷键（不监听，只进行tips的显示）

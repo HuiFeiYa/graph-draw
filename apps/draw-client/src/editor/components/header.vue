@@ -1,6 +1,6 @@
 <script setup >
 import { computed, ref } from "vue";
-import { HeaderHeight } from "@/constants/config.js";
+import { HeaderHeight } from "@/constants/config";
 const props = defineProps();
 const currentStep = ref('');
 const selectedShapes = computed(() => {

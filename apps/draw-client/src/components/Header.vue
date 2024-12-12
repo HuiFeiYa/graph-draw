@@ -24,7 +24,7 @@
 </template>
 <script setup>
 import { ref, computed } from 'vue';
-import { headerMenus } from './menuItem/index.js'
+import { headerMenus } from './menuItem/index'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 import MHeaderButton from './headerComponents/HeaderButton.vue';
 let activeTab = ref('Project');

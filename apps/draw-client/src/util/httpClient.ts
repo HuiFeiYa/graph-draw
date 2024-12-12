@@ -24,10 +24,10 @@ export class HttpClient {
   constructor() {
     setupAxios(httpConfig, this.axios);
   }
-  post(url, data, config) {
+  post(url, data?:Object, config?:Object) {
     return this.axios.post(url, data, config);
   }
-  get(url, params, config) {
+  get(url, params?:Object, config?:Object) {
     return this.axios.get(url, { params, ...config });
   }
 }

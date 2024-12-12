@@ -1,5 +1,5 @@
-import { httpClient } from './httpClient.js'
-import { API } from '../constants/api.js'
+import { httpClient } from './httpClient'
+import { API } from '../constants/api'
 export class ModelService {
     async getApplicationProject() {
         const res = await httpClient.get(API.get_application_project)
