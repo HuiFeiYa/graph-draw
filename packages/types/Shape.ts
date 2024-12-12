@@ -62,3 +62,20 @@ export interface Shape {
     // direction:Direction
   
   }
+
+  export interface EdgeShape extends Shape {
+    sourceId: string;
+    targetId: string;
+    waypoint: IPoint[];
+  
+    // closestParentId: string; // 最近的父图形， 两端的图形的最近的同一个父元素
+    // sourceArrowType: string;
+    // targetArrowType: string;
+  
+    svgPath:string;
+    // sourcePoint: IPoint// 起点坐标，是图形的边界上的点
+    // targetPoint: IPoint // 终点坐标 ，是图形的边界上的点
+  
+    style: StyleObject;
+  
+  }

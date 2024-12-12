@@ -1,4 +1,8 @@
 export interface StyleObject {
-    fontWeight?: number,
+    fontWeight?: number
     fontSize?: number
+    strokeColor?: string
+    strokeWidth?: number
+    borderRadius?: number;
+    strokeDasharray?: string
 }
