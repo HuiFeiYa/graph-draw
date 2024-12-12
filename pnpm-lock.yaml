@@ -64,9 +64,6 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(vue@3.5.13(typescript@5.7.2))
     devDependencies:
-      '@types/node':
-        specifier: ^22.10.2
-        version: 22.10.2
       '@vitejs/plugin-vue':
         specifier: ^5.2.1
         version: 5.2.1(vite@6.0.1(@types/node@22.10.2)(sass@1.82.0))(vue@3.5.13(typescript@5.7.2))
@@ -88,9 +85,6 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.10.2)(typescript@5.7.2)
-      typescript:
-        specifier: ^5.7.2
-        version: 5.7.2
       vite:
         specifier: ^6.0.1
         version: 6.0.1(@types/node@22.10.2)(sass@1.82.0)
@@ -98,7 +92,13 @@ importers:
         specifier: ^0.29.0
         version: 0.29.0
 
-  packages/graph: {}
+  packages/graph:
+    dependencies:
+      '@hfdraw/types':
+        specifier: workspace:^
+        version: link:../types
+
+  packages/types: {}
 
   packages/utils: {}
 

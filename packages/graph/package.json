@@ -1,8 +1,11 @@
 {
   "name": "@hfdraw/graph",
   "version": "1.0.0",
-  "main": "src/main.js",
+  "main": "src/main.ts",
   "exports": {
-    ".": "./src/main.js"
+    ".": "./src/main.ts"
+  },
+  "dependencies": {
+    "@hfdraw/types": "workspace:^"
   }
 }

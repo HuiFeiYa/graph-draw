@@ -1,11 +1,11 @@
 <script setup>
 import { provide, computed, onMounted, ref, onUnmounted } from "vue";
 import DiagramShape from "./DiagramShape.vue";
-import { shapeComps } from "./shape/index.js";
+import { shapeComps } from "./shape/index";
 import {
   ShapeType, EventType,
   showQuickCreateList,
-} from './constants.js'
+} from '@hfdraw/types'
 import { resizeUtil } from "./util/resizeUtil";
 const props = defineProps();
 provide("graph", props.graph);
@@ -82,7 +82,6 @@ function handleMouseupOut() {
   );
 }
 function handleMousemove(event) {
-  props.graph.emitter.emit(EventType.SHAPE_MOUSE_MOVE, event, undefined);
 }
 function handleDragOver() { }
 

@@ -1,0 +1,27 @@
+export enum ShapeType {
+    Symbol = "Symbol", // 图形外框
+    Port = "Port", // 端口
+    Edge = "Edge", // 连线
+    Diagram = "Diagram", // 画布
+    EdgeLabel = "EdgeLabel", // 线上的label
+  }
+
+  export enum SubShapeType {
+    TextBox = "TextBox",
+    Block = "Block", // 模块结构的类型,
+    CommonDiagram = "CommonDiagram",
+    Package = "Package",
+    Comment = "Comment",
+    CommonPort = "CommonPort",
+    CommonEdge = "CommonEdge",
+    Note = "Note",
+    Image = "Image",
+    UseCase = 'UseCase',
+    Decide = 'Decide'
+  }
+  /**
+ * shapeKey是最细的标识，用于标识各个图形，用于业务逻辑中的图形逻辑判断，基本每个模型都会对应一到多个
+ */
+export enum ShapeKey {
+    Block = "Block",
+}
