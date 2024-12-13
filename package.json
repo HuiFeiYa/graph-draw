@@ -6,7 +6,7 @@
   "workspaces": [
     "packages/*",
     "services",
-    "apps"
+    "apps/*"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,6 +26,8 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "axios": "^1.7.9"
+    "axios": "^1.7.9",
+    "lodash": "^4.17.21",
+    "services": "^0.0.3"
   }
 }

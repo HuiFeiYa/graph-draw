@@ -1,3 +1,4 @@
+import { SiderbarItemKey } from '@hfdraw/types'
 export const HeaderHeight = 38;
 export const SideBarWidth = 200;
 export const EdgeMoveType = {
@@ -42,13 +43,7 @@ export const CreatePointType = {
   Left: 4,
 };
 
-export const SiderbarItemKey = {
-  Block: "Block",
-  ItemFlow: "ItemFlow",
-  FlowDiagram: "FlowDiagram",
-  Start: "Start",
-  Decide: "Decide",
-};
+
 
 export const MetaclassType = {
   Class: "Class",

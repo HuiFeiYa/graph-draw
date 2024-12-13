@@ -6,7 +6,9 @@ const dayjs = require("dayjs");
 const isDevelopment = process.env.NODE_ENV === 'development'
 class AppInstance {
   async start() {
-    await this.startNodeServer();
+    if (!isDevelopment) {
+      await this.startNodeServer();
+    }
     await this.createMainWindow();
   }
   async createMainWindow() {

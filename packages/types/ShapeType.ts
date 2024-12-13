@@ -24,4 +24,5 @@ export enum ShapeType {
  */
 export enum ShapeKey {
     Block = "Block",
+    Diagram = "Diagram",
 }

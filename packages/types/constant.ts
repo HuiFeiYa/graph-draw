@@ -54,6 +54,7 @@ export enum MetaclassType {
   Class = "Class",
   ItemFlow = "ItemFlow",
   FlowDiagram = "FlowDiagram",
+  Diagram = "Diagram"
 }
 
 export enum StType {

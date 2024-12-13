@@ -76,7 +76,7 @@ function copyDirectory(src, dest) {
 // 主函数
 async function main() {
   try {
-    await clearTargetDirectory(targetDir);
+    // await clearTargetDirectory(targetDir);
     await copyDirectory(sourceDir, targetDir);
     await copyDirectory(packageJSONPath, targetDir)
     await copyDirectory(yarnLockPath, targetDir)

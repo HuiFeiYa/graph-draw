@@ -60,6 +60,7 @@
   "dependencies": {
     "@hfdraw/graph": "workspace:^",
     "@hfdraw/utils": "workspace:^",
+    "@hfdraw/types": "workspace:^",
     "dayjs": "^1.11.13",
     "element-plus": "^2.9.0",
     "sass": "^1.82.0",

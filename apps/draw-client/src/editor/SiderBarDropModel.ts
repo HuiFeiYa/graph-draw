@@ -14,8 +14,7 @@ export class SiderBarDropModel {
   siderbarItem
   clearEvents
   constructor(graph,tab) {
-    this.graph = graph;
-    this.tab = tab;
+   
    }
   clear() {
     this.siderbarItem = undefined;

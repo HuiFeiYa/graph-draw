@@ -5,4 +5,5 @@ export interface StyleObject {
     strokeWidth?: number
     borderRadius?: number;
     strokeDasharray?: string
+    background?: string
 }
