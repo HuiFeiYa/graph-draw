@@ -1,6 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import {
-  Bounds,
+import type {
   ShapeKey,
   ShapeType,
   StyleObject,
@@ -13,6 +12,7 @@ import { ResException } from 'src/utils/http/ResException';
 import { ApiCode } from 'src/utils/http/ApiCode';
 import { getUid } from 'src/utils/common';
 import { cloneDeep } from 'lodash';
+import { Bounds } from 'src/types/Bounds';
 @Entity({
   name: 'shape',
 })

@@ -1,4 +1,4 @@
-import { Bounds, StyleObject } from "@hfdraw/types";
+import { Bounds } from "src/types/Bounds";
 
 export class BoundsTransformer {
     from(nums:number[]):Bounds {
