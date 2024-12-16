@@ -1,4 +1,4 @@
-import { Bounds, IBounds, IPoint } from "./Bounds";
+import {  IBounds, IPoint } from "./Bounds";
 import { ShapeKey, ShapeType, SubShapeType } from "./ShapeType";
 import { StyleObject } from "./Style";
 
@@ -8,7 +8,7 @@ export interface Shape {
     id_: number;
   
     parentId: string | null;
-    bounds: Bounds;
+    bounds: IBounds;
     keywords:string[]
   
     showKeywords:boolean

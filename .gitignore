@@ -2,3 +2,5 @@ node_modules/
 dist/
 apps/draw-client/dist-electron/
 dist-a
+*.d.ts
+*.d.ts.map

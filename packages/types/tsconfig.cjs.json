@@ -1,0 +1,18 @@
+{
+    // "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+      // "module": "CommonJS",
+      // "target": "ES2020",
+      "outDir": "dist/cjs",  // 指定输出目录
+      // "rootDir": "./",      // 指定源代码目录
+      // "declaration": true,   // 生成 .d.ts 文件
+      // "sourceMap": false,     // 生成 .map 文件
+      // "esModuleInterop": true,
+      // "skipLibCheck": true,
+      // "forceConsistentCasingInFileNames": true,
+      // "composite": true,      // 如果你使用复合项目，确保这个选项为 true
+      // "preserveConstEnums": false  // 保留 const enum 的行为
+
+    },
+    "include": ["./Shape.ts", "./ShapeType.ts", "./Bounds.ts", "./constant.ts", "./index.ts", "./Style.ts"] // 包含当前目录及其子目录下的所有文件
+  }
