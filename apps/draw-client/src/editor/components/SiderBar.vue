@@ -1,11 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { SideBarWidth, siderBarList } from '@/constants/config';
+import { shapeService } from "../../util/ShapeService";
+import { SideBarDropDto } from "../../types/shape.dto";
+import { SiderbarItemKey } from "@hfdraw/types";
 const props = defineProps();
 const active = ref("common");
 
-const onMousedown = (event, item) => {
-  props.tab.siderBarDropModel.onMouseDown(item);
+const onMousedown = async (event, item) => {
+  const params:SideBarDropDto = {
+    diagramId: '1',
+    point: {x: 100, y: 100},
+    projectId: 'p1',
+    sourceType: SiderbarItemKey.Block
+  }
+  const res = shapeService.sidebarDrop(params)
+  console.log('res，', res)
 };
 const onDragstart = (event) => {
   event.stopPropagation();

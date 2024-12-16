@@ -3,7 +3,8 @@ export const API = {
     create_application_project: 'mainProject',
     projectCreate: 'project/create',
     projectSave: 'project/save',
-    projectOpen: 'project/open'
+    projectOpen: 'project/open',
+    sidebarDrop: 'shape/sidebarDrop'
 }
 
 export const ApiCode =  {

@@ -4,7 +4,6 @@ import { shapeUtil } from "src/utils/shape/ShapeUtil";
 import { Model } from "src/entities/model.entity";
 import { ModelUtil } from "src/utils/ModelUtil";
 import { ShapeEntity } from "src/entities/shape.entity";
-import { SideBarDropDto } from "src/types/shape.dto";
 import { Point } from "src/utils/Point";
 import { SiderbarItemKey } from "@hfdraw/types";
 
