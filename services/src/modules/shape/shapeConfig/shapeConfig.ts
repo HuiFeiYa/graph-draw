@@ -11,4 +11,8 @@ export const modelKeyConfig: Record<string, ConfigItem> = {
           ...blockOption,
           shapeKey: ShapeKey.Block
       },
+      Block: {
+        ...blockOption,
+        shapeKey: ShapeKey.Block
+      }
 }

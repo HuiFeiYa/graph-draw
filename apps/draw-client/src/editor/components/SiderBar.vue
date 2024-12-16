@@ -14,7 +14,7 @@ const onMousedown = async (event, item) => {
     projectId: 'p1',
     sourceType: SiderbarItemKey.Block
   }
-  const res = shapeService.sidebarDrop(params)
+  const res = await shapeService.sidebarDrop(params)
   console.log('res，', res)
 };
 const onDragstart = (event) => {

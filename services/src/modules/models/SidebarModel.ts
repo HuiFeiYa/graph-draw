@@ -5,7 +5,7 @@ import { Model } from "src/entities/model.entity";
 import { ModelUtil } from "src/utils/ModelUtil";
 import { ShapeEntity } from "src/entities/shape.entity";
 import { Point } from "src/utils/Point";
-import { SiderbarItemKey } from "@hfdraw/types";
+import { SiderbarItemKey, StType } from "@hfdraw/types";
 
 export class SidebarModel {
     createdMainModel:Model
@@ -23,6 +23,7 @@ export class SidebarModel {
         this.diagramId = diagramId
         this.point = point
         this.sourceType = sourceType
+        this.modelKey = StType["SysML::Blocks::Block"]
     }
     async run() {
         // await this.createModel()
@@ -37,7 +38,7 @@ export class SidebarModel {
     async createShape() {
         const { projectId, diagramId, shapeParentId, modelKey } = this
         const shapeOption = shapeFactory.getModelShapeOption(modelKey);
-        const shape = ShapeEntity.fromOption(shapeOption, projectId, diagramId, shapeParentId);
+        const shape = ShapeEntity.fromOption(shapeOption, projectId, diagramId, shapeParentId||diagramId);
         shapeUtil.initShape(shape, this.point);
         this.createdShapes.add(shape);
     }
