@@ -1,5 +1,4 @@
 {
-    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
       "module": "ESNext",
       "target": "ES2020",
@@ -11,4 +10,5 @@
       "forceConsistentCasingInFileNames": true
     },
     "include": ["./**/*"] // 包含当前目录及其子目录下的所有文件
+    // "include": ["./Shape.ts", "./ShapeType.ts", "./Bounds.ts", "./constant.ts", "./index.ts", "./Style.ts"] // 包含当前目录及其子目录下的所有文件
   }

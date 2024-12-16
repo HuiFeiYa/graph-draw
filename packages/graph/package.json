@@ -1,6 +1,7 @@
 {
   "name": "@hfdraw/graph",
   "version": "1.0.0",
+  "type": "module",
   "main": "src/main.ts",
   "exports": {
     ".": "./src/main.ts"
