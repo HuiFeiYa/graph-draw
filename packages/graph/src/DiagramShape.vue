@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { GraphModel } from './models/GraphModel';
 import { shapeManager } from './shape/index'
+import { Graph } from './types/index';
 const props = defineProps<{
-  graph: GraphModel,
+  graph: Graph,
 }>();
 const edges = computed(() => {
   return props.graph.edges.filter(childShape => shapeManager[childShape.subShapeType]);

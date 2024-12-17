@@ -2,9 +2,9 @@
 import { provide, computed, onMounted, ref, onUnmounted } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
-import { GraphModel } from "./models/GraphModel";
+import { Graph } from "./types";
 const props = defineProps<{
-  graph: GraphModel,
+  graph: Graph,
 }>();
 provide("graph", props.graph);
 const viewDom = ref(null);

@@ -1,4 +1,3 @@
-import { DefineComponent } from 'vue';
 import { SubShapeType } from "@hfdraw/types";
 import SymbolShapeVue from "./SymbolShape.vue";
 

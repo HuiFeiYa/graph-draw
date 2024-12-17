@@ -117,3 +117,39 @@ export const siderBarList = [
     },
   },
 ];
+
+
+
+/**
+ * socket 连接状态
+ */
+export enum ConnectStatus {
+  /**
+   * 未连接
+   */
+  UNCONNECT = 0,
+  /**
+   * 已连接
+   */
+  CONNECTED = 1,
+  /**
+   * 正在重连
+   */
+  RECONNECTING = 2,
+  /**
+   * 连接已关闭
+   */
+  CLOSED = 3,
+
+  /**
+   * 连接异常
+   */
+  CONNECT_ERROR = 4
+}
+
+
+export enum BusEvent {
+  INSERT_SHAPE="INSERT_SHAPE", // 图形增加
+  DELETE_SHAPE="DELETE_SHAPE", // 图形删除
+  UPDATE_SHAPE="UPDATE_SHAPE", // 图形更新
+}
