@@ -1,5 +1,5 @@
-import { ChangeType, StepMessageData, StepType } from "@hfdraw/types";
-import { ConnectStatus } from "../constants/config";
+import { ChangeType,  Step,  StepType } from "@hfdraw/types";
+import { BusEvent, ConnectStatus } from "../constants/config";
 import { emitter } from "../util/Emitter";
 class SocketOption {
   /**
@@ -22,17 +22,17 @@ export class SocketService {
     connect:() => {
       this.sendJSON({ type: "subscribeProject", projectId: 'p1' });
     },
-    step(messageData:StepMessageData) {
-      const { projectId, step,  affectShapes, stepType } = messageData;
-      const isUndo = stepType === StepType.undo;
-      step.changes.forEach(change => {
+    step(messageData:{ type:'step', data: Step}) {
+      const { data: { changes } } = messageData;
+      const isUndo = false;
+      changes.forEach(change => {
         if (change.type === ChangeType.INSERT) {
           if (isUndo) {
             // this.doDeleteShape(shape);
 
           } else {
             // this.doInsertShape(shape);
-
+            emitter.emit(BusEvent.INSERT_SHAPE, change);
           }
         } else if (change.type === ChangeType.DELETE) {
 
