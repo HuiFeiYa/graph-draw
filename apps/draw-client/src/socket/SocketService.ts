@@ -1,4 +1,4 @@
-import { ChangeType, StepMessageData, StepType } from "@hfdraw/types/socket";
+import { ChangeType, StepMessageData, StepType } from "@hfdraw/types";
 import { ConnectStatus } from "../constants/config";
 import { emitter } from "../util/Emitter";
 class SocketOption {
@@ -9,7 +9,7 @@ class SocketOption {
   /**
    * socket连接uri ，如 ws://127.0.0.1:8080/websocket
    */
-  uri: string;
+  uri = '';
   //   msgHandler: { [p: string]: (res: any) => void };
 }
 export class SocketService {
@@ -76,11 +76,12 @@ export class SocketService {
 
   onMessage(e: MessageEvent) {
     const res = JSON.parse(e.data);
-    if (this.msgHandler[res.type]) {
-      this.msgHandler[res.type].call(this, res);
-    } else {
-      console.error("[消息格式错误] unKnow msg type:" + res.type, res);
-    }
+    console.log('res:',res)
+    // if (this.msgHandler[res.type]) {
+    //   this.msgHandler[res.type].call(this, res);
+    // } else {
+    //   console.error("[消息格式错误] unKnow msg type:" + res.type, res);
+    // }
   }
   onClose() {
     // 主动关闭，由于后端关闭都会触发此处的onClose
@@ -96,3 +97,12 @@ export class SocketService {
     this.ws?.send(JSON.stringify(obj));
   }
 }
+
+
+const socketOption: SocketOption = {
+  uri: 'ws://localhost:3005',
+  maxReconnectTime: 3,
+};
+
+const socketService = new SocketService(socketOption);
+socketService.start();

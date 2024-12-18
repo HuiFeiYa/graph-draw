@@ -4,6 +4,7 @@ import { MainDataSource } from './database/main-datasource';
 import { MainModule } from './modules/main/main.module';
 import { ProjectModule } from './modules/project/project.module';
 import { ShapeModule } from './modules/shape/shape.module';
+import { WsService } from './modules/socket/WsService';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ShapeModule } from './modules/shape/shape.module';
     MainModule, // 导入主模块
     ProjectModule,
     ShapeModule
-  ]
+  ],
+  providers: [WsService]
 })
 export class AppModule {}

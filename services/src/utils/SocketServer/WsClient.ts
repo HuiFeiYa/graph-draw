@@ -1,5 +1,4 @@
-import { Server } from 'ws';
-import { WsService } from './WsService';
+import { WsService } from 'src/modules/socket/WsService';
 const messageCallbacks = {}
 export class WsClient {
     clientId: string
@@ -38,3 +37,5 @@ export class WsClient {
     
       }
 }
+
+
