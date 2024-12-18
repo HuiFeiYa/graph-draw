@@ -4,12 +4,16 @@ import { SidebarModel } from "../models/SidebarModel";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ShapeEntity } from "src/entities/shape.entity";
 import { Repository } from "typeorm";
+import { WsService } from "../socket/WsService";
+import { WsMessageType } from "src/types/common";
+import { ChangeType, StepType } from "@hfdraw/types";
 
 @Injectable()
 export class ShapeService {
     constructor(
         @InjectRepository(ShapeEntity)
-        private shapeRepository: Repository<ShapeEntity>
+        private shapeRepository: Repository<ShapeEntity>,
+        private readonly wsService: WsService, // 注入 WsService
     ) {}
     async sideBarItemDrop(dto: SideBarDropDto) {
         const options: SideBarDropDto = {
@@ -21,6 +25,19 @@ export class ShapeService {
         }
         const sideBar = new SidebarModel(options);
         await sideBar.run();
-        await this.shapeRepository.save([...sideBar.createdShapes])
+        const res = await this.shapeRepository.save([...sideBar.createdShapes])
+        this.wsService.sendToSubscribedClient(dto.projectId, {
+            type: WsMessageType.step,
+            data: {
+                projectId: dto.projectId,
+                changes: res.map(item => {
+                    return {
+                        type: ChangeType.INSERT,
+                        newValue: JSON.stringify(item),
+                        projectId: dto.projectId
+                    }
+                })
+            }
+        })
     }
 }

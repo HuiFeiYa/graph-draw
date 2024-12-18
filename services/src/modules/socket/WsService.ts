@@ -2,6 +2,8 @@ import { Server } from 'ws';
 import { Injectable, OnModuleInit, OnApplicationShutdown } from '@nestjs/common';
 import { IncomingMessage } from 'node:http';
 import { WsClient } from 'src/utils/SocketServer/WsClient';
+import { WsMessageType } from 'src/types/common';
+import { Step, StepMessageData } from '@hfdraw/types';
 const port = 3005;
 @Injectable()
 export class WsService implements OnModuleInit, OnApplicationShutdown {
@@ -39,5 +41,22 @@ export class WsService implements OnModuleInit, OnApplicationShutdown {
 
   addClient(wsC: WsClient) {
     this.clients.push(wsC);
+  }
+  sendToSubscribedClient(projectId: string, data: {
+    type: WsMessageType
+    data: Step
+  }) {
+    const str = JSON.stringify(data);
+    for (let client of this.clients) {
+      if (client.subscribeProjectIds.has(projectId)) { // 向有过订阅的socket推送变化
+        try {
+          client.sendStr(str);
+
+        } catch (err: any) {
+          console.error(err);
+
+        }
+      }
+    }
   }
 }

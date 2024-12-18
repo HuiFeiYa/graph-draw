@@ -25,16 +25,16 @@ export enum StepType {
   
     newValue?: string; // 更新后的key-value对象的 json串，只记录变更的字段即可，redo的时候会用这个keyValue去update对应的table
   
-    step: Step
+    // step: Step
   
-    stepId: string
+    // stepId: string
   
     projectId: string
   }
 
   export type Step = {
 
-    id_: string;
+    // id_: string;
   
     projectId: string; // 项目id
   
@@ -49,7 +49,7 @@ export type StepMessageData = {
     step: Step,
     stepType: StepType
     affectShapes: ShapeData[]
-    extraUpdateModelIds: string[]
+    // extraUpdateModelIds: string[]
     // stepStatus?: StepStatus
   }
 
@@ -61,3 +61,5 @@ export type StepMessageData = {
     subShapeType: string
     projectId: string
   }
+
+  

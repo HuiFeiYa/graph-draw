@@ -1,7 +1,12 @@
 import { WsService } from 'src/modules/socket/WsService';
-const messageCallbacks = {}
+const messageCallbacks = {
+  subscribeProject(client:WsClient, data:{projectId:string, projectIds:string[]}) {
+    if (data.projectId) client.subscribeProjectIds.add(data.projectId);
+  }
+}
 export class WsClient {
     clientId: string
+    subscribeProjectIds: Set<string> = new Set()
     constructor(public websocket: WebSocket, public socketService: WsService, public searchParams: URLSearchParams) {
         // 监听来自客户端的消息
         this.websocket.addEventListener('message', this.onMessage.bind(this));
@@ -34,6 +39,9 @@ export class WsClient {
       onError(e: Event) {
         console.log('websocket error');
         this.socketService.removeClient(this);
+      }
+      sendStr(str: string) {
+        this.websocket.send(str);
     
       }
 }

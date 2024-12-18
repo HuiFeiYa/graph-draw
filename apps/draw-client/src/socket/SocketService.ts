@@ -18,9 +18,9 @@ export class SocketService {
   status: ConnectStatus = ConnectStatus.UNCONNECT;
   uri: string;
   maxReconnectTime = 3;
-  msgHandler = {
-    connect() {
-      this.sendJSON({ type: "subcribeProject", projectIds: 1 });
+  msgHandler: {[key:string]:Function} = {
+    connect:() => {
+      this.sendJSON({ type: "subscribeProject", projectId: 'p1' });
     },
     step(messageData:StepMessageData) {
       const { projectId, step,  affectShapes, stepType } = messageData;
@@ -74,14 +74,15 @@ export class SocketService {
     this.reconnectTime = 0;
   }
 
-  onMessage(e: MessageEvent) {
-    const res = JSON.parse(e.data);
+  onMessage(e: MessageEvent<string>) {
+    const res = JSON.parse(e.data) as { type: string; data: StepMessageData};
     console.log('res:',res)
-    // if (this.msgHandler[res.type]) {
-    //   this.msgHandler[res.type].call(this, res);
-    // } else {
-    //   console.error("[消息格式错误] unKnow msg type:" + res.type, res);
-    // }
+    res.type
+    if (this.msgHandler[res.type]) {
+      this.msgHandler[res.type](res);
+    } else {
+      console.error("[消息格式错误] unKnow msg type:" + res.type, res);
+    }
   }
   onClose() {
     // 主动关闭，由于后端关闭都会触发此处的onClose

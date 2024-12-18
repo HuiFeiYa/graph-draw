@@ -3,10 +3,12 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ShapeEntity } from "src/entities/shape.entity";
 import { ShapeService } from "./shape.services";
 import { ShapeController } from "./shape.controller";
+import { WsModule } from "../socket/ws.Module";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([ShapeEntity])
+        TypeOrmModule.forFeature([ShapeEntity]),
+        WsModule
     ],
     controllers: [ShapeController],
     providers: [ShapeService]
