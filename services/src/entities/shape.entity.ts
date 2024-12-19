@@ -121,6 +121,8 @@ export class ShapeEntity {
     comment: '代表的模型名称',
   })
   modelName: string;
+
+  boundsChanged:boolean
   static fromOption(
     shapeOption: Partial<ShapeOption>,
     projectId: string,

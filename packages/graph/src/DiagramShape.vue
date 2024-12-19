@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { shapeCompManager } from './shape/index'
-import { Graph } from './types/index';
-const props = defineProps<{
-  graph: Graph,
-}>();
+import { GraphProps } from './types';
+const props = defineProps<GraphProps>();
 const edges = computed(() => {
-  return props.graph.edges.filter(childShape => shapeCompManager.get(childShape.subShapeType));
+  return props.edges.filter(childShape => shapeCompManager.get(childShape.subShapeType));
 })
 const symbols = computed(() => {
-  return props.graph.symbols.filter(childShape => shapeCompManager.get(childShape.subShapeType));
+  return props.symbols.filter(childShape => shapeCompManager.get(childShape.subShapeType));
 })
 </script>
 <template>

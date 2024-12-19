@@ -1,4 +1,4 @@
-import { Bounds, IPoint } from "@hfdraw/types"
+import {  Bounds, IPoint } from "@hfdraw/types"
 import { Point } from "../util/Point"
 
 /**

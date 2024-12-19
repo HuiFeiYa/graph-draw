@@ -2,10 +2,8 @@
 import { provide, computed, onMounted, ref, onUnmounted } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
-import { Graph } from "./types";
-const props = defineProps<{
-  graph: Graph,
-}>();
+import { GraphProps } from "./types";
+const props = defineProps<GraphProps>();
 provide("graph", props.graph);
 const viewDom = ref(null);
 
@@ -41,7 +39,7 @@ onUnmounted(() => {
       @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <Grid/>
-      <DiagramShape :graph="graph"/>
+      <DiagramShape v-bind="props"/>
     </svg>
   </div>
 </template>

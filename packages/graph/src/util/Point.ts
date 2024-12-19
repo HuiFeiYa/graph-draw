@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { int } from "./common";
 
 export class Point {
@@ -9,7 +10,9 @@ export class Point {
       this.y = int(this.y);
       return this;
     }
-  
+    clone() {
+      return cloneDeep(this);
+    }
     translate(dx: number, dy: number) {
       this.x += dx;
       this.y += dy;
