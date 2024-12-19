@@ -1,4 +1,4 @@
-import { ChangeType,  Step,  StepType } from "@hfdraw/types";
+import { ChangeType,  Step,  StepMessageData } from "@hfdraw/types";
 import { BusEvent, ConnectStatus } from "../constants/config";
 import { emitter } from "../util/Emitter";
 class SocketOption {

@@ -4,7 +4,7 @@ import { MainDataSource } from './database/main-datasource';
 import { MainModule } from './modules/main/main.module';
 import { ProjectModule } from './modules/project/project.module';
 import { ShapeModule } from './modules/shape/shape.module';
-import { WsModule } from './modules/socket/ws.Module';
+import { WsModule } from './modules/socket/wsModule';
 
 @Module({
   imports: [

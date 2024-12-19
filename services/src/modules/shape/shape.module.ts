@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ShapeEntity } from "src/entities/shape.entity";
 import { ShapeService } from "./shape.services";
 import { ShapeController } from "./shape.controller";
-import { WsModule } from "../socket/ws.Module";
+import { WsModule } from "../socket/wsModule";
 
 @Module({
     imports: [
