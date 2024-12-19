@@ -1,14 +1,17 @@
 {
-    "compilerOptions": {
-      "module": "ESNext",
-      "target": "ES2020",
-      "outDir": "dist/esm",
-      "moduleResolution": "node",  // 修改为 "node"
-      "resolveJsonModule": true,   // 允许解析 JSON 模块
-      "esModuleInterop": true,     // 允许 CommonJS 和 ES 模块互操作
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true
-    },
-    "include": ["./**/*"] // 包含当前目录及其子目录下的所有文件
-    // "include": ["./Shape.ts", "./ShapeType.ts", "./Bounds.ts", "./constant.ts", "./index.ts", "./Style.ts"] // 包含当前目录及其子目录下的所有文件
-  }
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2020",
+    "outDir": "dist/esm",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,           // 生成 .d.ts 文件
+    "declarationMap": true,        // 生成 .d.ts.map 文件
+    "sourceMap": true,             // 生成 .js.map 文件
+    "emitDeclarationOnly": false   // 不仅生成 .d.ts 文件，还生成 .js 文件
+  },
+  "include": ["./**/*"]
+}
