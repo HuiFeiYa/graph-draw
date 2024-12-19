@@ -2,6 +2,7 @@ import { SubShapeType } from "@hfdraw/types";
 import SymbolShapeVue from "./SymbolShape.vue";
 import { markRaw } from "vue";
 import { shapeCompManager } from "./ShapeManager";
+export * from './ShapeManager';
 
 export const shapeComps: { key: SubShapeType; comp: any }[] = [
   {
@@ -17,5 +18,3 @@ shapeComps.forEach(it => {
 
 
 shapeCompManager.addShapes(shapeComps);
-
-export * from './ShapeManager';

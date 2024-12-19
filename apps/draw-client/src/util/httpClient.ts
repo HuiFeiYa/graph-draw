@@ -6,12 +6,12 @@ const httpConfig = {
   postHeaders: {},
   getHeaders: {},
   requestInterceptors: [
-    function setTip(config) {
+    function setTip(config: any) {
       return config;
     },
   ],
   responseInterceptors: [
-    function tip(response) {
+    function tip(response: any) {
       return response;
     },
   ],
@@ -24,10 +24,10 @@ export class HttpClient {
   constructor() {
     setupAxios(httpConfig, this.axios);
   }
-  post(url, data?:Object, config?:Object) {
+  post<T>(url:string, data?:Object, config?:Object): Promise<T> {
     return this.axios.post(url, data, config);
   }
-  get(url, params?:Object, config?:Object) {
+  get<T>(url:string, params?:Object, config?:Object): Promise<T> {
     return this.axios.get(url, { params, ...config });
   }
 }
@@ -39,8 +39,8 @@ export const setupAxios = (
     getHeaders,
     requestInterceptors,
     responseInterceptors,
-  },
-  axiosInstance
+  }:any,
+  axiosInstance:any
 ) => {
   axiosInstance.defaults.baseURL = baseURL;
   commonHeaders &&
@@ -59,13 +59,13 @@ export const setupAxios = (
       ...getHeaders,
     });
   requestInterceptors.reverse();
-  requestInterceptors.forEach((interceptor) => {
-    axiosInstance.interceptors.request.use(interceptor, (err) => {
+  requestInterceptors.forEach((interceptor: any) => {
+    axiosInstance.interceptors.request.use(interceptor, (err: any) => {
       throw err;
     });
   });
-  responseInterceptors.forEach((interceptor) => {
-    axiosInstance.interceptors.response.use(interceptor, (err) => {
+  responseInterceptors.forEach((interceptor: any) => {
+    axiosInstance.interceptors.response.use(interceptor, (err: any) => {
       throw err;
     });
   });

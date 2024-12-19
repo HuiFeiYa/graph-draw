@@ -16,7 +16,7 @@
       :height="shape.bounds.height "
       :stroke="style.strokeColor"
       :stroke-width="style.strokeWidth"
-      style="fill:none;pointer-events:none"
+      style="fill:white;pointer-events:none"
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
       :stroke-dasharray="style.strokeDasharray || ''"

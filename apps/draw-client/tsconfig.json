@@ -9,8 +9,9 @@
         "strictNullChecks": true,                // 启用严格的 null 检查
         "strictFunctionTypes": true,             // 严格检查函数参数类型
         "strictPropertyInitialization": true,   // 类的属性必须初始化
-        "noImplicitThis": true,                  // 当值为 'any' 时，'this' 隐含任何类型
-        "alwaysStrict": true    
+        "noImplicitThis": false,                  // 当值为 'any' 时，'this' 隐含任何类型
+        "alwaysStrict": false,    
+        "noImplicitAny": false,  // 允许隐式的 any 类型
     },
     "include": [
         "electron/**/*"

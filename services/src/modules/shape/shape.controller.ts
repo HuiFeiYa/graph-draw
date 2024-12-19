@@ -1,7 +1,7 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { ShapeService } from "./shape.services";
 import { ResData } from "src/utils/http/ResData";
-import { SideBarDropDto } from "src/types/shape.dto";
+import { FetchAllShapeDto, SideBarDropDto } from "src/types/shape.dto";
 
 @Controller('shape')
 export class ShapeController {
@@ -10,5 +10,10 @@ export class ShapeController {
     async sidebarDrop(@Body() dto: SideBarDropDto) {
         const result = await this.shapeService.sideBarItemDrop(dto)
         return new ResData(result);
+    }
+    @Get('diagram/allShape') 
+    async getDiagramAllShape(@Query() dto: FetchAllShapeDto) {
+        const result = await this.shapeService.getDiagramAllShape(dto);
+        return new ResData(result)
     }
 }

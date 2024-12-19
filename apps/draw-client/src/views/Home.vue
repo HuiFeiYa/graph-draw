@@ -6,12 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { GraphView } from "@hfdraw/graph";
 import { Change, Shape } from "@hfdraw/types";
 import Siderbar from "../editor/components/SiderBar.vue";
 import { BusEvent } from "../constants/config";
 import { emitter } from "../util/Emitter";
+import { shapeService } from "../util/ShapeService";
 const graph = ref<{
   edges: Shape[],
   symbols: Shape[]
@@ -32,4 +33,11 @@ const events = {
 };
 // 监听事件
 emitter.onBatch(events)
+
+onMounted(()=> {
+  shapeService.getAllShapes('p1').then(data => {
+    console.log('data: ', data)
+    graph.value.symbols.push(...data)
+  })
+})
 </script>

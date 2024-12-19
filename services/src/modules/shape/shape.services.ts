@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { SideBarDropDto } from "src/types/shape.dto";
+import { FetchAllShapeDto, SideBarDropDto } from "src/types/shape.dto";
 import { SidebarModel } from "../models/SidebarModel";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ShapeEntity } from "src/entities/shape.entity";
 import { Repository } from "typeorm";
 import { WsService } from "../socket/WsService";
 import { WsMessageType } from "src/types/common";
-import { ChangeType, StepType } from "@hfdraw/types";
+import { ChangeType } from "@hfdraw/types";
 
 @Injectable()
 export class ShapeService {
@@ -39,5 +39,13 @@ export class ShapeService {
                 })
             }
         })
+    }
+    async getDiagramAllShape(dto: FetchAllShapeDto) {
+        const res = await this.shapeRepository.find({
+            where: {
+                projectId: dto.projectId
+            }
+        })
+        return res;
     }
 }
