@@ -33,7 +33,14 @@ const events = {
 
   },
   [BusEvent.DELETE_SHAPE]: (change: Change) => {},
-  [BusEvent.UPDATE_SHAPE]: async (change: Change) => {},
+  [BusEvent.UPDATE_SHAPE]: async (change: Change) => {
+    console.log('update:', change)
+    const shape = JSON.parse(change.newValue || '')
+    const i = graphData.symbols.findIndex(s => s.id = shape.id);
+    if (i !== -1) {
+      graphData.symbols.splice(i, 1, shape)
+    }
+  },
 };
 // 监听事件
 emitter.onBatch(events)

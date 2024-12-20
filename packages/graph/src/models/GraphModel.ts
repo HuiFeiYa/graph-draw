@@ -1,8 +1,10 @@
-import { EdgeShape, Shape } from "@hfdraw/types";
+import { EdgeShape, EventType, Shape } from "@hfdraw/types";
 import { ViewModel } from "./ViewModel";
 import { MoveModel } from "./MoveModel";
 import { SelectionModel } from "./SelectionModel";
 import { IGraphOption } from "../types";
+import { emitter } from "../util/Emitter";
+import { shallowReactive } from "vue";
 
 export class GraphModel {
   /**
@@ -42,5 +44,28 @@ export class GraphModel {
   constructor(opt:IGraphOption) {
     this.graphOption = opt;
     this.graphOption.graph = this;
+    this.init()
+  }
+  init() {
+      this.initEvents();
+  }
+  initEvents() {
+    // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.mouseStateModel.onMouseDown.bind(this.mouseStateModel));
+
+    // 开始监听移动事件
+    emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
+    // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.multipleSelectModel.startSelect.bind(this.multipleSelectModel));
+    // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
+
+    // emitter.on(EventType.SHAPE_MOUSE_MOVE, this.mouseStateModel.onMouseMove.bind(this.mouseStateModel));
+
+    // emitter.on(EventType.SHAPE_MOUSE_UP, this.mouseStateModel.onMouseUp.bind(this.mouseStateModel));
+  }
+
+  addShape(shape: Shape) {
+    if (this.shapeMap.has(shape.id)) {
+      return;
+    }
+    this.shapeMap.set(shape.id, shallowReactive(shape));
   }
 }

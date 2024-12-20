@@ -67,7 +67,21 @@ export class ShapeService {
     // 将 Set 转换为数组，并调用 shapeRepository 的 bulkUpdate 方法进行批量更新
     if (updateShapeSet.size > 0) {
       const updatedShapesArray = Array.from(updateShapeSet);
-      await this.bulkUpdateShapes(updatedShapesArray);
+      const res = await this.bulkUpdateShapes(updatedShapesArray);
+      console.log('res:',res)
+      this.wsService.sendToSubscribedClient(dto.projectId, {
+        type: WsMessageType.step,
+        data: {
+          projectId: dto.projectId,
+          changes: updatedShapesArray.map((item) => {
+            return {
+              type: ChangeType.UPDATE,
+              newValue: JSON.stringify(item),
+              projectId: dto.projectId,
+            };
+          }),
+        },
+      });
     }
   }
   async getShapeTree(projectId: string) {

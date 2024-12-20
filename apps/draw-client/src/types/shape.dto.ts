@@ -1,5 +1,5 @@
 import { SiderbarItemKey } from "@hfdraw/types";
-export class SideBarDropDto {
+export interface SideBarDropDto {
     diagramId: string;
     // {x: 95, y: 162}
     point: {x:number,y:number};
@@ -7,3 +7,12 @@ export class SideBarDropDto {
     sourceType: SiderbarItemKey;
   }
   
+  export interface MoveShapeDto {
+    projectId: string;
+
+    shapeIds: string[]
+
+    dx: number
+  
+    dy: number
+  }

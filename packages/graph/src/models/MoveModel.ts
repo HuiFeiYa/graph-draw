@@ -10,11 +10,7 @@ export type MoveRange = {
     dyMax: number
 
 }
-export enum StartMoveSource {
-    SiderBar = 'SiderBar', // SiderBar 拖拽移动
-    Shape = 'Shape', // 图形移动
-    QuickCreatePoint = 'QuickCreatePoint'
-}
+
 export class MoveModel {
     movingShapes: Shape[] = [] // 被移动的shapes
     startPoint: Point = new Point() // 移动起始时的鼠标的坐标
@@ -24,12 +20,12 @@ export class MoveModel {
     showMovingPreview = false
     previewDx = 0;
     previewDy = 0
-    startMoveSource!: StartMoveSource
+    // startMoveSource!: StartMoveSource
     clearEvents?: () => void
     limitRange: MoveRange = { dxMin: 0, dyMin: 0, dxMax: 0, dyMax: 0 }
     constructor(public graph: GraphModel) {
     }
-    startMove(event: MouseEvent, startMoveSource: StartMoveSource, mouseDownShape?: Shape) {
+    startMove(event: MouseEvent,  mouseDownShape?: Shape) {
         if (mouseDownShape) {
             this.startPoint.x = event.clientX;
             this.startPoint.y = event.clientY;
@@ -39,7 +35,6 @@ export class MoveModel {
             this.movingShapes = [mouseDownShape];
             this.previewDx = 0;
             this.previewDy = 0;
-            this.startMoveSource = startMoveSource
             const onMouseMove = this.onMouseMove.bind(this);
             this.clearEvents = () => {
                 emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
@@ -82,9 +77,7 @@ export class MoveModel {
     }
     async endMove() {
         this.graph.selectionModel.setSelection(this.movingShapes)
-        if (this.startMoveSource === StartMoveSource.Shape) {
-            this.graph.graphOption.customEndMove?.(this, this.previewDx, this.previewDy)
-        }
+        this.graph.graphOption.customEndMove?.(this, this.previewDx, this.previewDy)
         this.mouseDown = false;
         this.clear();
     }

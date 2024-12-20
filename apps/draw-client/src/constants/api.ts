@@ -5,7 +5,8 @@ export const API = {
     projectSave: 'project/save',
     projectOpen: 'project/open',
     sidebarDrop: 'shape/sidebarDrop',
-    getAllShapes: 'shape/diagram/allShape'
+    getAllShapes: 'shape/diagram/allShape',
+    moveShapes: 'shape/move'
 }
 
 export const ApiCode =  {

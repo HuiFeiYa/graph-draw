@@ -44,7 +44,7 @@ export class SocketService {
 
           }
         } else if (change.type === ChangeType.UPDATE) {
-          // this.doUpdateShape(shape);
+          emitter.emit(BusEvent.UPDATE_SHAPE, change);
         }
       })
       // const { projectId, step, isUndo, affectModels } = res.data as {projectId:string, step:Step, isUndo:boolean, affectModels:{id_:number, id:string, ownerId:string, type:ModelType}[] };

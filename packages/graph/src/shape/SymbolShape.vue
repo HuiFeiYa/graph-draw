@@ -16,21 +16,32 @@
       :height="shape.bounds.height "
       :stroke="style.strokeColor"
       :stroke-width="style.strokeWidth"
-      style="fill:white;pointer-events:none"
+      style="fill:white;"
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
       :stroke-dasharray="style.strokeDasharray || ''"
-    />
+       v-on="eventHandler"
+    >
+    <foreignObject
+      :width="shape.bounds.width"
+      :height="shape.bounds.height"
+      :x="shape.bounds.absX"
+      :y="shape.bounds.absY"
+      style="overflow:visible"
+     
+    ></foreignObject>
+  </rect>
 </g>
 </template>
 <script lang="ts" setup>
 import { Shape } from '@hfdraw/types';
 import { computed } from 'vue';
-
+import { createEventHandler } from '../util/createEventHandler';
 
 const props = defineProps<{
   shape:Shape
 }>();
+const eventHandler = createEventHandler( props);
 const style = computed(() => {
   const shape = props.shape;
 

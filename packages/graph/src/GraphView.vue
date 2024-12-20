@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { provide, computed, onMounted, ref, onUnmounted } from "vue";
+import { provide,  onMounted, ref, onUnmounted } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
 import { GraphProps } from "./types";
+import { emitter } from "./util/Emitter";
+import { EventType } from "@hfdraw/types";
 const props = defineProps<GraphProps>();
 provide("graph", props.graph);
 const viewDom = ref(null);
@@ -10,15 +12,19 @@ const viewDom = ref(null);
 
 
 function handleClickOut() { }
-// 监听画布上点击事件，用于清空选中状态
+
 function handleMousedownOut() {
+  emitter.emit(EventType.SHAPE_MOUSE_DOWN, window.event, undefined);
 }
 function handleMouseupOut() {
-  
+  emitter.emit(EventType.SHAPE_MOUSE_UP, window.event, undefined);
 }
 function handleMousemove() {
+  emitter.emit(EventType.SHAPE_MOUSE_MOVE, event, undefined);
 }
-function handleDragOver() { }
+function handleDragOver() { 
+  emitter.emit(EventType.SHAPE_DRAG_OVER, window.event);
+}
 
 const handleDrop = () => { };
 onMounted(() => {
