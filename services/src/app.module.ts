@@ -5,6 +5,7 @@ import { MainModule } from './modules/main/main.module';
 import { ProjectModule } from './modules/project/project.module';
 import { ShapeModule } from './modules/shape/shape.module';
 import { WsModule } from './modules/socket/wsModule';
+import { StepModule } from './modules/step/stepModule';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { WsModule } from './modules/socket/wsModule';
     MainModule, // 导入主模块
     ProjectModule,
     ShapeModule,
-    WsModule
+    WsModule,
+    StepModule
   ],
 })
 export class AppModule {}
