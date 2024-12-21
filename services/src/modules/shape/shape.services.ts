@@ -105,6 +105,7 @@ export class ShapeService {
       // 提取要更新的字段和值
       const partialEntity = {
         bounds: {
+          ...shape.bounds,
           x: shape.bounds.x,
           y: shape.bounds.y,
           absX: shape.bounds.absX,
