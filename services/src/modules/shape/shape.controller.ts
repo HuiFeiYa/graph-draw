@@ -38,5 +38,9 @@ export class ShapeController {
     async moveShape(@Body() moveShapeDto: MoveShapeDto) {
         const data = await this.shapeService.moveShape(moveShapeDto);
         return new ResData(data);
-  }
+    }
+    @Get('test')
+    async test() {
+      return this.shapeService.test();
+    }
 }

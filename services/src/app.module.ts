@@ -6,6 +6,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { ShapeModule } from './modules/shape/shape.module';
 import { WsModule } from './modules/socket/wsModule';
 import { StepModule } from './modules/step/stepModule';
+import { CurrentStepModule } from './modules/currentStep/currentStepModule';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { StepModule } from './modules/step/stepModule';
     ProjectModule,
     ShapeModule,
     WsModule,
-    StepModule
+    StepModule,
+    CurrentStepModule
   ],
 })
 export class AppModule {}

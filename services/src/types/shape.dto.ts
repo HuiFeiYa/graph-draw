@@ -1,4 +1,4 @@
-import { SiderbarItemKey, StType } from "@hfdraw/types";
+import { Change, SiderbarItemKey, StType } from "@hfdraw/types";
 import { IsArray, IsNumber, IsString } from "class-validator";
 import { Point } from "src/utils/Point";
 export class BaseProjectDto {
@@ -30,4 +30,11 @@ export class SideBarDropDto {
   
     @IsNumber()
     dy: number
+  }
+
+  export class UndoDto extends BaseProjectDto {
+    changes: Change[]
+    desc?: string
+    // 序号，第几步， 从0开始
+    index: number
   }

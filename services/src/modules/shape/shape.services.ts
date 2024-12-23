@@ -11,6 +11,7 @@ import { FindManyOptions, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
 import { ChangeType } from '@hfdraw/types';
+import { CurrentStepService } from '../currentStep/currentStepService';
 
 @Injectable()
 export class ShapeService {
@@ -18,6 +19,7 @@ export class ShapeService {
     @InjectRepository(ShapeEntity)
     private shapeRepository: Repository<ShapeEntity>,
     private readonly wsService: WsService, // 注入 WsService
+    private readonly currentStepService: CurrentStepService
   ) {}
   async sideBarItemDrop(dto: SideBarDropDto) {
     return await this.shapeRepository.manager.transaction(async manager => {
@@ -109,5 +111,9 @@ export class ShapeService {
     });
 
     await Promise.all(updatePromises);
+  }
+
+  async test() {
+    return this.currentStepService.findStep();
   }
 }
