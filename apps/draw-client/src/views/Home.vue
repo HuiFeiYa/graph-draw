@@ -48,7 +48,9 @@ emitter.onBatch(events)
 onMounted(()=> {
   shapeService.getAllShapes('p1').then(data => {
     console.log('data: ', data)
-    graphData.symbols.push(...data)
+    if (data) {
+      graphData.symbols.push(...data)
+    }
   })
 })
 </script>

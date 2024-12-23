@@ -32,19 +32,7 @@ export class ShapeService {
       await sideBar.run();
       // const res = await this.shapeRepository.save([...sideBar.createdShapes]);
       const res = await manager.save(ShapeEntity, [...sideBar.createdShapes]);
-      this.wsService.sendToSubscribedClient(dto.projectId, {
-        type: WsMessageType.step,
-        data: {
-          projectId: dto.projectId,
-          changes: res.map((item) => {
-            return {
-              type: ChangeType.INSERT,
-              newValue: JSON.stringify(item),
-              projectId: dto.projectId,
-            };
-          }),
-        },
-      });
+      return res
     })
   }
   async getDiagramAllShape(dto: FetchAllShapeDto) {
