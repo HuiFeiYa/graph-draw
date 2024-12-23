@@ -20,29 +20,32 @@ export class ShapeService {
     private readonly wsService: WsService, // 注入 WsService
   ) {}
   async sideBarItemDrop(dto: SideBarDropDto) {
-    const options: SideBarDropDto = {
-      projectId: dto.projectId,
-      diagramId: dto.diagramId,
-      point: dto.point,
-      sourceType: dto.sourceType,
-      // targetShapeId:
-    };
-    const sideBar = new SidebarModel(options);
-    await sideBar.run();
-    const res = await this.shapeRepository.save([...sideBar.createdShapes]);
-    this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
+    return await this.shapeRepository.manager.transaction(async manager => {
+      const options: SideBarDropDto = {
         projectId: dto.projectId,
-        changes: res.map((item) => {
-          return {
-            type: ChangeType.INSERT,
-            newValue: JSON.stringify(item),
-            projectId: dto.projectId,
-          };
-        }),
-      },
-    });
+        diagramId: dto.diagramId,
+        point: dto.point,
+        sourceType: dto.sourceType,
+        // targetShapeId:
+      };
+      const sideBar = new SidebarModel(options);
+      await sideBar.run();
+      // const res = await this.shapeRepository.save([...sideBar.createdShapes]);
+      const res = await manager.save(ShapeEntity, [...sideBar.createdShapes]);
+      this.wsService.sendToSubscribedClient(dto.projectId, {
+        type: WsMessageType.step,
+        data: {
+          projectId: dto.projectId,
+          changes: res.map((item) => {
+            return {
+              type: ChangeType.INSERT,
+              newValue: JSON.stringify(item),
+              projectId: dto.projectId,
+            };
+          }),
+        },
+      });
+    })
   }
   async getDiagramAllShape(dto: FetchAllShapeDto) {
     const res = await this.shapeRepository.find({
