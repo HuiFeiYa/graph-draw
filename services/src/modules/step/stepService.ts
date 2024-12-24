@@ -4,6 +4,7 @@ import { getUid } from "src/utils/common"
 import { Repository } from "typeorm"
 import { CurrentStepService } from "../currentStep/currentStepService"
 import { InjectRepository } from "@nestjs/typeorm"
+import { Change } from "@hfdraw/types"
 
 export class StepService {
     constructor(
@@ -27,19 +28,19 @@ export class StepService {
     async redoStep() {
         return 'redo'
     }
-    async createStep(dto: { projectId: string}) {
+    async createStep(dto: { projectId: string, changes: Change[]}) {
       const step =  this.stepRepository.manager.create(StepEntity, {
         id_: getUid(),
         projectId: dto.projectId,
         index: 0,
         desc: '',
-        changes: []
+        changes: dto.changes
       })
       const savedStep = await this.stepRepository.save(step);
       return savedStep;
     }
-    async initStep(dto: { projectId: string }) {
-      const step = await this.createStep({projectId: dto.projectId});
+    async initStep(dto: { projectId: string, changes: Change[] }) {
+      const step = await this.createStep({projectId: dto.projectId, changes: dto.changes});
       const currentStep = await this.currentStepService.findCurrentStep(dto.projectId);
       if (currentStep) {
         await this.currentStepService.updateCurrentStep(currentStep.id_, {projectId: dto.projectId,stepId: step.id_, stepSize: currentStep.stepSize++})

@@ -7,22 +7,26 @@ import {
 import { SidebarModel } from '../models/SidebarModel';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShapeEntity } from 'src/entities/shape.entity';
-import { FindManyOptions, Repository } from 'typeorm';
+import { EntityTarget, FindManyOptions, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
-import { ChangeType } from '@hfdraw/types';
+import { Change, ChangeType } from '@hfdraw/types';
 import { CurrentStepService } from '../currentStep/currentStepService';
 import { StepService } from '../step/stepService';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { BaseService } from '../common/BaseService';
 
 @Injectable()
-export class ShapeService {
+export class ShapeService  extends BaseService{
   constructor(
     @InjectRepository(ShapeEntity)
     private shapeRepository: Repository<ShapeEntity>,
     private readonly wsService: WsService, // 注入 WsService
     private readonly currentStepService: CurrentStepService,
     private readonly stepService: StepService
-  ) {}
+  ) {
+    super();
+  }
   async sideBarItemDrop(dto: SideBarDropDto) {
     return await this.shapeRepository.manager.transaction(async manager => {
       const options: SideBarDropDto = {
@@ -36,7 +40,15 @@ export class ShapeService {
       await sideBar.run();
       // const res = await this.shapeRepository.save([...sideBar.createdShapes]);
       const res = await manager.save(ShapeEntity, [...sideBar.createdShapes]);
-      await this.stepService.initStep({projectId:dto.projectId});
+      const changes: Change[] = [...sideBar.createdShapes].map(s => {
+        const v: Change = {
+          type: ChangeType.INSERT,
+          newValue: JSON.stringify(s),
+          projectId: dto.projectId
+        }
+        return v;
+      })
+      await this.stepService.initStep({projectId:dto.projectId, changes});
       return res
     })
   }
@@ -63,19 +75,21 @@ export class ShapeService {
     // 将 Set 转换为数组，并调用 shapeRepository 的 bulkUpdate 方法进行批量更新
     if (updateShapeSet.size > 0) {
       const updatedShapesArray = Array.from(updateShapeSet);
-      const res = await this.bulkUpdateShapes(updatedShapesArray);
-      console.log('res:',res)
-      this.wsService.sendToSubscribedClient(dto.projectId, {
+      const changes = await this.bulkUpdateShapes( dto.projectId,updatedShapesArray);
+      console.log('res:',changes)
+      await this.stepService.initStep({projectId: dto.projectId, changes})
+      await this.wsService.sendToSubscribedClient(dto.projectId, {
         type: WsMessageType.step,
         data: {
           projectId: dto.projectId,
-          changes: updatedShapesArray.map((item) => {
-            return {
-              type: ChangeType.UPDATE,
-              newValue: JSON.stringify(item),
-              projectId: dto.projectId,
-            };
-          }),
+          changes
+          //  updatedShapesArray.map((item) => {
+          //   return {
+          //     type: ChangeType.UPDATE,
+          //     newValue: JSON.stringify(item),
+          //     projectId: dto.projectId,
+          //   };
+          // }),
         },
       });
     }
@@ -95,9 +109,10 @@ export class ShapeService {
     };
   }
   // 批量更新逻辑
-  async bulkUpdateShapes(shapes: ShapeEntity[]): Promise<void> {
+  async bulkUpdateShapes(projectId: string,shapes: ShapeEntity[]): Promise<Change[]> {
     // 使用 Promise.all 并行执行所有更新操作
-    const updatePromises = shapes.map((shape) => {
+    const changes: Change[] = []
+    const updatePromises = shapes.map(async (shape) => {
       // 提取要更新的字段和值
       const partialEntity = {
         bounds: {
@@ -110,10 +125,13 @@ export class ShapeService {
       };
 
       // 根据 shape.id 更新对应的记录
-      return this.shapeRepository.update({ id: shape.id }, partialEntity);
+      const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)
+      changes.push(change);
+      // return this.shapeRepository.update({ id: shape.id }, partialEntity);
     });
 
     await Promise.all(updatePromises);
+    return changes;
   }
 
   async test() {

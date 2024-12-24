@@ -17,9 +17,9 @@ export enum StepType {
     UPDATE = 2, // 更新某个或多个字段
     DELETE = 3, // 删除对象
   }
-  export type Change = {
+  export class  Change  {
   
-    type: ChangeType;
+    type!: ChangeType;
   
     oldValue?: string; // 更新前的key-value对象的 json串，只记录变更的字段即可，undo的时候会用这个keyValue去update对应的table
   
@@ -29,7 +29,7 @@ export enum StepType {
   
     // stepId: string
   
-    projectId: string
+    projectId!: string
   }
 
   export type Step = {

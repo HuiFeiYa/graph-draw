@@ -27,3 +27,11 @@ export const getUid = (() => {
   
 
   
+
+  export function pickProp<T>(obj: T, props: (keyof T)[]) {
+    const result = {} as Partial<T>;
+    props.forEach(prop => {
+      result[prop] = obj[prop];
+    });
+    return result;
+  }
