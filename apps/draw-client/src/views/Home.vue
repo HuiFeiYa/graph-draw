@@ -41,7 +41,7 @@ const events = {
     const i = graphData.symbols.findIndex(s => s.id_ === change.shapeId);
     if (i !== -1) {
       // graphData.symbols.splice(i, 1, shape)
-      Object.assign(graphData.symbols[i],newValue)
+      Object.assign(graphData.symbols[i],{...newValue})
     }
   },
 };

@@ -36,13 +36,20 @@ export class SocketService {
         } else if (change.type === ChangeType.DELETE) {
 
           if (isUndo) {
+           
             emitter.emit(BusEvent.INSERT_SHAPE, change)
 
           } else {
             emitter.emit(BusEvent.DELETE_SHAPE, change)
           }
         } else if (change.type === ChangeType.UPDATE) {
-          emitter.emit(BusEvent.UPDATE_SHAPE, change);
+          if (isUndo) {
+            const oldValue = change.newValue;
+            const newValue = change.oldValue;
+            emitter.emit(BusEvent.UPDATE_SHAPE, {...change,oldValue, newValue});
+          } else {
+            emitter.emit(BusEvent.UPDATE_SHAPE, change);
+          }
         }
       })
     },

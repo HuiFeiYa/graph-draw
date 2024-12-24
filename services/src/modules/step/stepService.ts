@@ -18,9 +18,13 @@ export class StepService {
 
     }
     async undoStep(projectId:string) {
+      // 这里要找 currentStep 对应的 stepId
+      const currentStep = await this.currentStepService.findCurrentStep(projectId)
+
         const steps = await this.stepRepository.find({
           where: {
-            projectId
+            projectId,
+            id_:currentStep.stepId
           },
           order: {
             index: 'desc'
@@ -31,7 +35,6 @@ export class StepService {
         if (step.index < 0) {
           throw new Error('不能再 undo 了')
         }
-        const currentStep = await this.currentStepService.findCurrentStep(projectId)
         // 按倒序重新应用 oldValue
         const changes = [...step.changes];
         changes.reverse();
@@ -70,7 +73,8 @@ export class StepService {
       }
     }
     async createStep(dto: { projectId: string, changes: Change[]}) {
-      const preStep = await this.stepRepository.findOne({where: {projectId: dto.projectId}});
+      const steps = await this.stepRepository.find({where: {projectId: dto.projectId}, order: {index: 'desc'},take: 1});
+      const preStep = steps[0];
       const step =  this.stepRepository.manager.create(StepEntity, {
         id_: getUid(),
         projectId: dto.projectId,
