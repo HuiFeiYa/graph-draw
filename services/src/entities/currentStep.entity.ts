@@ -12,16 +12,16 @@ import { StepEntity } from './step.entity'
     @Column()
     stepSize: number; // step的总数
   
-    @OneToOne(() => StepEntity, {
-      onDelete: "SET NULL"
-    })
-    @JoinColumn({
-      name: 'stepId',
-      referencedColumnName: 'id_'
-    })
-    step: StepEntity;
+    // @OneToOne(() => StepEntity, {
+    //   onDelete: "SET NULL"
+    // })
+    // @JoinColumn({
+    //   name: 'stepId',
+    //   referencedColumnName: 'id_'
+    // })
+    // step: StepEntity;
   
-    @RelationId((c:CurrentStep) => c.step)
+    // @RelationId((c:CurrentStep) => c.step)
     @Column({
       type: String,
       nullable: true
@@ -34,12 +34,6 @@ import { StepEntity } from './step.entity'
       nullable: false
     })
     projectId:string
-  
-    @Column({
-      type: String,
-      nullable: true
-    })
-    savedStepId:string
   
   }
   

@@ -12,6 +12,7 @@ import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
 import { ChangeType } from '@hfdraw/types';
 import { CurrentStepService } from '../currentStep/currentStepService';
+import { StepService } from '../step/stepService';
 
 @Injectable()
 export class ShapeService {
@@ -19,7 +20,8 @@ export class ShapeService {
     @InjectRepository(ShapeEntity)
     private shapeRepository: Repository<ShapeEntity>,
     private readonly wsService: WsService, // 注入 WsService
-    private readonly currentStepService: CurrentStepService
+    private readonly currentStepService: CurrentStepService,
+    private readonly stepService: StepService
   ) {}
   async sideBarItemDrop(dto: SideBarDropDto) {
     return await this.shapeRepository.manager.transaction(async manager => {
@@ -34,6 +36,7 @@ export class ShapeService {
       await sideBar.run();
       // const res = await this.shapeRepository.save([...sideBar.createdShapes]);
       const res = await manager.save(ShapeEntity, [...sideBar.createdShapes]);
+      await this.stepService.initStep({projectId:dto.projectId});
       return res
     })
   }
@@ -114,6 +117,6 @@ export class ShapeService {
   }
 
   async test() {
-    return this.currentStepService.findStep();
+    // return this.currentStepService.findStep();
   }
 }
