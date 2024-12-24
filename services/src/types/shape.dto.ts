@@ -33,8 +33,8 @@ export class SideBarDropDto {
   }
 
   export class UndoDto extends BaseProjectDto {
-    changes: Change[]
-    desc?: string
-    // 序号，第几步， 从0开始
-    index: number
+    // changes: Change[]
+    // desc?: string
+    // // 序号，第几步， 从0开始
+    // index: number
   }

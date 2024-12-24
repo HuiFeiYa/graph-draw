@@ -1,7 +1,7 @@
 export interface UpdateStepDto {
-    stepSize: number; // step的总数
-    stepId:string
-    projectId:string
+    stepSize?: number; // step的总数
+    stepId?:string
+    projectId?:string
 }
 
 export interface CreateStepDto {

@@ -15,7 +15,8 @@ export class BaseService {
         // rep.findOne
         const change: Change = {
             type:  ChangeType.UPDATE,
-            projectId
+            projectId,
+            shapeId: id_
         };
         const keys = Object.keys(partialEntity) as Array<keyof Entity>;;
         let toSelectKeys = keys;

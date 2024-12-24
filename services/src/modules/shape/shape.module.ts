@@ -15,6 +15,8 @@ import { StepModule } from "../step/stepModule";
         StepModule
     ],
     controllers: [ShapeController],
-    providers: [ShapeService]
+    providers: [ShapeService],
+    exports: [ShapeService]
+
 })
 export class ShapeModule {}

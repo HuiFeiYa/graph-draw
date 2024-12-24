@@ -22,11 +22,13 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { headerMenus } from './menuItem/index'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
+// @ts-ignore
 import MHeaderButton from './headerComponents/HeaderButton.vue';
+import { shapeService } from '../util/ShapeService';
 let activeTab = ref('Project');
 let selectButtonValue = ref('');
 const activeHeaderMenu = computed(() => {
@@ -34,15 +36,20 @@ const activeHeaderMenu = computed(() => {
 });
 console.log('activeHeaderMenu:', activeHeaderMenu)
 
-function onClickHeader(headerMenu) {
+function onClickHeader(headerMenu: { disabled: any; enName: string; }) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
 }
-function handleClick(child) {
+async function handleClick(child: { selectStatus: any; value: string; }) {
   if (child.selectStatus) {
     selectButtonValue.value = child.value
   } else {
     selectButtonValue.value = ''
+  }
+  switch(child.value) {
+    case 'undo': {
+      await shapeService.undo('p1')
+    }
   }
 }
 </script>

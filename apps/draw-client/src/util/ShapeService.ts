@@ -13,5 +13,11 @@ export class ShapeService {
     async moveShape(dto: MoveShapeDto) {
         await httpClient.post(API.moveShapes, dto)
     }
+    async redo(projectId: string) {
+        await httpClient.post(API.redo, {projectId})
+    }
+    async undo(projectId: string) {
+        await httpClient.post(API.undo, {projectId})
+    }
 }
 export const shapeService = new ShapeService();

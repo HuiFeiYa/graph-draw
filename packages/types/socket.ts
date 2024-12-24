@@ -17,19 +17,17 @@ export enum StepType {
     UPDATE = 2, // 更新某个或多个字段
     DELETE = 3, // 删除对象
   }
-  export class  Change  {
+  export interface  Change    {
   
-    type!: ChangeType;
+    type: ChangeType;
   
     oldValue?: string; // 更新前的key-value对象的 json串，只记录变更的字段即可，undo的时候会用这个keyValue去update对应的table
   
     newValue?: string; // 更新后的key-value对象的 json串，只记录变更的字段即可，redo的时候会用这个keyValue去update对应的table
+    
+    shapeId: number // 当前操作的图形 id_
   
-    // step: Step
-  
-    // stepId: string
-  
-    projectId!: string
+    projectId: string
   }
 
   export type Step = {
@@ -40,7 +38,7 @@ export enum StepType {
   
     changes: Change[]; // node层的changeId
   
-    // stepType?: StepType
+    stepType: StepType // 区分 undo redo 
   
   }
   

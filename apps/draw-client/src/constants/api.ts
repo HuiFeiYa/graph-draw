@@ -6,7 +6,9 @@ export const API = {
     projectOpen: 'project/open',
     sidebarDrop: 'shape/sidebarDrop',
     getAllShapes: 'shape/diagram/allShape',
-    moveShapes: 'shape/move'
+    moveShapes: 'shape/move',
+    redo: 'step/redo',
+    undo: 'step/undo'
 }
 
 export const ApiCode =  {

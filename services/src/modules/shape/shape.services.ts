@@ -10,7 +10,7 @@ import { ShapeEntity } from 'src/entities/shape.entity';
 import { EntityTarget, FindManyOptions, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
-import { Change, ChangeType } from '@hfdraw/types';
+import { Change, ChangeType, StepType } from '@hfdraw/types';
 import { CurrentStepService } from '../currentStep/currentStepService';
 import { StepService } from '../step/stepService';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
@@ -44,7 +44,8 @@ export class ShapeService  extends BaseService{
         const v: Change = {
           type: ChangeType.INSERT,
           newValue: JSON.stringify(s),
-          projectId: dto.projectId
+          projectId: dto.projectId,
+          shapeId: s.id_
         }
         return v;
       })
@@ -82,7 +83,8 @@ export class ShapeService  extends BaseService{
         type: WsMessageType.step,
         data: {
           projectId: dto.projectId,
-          changes
+          changes,
+          stepType: StepType.edit
           //  updatedShapesArray.map((item) => {
           //   return {
           //     type: ChangeType.UPDATE,

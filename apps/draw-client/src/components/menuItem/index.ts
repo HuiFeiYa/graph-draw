@@ -1,8 +1,10 @@
+import { HeadItem } from "../../types/common";
+
 /**
  * header菜单通用项
  * 主页、新建项目、打开、保存、关闭、打印、搜索、回撤、重做
  */
-export const Common = [
+export const Common: HeadItem[] = [
   {
     label: "回到首页",
     notShowLabel: true,
@@ -190,17 +192,17 @@ export const headerMenus = [
         return false;
       },
       get hide() {
-        return false;
-      },
+        return false
+      }
     }
 ]
 
 
 
-function concatChildren(...args) {
-  const res:Object[] = [];
+function concatChildren(...args:any[]) {
+  const res:any[] = [];
   args.forEach(arg => {
-    arg.forEach(children => {
+    arg.forEach((children:any) => {
       // 获取快捷键（不监听，只进行tips的显示）
       res.push(children);
     });

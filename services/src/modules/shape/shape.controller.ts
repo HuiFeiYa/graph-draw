@@ -4,7 +4,7 @@ import { ResData } from "src/utils/http/ResData";
 import { FetchAllShapeDto, MoveShapeDto, SideBarDropDto } from "src/types/shape.dto";
 import { WsService } from "../socket/WsService";
 import { WsMessageType } from "src/types/common";
-import { ChangeType } from "@hfdraw/types";
+import { ChangeType, StepType } from "@hfdraw/types";
 
 @Controller('shape')
 export class ShapeController {
@@ -24,8 +24,10 @@ export class ShapeController {
                   type: ChangeType.INSERT,
                   newValue: JSON.stringify(item),
                   projectId: dto.projectId,
+                  shapeId: item.id_
                 };
               }),
+              stepType: StepType.edit
             },
           });
     }
