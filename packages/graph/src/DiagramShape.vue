@@ -7,6 +7,7 @@ const edges = computed(() => {
   return props.edges.filter(childShape => shapeCompManager.get(childShape.subShapeType));
 })
 const symbols = computed(() => {
+  console.log('props: ',props)
   return props.symbols.filter(childShape => shapeCompManager.get(childShape.subShapeType));
 })
 </script>

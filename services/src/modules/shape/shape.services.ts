@@ -57,6 +57,7 @@ export class ShapeService  extends BaseService{
     const res = await this.shapeRepository.find({
       where: {
         projectId: dto.projectId,
+        isDelete: false
       },
     });
     return res;

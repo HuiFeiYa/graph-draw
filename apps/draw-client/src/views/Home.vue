@@ -32,13 +32,16 @@ const events = {
     }
 
   },
-  [BusEvent.DELETE_SHAPE]: (change: Change) => {},
+  [BusEvent.DELETE_SHAPE]: (change: Change) => {
+    graphData.symbols = graphData.symbols.filter(s => s.id_ === change.shapeId)
+  },
   [BusEvent.UPDATE_SHAPE]: async (change: Change) => {
     console.log('update:', change)
-    const shape = JSON.parse(change.newValue || '')
-    const i = graphData.symbols.findIndex(s => s.id = shape.id);
+    const newValue = JSON.parse(change.newValue || '')
+    const i = graphData.symbols.findIndex(s => s.id_ === change.shapeId);
     if (i !== -1) {
-      graphData.symbols.splice(i, 1, shape)
+      // graphData.symbols.splice(i, 1, shape)
+      Object.assign(graphData.symbols[i],newValue)
     }
   },
 };
