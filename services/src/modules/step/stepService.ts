@@ -1,7 +1,7 @@
 import { StepEntity } from "src/entities/step.entity"
 import { UndoDto } from "src/types/shape.dto"
 import { getUid } from "src/utils/common"
-import {  LessThanOrEqual, Repository } from "typeorm"
+import {  LessThanOrEqual, MoreThan, Repository } from "typeorm"
 import { CurrentStepService } from "../currentStep/currentStepService"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Change, ChangeType } from "@hfdraw/types"
@@ -56,8 +56,32 @@ export class StepService {
         })
         return step.changes;
     }
-    async redoStep() {
-        return 'redo'
+    async redoStep(projectId: string) {
+      const currentStep = await this.currentStepService.findCurrentStep(projectId);
+      // 不存在 currentstep时，例如回退到最开始的时候，
+      const steps = await this.stepRepository.find({
+        where: {
+          projectId,
+          index: MoreThan(currentStep.stepId? currentStep.index : -1)
+        },
+        order: {
+          index: 'asc'
+        },
+        take: 1
+      })
+      // 找到redo下一个step, 应用下一个 step 的 newValue
+      const nextStep = steps[0];
+      if (!nextStep) {
+        throw new Error('不存在下一个 step')
+      }
+      for(let change of nextStep.changes) {
+        await this.redoChange(change);
+      }
+      await this.currentStepService.updateCurrentStep(currentStep.id_, {
+        stepId: nextStep.id_,
+        index: nextStep.index
+      })
+      return nextStep.changes;
     }
 
     async undoChange(change:Change) {
@@ -71,6 +95,19 @@ export class StepService {
       }
     }
 
+    async redoChange(change:Change) {
+      if (change.type === ChangeType.INSERT) {
+        await this.shapeRepository.update(change.shapeId, { isDelete: false });
+  
+      } else if (change.type === ChangeType.DELETE) {
+        await this.shapeRepository.update(change.shapeId, { isDelete: true });
+  
+      } else if (change.type === ChangeType.UPDATE) {
+        const modelKV = change.newValue;
+        await this.shapeRepository.update(change.shapeId, JSON.parse(modelKV));
+  
+      }
+    }
     // 创建一个新的 step
     async createStep(dto: { projectId: string, changes: Change[]}) {
       const currentStep = await this.currentStepService.findCurrentStep(dto.projectId);

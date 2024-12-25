@@ -31,7 +31,15 @@ export class StepController {
   }
   @Post('redo')
   async redo(@Body() { projectId }: BaseProjectDto) {
-    const res = await this.stepService.redoStep();
-    return new ResData(res);
+    const changes = await this.stepService.redoStep(projectId);
+    await this.wsService.sendToSubscribedClient(projectId,{
+      type: WsMessageType.step,
+      data: {
+        stepType: StepType.redo,
+        changes,
+        projectId: projectId
+      }
+    })
+    return new ResData(null);
   }
 }

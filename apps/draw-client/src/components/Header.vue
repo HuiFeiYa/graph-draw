@@ -49,6 +49,11 @@ async function handleClick(child: { selectStatus: any; value: string; }) {
   switch(child.value) {
     case 'undo': {
       await shapeService.undo('p1')
+      break;
+    }
+    case 'redo': {
+      await shapeService.redo('p1');
+      break;
     }
   }
 }
