@@ -7,25 +7,26 @@ import { Repository } from "typeorm"
 export class CurrentStepService {
     constructor(
       @InjectRepository(CurrentStep) 
-    private readonly stepRepository: Repository<CurrentStep>,
+    private readonly currentStepRepository: Repository<CurrentStep>,
     ) {
 
     }
     async findCurrentStep(projectId: string) {
-      return this.stepRepository.findOne({
+      return this.currentStepRepository.findOne({
         where: {
           projectId
         }
       })
     }
     async updateCurrentStep(id_:number, params: UpdateStepDto) {
-      return this.stepRepository.update(id_, params)
+      return this.currentStepRepository.update(id_, params)
     }
     async createCurrentStep(params: CreateStepDto) {
-      return this.stepRepository.save({
+      return this.currentStepRepository.save({
           stepSize: 1,
           projectId: params.projectId,
-          stepId: params.stepId
+          stepId: params.stepId,
+          index: params.index || 0
       })
     }
 }

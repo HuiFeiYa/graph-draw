@@ -33,7 +33,7 @@ const events = {
 
   },
   [BusEvent.DELETE_SHAPE]: (change: Change) => {
-    graphData.symbols = graphData.symbols.filter(s => s.id_ === change.shapeId)
+    graphData.symbols = graphData.symbols.filter(s => s.id_ !== change.shapeId)
   },
   [BusEvent.UPDATE_SHAPE]: async (change: Change) => {
     console.log('update:', change)

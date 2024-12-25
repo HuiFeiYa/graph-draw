@@ -11,6 +11,11 @@ import { StepEntity } from './step.entity'
   
     @Column()
     stepSize: number; // step的总数
+    @Column({
+      type: Number,
+      nullable: true
+    })
+    index: number; // 当前步骤对应的序号
   
     // @OneToOne(() => StepEntity, {
     //   onDelete: "SET NULL"
