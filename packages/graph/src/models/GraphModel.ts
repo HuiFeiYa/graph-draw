@@ -5,6 +5,7 @@ import { SelectionModel } from "./SelectionModel";
 import { IGraphOption } from "../types";
 import { emitter } from "../util/Emitter";
 import { shallowReactive, reactive } from "vue";
+import { HoverModel } from "./HoverModel";
 
 export class GraphModel {
   /**
@@ -34,6 +35,11 @@ export class GraphModel {
    * 选中元素模型
    */
   selectionModel = reactive(new SelectionModel(this));
+
+  /**
+   * 选入元素显示箭头
+   */
+  hoverModel = reactive(new HoverModel(this)) 
   edges: EdgeShape[] = [];
 
   symbols: Shape[] = [];
@@ -56,6 +62,7 @@ export class GraphModel {
     emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
     // 数据来源于 createEventHandler 绑定的图形操作
     emitter.on(EventType.SHAPE_CLICK, this.selectionModel.onShapeClick.bind(this.selectionModel));
+    emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.multipleSelectModel.startSelect.bind(this.multipleSelectModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
 
