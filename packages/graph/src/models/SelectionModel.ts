@@ -19,4 +19,11 @@ export class SelectionModel {
         this.selectedShapes= [];
         this.emitSelectionChange();
     }
+    onShapeClick(event:MouseEvent | null, shape:Shape){
+        let selectableShape = shape;
+        this.setSelectionShapes([selectableShape]);
+    }
+    setSelectionShapes(arr:Shape[]) {
+      this.selectedShapes = arr;
+    }
 }

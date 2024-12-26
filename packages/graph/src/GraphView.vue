@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { provide,  onMounted, ref, onUnmounted } from "vue";
+import { provide,  onMounted, ref, onUnmounted, computed } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
 import { GraphProps } from "./types";
 import { emitter } from "./util/Emitter";
 import { EventType } from "@hfdraw/types";
+import SelectionVertex from './shape/SelectionVertex.vue'
 const props = defineProps<GraphProps>();
-provide("graph", props.graph);
+provide("graphProps", props);
 const viewDom = ref(null);
 
+const showSelectionVertex = computed(() => {
 
+const { selectionModel } = props.graph;
+return (
+  props.graph.selectionModel.selectedShapes.length > 0
+);
+});
 
 function handleClickOut() { }
 
@@ -47,6 +54,13 @@ onUnmounted(() => {
       <Grid/>
       <DiagramShape v-bind="props"/>
     </svg>
+    <!-- 交互层 -->
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" transform-origin="0 0"
+      style="min-width: 100%; min-height: 100%;position: absolute; top: 0; left: 0; pointer-events: none" @click="handleClickOut"
+      @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
+      @dragover="handleDragOver" @drop.stop="handleDrop">
+      <selection-vertex v-if="graph.selectionModel.selectedShapes.length" :selection="graph.selectionModel.selection" />
+      </svg>
   </div>
 </template>
 <style>

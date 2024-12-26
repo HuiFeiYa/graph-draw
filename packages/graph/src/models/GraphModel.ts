@@ -4,7 +4,7 @@ import { MoveModel } from "./MoveModel";
 import { SelectionModel } from "./SelectionModel";
 import { IGraphOption } from "../types";
 import { emitter } from "../util/Emitter";
-import { shallowReactive } from "vue";
+import { shallowReactive, reactive } from "vue";
 
 export class GraphModel {
   /**
@@ -33,7 +33,7 @@ export class GraphModel {
   /**
    * 选中元素模型
    */
-  selectionModel = new SelectionModel(this);
+  selectionModel = reactive(new SelectionModel(this));
   edges: EdgeShape[] = [];
 
   symbols: Shape[] = [];
@@ -54,6 +54,8 @@ export class GraphModel {
 
     // 开始监听移动事件
     emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
+    // 数据来源于 createEventHandler 绑定的图形操作
+    emitter.on(EventType.SHAPE_CLICK, this.selectionModel.onShapeClick.bind(this.selectionModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.multipleSelectModel.startSelect.bind(this.multipleSelectModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
 
