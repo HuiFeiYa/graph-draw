@@ -1,6 +1,8 @@
 import { ChangeType,  Step,  StepMessageData, StepType } from "@hfdraw/types";
 import { BusEvent, ConnectStatus } from "../constants/config";
 import { emitter } from "../util/Emitter";
+import { stepStatusReactive } from "../util/StepStatus";
+import { shapeService } from "../util/ShapeService";
 class SocketOption {
   /**
    * 最大尝试重连次数
@@ -22,9 +24,10 @@ export class SocketService {
     connect:() => {
       this.sendJSON({ type: "subscribeProject", projectId: 'p1' });
     },
-    step(messageData:{ type:'step', data: Step}) {
+    async step(messageData:{ type:'step', data: Step}) {
       const { data: { changes, stepType } } = messageData;
       const isUndo = stepType === StepType.undo;
+      const isEdit = stepType === StepType.edit;
       changes.forEach(change => {
         if (change.type === ChangeType.INSERT) {
           if (isUndo) {
@@ -52,7 +55,15 @@ export class SocketService {
           }
         }
       })
-    },
+      /**
+       * 需要每次都更新 step 状态，例如:
+       * 1. 添加图形
+       * 2. 移动图形，
+       * 3. undo，此时 redo 应该可以点击
+       * 4. 添加图形，此时 redo 应该不可以点击
+       */
+      await stepStatusReactive.fresh('p1')
+    }
   };
   constructor(option: SocketOption) {
     const { uri, maxReconnectTime } = option;

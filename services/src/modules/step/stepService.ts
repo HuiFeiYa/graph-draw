@@ -140,14 +140,47 @@ export class StepService {
     async initStep(dto: { projectId: string, changes: Change[] }) {
       const step = await this.createStep({projectId: dto.projectId, changes: dto.changes});
       const currentStep = await this.currentStepService.findCurrentStep(dto.projectId);
+      // todo 查找 step 个数，更新到 stepSize 中
+      const stepSize = await this.stepRepository.count();
       if (currentStep) {
-        await this.currentStepService.updateCurrentStep(currentStep.id_, {projectId: dto.projectId,stepId: step.id_, stepSize: currentStep.stepSize++, index: step.index})
+        await this.currentStepService.updateCurrentStep(currentStep.id_, {projectId: dto.projectId,stepId: step.id_, stepSize: stepSize, index: step.index})
       } else {
         await this.currentStepService.createCurrentStep({
           projectId: dto.projectId,
           stepId: step.id_,
-          index: step.index
+          index: step.index,
+          stepSize: stepSize
         })
       }
+    }
+    // 获取是否可以 redo， undo 状态
+    async stepStatus(projectId: string) {
+      const result = {
+        currentStepId: '', // 项目当前所处的stepId，
+        hasPreStep: false, // 是否有前面的步骤（可以undo）
+        hasNextStep: false //  是否有后面的步骤（可以redo）
+      };
+      const currentStep = await this.currentStepService.findCurrentStep(projectId);
+      if (!currentStep) {
+        return result
+      }
+      result.currentStepId = currentStep.stepId || '';
+      let step: StepEntity; // 此step是当前已执行的step
+  
+      if (currentStep.stepId) {
+        result.hasPreStep = true;
+        step = await this.stepRepository.findOne({ where: {id_: currentStep.stepId }});
+      }
+  
+      if (step) {
+        if (step.index < currentStep.stepSize - 1) {
+          result.hasNextStep = true;
+        }
+      } else {
+        if (currentStep.stepSize > 0) {
+          result.hasNextStep = true;
+        }
+      }
+      return result;
     }
 }

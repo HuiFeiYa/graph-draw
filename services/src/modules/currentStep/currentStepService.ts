@@ -23,7 +23,7 @@ export class CurrentStepService {
     }
     async createCurrentStep(params: CreateStepDto) {
       return this.currentStepRepository.save({
-          stepSize: 1,
+          stepSize: params.stepSize,
           projectId: params.projectId,
           stepId: params.stepId,
           index: params.index || 0

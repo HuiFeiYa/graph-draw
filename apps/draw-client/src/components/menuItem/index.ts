@@ -1,4 +1,5 @@
 import { HeadItem } from "../../types/common";
+import { stepStatusReactive } from "../../util/StepStatus";
 
 /**
  * header菜单通用项
@@ -65,8 +66,7 @@ export const Common: HeadItem[] = [
     value: "undo",
     icon: "statics/header/topiconundo.svg",
     get disabled() {
-      
-      return false;
+      return !stepStatusReactive.hasPreStep;
     }
   },
   {
@@ -75,7 +75,7 @@ export const Common: HeadItem[] = [
     value: "redo",
     icon: "statics/header/topiconredo.svg",
     get disabled() {
-      return false;
+      return !stepStatusReactive.hasNextStep;
     }
   },
   {

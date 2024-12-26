@@ -9,4 +9,5 @@ export interface CreateStepDto {
     stepId:string
     projectId:string
     index: number
+    stepSize: number
 }

@@ -23,24 +23,26 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { headerMenus } from './menuItem/index'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 // @ts-ignore
 import MHeaderButton from './headerComponents/HeaderButton.vue';
 import { shapeService } from '../util/ShapeService';
+import { stepStatusReactive } from '../util/StepStatus';
 let activeTab = ref('Project');
 let selectButtonValue = ref('');
 const activeHeaderMenu = computed(() => {
   return headerMenus.find(it => it.enName === activeTab.value);
 });
-console.log('activeHeaderMenu:', activeHeaderMenu)
+// console.log('activeHeaderMenu:', activeHeaderMenu)
 
-function onClickHeader(headerMenu: { disabled: any; enName: string; }) {
+function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
 }
-async function handleClick(child: { selectStatus: any; value: string; }) {
+async function handleClick(child: { selectStatus: any; value: string; disabled: boolean}) {
+  if (child.disabled) return;
   if (child.selectStatus) {
     selectButtonValue.value = child.value
   } else {
@@ -57,6 +59,13 @@ async function handleClick(child: { selectStatus: any; value: string; }) {
     }
   }
 }
+function freshStepStatus() {
+  stepStatusReactive.fresh('p1')
+
+}
+onMounted(()=> {
+  freshStepStatus()
+})
 </script>
 <style lang="scss">
 @use '@/assets/css/theme' as *;

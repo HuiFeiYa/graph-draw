@@ -2,6 +2,8 @@ import { httpClient } from './httpClient'
 import { API } from '../constants/api'
 import { MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
 import { Shape } from '@hfdraw/types'
+import { AxiosResponse } from 'axios';
+
 export class ShapeService {
     async sidebarDrop(data: SideBarDropDto) {
         const res = await httpClient.post(API.sidebarDrop, data)
@@ -18,6 +20,10 @@ export class ShapeService {
     }
     async undo(projectId: string) {
         await httpClient.post(API.undo, {projectId})
+    }
+    async getStepStatus(projectId: string) {
+        const res = await httpClient.get<AxiosResponse<{data: {currentStepId: string, hasPreStep: boolean, hasNextStep: boolean}}>>(API.stepStatus, {projectId})
+        return res.data.data;
     }
 }
 export const shapeService = new ShapeService();

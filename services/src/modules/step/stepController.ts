@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { BaseProjectDto, UndoDto } from 'src/types/shape.dto';
 import { StepService } from './stepService';
 import { ResData } from 'src/utils/http/ResData';
@@ -41,5 +41,10 @@ export class StepController {
       }
     })
     return new ResData(null);
+  }
+  @Get('stepStatus') 
+  async stepStatus(@Query() query: BaseProjectDto) {
+    const res = await this.stepService.stepStatus(query.projectId);
+    return new ResData(res);
   }
 }

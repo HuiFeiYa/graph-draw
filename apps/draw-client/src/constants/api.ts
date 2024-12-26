@@ -8,7 +8,8 @@ export const API = {
     getAllShapes: 'shape/diagram/allShape',
     moveShapes: 'shape/move',
     redo: 'step/redo',
-    undo: 'step/undo'
+    undo: 'step/undo',
+    stepStatus: 'step/stepStatus'
 }
 
 export const ApiCode =  {
