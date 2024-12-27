@@ -4,7 +4,7 @@ import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
 import { GraphProps } from "./types";
 import { emitter } from "./util/Emitter";
-import { EventType, Shape } from "@hfdraw/types";
+import { EventType, Shape, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
 //@ts-ignore
 import HoverArrow from './shape/HoverArrow.vue';
@@ -39,6 +39,10 @@ function handleDragOver() {
   emitter.emit(EventType.SHAPE_DRAG_OVER, window.event);
 }
 
+function handleArrowHover(index: VertexType, shape: Shape) {
+  props.graph.graphOption.showPopover(index, shape);
+}
+
 const handleDrop = () => { };
 onMounted(() => {
 
@@ -66,7 +70,7 @@ onUnmounted(() => {
       @click="handleClickOut" @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" />
-      <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" />
+      <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
     </svg>
   </div>
 </template>

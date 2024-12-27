@@ -1,4 +1,5 @@
 import { SiderbarItemKey } from '@hfdraw/types'
+import { SiderBarItem } from '../types/common';
 export const HeaderHeight = 38;
 export const SideBarWidth = 200;
 export const EdgeMoveType = {
@@ -78,8 +79,6 @@ export const showDashboardList = [
 export const siderBarList = [
   {
     modelId: "SysML::Blocks::Block",
-    operation: "",
-    dropdownTag: "",
     showData: {
       name: "开始/结束",
       icon: "statics/siderBar/startend.png",
@@ -88,8 +87,6 @@ export const siderBarList = [
   },
   {
     modelId: "SysML::Blocks::Block",
-    operation: "",
-    dropdownTag: "",
     showData: {
       name: "矩形",
       icon: "statics/siderBar/rect.png",
@@ -98,8 +95,6 @@ export const siderBarList = [
   },
   {
     modelId: "SysML::ItemFlow",
-    operation: "",
-    dropdownTag: "",
     showData: {
       name: "直线",
       icon: "statics/siderBar/line.png",
@@ -108,8 +103,6 @@ export const siderBarList = [
   },
   {
     modelId: "SysML::Decide",
-    operation: "",
-    dropdownTag: "",
     showData: {
       name: "判定",
       icon: "statics/siderBar/decide.png",
@@ -118,7 +111,16 @@ export const siderBarList = [
   },
 ];
 
-
+export const popoverList: SiderBarItem[] = [
+  {
+    modelId: "SysML::Blocks::Block",
+    showData: {
+      icon: "statics/siderBar/rect.png",
+      siderBarkey: SiderbarItemKey.Block,
+      name: ''
+    },
+  },
+]
 
 /**
  * socket 连接状态

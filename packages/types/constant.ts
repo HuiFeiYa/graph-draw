@@ -30,10 +30,14 @@ export enum EventType {
 }
 
 export enum VertexType {
-  leftTop = 1,
-  rightTop = 2,
-  rightBottom = 3,
-  leftBottom = 4,
+  leftTop=1,
+  rightTop=2,
+  rightBottom=3,
+  leftBottom=4,
+  left=5,
+  top=6,
+  right=7,
+  bottom=8
 }
 
 export enum CreatePointType {

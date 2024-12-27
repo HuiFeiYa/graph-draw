@@ -1,3 +1,5 @@
+import { SiderbarItemKey } from "@hfdraw/types";
+
 export interface HeadItem {
     label: string;
     notShowLabel: boolean
@@ -5,4 +7,14 @@ export interface HeadItem {
     value: string;
     hide?:  boolean
     disabled?:  boolean
+}
+
+export interface ShowData {
+    name: string;
+    icon: string;
+    siderBarkey: SiderbarItemKey
+}
+export interface SiderBarItem {
+    modelId: string;
+    showData: ShowData
 }

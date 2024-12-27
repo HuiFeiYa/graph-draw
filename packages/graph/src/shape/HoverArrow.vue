@@ -5,6 +5,9 @@ import { VertexType } from '../util/common';
 const props = defineProps<{
   shape:Shape
 }>();
+const emit = defineEmits<{
+    (e: 'arrowHover', index: VertexType, shape: Shape): void
+}>()
 const bounds = computed(() => {
     return props.shape.bounds;
 })
@@ -116,6 +119,7 @@ const bottomArrowColor = computed(()=> {
 })
 function handleMouseEnter (index: VertexType) {
     activeArrowIndex.value = index;
+    emit('arrowHover',index, props.shape);
 }
 function handleMouseout () {
     activeArrowIndex.value = -1;

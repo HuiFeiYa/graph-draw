@@ -12,6 +12,10 @@
         "noImplicitThis": false,                  // 当值为 'any' 时，'this' 隐含任何类型
         "alwaysStrict": false,    
         "noImplicitAny": false,  // 允许隐式的 any 类型
+        "paths": {
+            "@/*": ["src/*"] // 别名 '@' 指向 'src' 目录
+          },
+        "baseUrl": "./"
     },
     "include": [
         "electron/**/*"
