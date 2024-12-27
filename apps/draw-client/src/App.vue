@@ -6,13 +6,7 @@ import { GraphView } from '@hfdraw/graph'
 import { modelService } from '@/util/ModelService'
 // @ts-ignore
 import { generateRandomNumber } from '@/util/common'
-import Popover from './components/Popver.vue'
-import { useUiStore } from './stores/ui'
-import { storeToRefs } from 'pinia'
 
-
-const uiStore = useUiStore();
-const { popoverList } = storeToRefs(uiStore)
 const res = add(1, 2)
 console.log('res:', res)
 async function getApplication() {
@@ -40,7 +34,6 @@ async function createApplication() {
 
   <div class="v-app-container">
     <router-view />
-    <Popover v-for="(item,index) in popoverList" :key="index" v-bind="item" />
   </div>
 </template>
 

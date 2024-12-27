@@ -4,12 +4,21 @@
         <m-header  class="v-layout-header"/>
         <div class="_layout-content" @dragover.stop.prevent >
             <router-view />
+        <Popover v-for="(item,index) in popoverList" :key="index" v-bind="item" />
+
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import MHeader from './Header.vue'
 import MWindowBar from './WindowBar.vue';
+import { useUiStore } from '../stores/ui'
+import { storeToRefs } from 'pinia'
+import Popover from '../components/Popver.vue'
+
+
+const uiStore = useUiStore();
+const { popoverList } = storeToRefs(uiStore)
 </script>
 <style lang="scss">
 .v-layout {
@@ -19,7 +28,6 @@ import MWindowBar from './WindowBar.vue';
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
     .v-window-bar {
         flex: 0 0 auto;
         height: 28px;
@@ -37,7 +45,7 @@ import MWindowBar from './WindowBar.vue';
     ._layout-content {
         flex: 1 1 auto;
         overflow: hidden;
-
+        position: relative;
     }
 
 }

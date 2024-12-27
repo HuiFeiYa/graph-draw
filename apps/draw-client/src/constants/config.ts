@@ -2,6 +2,8 @@ import { SiderbarItemKey } from '@hfdraw/types'
 import { SiderBarItem } from '../types/common';
 export const HeaderHeight = 38;
 export const SideBarWidth = 200;
+export const popoverGap = 50;
+export const popoverWidth = 50;
 export const EdgeMoveType = {
   Segment: "Segment", // 线段拖动
   Waypoint: "Waypoint", // waypoint拖动

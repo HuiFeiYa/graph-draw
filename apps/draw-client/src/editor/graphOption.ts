@@ -4,7 +4,7 @@ import { IGraphOption } from "@hfdraw/graph/src/types";
 import { shapeService } from "../util/ShapeService";
 import { Shape, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
-import { popoverList } from "../constants/config";
+import { SideBarWidth, popoverGap, popoverList, popoverWidth } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
 
 export class GraphOption implements IGraphOption {
@@ -25,12 +25,23 @@ export class GraphOption implements IGraphOption {
 
   showPopover(index:VertexType, shape: Shape) {
     const store = useUiStore();
-    const { x, y } = shape.bounds;
-    const item:PopoverListItem = {
+    const { x, y, height } = shape.bounds;
+
+    let item:PopoverListItem = {
       type: [VertexType.top, VertexType.bottom].includes(index) ? PopoverListItemType.horizontal : PopoverListItemType.vertical,
-      x,
-      y,
+      x: x + SideBarWidth,
+      y: y ,
       list: popoverList
+    }
+    switch(index) {
+      case VertexType.left: {
+        item.x = item.x - popoverGap - popoverWidth;
+        item.y += height / 2;
+        break;
+      }
+      case VertexType.top: {
+
+      }
     }
     store.setPopoverList([item])
   }
