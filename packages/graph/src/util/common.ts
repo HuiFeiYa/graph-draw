@@ -6,5 +6,9 @@ export function int(num:number|string) {
     leftTop=1,
     rightTop=2,
     rightBottom=3,
-    leftBottom=4
+    leftBottom=4,
+    left=5,
+    top=6,
+    right=7,
+    bottom=8
   }
