@@ -2,8 +2,9 @@ import { SiderbarItemKey } from '@hfdraw/types'
 import { SiderBarItem } from '../types/common';
 export const HeaderHeight = 38;
 export const SideBarWidth = 200;
-export const popoverGap = 50;
-export const popoverWidth = 50;
+export const popoverGap = 20;
+export const popoverWidth = 58;
+export const popoverHeight = 48;
 export const EdgeMoveType = {
   Segment: "Segment", // 线段拖动
   Waypoint: "Waypoint", // waypoint拖动
@@ -120,6 +121,14 @@ export const popoverList: SiderBarItem[] = [
       icon: "statics/siderBar/rect.png",
       siderBarkey: SiderbarItemKey.Block,
       name: ''
+    },
+  },
+  {
+    modelId: "SysML::Decide",
+    showData: {
+      name: "判定",
+      icon: "statics/siderBar/decide.png",
+      siderBarkey: SiderbarItemKey.Decide,
     },
   },
 ]
