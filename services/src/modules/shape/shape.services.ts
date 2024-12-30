@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  ConnectShapeAndCreateDto,
   FetchAllShapeDto,
   MoveShapeDto,
   SideBarDropDto,
@@ -29,12 +30,10 @@ export class ShapeService  extends BaseService{
   }
   async sideBarItemDrop(dto: SideBarDropDto) {
     return await this.shapeRepository.manager.transaction(async manager => {
-      const options: SideBarDropDto = {
+      const options = {
         projectId: dto.projectId,
-        diagramId: dto.diagramId,
         point: dto.point,
-        sourceType: dto.sourceType,
-        // targetShapeId:
+        stType: dto.modelId
       };
       const sideBar = new SidebarModel(options);
       await sideBar.run();
@@ -137,6 +136,9 @@ export class ShapeService  extends BaseService{
     return changes;
   }
 
+  async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
+    const { sourceShapeId, projectId, index, modelId: stType } = dto;
+  }
   async test() {
     // return this.currentStepService.findStep();
   }

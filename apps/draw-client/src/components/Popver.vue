@@ -2,7 +2,7 @@
 import { ref, reactive, computed, watch } from 'vue';
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
 const props = defineProps<PopoverListItem>()
-console.log('props:',props)
+
 const columns = computed(()=> {
     return props.type === PopoverListItemType.horizontal ?  `repeat(${props.list.length}, 1fr)` : '1fr'
 })

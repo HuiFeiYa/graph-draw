@@ -31,5 +31,12 @@ export class ShapeUtil {
     let width = 0;
     return width;
   }
+  initEdgeShape(sourceShape: ShapeEntity, targetShape: ShapeEntity, shape: ShapeEntity,  points: Point[]) {
+    shape.waypoint = points; // this.getNearPoint(targetShape, points.slice());
+
+    shape.sourceId = sourceShape?.id;
+    shape.targetId = targetShape?.id;
+    return shape;
+  }
 }
 export const shapeUtil = new ShapeUtil()

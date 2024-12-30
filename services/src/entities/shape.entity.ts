@@ -79,13 +79,6 @@ export class ShapeEntity {
   })
   waypoint: Point[];
 
-  @Column({
-    type: String,
-    nullable: false,
-    comment: '画布图形id',
-    collation: 'BINARY',
-  })
-  diagramId: string; // 画布ID
 
   @Column({
     type: String,
@@ -126,8 +119,6 @@ export class ShapeEntity {
   static fromOption(
     shapeOption: Partial<ShapeOption>,
     projectId: string,
-    diagramId: string,
-    parentId: string | null,
   ) {
     if (!shapeOption) {
       throw new ResException(ApiCode.ERROR, 'shapeOption 缺失');
@@ -136,9 +127,6 @@ export class ShapeEntity {
     shape.id = getUid();
     Object.assign(shape, cloneDeep(shapeOption));
     shape.projectId = projectId;
-    shape.diagramId = diagramId;
-
-    shape.parentId = parentId;
     return shape;
   }
 }

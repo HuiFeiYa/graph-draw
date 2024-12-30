@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { ShapeService } from "./shape.services";
 import { ResData } from "src/utils/http/ResData";
-import { FetchAllShapeDto, MoveShapeDto, SideBarDropDto } from "src/types/shape.dto";
+import { FetchAllShapeDto, MoveShapeDto, SideBarDropDto, ConnectShapeAndCreateDto } from "src/types/shape.dto";
 import { WsService } from "../socket/WsService";
 import { WsMessageType } from "src/types/common";
 import { ChangeType, StepType } from "@hfdraw/types";
@@ -40,6 +40,12 @@ export class ShapeController {
     async moveShape(@Body() moveShapeDto: MoveShapeDto) {
         const data = await this.shapeService.moveShape(moveShapeDto);
         return new ResData(data);
+    }
+
+    @Post('connectShapeAndCreate')
+    async connectShapeAndCreate(@Body() connectShapeAndCreateDto: ConnectShapeAndCreateDto) {
+      await this.shapeService.connectShapeAndCreate(connectShapeAndCreateDto);
+      return new ResData(null);
     }
     @Get('test')
     async test() {

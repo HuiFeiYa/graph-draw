@@ -4,7 +4,7 @@ export interface SideBarDropDto {
     // {x: 95, y: 162}
     point: {x:number,y:number};
     projectId: string;
-    sourceType: SiderbarItemKey;
+    modelId: string;
   }
   
   export interface MoveShapeDto {

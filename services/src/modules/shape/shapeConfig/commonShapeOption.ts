@@ -32,3 +32,18 @@ export const blockOption:Partial<ShapeOption> = {
     },
     bounds: { absX: 0, absY: 0, width: 100, height: 50, x: 0, y: 0 },
   };
+
+  export const edgeOption: Partial<ShapeOption> = {
+    ...baseShapeOption,
+    shapeType: ShapeType.Edge,
+    subShapeType: SubShapeType.CommonEdge,
+    shapeKey: ShapeKey.Association,
+    waypoint: [],
+  
+    style: {
+      ...baseShapeOption.style,
+      strokeColor: 'rgb(0,0,0)',
+      strokeWidth: 1,
+    }
+  
+  };

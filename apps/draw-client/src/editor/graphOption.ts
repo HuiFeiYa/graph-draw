@@ -31,7 +31,9 @@ export class GraphOption implements IGraphOption {
       type: isHorizontal ? PopoverListItemType.horizontal : PopoverListItemType.vertical,
       x: x + SideBarWidth,
       y: y ,
-      list: popoverList
+      list: popoverList,
+      index,
+      shape
     }
     switch(index) {
       case VertexType.left: {

@@ -53,6 +53,7 @@ export enum SiderbarItemKey {
   FlowDiagram = "FlowDiagram",
   Start = "Start",
   Decide = "Decide",
+  Aggregation = "Aggregation"
 }
 
 export enum MetaclassType {
@@ -65,7 +66,8 @@ export enum MetaclassType {
 export enum StType {
   "SysML::Blocks::Block" = "SysML::Blocks::Block",
   "SysML::ItemFlow" = "SysML::ItemFlow",
-  "SysML::Decide" = "SysML::Decide"
+  "SysML::Decide" = "SysML::Decide",
+  "SysML::Association" = "SysML::Association"
 }
 
 
@@ -129,3 +131,8 @@ export const siderBarList = [
     },
   },
 ];
+
+export const  siderbarItemKeyToStTypeMap = {
+ [SiderbarItemKey.Aggregation]: StType["SysML::Association"],
+ [SiderbarItemKey.Block]: StType['SysML::Blocks::Block']
+}

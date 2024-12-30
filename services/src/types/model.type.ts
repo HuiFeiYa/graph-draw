@@ -15,8 +15,9 @@ export class  ShapeOption extends  ShapeEntity {
 
 export interface SidebarOptions {
   projectId: string
-  diagramId: string
+  // diagramId: string
   // shapeParentId: string
   point: Point;
-  sourceType: SiderbarItemKey;
+  // sourceType: SiderbarItemKey;
+  stType: StType
 }

@@ -1,5 +1,5 @@
-import { Change, SiderbarItemKey, StType } from "@hfdraw/types";
-import { IsArray, IsNumber, IsString } from "class-validator";
+import { Change, SiderbarItemKey, StType, VertexType } from "@hfdraw/types";
+import { IsArray, IsInt, IsNumber, IsString } from "class-validator";
 import { Point } from "src/utils/Point";
 export class BaseProjectDto {
   @IsString()
@@ -8,13 +8,13 @@ export class BaseProjectDto {
 }
 // 定义 DTO 类
 export class SideBarDropDto {
-    @IsString()
-    diagramId: string;
+    // @IsString()
+    // diagramId: string;
     // {x: 95, y: 162}
     point: Point;
     @IsString()
     projectId: string;
-    sourceType: SiderbarItemKey;
+    modelId: StType;
     // @IsString()
     // targetShapeId: string;
   }
@@ -32,9 +32,29 @@ export class SideBarDropDto {
     dy: number
   }
 
+  export class ConnectShapeAndCreateDto extends BaseProjectDto {
+    @IsString()
+    sourceShapeId: string;
+    
+    @IsString()
+    index: VertexType
+
+    // 可以是 stType
+    @IsString()
+    modelId: string;
+  }
+
   export class UndoDto extends BaseProjectDto {
     // changes: Change[]
     // desc?: string
     // // 序号，第几步， 从0开始
     // index: number
+  }
+
+
+  export class PointDto {
+    @IsInt()
+    x: number;
+    @IsInt()
+    y: number;
   }

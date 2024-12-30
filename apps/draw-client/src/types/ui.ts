@@ -1,3 +1,4 @@
+import { Shape, VertexType } from "@hfdraw/types"
 import { SiderBarItem } from "./common"
 
 export enum PopoverListItemType  {
@@ -9,4 +10,6 @@ export interface PopoverListItem {
     x: number
     y: number
     list: SiderBarItem[]
+    index: VertexType
+    shape: Shape
 }

@@ -16,29 +16,19 @@ export class SidebarModel {
     createdModels:Set<Model> = new Set()
     modelKey:ModelKey
     point: Point;
-    sourceType: SiderbarItemKey
     constructor (options: SidebarOptions) {
-        const { projectId, diagramId, point, sourceType  } = options
+        const { projectId, point, stType  } = options
         this.projectId = projectId
-        this.diagramId = diagramId
         this.point = point
-        this.sourceType = sourceType
-        this.modelKey = StType["SysML::Blocks::Block"]
+        this.modelKey = stType
     }
     async run() {
-        // await this.createModel()
         await this.createShape();
-        // await this.saveAllEntity();
     }
-    // async createModel() {
-    //     const res = await ModelUtil.createInstance(this.options)
-    //     this.createdMainModel = res;
-    //     this.createdModels.add(res);
-    // }
     async createShape() {
         const { projectId, diagramId, shapeParentId, modelKey } = this
         const shapeOption = shapeFactory.getModelShapeOption(modelKey);
-        const shape = ShapeEntity.fromOption(shapeOption, projectId, diagramId, shapeParentId||diagramId);
+        const shape = ShapeEntity.fromOption(shapeOption, projectId);
         shapeUtil.initShape(shape, this.point);
         this.createdShapes.add(shape);
     }

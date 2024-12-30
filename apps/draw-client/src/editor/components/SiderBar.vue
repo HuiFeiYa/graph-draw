@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+// @ts-ignore
 import { SideBarWidth, siderBarList } from '@/constants/config';
 import { shapeService } from "../../util/ShapeService";
 import { SideBarDropDto } from "../../types/shape.dto";
@@ -7,17 +8,17 @@ import { SiderbarItemKey } from "@hfdraw/types";
 const props = defineProps();
 const active = ref("common");
 
-const onMousedown = async (event, item) => {
+const onMousedown = async (item: { modelId: any; }) => {
   const params:SideBarDropDto = {
     diagramId: '1',
     point: {x: 100, y: 100},
     projectId: 'p1',
-    sourceType: SiderbarItemKey.Block
+    modelId: item.modelId
   }
   const res = await shapeService.sidebarDrop(params)
   console.log('res，', res)
 };
-const onDragstart = (event) => {
+const onDragstart = (event: { stopPropagation: () => void; }) => {
   event.stopPropagation();
 };
 </script>
@@ -27,7 +28,7 @@ const onDragstart = (event) => {
       <el-collapse-item title="通用" name="common">
         <div class="collapse">
           <div v-for="siderbarItem in siderBarList" :key="siderbarItem.modelId" class="collapse-item"
-            @mousedown="onMousedown($event, siderbarItem)">
+            @mousedown="onMousedown( siderbarItem)">
             <el-popover placement="bottom" :content="siderbarItem.showData.name" trigger="hover" width="60">
               <template #reference>
                 <img :src="siderbarItem.showData.icon" />

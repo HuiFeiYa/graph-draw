@@ -25,4 +25,5 @@ export enum ShapeType {
 export enum ShapeKey {
     Block = "Block",
     Diagram = "Diagram",
+    Association = "Association", // 关联
 }
