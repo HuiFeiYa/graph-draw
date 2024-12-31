@@ -44,7 +44,22 @@ export class ShapeController {
 
     @Post('connectShapeAndCreate')
     async connectShapeAndCreate(@Body() connectShapeAndCreateDto: ConnectShapeAndCreateDto) {
-      await this.shapeService.connectShapeAndCreate(connectShapeAndCreateDto);
+      const res = await this.shapeService.connectShapeAndCreate(connectShapeAndCreateDto);
+      await this.wsService.sendToSubscribedClient(connectShapeAndCreateDto.projectId, {
+        type: WsMessageType.step,
+        data: {
+          projectId: connectShapeAndCreateDto.projectId,
+          changes: res.map((item) => {
+            return {
+              type: ChangeType.INSERT,
+              newValue: JSON.stringify(item),
+              projectId: connectShapeAndCreateDto.projectId,
+              shapeId: item.id_
+            };
+          }),
+          stepType: StepType.edit
+        },
+      });
       return new ResData(null);
     }
     @Get('test')

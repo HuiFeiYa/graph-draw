@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
 
 export const useProjectStore = defineStore('project', {
-  state: (): {
+  state: ():({
+    projectId: string,
     projects: any[]
-  } => ({
-    projects: []
+  }) => ({
+    projects: [],
+    projectId: 'p1'
   }),
   actions: {
     addProject(project: object) {

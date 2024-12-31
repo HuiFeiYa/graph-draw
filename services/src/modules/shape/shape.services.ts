@@ -3,6 +3,7 @@ import {
   ConnectShapeAndCreateDto,
   FetchAllShapeDto,
   MoveShapeDto,
+  PointDto,
   SideBarDropDto,
 } from 'src/types/shape.dto';
 import { SidebarModel } from '../models/SidebarModel';
@@ -11,11 +12,15 @@ import { ShapeEntity } from 'src/entities/shape.entity';
 import { EntityTarget, FindManyOptions, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
-import { Change, ChangeType, StepType } from '@hfdraw/types';
+import { Change, ChangeType, StType, StepType, VertexType } from '@hfdraw/types';
 import { CurrentStepService } from '../currentStep/currentStepService';
 import { StepService } from '../step/stepService';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseService } from '../common/BaseService';
+import { Point } from 'src/utils/Point';
+import { shapeFactory } from '../models/ShapeFactory';
+import { shapeUtil } from 'src/utils/shape/ShapeUtil';
+import { ConnectModel } from '../models/ConnectModel';
 
 @Injectable()
 export class ShapeService  extends BaseService{
@@ -137,6 +142,51 @@ export class ShapeService  extends BaseService{
   }
 
   async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
+    return await this.shapeRepository.manager.transaction(async manager => {
+      const { sourceShapeId, projectId, index, modelId: stType } = dto;
+      const shape = await this.shapeRepository.findOne({
+        where: {
+          id: sourceShapeId
+        },
+        select: ['bounds', 'id']
+      })
+      /** 创建 target Shape */
+      const {shapePoint, targetPoint, sourcPoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
+      const options = {
+        projectId,
+        stType,
+        point: shapePoint
+      }
+      const sideBar = new SidebarModel(options);
+      await sideBar.run();
+      const targetShape = [...sideBar.createdShapes][0]
+      /** 创建线 */
+      const connectModel = new ConnectModel(projectId, StType['SysML::Association'], [sourcPoint,targetPoint],shape,targetShape);
+      await connectModel.connectShape()
+      const toCreateShapes = [...sideBar.createdShapes, ...connectModel.createdShapes];
+      const res = await manager.save(ShapeEntity, toCreateShapes)
+      return res;
+    })
+  }
+  // async createConnectTargetShape(dto: ConnectShapeAndCreateDto) {
+  //   const { sourceShapeId, projectId, index, modelId: stType } = dto;
+  //   const shape = await this.shapeRepository.findOne({
+  //     where: {
+  //       id: sourceShapeId
+  //     },
+  //     select: ['bounds', 'id']
+  //   })
+  //   const {shapePoint, targetPoint, sourcPoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
+  //   const options = {
+  //     projectId,
+  //     stType,
+  //     point: shapePoint
+  //   }
+  //   const sideBar = new SidebarModel(options);
+  //   await sideBar.run();
+  //   return sideBar.createdShapes;
+  // }
+  async createConnectEdge(dto: ConnectShapeAndCreateDto, waypoint: PointDto[]) {
     const { sourceShapeId, projectId, index, modelId: stType } = dto;
   }
   async test() {

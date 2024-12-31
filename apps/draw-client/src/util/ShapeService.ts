@@ -1,6 +1,6 @@
 import { httpClient } from './httpClient'
 import { API } from '../constants/api'
-import { MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
+import { ConnectShapeAndCreateDto, MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
 import { Shape } from '@hfdraw/types'
 import { AxiosResponse } from 'axios';
 
@@ -24,6 +24,9 @@ export class ShapeService {
     async getStepStatus(projectId: string) {
         const res = await httpClient.get<AxiosResponse<{data: {currentStepId: string, hasPreStep: boolean, hasNextStep: boolean}}>>(API.stepStatus, {projectId})
         return res.data.data;
+    }
+    async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
+        await httpClient.post(API.connectShapeAndCreate, dto);
     }
 }
 export const shapeService = new ShapeService();

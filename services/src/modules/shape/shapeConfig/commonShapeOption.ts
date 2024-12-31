@@ -47,3 +47,5 @@ export const blockOption:Partial<ShapeOption> = {
     }
   
   };
+
+  export const connectEdgeLength = 100;

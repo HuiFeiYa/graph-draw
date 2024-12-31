@@ -1,15 +1,28 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue';
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
+import { shapeService } from '../util/ShapeService';
+import { useProjectStore } from '../stores/project';
+import { SiderBarItem } from '../types/common';
+const projectStore = useProjectStore();
 const props = defineProps<PopoverListItem>()
 
 const columns = computed(()=> {
     return props.type === PopoverListItemType.horizontal ?  `repeat(${props.list.length}, 1fr)` : '1fr'
 })
+
+async function  handleCreate(item:SiderBarItem) {
+    await shapeService.connectShapeAndCreate({
+        projectId: projectStore.projectId,
+        sourceShapeId: props.shape.id,
+        index: props.index,
+        modelId: item.modelId
+    });
+}
 </script>
 <template>
 <div class="m-popover" :style="{left: x + 'px', top: y + 'px', 'grid-template-columns':  columns}"  >
-    <div v-for="item in list" :key="item.modelId" >
+    <div v-for="item in list" :key="item.modelId" @click="handleCreate(item)">
         <img style="width: 30px;cursor: pointer;" :src="item.showData.icon">
     </div>
 </div>
