@@ -13,6 +13,9 @@ export const useUiStore = defineStore('ui', {
   actions: {
     setPopoverList(list:PopoverListItem[]) {
         this.popoverList = list;
+    },
+    clearPopoverList() {
+      this.popoverList = []
     }
   },
 });

@@ -8,16 +8,9 @@ export enum ShapeType {
 
   export enum SubShapeType {
     TextBox = "TextBox",
-    Block = "Block", // 模块结构的类型,
-    CommonDiagram = "CommonDiagram",
-    Package = "Package",
-    Comment = "Comment",
-    CommonPort = "CommonPort",
-    CommonEdge = "CommonEdge",
-    Note = "Note",
-    Image = "Image",
-    UseCase = 'UseCase',
-    Decide = 'Decide'
+    Block = "Block",
+    Decide = 'Decide',
+    CommonEdge = 'CommonEdge' 
   }
   /**
  * shapeKey是最细的标识，用于标识各个图形，用于业务逻辑中的图形逻辑判断，基本每个模型都会对应一到多个

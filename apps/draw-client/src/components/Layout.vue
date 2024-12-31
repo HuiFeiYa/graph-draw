@@ -4,7 +4,9 @@
         <m-header  class="v-layout-header"/>
         <div class="_layout-content" @dragover.stop.prevent >
             <router-view />
-        <Popover v-for="(item,index) in popoverList" :key="index" v-bind="item" />
+        <div v-if="popoverList.length > 0">
+            <Popover v-for="(item,index) in popoverList" :key="index" v-bind="item" />
+        </div>
 
         </div>
     </div>

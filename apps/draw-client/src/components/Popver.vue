@@ -4,7 +4,9 @@ import { PopoverListItem, PopoverListItemType } from '../types/ui'
 import { shapeService } from '../util/ShapeService';
 import { useProjectStore } from '../stores/project';
 import { SiderBarItem } from '../types/common';
+import { useUiStore } from '../stores/ui';
 const projectStore = useProjectStore();
+const uiStore = useUiStore();
 const props = defineProps<PopoverListItem>()
 
 const columns = computed(()=> {
@@ -18,6 +20,7 @@ async function  handleCreate(item:SiderBarItem) {
         index: props.index,
         modelId: item.modelId
     });
+    uiStore.clearPopoverList()
 }
 </script>
 <template>

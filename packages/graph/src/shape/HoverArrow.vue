@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Shape } from '@hfdraw/types';
+import { EventType, Shape } from '@hfdraw/types';
 import { ref, reactive, computed, watch } from 'vue';
 import { VertexType } from '../util/common';
+import { emitter } from '../util/Emitter';
 const props = defineProps<{
   shape:Shape
 }>();
@@ -132,27 +133,31 @@ function getColor(vertexType: VertexType) {
     return activeArrowIndex.value === vertexType ? 'rgba(0, 0, 255, 0.8)': 'rgba(0, 0, 255, 0.2)';
 }
 
+function handleMouseLeave() {
+    emitter.emit(EventType.SHAPE_MOUSE_LEAVE)
+}
+
 </script>
 <template>
     <!-- 这里需要设置 points-events 为auto才能捕获事件，在 svg 根元素上设置了 none -->
 <g style="transform: translate(12px,12px);pointer-events: auto;">
             <!-- 左侧 -->
-            <g @mouseenter="handleMouseEnter(VertexType.left)" @mouseout="handleMouseout" :fill="leftArrowColor" :stroke="leftArrowColor">
+            <g @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter(VertexType.left)" @mouseout="handleMouseout" :fill="leftArrowColor" :stroke="leftArrowColor">
                 <polygon  :points="leftArrow.points"  />
                 <line :x1="leftArrow.x1" :y1="leftArrow.y1" :x2="leftArrow.x2" :y2="leftArrow.y2" stroke-width="6" />
             </g>
             <!-- 上侧 -->
-            <g @mouseenter="handleMouseEnter(VertexType.top)" @mouseout="handleMouseout" :fill="topArrowColor" :stroke="topArrowColor">
+            <g @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter(VertexType.top)" @mouseout="handleMouseout" :fill="topArrowColor" :stroke="topArrowColor">
                 <polygon  :points="topArrow.points"  />
                 <line :x1="topArrow.x1" :y1="topArrow.y1" :x2="topArrow.x2" :y2="topArrow.y2" stroke-width="6"/>
             </g>
             <!-- 右侧 -->
-            <g @mouseenter="handleMouseEnter(VertexType.right)" @mouseout="handleMouseout" :fill="rightArrowColor" :stroke="rightArrowColor">
+            <g @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter(VertexType.right)" @mouseout="handleMouseout" :fill="rightArrowColor" :stroke="rightArrowColor">
                 <polygon  :points="rightArrow.points" />
                 <line :x1="rightArrow.x1" :y1="rightArrow.y1" :x2="rightArrow.x2" :y2="rightArrow.y2" stroke-width="6"/>
             </g>
             <!-- 下侧 -->
-            <g @mouseenter="handleMouseEnter(VertexType.bottom)" @mouseout="handleMouseout" :fill="bottomArrowColor" :stroke="bottomArrowColor">
+            <g @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter(VertexType.bottom)" @mouseout="handleMouseout" :fill="bottomArrowColor" :stroke="bottomArrowColor">
                 <polygon  :points="bottomArrow.points" />
                 <line :x1="bottomArrow.x1" :y1="bottomArrow.y1" :x2="bottomArrow.x2" :y2="bottomArrow.y2" stroke-width="6"/>
             </g>

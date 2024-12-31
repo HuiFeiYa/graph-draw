@@ -63,7 +63,7 @@ export class ShapeUtil {
         sourcPoint.x = xS + widthS;
         targetPoint.y = sourcPoint.y = yS + heightS / 2; // 中点 y 相同，x 相差 connectEdgeLength
         targetPoint.x = sourcPoint.x + connectEdgeLength;
-        shapePoint.x =  targetPoint.x - widthT / 2  ;
+        shapePoint.x =  targetPoint.x ;
         shapePoint.y = targetPoint.y - heightT / 2;
         break;
       }
@@ -79,7 +79,7 @@ export class ShapeUtil {
         targetPoint.y = sourcPoint.y = yS + heightS / 2; // 中点 y 相同，x 相差 connectEdgeLength
         sourcPoint.x = xS;  
         targetPoint.x = sourcPoint.x - connectEdgeLength;
-        shapePoint.x = targetPoint.x - widthT / 2;
+        shapePoint.x = targetPoint.x - widthT;
         shapePoint.y = targetPoint.y - heightT / 2;
         break;
       }

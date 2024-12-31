@@ -12,12 +12,6 @@ export const baseShapeOption:Partial<ShapeOption> = {
     bounds: { absX: 0, absY: 0, width: 100, height: 80, x: 0, y: 0 },
 }
 
-export const diagramOption:Partial<ShapeOption> = {
-    ...baseShapeOption,
-    shapeType: ShapeType.Diagram,
-    subShapeType: SubShapeType.CommonDiagram,
-    shapeKey: ShapeKey.Diagram
-}
 
 export const blockOption:Partial<ShapeOption> = {
     ...baseShapeOption,

@@ -8,6 +8,7 @@ export function createEventHandler(props:{shape:Shape}) {
 
       emitter.emit(EventType.SHAPE_CLICK, window.event, props.shape);
     },
+   
     mouseover() {
       emitter.emit(EventType.SHAPE_MOUSE_OVER,window.event, props.shape);
     },
