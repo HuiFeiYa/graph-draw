@@ -5,12 +5,14 @@ import { FetchAllShapeDto, MoveShapeDto, SideBarDropDto, ConnectShapeAndCreateDt
 import { WsService } from "../socket/WsService";
 import { WsMessageType } from "src/types/common";
 import { ChangeType, StepType } from "@hfdraw/types";
+import { StepService } from "../step/stepService";
 
 @Controller('shape')
 export class ShapeController {
     constructor(
         private readonly shapeService: ShapeService,
         private readonly wsService: WsService, // 注入 WsService
+        private readonly stepService: StepService
         ) {}
     @Post('sidebarDrop')
     async sidebarDrop(@Body() dto: SideBarDropDto) {
@@ -45,21 +47,23 @@ export class ShapeController {
     @Post('connectShapeAndCreate')
     async connectShapeAndCreate(@Body() connectShapeAndCreateDto: ConnectShapeAndCreateDto) {
       const res = await this.shapeService.connectShapeAndCreate(connectShapeAndCreateDto);
+      const changes = res.map((item) => {
+        return {
+          type: ChangeType.INSERT,
+          newValue: JSON.stringify(item),
+          projectId: connectShapeAndCreateDto.projectId,
+          shapeId: item.id_
+        };
+      })
       await this.wsService.sendToSubscribedClient(connectShapeAndCreateDto.projectId, {
         type: WsMessageType.step,
         data: {
           projectId: connectShapeAndCreateDto.projectId,
-          changes: res.map((item) => {
-            return {
-              type: ChangeType.INSERT,
-              newValue: JSON.stringify(item),
-              projectId: connectShapeAndCreateDto.projectId,
-              shapeId: item.id_
-            };
-          }),
+          changes,
           stepType: StepType.edit
         },
       });
+      await this.stepService.initStep({ projectId: connectShapeAndCreateDto.projectId, changes})
       return new ResData(null);
     }
     @Get('test')

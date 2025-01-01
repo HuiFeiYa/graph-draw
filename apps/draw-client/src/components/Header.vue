@@ -30,8 +30,12 @@ import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 import MHeaderButton from './headerComponents/HeaderButton.vue';
 import { shapeService } from '../util/ShapeService';
 import { stepStatusReactive } from '../util/StepStatus';
+import { useUiStore } from '../stores/ui';
+import { emitter } from '../util/Emitter';
+import { BusEvent } from '../constants/config';
 let activeTab = ref('Project');
 let selectButtonValue = ref('');
+const uiStore = useUiStore();
 const activeHeaderMenu = computed(() => {
   return headerMenus.find(it => it.enName === activeTab.value);
 });
@@ -58,6 +62,11 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
       break;
     }
   }
+  clear()
+}
+function clear() {
+  uiStore.clearPopoverList();
+  emitter.emit(BusEvent.CLEAR_STATUS)
 }
 function freshStepStatus() {
   stepStatusReactive.fresh('p1')

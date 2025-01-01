@@ -44,6 +44,9 @@ const events = {
       Object.assign(graphData.symbols[i],{...newValue})
     }
   },
+  [BusEvent.CLEAR_STATUS]: async (change: Change) => {
+    graphData.graph.clear();
+  }
 };
 // 监听事件
 emitter.onBatch(events)

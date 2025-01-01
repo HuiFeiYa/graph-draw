@@ -78,4 +78,8 @@ export class GraphModel {
     }
     this.shapeMap.set(shape.id, shallowReactive(shape));
   }
+  clear() {
+    this.selectionModel.clearSelection();
+    this.hoverModel.clearHoverShape();
+  }
 }

@@ -20,11 +20,14 @@ async function  handleCreate(item:SiderBarItem) {
         index: props.index,
         modelId: item.modelId
     });
+    clear();
+}
+async function clear() {
     uiStore.clearPopoverList()
 }
 </script>
 <template>
-<div class="m-popover" :style="{left: x + 'px', top: y + 'px', 'grid-template-columns':  columns}"  >
+<div class="m-popover" :style="{left: x + 'px', top: y + 'px', 'grid-template-columns':  columns}"  @mouseleave="clear">
     <div v-for="item in list" :key="item.modelId" @click="handleCreate(item)">
         <img style="width: 30px;cursor: pointer;" :src="item.showData.icon">
     </div>

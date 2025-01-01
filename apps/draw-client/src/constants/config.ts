@@ -165,4 +165,5 @@ export enum BusEvent {
   INSERT_SHAPE="INSERT_SHAPE", // 图形增加
   DELETE_SHAPE="DELETE_SHAPE", // 图形删除
   UPDATE_SHAPE="UPDATE_SHAPE", // 图形更新
+  CLEAR_STATUS="CLEAR_STATUS", // 清除选中状态，箭头
 }
