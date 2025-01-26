@@ -39,7 +39,7 @@ export class Emitter {
       });
     }
     emit(event:string, ...rest:any[]) {
-      if (!this.store[event]) return;
+      if ( !event || !this.store[event]) return;
       // if (event !== 'update-hover-shape') {
       //
       // }

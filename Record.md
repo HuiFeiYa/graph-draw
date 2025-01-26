@@ -19,3 +19,10 @@ NODE_MODULE_VERSION 130. Please try re-compiling or re-installing
 2. 将 package.json 以及 dist 文件复制到 hfdraw\apps\draw-client\nodeServer 目录下
 3. 在 hfdraw\apps\draw-client\nodeServer 目录下执行 ./node_modules/.bin/electron-rebuild 重新编译。 electron-rebuild 会重新编译所有需要编译的本地模块。这一步骤会生成与当前 Electron 版本兼容的 .node 文件。
 4. 再次启动 electron 项目成功。
+
+
+## graph 中打印 enums 枚举为 undefined
+
+console.log('EventType.SHAPE_MOUSE_OVER:',EventType.SHAPE_MOUSE_OVER)
+
+需要重新到 types 目录下 npm run build 。
