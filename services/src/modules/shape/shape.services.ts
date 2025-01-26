@@ -12,7 +12,7 @@ import { ShapeEntity } from 'src/entities/shape.entity';
 import { EntityTarget, FindManyOptions, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
-import { Change, ChangeType, StType, StepType, VertexType } from '@hfdraw/types';
+import { Change, ChangeType, StType, StepType, StyleObject, VertexType } from '@hfdraw/types';
 import { CurrentStepService } from '../currentStep/currentStepService';
 import { StepService } from '../step/stepService';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
@@ -143,15 +143,18 @@ export class ShapeService  extends BaseService{
 
   async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
     return await this.shapeRepository.manager.transaction(async manager => {
-      const { sourceShapeId, projectId, index, modelId: stType } = dto;
+      const { sourceShapeId, projectId, index, modelId: stType, sourceConnection, targetConnection } = dto;
       const shape = await this.shapeRepository.findOne({
         where: {
           id: sourceShapeId
         },
         select: ['bounds', 'id']
       })
+      if (!shape) {
+        throw new Error('未找到源图形')
+      }
       /** 创建 target Shape */
-      const {shapePoint, targetPoint, sourcPoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
+      const {shapePoint, targetPoint, sourcePoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
       const options = {
         projectId,
         stType,
@@ -161,7 +164,11 @@ export class ShapeService  extends BaseService{
       await sideBar.run();
       const targetShape = [...sideBar.createdShapes][0]
       /** 创建线 */
-      const connectModel = new ConnectModel(projectId, StType['SysML::Association'], [sourcPoint,targetPoint],shape,targetShape);
+      const styleObj: StyleObject = {
+        sourceConnection,
+        targetConnection
+      }
+      const connectModel = new ConnectModel(projectId, StType['SysML::Association'], [sourcePoint,targetPoint],shape,targetShape, styleObj);
       await connectModel.connectShape()
       const toCreateShapes = [...sideBar.createdShapes, ...connectModel.createdShapes];
       const res = await manager.save(ShapeEntity, toCreateShapes)
@@ -176,7 +183,7 @@ export class ShapeService  extends BaseService{
   //     },
   //     select: ['bounds', 'id']
   //   })
-  //   const {shapePoint, targetPoint, sourcPoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
+  //   const {shapePoint, targetPoint, sourcePoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
   //   const options = {
   //     projectId,
   //     stType,

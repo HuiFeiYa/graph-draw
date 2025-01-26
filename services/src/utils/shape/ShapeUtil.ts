@@ -44,7 +44,7 @@ export class ShapeUtil {
   }
   getTargetShapePoint(sourceShapeBounds: Bounds, targetShapeStType: StType, index: VertexType) {
     const shapePoint = new Point() // target Shape 起始点
-    const sourcPoint = new Point() // 线的起点
+    const sourcePoint = new Point() // 线的起点
     const targetPoint = new Point() // 线的终点
     const shapeOption = shapeFactory.getModelShapeOption(targetShapeStType);
     const { x: xS, y: yS, width: widthS, height: heightS } = sourceShapeBounds; // source shape
@@ -52,39 +52,39 @@ export class ShapeUtil {
 
     switch (index) {
       case VertexType.top: {
-        targetPoint.x = sourcPoint.x = xS + widthS / 2; // 中点 x 相同，y 相差 connectEdgeLength
-        sourcPoint.y = yS;
-        targetPoint.y = sourcPoint.y - connectEdgeLength;
-        shapePoint.x = sourcPoint.x - widthT / 2;
+        targetPoint.x = sourcePoint.x = xS + widthS / 2; // 中点 x 相同，y 相差 connectEdgeLength
+        sourcePoint.y = yS;
+        targetPoint.y = sourcePoint.y - connectEdgeLength;
+        shapePoint.x = sourcePoint.x - widthT / 2;
         shapePoint.y = targetPoint.y - heightT ; 
         break;
       }
       case VertexType.right: {
-        sourcPoint.x = xS + widthS;
-        targetPoint.y = sourcPoint.y = yS + heightS / 2; // 中点 y 相同，x 相差 connectEdgeLength
-        targetPoint.x = sourcPoint.x + connectEdgeLength;
+        sourcePoint.x = xS + widthS;
+        targetPoint.y = sourcePoint.y = yS + heightS / 2; // 中点 y 相同，x 相差 connectEdgeLength
+        targetPoint.x = sourcePoint.x + connectEdgeLength;
         shapePoint.x =  targetPoint.x ;
         shapePoint.y = targetPoint.y - heightT / 2;
         break;
       }
       case VertexType.bottom: {
-        targetPoint.x = sourcPoint.x = xS + widthS / 2;  // 中点 x 相同，y 相差 connectEdgeLength
-        sourcPoint.y = yS + heightS;
-        targetPoint.y = sourcPoint.y + connectEdgeLength;
+        targetPoint.x = sourcePoint.x = xS + widthS / 2;  // 中点 x 相同，y 相差 connectEdgeLength
+        sourcePoint.y = yS + heightS;
+        targetPoint.y = sourcePoint.y + connectEdgeLength;
         shapePoint.x = targetPoint.x  - widthT / 2;
         shapePoint.y = targetPoint.y;
         break;
       }
       case VertexType.left: {
-        targetPoint.y = sourcPoint.y = yS + heightS / 2; // 中点 y 相同，x 相差 connectEdgeLength
-        sourcPoint.x = xS;  
-        targetPoint.x = sourcPoint.x - connectEdgeLength;
+        targetPoint.y = sourcePoint.y = yS + heightS / 2; // 中点 y 相同，x 相差 connectEdgeLength
+        sourcePoint.x = xS;  
+        targetPoint.x = sourcePoint.x - connectEdgeLength;
         shapePoint.x = targetPoint.x - widthT;
         shapePoint.y = targetPoint.y - heightT / 2;
         break;
       }
     }
-    return { shapePoint, sourcPoint, targetPoint};
+    return { shapePoint, sourcePoint, targetPoint};
   }
 }
 export const shapeUtil = new ShapeUtil()

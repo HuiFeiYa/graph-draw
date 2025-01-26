@@ -18,7 +18,9 @@ async function  handleCreate(item:SiderBarItem) {
         projectId: projectStore.projectId,
         sourceShapeId: props.shape.id,
         index: props.index,
-        modelId: item.modelId
+        modelId: item.modelId,
+        sourceConnection: [1,0.5],
+        targetConnection: [0, 0.5]
     });
     clear();
 }

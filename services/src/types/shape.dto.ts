@@ -42,6 +42,12 @@ export class SideBarDropDto {
     // 可以是 stType
     @IsString()
     modelId: StType;
+
+    @IsArray()
+    sourceConnection: [number, number]
+
+    @IsArray()
+    targetConnection: [number, number]
   }
 
   export class UndoDto extends BaseProjectDto {

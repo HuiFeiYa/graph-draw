@@ -23,6 +23,8 @@ export interface SideBarDropDto {
     index: VertexType
     // 可以是 stType
     modelId: string;
+    sourceConnection: [number, number],
+    targetConnection: [number, number],
   }
 
 

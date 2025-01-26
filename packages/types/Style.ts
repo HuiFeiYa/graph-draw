@@ -6,4 +6,7 @@ export interface StyleObject {
     borderRadius?: number;
     strokeDasharray?: string
     background?: string
+    /** 连接线才有的属性 */
+    sourceConnection?: [number, number]
+    targetConnection?: [number, number]
 }
