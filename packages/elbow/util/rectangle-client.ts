@@ -89,16 +89,16 @@ export const RectangleClient = {
      * 根据一组或多组点生成最小包围矩形。
      */
     getRectangleByPoints(points: Point[] | Point[][]): RectangleClient {
-        if (isPointArray(points)) {
-            points = [points];
+        if (isPointArray(points as any)) {
+            points = [points] as any;
         }
         let xMin = Infinity;
         let yMin = Infinity;
         let xMax = -Infinity;
         let yMax = -Infinity;
         for (const point of points) {
-            const xArray = point.map((ele: any[]) => ele[0]);
-            const yArray = point.map((ele: any[]) => ele[1]);
+            const xArray = point.map((ele: any) => ele[0]);
+            const yArray = point.map((ele: any) => ele[1]);
             xMin = Math.min(xMin, ...xArray);
             yMin = Math.min(yMin, ...yArray);
             xMax = Math.max(xMax, ...xArray);
@@ -268,7 +268,7 @@ export const RectangleClient = {
 };
 
 // 辅助函数，用于判断数据是否为点数组
-function isPointArray(data: Point[] | Point[][]): data is Point[] {
+function isPointArray(data: Point[] | Point[]): data is Point[] {
     return (
         Array.isArray(data) &&
         data.every(item => Array.isArray(item) && item.length === 2 && typeof item[0] === 'number' && typeof item[1] === 'number')

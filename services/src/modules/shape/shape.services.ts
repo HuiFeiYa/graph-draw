@@ -12,7 +12,7 @@ import { ShapeEntity } from 'src/entities/shape.entity';
 import { EntityTarget, FindManyOptions, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
-import { Change, ChangeType, StType, StepType, StyleObject, VertexType } from '@hfdraw/types';
+import { Change, ChangeType, StType, StepType, StyleObject, SubShapeType, VertexType } from '@hfdraw/types';
 import { CurrentStepService } from '../currentStep/currentStepService';
 import { StepService } from '../step/stepService';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
@@ -21,6 +21,7 @@ import { Point } from 'src/utils/Point';
 import { shapeFactory } from '../models/ShapeFactory';
 import { shapeUtil } from 'src/utils/shape/ShapeUtil';
 import { ConnectModel } from '../models/ConnectModel';
+import { MoveManager } from './shapeBusiness/MoveManager';
 
 @Injectable()
 export class ShapeService  extends BaseService{
@@ -69,37 +70,17 @@ export class ShapeService  extends BaseService{
   async moveShape(dto: MoveShapeDto) {
     const { shapeMap } = await this.getShapeTree(dto.projectId);
     const updateShapeSet = new Set<ShapeEntity>();
-    dto.shapeIds.forEach((shapeId) => {
-      const shape = shapeMap.get(shapeId);
-      shape.bounds.x += dto.dx;
-      shape.bounds.y += dto.dy;
-      shape.bounds.absX += dto.dx;
-      shape.bounds.absY += dto.dy;
-      //   shape.boundsChanged = true;
-      updateShapeSet.add(shape);
-    });
+    MoveManager.updateShapes(shapeMap, dto, updateShapeSet);
+    MoveManager.updateEdgeShapes(shapeMap, dto, updateShapeSet);
     // 将 Set 转换为数组，并调用 shapeRepository 的 bulkUpdate 方法进行批量更新
+    let changes:Change[] = []
     if (updateShapeSet.size > 0) {
       const updatedShapesArray = Array.from(updateShapeSet);
-      const changes = await this.bulkUpdateShapes( dto.projectId,updatedShapesArray);
+      changes = await this.bulkUpdateShapes( dto.projectId,updatedShapesArray);
       console.log('res:',changes)
-      await this.stepService.initStep({projectId: dto.projectId, changes})
-      await this.wsService.sendToSubscribedClient(dto.projectId, {
-        type: WsMessageType.step,
-        data: {
-          projectId: dto.projectId,
-          changes,
-          stepType: StepType.edit
-          //  updatedShapesArray.map((item) => {
-          //   return {
-          //     type: ChangeType.UPDATE,
-          //     newValue: JSON.stringify(item),
-          //     projectId: dto.projectId,
-          //   };
-          // }),
-        },
-      });
     }
+    return changes;
+    
   }
   async getShapeTree(projectId: string) {
     const query: FindManyOptions<ShapeEntity> = {
@@ -121,7 +102,7 @@ export class ShapeService  extends BaseService{
     const changes: Change[] = []
     const updatePromises = shapes.map(async (shape) => {
       // 提取要更新的字段和值
-      const partialEntity = {
+      const partialEntity: Partial<ShapeEntity> = {
         bounds: {
           ...shape.bounds,
           x: shape.bounds.x,
@@ -130,6 +111,10 @@ export class ShapeService  extends BaseService{
           absY: shape.bounds.absY,
         },
       };
+      // 如果没改变不需要更新 --todo
+      if (shape.subShapeType === SubShapeType.CommonEdge) {
+        partialEntity.waypoint = shape.waypoint;
+      }
 
       // 根据 shape.id 更新对应的记录
       const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)

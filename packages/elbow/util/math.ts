@@ -1,4 +1,4 @@
-import { Point } from './point';
+import { Point } from './common-type';
 import { RectangleClient } from './rectangle-client';
 
 // https://stackoverflow.com/a/6853926/232122

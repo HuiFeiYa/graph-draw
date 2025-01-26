@@ -236,6 +236,9 @@ importers:
 
   services:
     dependencies:
+      '@hfdraw/elbow':
+        specifier: workspace:^
+        version: link:../packages/elbow
       '@hfdraw/types':
         specifier: workspace:^
         version: link:../packages/types
