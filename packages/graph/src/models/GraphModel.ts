@@ -25,12 +25,12 @@ export class GraphModel {
   /**
    * 视图模型
    */
-  viewModel = new ViewModel();
+  viewModel = reactive(new ViewModel());
 
   /**
    * 元素移动模型
    */
-  moveModel = new MoveModel(this);
+  moveModel = reactive<any>(new MoveModel(this));
   /**
    * 选中元素模型
    */

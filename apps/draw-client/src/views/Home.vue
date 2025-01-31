@@ -36,7 +36,7 @@ const events = {
     graphData.symbols = graphData.symbols.filter(s => s.id_ !== change.shapeId)
   },
   [BusEvent.UPDATE_SHAPE]: async (change: Change) => {
-    console.log('update:', change)
+    // console.log('update:', change)
     const newValue = JSON.parse(change.newValue || '')
     const i = graphData.symbols.findIndex(s => s.id_ === change.shapeId);
     if (i !== -1) {
@@ -53,7 +53,7 @@ emitter.onBatch(events)
 
 onMounted(()=> {
   shapeService.getAllShapes('p1').then(data => {
-    console.log('data: ', data)
+    // console.log('data: ', data)
     if (data) {
       graphData.symbols.push(...data)
     }

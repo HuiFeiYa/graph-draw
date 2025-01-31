@@ -2,7 +2,7 @@
     <div class="v-window-bar">
         <div class="g-m-t-4 g-m-l-4 g-ai-c">
             <img style="width: 20px;height: 20px;" src="/statics/header/design.svg" />
-            <span class="_bar-title"> Design </span>
+            <span class="_bar-title"> HfDraw </span>
         </div>
         <span class="_text _rls g-one-line">
             未命名项目1

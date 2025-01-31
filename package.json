@@ -9,7 +9,12 @@
     "apps/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pnpm run client & pnpm run server",
+    "client": "pnpm --filter draw-client run start",
+    "server": "pnpm --filter services run start:debug",
+    "b:all": "pnpm run b:elbow & pnpm run b:types",
+    "b:elbow": "pnpm --filter elbow  run build",
+    "b:types": "pnpm --filter types  run build"
   },
   "keywords": [],
   "author": "",

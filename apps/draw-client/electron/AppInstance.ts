@@ -22,7 +22,8 @@ class AppInstance {
         contextIsolation: true, // 启用上下文隔离
          sandbox: true,
       },
-      title: "Design"
+      title: "HfDraw",
+      type: "normal"
     });
     Menu.setApplicationMenu(null)
 

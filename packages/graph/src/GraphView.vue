@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { provide, onMounted, ref, onUnmounted, computed } from "vue";
+import { provide, onMounted, ref, onUnmounted, computed, watch } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
 import { GraphProps } from "./types";
 import { emitter } from "./util/Emitter";
 import { EventType, Shape, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
-//@ts-ignore
 import HoverArrow from './shape/HoverArrow.vue';
+import ShapeMovePreview from "./shape/ShapeMovePreview.vue";
 const props = defineProps<GraphProps>();
 provide("graphProps", props);
 const viewDom = ref(null);
@@ -50,6 +50,10 @@ onMounted(() => {
 
 onUnmounted(() => {
 })
+
+watch(()=> props.graph.moveModel.showMovingPreview, (newValue,old)=> {
+  console.log('showMovingPreview: ----',old,newValue)
+})
 </script>
 <template>
   <div class="graph-view" ref="viewDom">
@@ -70,7 +74,9 @@ onUnmounted(() => {
       @click="handleClickOut" @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" />
+      <!-- 悬浮箭头 -->
       <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
+      <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
     </svg>
   </div>
 </template>
