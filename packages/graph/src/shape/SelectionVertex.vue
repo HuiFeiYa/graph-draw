@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { EdgeShape, Shape, ShapeType } from '@hfdraw/types';
+import { EdgeShape, IPoint, Shape, ShapeType } from '@hfdraw/types';
 import { computed } from 'vue';
+import { isEqual } from 'lodash';
 import { VertexType } from '../util/common';
 const props = defineProps<{
     selection: Shape[]
@@ -27,6 +28,36 @@ const shapeGroup = computed(() => {
     }
 })
 
+const edgeShapeWaypoint = computed(()=> {
+    if(shapeGroup.value.edgeShapes.length > 0) {
+        const edge = shapeGroup.value.edgeShapes[0];
+        return edge.waypoint;
+    }
+    return []
+})
+
+const isShowEdgeWaypoint = computed(()=> {
+    return edgeShapeWaypoint.value.length > 0;
+})
+const waypointsInline = computed((oldValue: IPoint[] | undefined)=> {
+    const newWaypoints = [
+        edgeShapeWaypoint.value[0],
+        edgeShapeWaypoint.value[edgeShapeWaypoint.value.length - 1]
+    ]
+    if (oldValue && isEqual(oldValue, newWaypoints)) {
+        return oldValue;
+    }
+    return newWaypoints;
+})
+
+const waypointsNotInline = computed((oldValue: IPoint[] | undefined)=> {
+    const newWaypoints = edgeShapeWaypoint.value.slice(1,-1)
+    if (oldValue && isEqual(oldValue, newWaypoints)) {
+        return oldValue;
+    }
+    return newWaypoints;
+})
+
 function handleMouseDown(event: MouseEvent, index: VertexType) {
     event.stopPropagation();
     //   emit('vertex-mousedown', event, index);
@@ -34,9 +65,9 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
 }
 </script>
 <template>
-    <g>
+    <g transform="translate(12,12)">
         <!-- 偏移 padding 的距离 -->
-        <g v-for="shape in shapeGroup.commonShapes" :key="shape.id" style="transform: translate(12px,12px);">
+        <g v-for="shape in shapeGroup.commonShapes" :key="shape.id" >
             <!-- 移动一半 rect 的宽高的距离 -->
             <rect :x="shape.bounds.absX - 6" :y="shape.bounds.absY - 6" width="6" height="6" fill="#000"
                 :style="{ cursor: resizable ? 'nw-resize' : '' }" @mousedown="handleMouseDown($event, 1)" />
@@ -47,6 +78,9 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
                 @mousedown="handleMouseDown($event, 3)" />
             <rect :x="shape.bounds.absX - 6" :y="shape.bounds.absY + shape.bounds.height" width="6" height="6"
                 fill="#000" :style="{ cursor: resizable ? 'sw-resize' : '' }" @mousedown="handleMouseDown($event, 4)" />
+        </g>
+        <g v-if="isShowEdgeWaypoint">
+            <circle v-for="item in waypointsInline" :cx="item.x" :cy="item.y" r="4" fill="rgba(0, 255, 0, 0.8)"></circle>
         </g>
     </g>
 </template>

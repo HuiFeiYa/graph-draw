@@ -61,10 +61,10 @@ export class GraphModel {
     // 开始监听移动事件
     emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
     // 数据来源于 createEventHandler 绑定的图形操作
-    emitter.on(EventType.SHAPE_CLICK, this.selectionModel.onShapeClick.bind(this.selectionModel));
+    emitter.on(EventType.SHAPE_CLICK, this.shapeClick.bind(this));
     emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
     emitter.on(EventType.SHAPE_MOUSE_LEAVE, this.hoverModel.clearHoverShape.bind(this.hoverModel))
-    emitter.on(EventType.SHAPE_CLEAR, this.selectionModel.clearSelection.bind(this.selectionModel))
+    emitter.on(EventType.SHAPE_CLEAR, this.clear.bind(this))
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.multipleSelectModel.startSelect.bind(this.multipleSelectModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
 
@@ -72,7 +72,10 @@ export class GraphModel {
 
     // emitter.on(EventType.SHAPE_MOUSE_UP, this.mouseStateModel.onMouseUp.bind(this.mouseStateModel));
   }
-
+  shapeClick(event: any, shape: Shape) {
+    this.selectionModel.onShapeClick(event,shape);
+    this.hoverModel.clearHoverShape();
+  }
   addShape(shape: Shape) {
     if (this.shapeMap.has(shape.id)) {
       return;

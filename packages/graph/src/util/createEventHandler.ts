@@ -10,7 +10,6 @@ export function createEventHandler(props:{shape:Shape}, options?: { omit: string
     },
    
     mouseover() {
-      console.log('EventType.SHAPE_MOUSE_OVER:',EventType.SHAPE_MOUSE_OVER)
       emitter.emit(EventType.SHAPE_MOUSE_OVER,window.event, props.shape);
     },
     mousedown() {

@@ -13,6 +13,8 @@ export class HoverModel {
         this.hoverShape = null;
     }
     onShapeHover(event:any,shape: Shape) {
-        this.setHoverShape(shape);
+        if (this.graph.selectionModel.selectedShapes.length === 0) {
+            this.setHoverShape(shape);
+        }
     }
 }
