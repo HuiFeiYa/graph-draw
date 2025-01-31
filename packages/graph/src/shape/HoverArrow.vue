@@ -140,7 +140,7 @@ function handleMouseLeave() {
 </script>
 <template>
     <!-- 这里需要设置 points-events 为auto才能捕获事件，在 svg 根元素上设置了 none -->
-<g style="transform: translate(12px,12px);pointer-events: auto;">
+<g style="transform: translate(12px,12px);pointer-events: auto; cursor: pointer;">
             <!-- 左侧 -->
             <g @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter(VertexType.left)" @mouseout="handleMouseout" :fill="leftArrowColor" :stroke="leftArrowColor">
                 <polygon  :points="leftArrow.points"  />

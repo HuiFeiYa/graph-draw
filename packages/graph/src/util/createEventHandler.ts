@@ -2,10 +2,10 @@ import { EventType, Shape } from "@hfdraw/types";
 import { GraphModel } from "../main";
 import { emitter } from "./Emitter";
 
-export function createEventHandler(props:{shape:Shape}) {
-  return {
+export function createEventHandler(props:{shape:Shape}, options?: { omit: string[]}) {
+  const eventHandlers = {
     click() {
-
+      console.log('shape: ', props.shape)
       emitter.emit(EventType.SHAPE_CLICK, window.event, props.shape);
     },
    
@@ -47,4 +47,10 @@ export function createEventHandler(props:{shape:Shape}) {
     }
 
   };
+  if (options?.omit) {
+    options.omit.forEach((k) => {
+      delete eventHandlers[k as keyof typeof eventHandlers]
+    })
+  }
+  return eventHandlers;
 }

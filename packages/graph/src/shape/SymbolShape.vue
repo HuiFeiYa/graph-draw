@@ -8,6 +8,7 @@
     @dragleave.stop
     @drop.stop
     @dragover.stop
+    style="cursor: pointer;"
   >
     <rect
       :x="shape.bounds.absX"
@@ -42,7 +43,7 @@ const props = defineProps<{
   shape:Shape
 }>();
 // 绑定图形的操作，并将 shape 作为参数
-const eventHandler = createEventHandler( props);
+const eventHandler = createEventHandler(props);
 const style = computed(() => {
   const shape = props.shape;
 
