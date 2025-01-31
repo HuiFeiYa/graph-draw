@@ -24,7 +24,9 @@ const showHoverArrow = computed(() => {
   const { hoverModel } = props.graph;
   return !!hoverModel.hoverShape
 })
-function handleClickOut() { }
+function handleClickOut() {
+  emitter.emit(EventType.SHAPE_CLEAR,window.event,undefined);
+ }
 
 function handleMousedownOut() {
   emitter.emit(EventType.SHAPE_MOUSE_DOWN, window.event, undefined);
