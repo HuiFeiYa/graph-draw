@@ -61,6 +61,11 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
       await shapeService.redo('p1');
       break;
     }
+    case 'clear': {
+      await shapeService.clear('p1')
+      emitter.emit(BusEvent.REFRESH)
+      break;
+    }
   }
   clear()
 }

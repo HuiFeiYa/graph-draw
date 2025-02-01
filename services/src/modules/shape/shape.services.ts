@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  BaseProjectDto,
   ConnectShapeAndCreateDto,
   FetchAllShapeDto,
   MoveShapeDto,
@@ -9,7 +10,7 @@ import {
 import { SidebarModel } from '../models/SidebarModel';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShapeEntity } from 'src/entities/shape.entity';
-import { EntityTarget, FindManyOptions, Repository } from 'typeorm';
+import { EntityTarget, FindManyOptions, In, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
 import { Change, ChangeType, StType, StepType, StyleObject, SubShapeType, VertexType } from '@hfdraw/types';
@@ -159,6 +160,11 @@ export class ShapeService  extends BaseService{
       const res = await manager.save(ShapeEntity, toCreateShapes)
       return res;
     })
+  }
+  async clearProject(dto: BaseProjectDto) {
+    const shapesIds = await this.shapeRepository.find({where: {projectId: dto.projectId}, select: ['id']})
+    const ids = shapesIds.map(item => item.id);
+    await this.shapeRepository.update({id: In(ids)}, {isDelete: true});
   }
   // async createConnectTargetShape(dto: ConnectShapeAndCreateDto) {
   //   const { sourceShapeId, projectId, index, modelId: stType } = dto;

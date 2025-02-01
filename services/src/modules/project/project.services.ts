@@ -7,9 +7,14 @@ import { pcm } from 'src/utils/ConnectionManager';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import { projectUtil } from './ProjectUtil';
+import { BaseProjectDto } from 'src/types/shape.dto';
+import { ShapeService } from '../shape/shape.services';
 @Injectable()
 export class ProjectService {
-  constructor(private mainService: MainService) {}
+  constructor(
+    private mainService: MainService,
+    private shapeService: ShapeService
+  ) {}
   async createProject(dto) {
     await this.mainService.createProject(dto);
   }
@@ -48,5 +53,8 @@ export class ProjectService {
         const buffer = await projectDBFile.async('uint8array');
         await writeFile(projectDbFilePath, buffer);
     }
+  }
+  async clearProject(dto: BaseProjectDto) {
+    await this.shapeService.clearProject(dto);
   }
 }

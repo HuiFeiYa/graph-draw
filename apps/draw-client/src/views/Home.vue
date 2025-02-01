@@ -46,17 +46,23 @@ const events = {
   },
   [BusEvent.CLEAR_STATUS]: async (change: Change) => {
     graphData.graph.clear();
+  },
+  [BusEvent.REFRESH]: async ()=> {
+    await fretchData()
   }
 };
+async function fretchData() {
+  await shapeService.getAllShapes('p1').then(data => {
+    // console.log('data: ', data)
+    if (data) {
+      graphData.symbols = data;
+    }
+  })
+}
 // 监听事件
 emitter.onBatch(events)
 
 onMounted(()=> {
-  shapeService.getAllShapes('p1').then(data => {
-    // console.log('data: ', data)
-    if (data) {
-      graphData.symbols.push(...data)
-    }
-  })
+  fretchData()
 })
 </script>

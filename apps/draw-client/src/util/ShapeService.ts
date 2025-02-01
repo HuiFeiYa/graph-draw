@@ -18,6 +18,9 @@ export class ShapeService {
     async redo(projectId: string) {
         await httpClient.post(API.redo, {projectId})
     }
+    async clear(projectId: string) {
+        await httpClient.post(API.clear, {projectId})
+    }
     async undo(projectId: string) {
         await httpClient.post(API.undo, {projectId})
     }

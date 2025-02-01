@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ProjectService } from './project.services';
 import { ResData } from 'src/utils/http/ResData';
 import { getUid } from 'src/utils/common';
+import { BaseProjectDto } from 'src/types/shape.dto';
 @Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
@@ -22,6 +23,11 @@ export class ProjectController {
   @Post('save')
   async saveProject(@Body() dto) {
     await this.projectService.saveProject(dto);
+    return new ResData();
+  }
+  @Post('clear')
+  async clearProject(@Body() dto: BaseProjectDto) {
+    await this.projectService.clearProject(dto);
     return new ResData();
   }
 }

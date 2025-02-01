@@ -80,7 +80,7 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
                 fill="#000" :style="{ cursor: resizable ? 'sw-resize' : '' }" @mousedown="handleMouseDown($event, 4)" />
         </g>
         <g v-if="isShowEdgeWaypoint">
-            <circle v-for="item in waypointsInline" :cx="item.x" :cy="item.y" r="4" fill="rgba(0, 255, 0, 0.8)"></circle>
+            <circle style="cursor: move;pointer-events: auto" v-for="item in waypointsInline" :cx="item.x" :cy="item.y" r="4" fill="rgba(0, 255, 0, 0.8)"></circle>
         </g>
     </g>
 </template>

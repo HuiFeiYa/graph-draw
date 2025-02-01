@@ -101,6 +101,15 @@ const File = [
     }
   },
   {
+    label: "清空",
+    value: "clear",
+    icon: "statics/header/topiconclose.svg",
+    // type: 'dropdown-arrow',
+    get disabled() {
+      return false;
+    }
+  },
+  {
     label: "导出",
     value: "export",
     get disabled() {
