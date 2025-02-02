@@ -8,6 +8,7 @@ import { EventType, Shape, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
 import HoverArrow from './shape/HoverArrow.vue';
 import ShapeMovePreview from "./shape/ShapeMovePreview.vue";
+import EdgeMovePreview from './shape/EdgeMovePreview.vue'
 const props = defineProps<GraphProps>();
 provide("graphProps", props);
 const viewDom = ref(null);
@@ -47,7 +48,8 @@ function handleArrowHover(index: VertexType, shape: Shape) {
 
 const handleDrop = () => { };
 onMounted(() => {
-
+  if (!viewDom.value) return;
+  props.graph.viewModel.setViewDom(viewDom.value);
 });
 
 onUnmounted(() => {
@@ -79,6 +81,7 @@ watch(()=> props.graph.moveModel.showMovingPreview, (newValue,old)=> {
       <!-- 悬浮箭头 -->
       <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
       <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
+      <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :preview-path="graph.edgeMoveModel.previewPath" />
     </svg>
   </div>
 </template>

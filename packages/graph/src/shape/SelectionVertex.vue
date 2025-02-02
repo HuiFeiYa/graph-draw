@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { EdgeShape, IPoint, Shape, ShapeType } from '@hfdraw/types';
+import { EdgeShape, EventType, IPoint, Shape, ShapeType } from '@hfdraw/types';
 import { computed } from 'vue';
 import { isEqual } from 'lodash';
+import { emitter } from '../util/Emitter';
 import { VertexType } from '../util/common';
+import { MovePointPosition } from '../types';
 const props = defineProps<{
     selection: Shape[]
 }>();
@@ -63,6 +65,11 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
     //   emit('vertex-mousedown', event, index);
 
 }
+
+function handleCircleMouseDown(event: MouseEvent, index:MovePointPosition) {
+    event.stopPropagation();
+    emitter.emit(EventType.EDGE_POINT_MOUSE_DOWN, event,shapeGroup.value.edgeShapes[0],index)
+}
 </script>
 <template>
     <g transform="translate(12,12)">
@@ -80,7 +87,10 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
                 fill="#000" :style="{ cursor: resizable ? 'sw-resize' : '' }" @mousedown="handleMouseDown($event, 4)" />
         </g>
         <g v-if="isShowEdgeWaypoint">
-            <circle style="cursor: move;pointer-events: auto" v-for="item in waypointsInline" :cx="item.x" :cy="item.y" r="4" fill="rgba(0, 255, 0, 0.8)"></circle>
+            <circle style="cursor: move;pointer-events: auto" 
+                v-for="(item,i) in waypointsInline" :cx="item.x" :cy="item.y" r="4" fill="rgba(0, 255, 0, 0.8)"
+                @mousedown="handleCircleMouseDown($event, i)"
+                />
         </g>
     </g>
 </template>

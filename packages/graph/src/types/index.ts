@@ -14,3 +14,8 @@ export interface IGraphOption {
     customEndMove(moveModel: MoveModel, dx: number, dy: number): Promise<any>
     showPopover(index: VertexType, shape: Shape):void
 }
+
+export enum MovePointPosition {
+    start = 0,
+    end = 1
+}

@@ -56,6 +56,10 @@ async function fretchData() {
     // console.log('data: ', data)
     if (data) {
       graphData.symbols = data;
+      graphData.graph.symbols = data;
+      data.forEach(shape => {
+        graphData.graph.addShape(shape)
+      })
     }
   })
 }

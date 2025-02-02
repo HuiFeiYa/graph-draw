@@ -1,3 +1,4 @@
+import { Point } from "@hfdraw/elbow/util/common-type";
 import { Shape } from "@hfdraw/types";
 
 export class WaypointUtil {
@@ -13,6 +14,16 @@ export class WaypointUtil {
         // 遍历点数组，添加直线命令
         for (let i = 1; i < edgeShape.waypoint.length; i++) {
             path += " L" + edgeShape.waypoint[i].x + " " + edgeShape.waypoint[i].y;
+        }
+
+        return path;
+    }
+
+    getPointsPath(waypoints: Point[]) {
+        let path = "M" + waypoints[0] + " " + waypoints[0];
+         // 遍历点数组，添加直线命令
+         for (let i = 1; i < waypoints.length; i++) {
+            path += " L" + waypoints[i] + " " + waypoints[i];
         }
 
         return path;

@@ -14,6 +14,10 @@ export class ViewModel {
     minHeight=1000
   
     background = 'white'
+
+    setViewDom(dom:HTMLDivElement) {
+      this.viewDom = dom;
+    }
     /**
  * 转换屏幕坐标为图形的绝对坐标
  * @param point
@@ -27,8 +31,8 @@ export class ViewModel {
     }
     const rect = diagramViewDom.getBoundingClientRect();
 
-    const x = (point.x - rect.left + diagramViewDom.scrollLeft) ;
-    const y = (point.y - rect.top + diagramViewDom.scrollTop);
+    const x = (point.x - rect.left + diagramViewDom.scrollLeft)  ;
+    const y = (point.y - rect.top + diagramViewDom.scrollTop) ;
     return new Point(x, y).toInt();
   }
   /**
