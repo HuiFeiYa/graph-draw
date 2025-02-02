@@ -3,6 +3,7 @@ import {
   BaseProjectDto,
   ConnectShapeAndCreateDto,
   FetchAllShapeDto,
+  MoveEdgeDto,
   MoveShapeDto,
   PointDto,
   SideBarDropDto,
@@ -186,6 +187,18 @@ export class ShapeService  extends BaseService{
   // }
   async createConnectEdge(dto: ConnectShapeAndCreateDto, waypoint: PointDto[]) {
     const { sourceShapeId, projectId, index, modelId: stType } = dto;
+  }
+
+  async moveEdge(dto: MoveEdgeDto) {
+    const shape = await this.shapeRepository.findOne({where: {
+      id: dto.shapeId
+    }});
+    const partialEntity: Partial<ShapeEntity> = {
+      waypoint: dto.waypoint
+    }
+    const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)
+
+    return [change];
   }
   async test() {
     // return this.currentStepService.findStep();

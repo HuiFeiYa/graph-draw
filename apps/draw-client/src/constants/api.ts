@@ -11,7 +11,8 @@ export const API = {
     undo: 'step/undo',
     clear: 'project/clear',
     stepStatus: 'step/stepStatus',
-    connectShapeAndCreate: 'shape/connectShapeAndCreate'
+    connectShapeAndCreate: 'shape/connectShapeAndCreate',
+    moveEdge: 'shape/moveEdge'
 }
 
 export const ApiCode =  {

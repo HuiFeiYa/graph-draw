@@ -6,6 +6,7 @@ import {
   MoveShapeDto,
   SideBarDropDto,
   ConnectShapeAndCreateDto,
+  MoveEdgeDto,
 } from 'src/types/shape.dto';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
@@ -88,6 +89,23 @@ export class ShapeController {
       projectId: connectShapeAndCreateDto.projectId,
       changes,
     });
+    return new ResData(null);
+  }
+  @Post('moveEdge') 
+  async moveEdge(@Body() dto: MoveEdgeDto) {
+    const changes = await this.shapeService.moveEdge(dto);
+    await this.stepService.initStep({
+      projectId: dto.projectId,
+      changes,
+    });
+    await this.wsService.sendToSubscribedClient(dto.projectId, {
+      type: WsMessageType.step,
+      data: {
+        projectId: dto.projectId,
+        changes,
+        stepType: StepType.edit
+      }
+    })
     return new ResData(null);
   }
   @Get('test')

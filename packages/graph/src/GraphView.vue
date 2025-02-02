@@ -55,9 +55,6 @@ onMounted(() => {
 onUnmounted(() => {
 })
 
-watch(()=> props.graph.moveModel.showMovingPreview, (newValue,old)=> {
-  console.log('showMovingPreview: ----',old,newValue)
-})
 </script>
 <template>
   <div class="graph-view" ref="viewDom">

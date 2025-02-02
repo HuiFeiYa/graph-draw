@@ -64,3 +64,11 @@ export class SideBarDropDto {
     @IsInt()
     y: number;
   }
+
+
+  export class MoveEdgeDto extends BaseProjectDto {
+    @IsString()
+    shapeId: string
+    @IsArray()
+    waypoint: Point[]
+  }

@@ -6,6 +6,7 @@ import { Shape, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
 import { SideBarWidth, popoverGap, popoverHeight, popoverList, popoverWidth } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
+import { Point } from "@hfdraw/graph/src/util/Point";
 
 export class GraphOption implements IGraphOption {
   graph!: GraphModel;
@@ -20,6 +21,12 @@ export class GraphOption implements IGraphOption {
     const shapeIds = movingShapes.map(it => it.id);
     await shapeService.moveShape({
       projectId: 'p1', shapeIds, dx, dy
+    })
+  }
+
+  async EdgePointEndMove(shapeId: string, waypoint: Point[]) {
+    await shapeService.moveEdge({
+      shapeId, waypoint, projectId: 'p1'
     })
   }
 

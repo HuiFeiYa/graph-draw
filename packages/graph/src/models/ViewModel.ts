@@ -31,8 +31,8 @@ export class ViewModel {
     }
     const rect = diagramViewDom.getBoundingClientRect();
 
-    const x = (point.x - rect.left + diagramViewDom.scrollLeft)  ;
-    const y = (point.y - rect.top + diagramViewDom.scrollTop) ;
+    const x = (point.x - rect.left + diagramViewDom.scrollLeft) - 12;
+    const y = (point.y - rect.top + diagramViewDom.scrollTop) - 12 ;
     return new Point(x, y).toInt();
   }
   /**

@@ -3,6 +3,7 @@ import { API } from '../constants/api'
 import { ConnectShapeAndCreateDto, MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
 import { Shape } from '@hfdraw/types'
 import { AxiosResponse } from 'axios';
+import { Point } from '@hfdraw/graph/src/util/Point';
 
 export class ShapeService {
     async sidebarDrop(data: SideBarDropDto) {
@@ -30,6 +31,10 @@ export class ShapeService {
     }
     async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
         await httpClient.post(API.connectShapeAndCreate, dto);
+    }
+
+    async moveEdge(params: {shapeId: string, waypoint: Point[], projectId: string}) {
+        await httpClient.post(API.moveEdge, params);
     }
 }
 export const shapeService = new ShapeService();
