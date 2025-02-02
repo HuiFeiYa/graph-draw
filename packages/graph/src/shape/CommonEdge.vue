@@ -43,8 +43,8 @@ const computedData = computed(() => {
   <g style="cursor: pointer;">
     <path
       :d="computedData.svgPath"
-      :stroke="computedData.style.strokeColor"
-:stroke-width="computedData.style.strokeWidth"
+      stroke="rgba(21 71 146,0.5)"
+      :stroke-width="computedData.style.strokeWidth"
       fill="none"
     />
     <path

@@ -2,7 +2,7 @@
     <g transform="translate(12,12)">
       <path
         :d="previewPath"
-        stroke="black"
+        stroke="rgba(21,71, 146,0.5)"
         stroke-dasharray="10 8"
         fill="none"
         stroke-width="2"

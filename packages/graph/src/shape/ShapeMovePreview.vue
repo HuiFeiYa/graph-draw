@@ -56,7 +56,7 @@ const symbolBoundsSvgPath = computed(() => {
       :d="symbolBoundsSvgPath"
       fill="none"
       stroke-width="2"
-      stroke="black"
+      stroke="rgba(21,71, 146,0.5)"
     />
 </g>
 </template>

@@ -10,14 +10,20 @@
     @dragover.stop
     style="cursor: pointer;"
   >
+  <defs>
+    <pattern id="blueDiagonalLines" patternUnits="userSpaceOnUse" width="8" height="8">
+      <line x1="8" y1="0" x2="0" y2="8" style="stroke:rgba(21,71, 146,0.3); stroke-width:0.5"/>
+    </pattern>
+  </defs>
+
     <rect
       :x="shape.bounds.absX"
       :y="shape.bounds.absY"
       :width="shape.bounds.width"
       :height="shape.bounds.height "
-      :stroke="style.strokeColor"
+      stroke="rgba(21,71, 146,0.5)"
       :stroke-width="style.strokeWidth"
-      style="fill:white;"
+      fill="url(#blueDiagonalLines)"
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
       :stroke-dasharray="style.strokeDasharray || ''"
