@@ -2,6 +2,7 @@ import { rotatePointsByElement } from "./angle";
 import { ArrowLineHandleKey } from "./common-enum";
 import { ArrowLineHandleRef, ArrowLineHandleRefPair, Direction, PlaitElement, Point, PointOfRectangle, Vector } from "./common-type";
 import { getDirectionByPointOfRectangle, getDirectionByVector, getOppositeDirection } from "./direction";
+import { createFakePoints } from "./elbow";
 import { getNextPoint, getSourceAndTargetOuterRectangle } from "./elbow-line-route";
 import { RectangleClient } from "./rectangle-client";
 
@@ -51,6 +52,8 @@ export const getArrowLineHandleRefPair = (sourcePoints: Point[], targetPoints: P
     return { source: sourceHandleRef, target: targetHandleRef };
 }
 
+
+
 /**
  * 返回一个对象，
  * 包含源形状和目标形状的最小包围矩形（sourceRectangle 和 targetRectangle）。
@@ -61,6 +64,15 @@ export const getArrowLineHandleRefPair = (sourcePoints: Point[], targetPoints: P
  * @returns 包含源形状和目标形状的最小包围矩形的对象。
  */
 export const getSourceAndTargetRectangle = (sourcePoints: Point[], targetPoints: Point[], element: PlaitElement, handleRefPair: ArrowLineHandleRefPair) => {
+        // 不存在则创建对应 faker 元素用于计算
+        if (!sourcePoints) {
+            const source = handleRefPair.source;
+            sourcePoints = createFakePoints(source.point, source.vector);
+        }
+        if (!targetPoints) {
+            const target = handleRefPair.target;
+            targetPoints = createFakePoints(target.point, target.vector);
+        }
     let sourceRectangle = RectangleClient.getRectangleByPoints(sourcePoints);
     let targetRectangle = RectangleClient.getRectangleByPoints(targetPoints);
     return {
