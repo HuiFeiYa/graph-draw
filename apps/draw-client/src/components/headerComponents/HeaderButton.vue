@@ -1,5 +1,5 @@
 <template>
-  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled,'selected': isSelected }">
+  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex" >
     <el-tooltip
       :show-after="500"
       placement="bottom"

@@ -1,5 +1,22 @@
-import { HeadItem } from "../../types/common";
+import { HeadItem, MenuItem } from "../../types/common";
 import { stepStatusReactive } from "../../util/StepStatus";
+export class HeaderButtonData implements MenuItem {
+  value!: string
+  icon!: string
+  label!: string
+  notShowLabel?: boolean
+  disabled?: boolean
+  showTip?: boolean
+  hide?: boolean
+  type?: string
+  keyboard?: string
+}
+export class HeaderDropdownData extends HeaderButtonData {
+  declare type: 'dropdown'
+  command!: (menu: MenuItem) => void
+  list!: any[]
+  maxWidth?: number
+}
 
 /**
  * header菜单通用项
@@ -120,41 +137,90 @@ const File = [
     // type: "dropdown",
   },
   {
-    label: "选择",
-    value: 'select',
-    icon: "statics/header/arrow1.svg",
+    label: "起点",
+    value: 'long-arrow-left',
+    icon: "statics/header/long-arrow-left.svg",
     selectStatus: true, // 是否需要选中状态
+    type: 'dropdown',
+    disabled: true,
+    get list() {
+      return [
+        {
+          label: "实心",
+          value: 'long-arrow-left',
+          icon: "statics/header/long-arrow-left.svg",
+        },
+        {
+          label: "空心",
+          value: 'long-arrow-left-hollow',
+          icon: "statics/header/long-arrow-left-hollow.svg",
+        },
+        {
+          label: "横线",
+          value: 'long-line',
+          icon: "statics/header/long-line.svg",
+        },
+      ]
+    }
   },
   {
-    label: "矩形",
-    value: 'rect',
-    icon: "statics/header/rect.svg",
-    selectStatus: true, // 是否需要选中状态
-  },
-  {
-    label: "菱形",
-    value: 'lingxing',
-    icon: "statics/header/lengxing.svg",
-    selectStatus: true, // 是否需要选中状态
-  },
-  {
-    label: "圆形",
-    value: 'circle',
-    icon: "statics/header/circle.svg",
-    selectStatus: true, // 是否需要选中状态
-  },
-  {
-    label: "箭头",
+    label: "终点",
     value: 'long-arrow',
     icon: "statics/header/long-arrow.svg",
     selectStatus: true, // 是否需要选中状态
+    type: 'dropdown',
+    disabled: true,
+    get list() {
+      return [
+        {
+          label: "实心",
+          value: 'long-arrow',
+          icon: "statics/header/long-arrow.svg",
+        },
+        {
+          label: "空心",
+          value: 'long-arrow-hollow',
+          icon: "statics/header/long-arrow-hollow.svg",
+        },
+        {
+          label: "横线",
+          value: 'long-line',
+          icon: "statics/header/long-line.svg",
+        },
+      ]
+    }
   },
-  {
-    label: "文本",
-    value: 'text',
-    icon: "statics/header/input-method-line.svg",
-    selectStatus: true, // 是否需要选中状态
-  },
+  // {
+  //   label: "选择",
+  //   value: 'select',
+  //   icon: "statics/header/arrow1.svg",
+  //   selectStatus: true, // 是否需要选中状态
+  // },
+  // {
+  //   label: "矩形",
+  //   value: 'rect',
+  //   icon: "statics/header/rect.svg",
+  //   selectStatus: true, // 是否需要选中状态
+  // },
+  // {
+  //   label: "菱形",
+  //   value: 'lingxing',
+  //   icon: "statics/header/lengxing.svg",
+  //   selectStatus: true, // 是否需要选中状态
+  // },
+  // {
+  //   label: "圆形",
+  //   value: 'circle',
+  //   icon: "statics/header/circle.svg",
+  //   selectStatus: true, // 是否需要选中状态
+  // },
+ 
+  // {
+  //   label: "文本",
+  //   value: 'text',
+  //   icon: "statics/header/input-method-line.svg",
+  //   selectStatus: true, // 是否需要选中状态
+  // },
 ]
 
 /**

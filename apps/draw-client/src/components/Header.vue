@@ -17,7 +17,15 @@
       <div v-for="child in (activeHeaderMenu?.children || [])"
         :key="child.value" :class="{ _select: child.type == 'select', _item: child.type !== 'splitLine' }">
         <m-header-split-line v-if="child.type == 'splitLine'" />
+        <!-- 展示按钮，对应 menuItem/index.ts  File 这一层的配置项 -->
         <m-header-button v-if="!child.type" :selectButtonValue="selectButtonValue" :data="child" @click="handleClick(child)" />
+        <!-- 下拉  -->
+        <m-header-dropdown
+          v-else-if="child.type == 'dropdown'"
+          :data="child"
+          @dropdown-click="handleClick"
+          @item-click="handleClick"
+        />
       </div>
     </div>
   </div>
@@ -26,8 +34,8 @@
 import { ref, computed, onMounted } from 'vue';
 import { headerMenus } from './menuItem/index'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
-// @ts-ignore
 import MHeaderButton from './headerComponents/HeaderButton.vue';
+import MHeaderDropdown from './headerComponents/HeaderDropdown.vue'
 import { shapeService } from '../util/ShapeService';
 import { stepStatusReactive } from '../util/StepStatus';
 import { useUiStore } from '../stores/ui';
