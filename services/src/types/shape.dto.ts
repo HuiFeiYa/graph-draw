@@ -1,4 +1,4 @@
-import { Change, SiderbarItemKey, StType, VertexType } from "@hfdraw/types";
+import { Change, SiderbarItemKey, StType, StyleObject, VertexType } from "@hfdraw/types";
 import { IsArray, IsInt, IsNumber, IsString } from "class-validator";
 import { Point } from "src/utils/Point";
 export class BaseProjectDto {
@@ -71,4 +71,10 @@ export class SideBarDropDto {
     shapeId: string
     @IsArray()
     waypoint: Point[]
+  }
+
+  export class UpdateStyleObj extends BaseProjectDto {
+    styleObject: StyleObject
+    @IsString()
+    shapeId: string
   }

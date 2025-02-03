@@ -13,6 +13,7 @@ export interface StyleObject {
         hasStart?: boolean
         hasEnd?: boolean
         // 其他样式例如实心还是其他
-        fill?: string
+        fillStart?: string
+        fillEnd?: string
     }
 }

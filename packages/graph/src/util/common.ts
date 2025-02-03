@@ -12,3 +12,5 @@ export function int(num:number|string) {
     right=7,
     bottom=8
   }
+
+  export const StrokeColor = 'rgba(21,71,146,0.5)';

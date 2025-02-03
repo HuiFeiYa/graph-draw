@@ -1,4 +1,5 @@
 import { HeadItem, MenuItem } from "../../types/common";
+import { HeaderDropdownEnum } from "../../types/enum";
 import { stepStatusReactive } from "../../util/StepStatus";
 export class HeaderButtonData implements MenuItem {
   value!: string
@@ -147,17 +148,17 @@ const File = [
       return [
         {
           label: "实心",
-          value: 'long-arrow-left',
+          value: HeaderDropdownEnum.leftSolidArrow,
           icon: "statics/header/long-arrow-left.svg",
         },
         {
           label: "空心",
-          value: 'long-arrow-left-hollow',
+          value: HeaderDropdownEnum.lefthollowArrow,
           icon: "statics/header/long-arrow-left-hollow.svg",
         },
         {
           label: "横线",
-          value: 'long-line',
+          value: HeaderDropdownEnum.leftLine,
           icon: "statics/header/long-line.svg",
         },
       ]
@@ -174,17 +175,17 @@ const File = [
       return [
         {
           label: "实心",
-          value: 'long-arrow',
+          value: HeaderDropdownEnum.rightSolidArrow,
           icon: "statics/header/long-arrow.svg",
         },
         {
           label: "空心",
-          value: 'long-arrow-hollow',
+          value: HeaderDropdownEnum.righthollowArrow,
           icon: "statics/header/long-arrow-hollow.svg",
         },
         {
           label: "横线",
-          value: 'long-line',
+          value: HeaderDropdownEnum.rightLine,
           icon: "statics/header/long-line.svg",
         },
       ]

@@ -4,9 +4,11 @@ import { PathBuilder } from '@hfdraw/elbow'
 import { computed } from 'vue';
 import { Point } from '@hfdraw/elbow/util/common-type';
 import { createEventHandler } from '../util/createEventHandler';
+import { StrokeColor } from '../util/common';
 const props = defineProps<{
   shape: Shape
 }>();
+
 
 // 绑定图形的操作，并将 shape 作为参数
 const eventHandler = createEventHandler(props, {
@@ -24,12 +26,13 @@ const computedData = computed(() => {
   })
   const arrowStyle = shape.style.arrowStyle
   const drawOptions = { hasEndArrow: !!arrowStyle?.hasEnd, hasStartArrow: !!arrowStyle?.hasStart }
-  const { pathData, arrowData } = pathBuilder.draw(keyPoints, drawOptions)
+  const { pathData, endArrow, startArrow } = pathBuilder.draw(keyPoints, drawOptions)
   const style = Object.assign({}, shape.style);
 
   return {
     pathData,
-    arrowData,
+    startArrow,
+    endArrow,
     style
   };
 });
@@ -37,8 +40,10 @@ const computedData = computed(() => {
 <template>
 
   <g style="cursor: pointer;">
-    <path :d="computedData.arrowData" :stroke="computedData.style.arrowStyle?.fill || 'black'" :stroke-width="computedData.style.strokeWidth"
-      fill="none" />
+    <path :d="computedData.startArrow" :stroke="StrokeColor" :stroke-width="computedData.style.strokeWidth"
+      :fill="computedData.style.arrowStyle?.fillStart || 'black'" />
+    <path :d="computedData.endArrow" :stroke="StrokeColor" :stroke-width="computedData.style.strokeWidth"
+      :fill="computedData.style.arrowStyle?.fillEnd || 'black'" />
     <path :d="computedData.pathData" stroke="rgba(21,71,146,0.5)" :stroke-width="computedData.style.strokeWidth"
       fill="none" />
     <path :d="computedData.pathData" stroke="rgba(0,0,0,0)" fill="none" stroke-width="4" v-on="eventHandler" />

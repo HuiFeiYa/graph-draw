@@ -7,6 +7,7 @@ import {
   MoveShapeDto,
   PointDto,
   SideBarDropDto,
+  UpdateStyleObj,
 } from 'src/types/shape.dto';
 import { SidebarModel } from '../models/SidebarModel';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -198,6 +199,23 @@ export class ShapeService  extends BaseService{
     }
     const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)
 
+    return [change];
+  }
+
+  async updateShapeStyle(dto: UpdateStyleObj) {
+    const shape = await this.shapeRepository.findOne({
+      where: {
+        id: dto.shapeId,
+        projectId: dto.projectId
+      }
+    })
+    const partialEntity:Partial<ShapeEntity> = {
+      style: {
+        ...shape.style,
+        ...dto.styleObject
+      }
+    }
+    const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity);
     return [change];
   }
   async test() {

@@ -13,21 +13,34 @@ export class PathBuilder {
     constructor(public arrowConfig: ArrowConfig) {
 
     }
+    /**
+     * 根据给定的点和选项绘制路径，并在指定位置添加箭头。
+     * 
+     * @param points - 要连接成路径的点数组。
+     * @param options - 包含绘制选项的对象，如是否需要起始箭头和结束箭头等。
+     * @returns 返回一个对象，包含路径数据（pathData）和箭头数据（arrowData）。
+     */
     draw(points: Point[], options: DrawOptions) {
-        let pathData = ''
+        let pathData = '';
+        let startArrow = '';
+        let endArrow = '';
         const { distance, angle:arrowAngle, size} = this.arrowConfig;
         
         const trimPoints = this.connectPointsWithTrim(points,distance, options.hasStartArrow, options.hasEndArrow);
         if (options.hasEndArrow) {
             const angle = this.calculateArrowAngle(trimPoints[trimPoints.length - 2], trimPoints[trimPoints.length - 1]); 
-            pathData += this.calculateArrowPath(trimPoints[trimPoints.length - 1], angle, distance, arrowAngle, size);
+            endArrow += this.calculateArrowPath(trimPoints[trimPoints.length - 1], angle, distance, arrowAngle, size);
         }
         if (options.hasStartArrow) {
             const angle = this.calculateArrowAngle(trimPoints[1],trimPoints[0]); 
-            pathData += this.calculateArrowPath(trimPoints[0], angle, distance, arrowAngle, size);
+            startArrow += this.calculateArrowPath(trimPoints[0], angle, distance, arrowAngle, size);
         }
-        pathData+= this.connectPoints(trimPoints);
-        return pathData;
+        pathData= this.connectPoints(trimPoints);
+        return {
+            pathData, 
+            startArrow,
+            endArrow
+        };
     }
     /**
      * 计算从 start 点到 end 点的箭头角度（以度为单位）。

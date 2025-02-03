@@ -38,6 +38,12 @@ export const blockOption:Partial<ShapeOption> = {
       ...baseShapeOption.style,
       strokeColor: 'rgb(0,0,0)',
       strokeWidth: 1,
+      arrowStyle: {
+        hasEnd: true,
+        hasStart: false,
+        fillEnd: 'none',
+        fillStart: 'none',
+      }
     }
   
   };

@@ -4,11 +4,11 @@ import { shapeCompManager } from './shape/index'
 import { GraphProps } from './types';
 const props = defineProps<GraphProps>();
 const edges = computed(() => {
-  return props.edges.filter(childShape => shapeCompManager.get(childShape.subShapeType));
+  return props.graph.edges.filter(childShape => shapeCompManager.get(childShape.subShapeType));
 })
 const symbols = computed(() => {
   // console.log('props: ',props)
-  return props.symbols.filter(childShape => shapeCompManager.get(childShape.subShapeType));
+  return props.graph.symbols.filter(childShape => shapeCompManager.get(childShape.subShapeType));
 })
 </script>
 <template>

@@ -4,6 +4,9 @@ import { HeaderDropdownData } from '../menuItem';
 defineProps<{
     data: HeaderDropdownData,
 }>()
+const emit = defineEmits<{
+    itemClick: () => void
+}>()
 </script>
 <template>
     <div class="v-header-dropdown g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled }">
@@ -17,7 +20,9 @@ defineProps<{
                     <img src="/statics/header/icontriangle.svg" />
                 </span>
                 <template #dropdown>
-                    <div v-for="item in data.list" class="dropdown-item" style="width: 60px; display: flex; justify-content: center;align-items: center;height: 30px;">
+                    <div v-for="item in data.list" class="dropdown-item" 
+                    style="width: 60px; display: flex; justify-content: center;align-items: center;height: 30px;" 
+                    @click="emit('itemClick', item)">
                         <img style="width: 16px" :src="item.icon" />
                     </div>
                 </template>

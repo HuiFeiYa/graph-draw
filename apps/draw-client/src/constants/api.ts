@@ -12,7 +12,8 @@ export const API = {
     clear: 'project/clear',
     stepStatus: 'step/stepStatus',
     connectShapeAndCreate: 'shape/connectShapeAndCreate',
-    moveEdge: 'shape/moveEdge'
+    moveEdge: 'shape/moveEdge',
+    updateShapeStyle: 'shape/updateShapeStyle'
 }
 
 export const ApiCode =  {

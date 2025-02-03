@@ -23,8 +23,7 @@
         <m-header-dropdown
           v-else-if="child.type == 'dropdown'"
           :data="child"
-          @dropdown-click="handleClick"
-          @item-click="handleClick"
+          @item-click="handleDropdownItemClick"
         />
       </div>
     </div>
@@ -52,6 +51,10 @@ const activeHeaderMenu = computed(() => {
 function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
+}
+async function handleDropdownItemClick(item) {
+  console.log('item:', item)
+  emitter.emit(BusEvent.DROPDOWN_ITEM_CLICK, item)
 }
 async function handleClick(child: { selectStatus: any; value: string; disabled: boolean}) {
   if (child.disabled) return;
