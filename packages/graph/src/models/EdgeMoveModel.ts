@@ -18,6 +18,7 @@ export class EdgeMoveModel {
     showPreview = false // 是否显示预览
     previewPath = '' // 预览线的路径path的d属性
     index: MovePointPosition = MovePointPosition.start
+    element!:PlaitElement
     constructor(public graph: GraphModel) {
         this.initPreviewState();
     }
@@ -116,6 +117,7 @@ export class EdgeMoveModel {
             element.target.connection = connection as PointOfRectangle;
         }
         const waypoint = getKeyPoints(sourceRect, targetRect, element)
+        this.element = element;
         this.previewPath = waypointUtil.getPointsPath(waypoint);
         this.waypoint = waypoint;
     }
@@ -124,7 +126,7 @@ export class EdgeMoveModel {
         this.initPreviewState();
         this.graph.graphOption.EdgePointEndMove(this.edgeShape.id, this.waypoint.map(arr => {
             return new Point(arr[0],arr[1]);
-        }));
+        }),{sourceConnection: this.element.source.connection, targetConnection: this.element.target.connection});
     }
     // 鼠标按下线段时触发,在 createEventHandler.ts 中触发事件
     onEdgeMousedown(event: MouseEvent, shape: EdgeShape) {

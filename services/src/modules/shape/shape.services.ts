@@ -195,7 +195,12 @@ export class ShapeService  extends BaseService{
       id: dto.shapeId
     }});
     const partialEntity: Partial<ShapeEntity> = {
-      waypoint: dto.waypoint
+      waypoint: dto.waypoint,
+      style: {
+        ...shape.style,
+        sourceConnection: dto.styleObject.sourceConnection,
+        targetConnection: dto.styleObject.targetConnection
+      }
     }
     const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)
 

@@ -71,6 +71,7 @@ export class SideBarDropDto {
     shapeId: string
     @IsArray()
     waypoint: Point[]
+    styleObject: StyleObject
   }
 
   export class UpdateStyleObj extends BaseProjectDto {

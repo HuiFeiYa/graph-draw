@@ -2,7 +2,7 @@ import { GraphModel } from "@hfdraw/graph";
 import { MoveModel } from "@hfdraw/graph/src/models/MoveModel";
 import { IGraphOption } from "@hfdraw/graph/src/types";
 import { shapeService } from "../util/ShapeService";
-import { Shape, VertexType } from "@hfdraw/types";
+import { Shape, StyleObject, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
 import { SideBarWidth, popoverGap, popoverHeight, popoverList, popoverWidth } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
@@ -24,9 +24,9 @@ export class GraphOption implements IGraphOption {
     })
   }
 
-  async EdgePointEndMove(shapeId: string, waypoint: Point[]) {
+  async EdgePointEndMove(shapeId: string, waypoint: Point[], styleObject: StyleObject) {
     await shapeService.moveEdge({
-      shapeId, waypoint, projectId: 'p1'
+      shapeId, waypoint, projectId: 'p1', styleObject
     })
   }
 

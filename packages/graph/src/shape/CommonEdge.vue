@@ -41,9 +41,9 @@ const computedData = computed(() => {
 
   <g style="cursor: pointer;">
     <path :d="computedData.startArrow" :stroke="StrokeColor" :stroke-width="computedData.style.strokeWidth"
-      :fill="computedData.style.arrowStyle?.fillStart || 'black'" />
+      :fill="computedData.style.arrowStyle?.fillStart || 'none'" />
     <path :d="computedData.endArrow" :stroke="StrokeColor" :stroke-width="computedData.style.strokeWidth"
-      :fill="computedData.style.arrowStyle?.fillEnd || 'black'" />
+      :fill="computedData.style.arrowStyle?.fillEnd || 'none'" />
     <path :d="computedData.pathData" stroke="rgba(21,71,146,0.5)" :stroke-width="computedData.style.strokeWidth"
       fill="none" />
     <path :d="computedData.pathData" stroke="rgba(0,0,0,0)" fill="none" stroke-width="4" v-on="eventHandler" />
