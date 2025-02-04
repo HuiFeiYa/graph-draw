@@ -30,6 +30,7 @@ const events = {
     if (change.newValue) {
       const shape = JSON.parse(change.newValue);
       graphData.graph.symbols.push(shape)
+      graphData.graph.addShape(shape)
     }
 
   },
@@ -115,7 +116,6 @@ async function fretchData() {
   await shapeService.getAllShapes('p1').then(data => {
     // console.log('data: ', data)
     if (data) {
-      graphData.graph.symbols = data;
       graphData.graph.symbols = data;
       data.forEach(shape => {
         graphData.graph.addShape(shape)
