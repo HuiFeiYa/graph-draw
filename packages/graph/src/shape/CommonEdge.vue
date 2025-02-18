@@ -2,7 +2,7 @@
 import { Shape } from '@hfdraw/types';
 import { PathBuilder } from '@hfdraw/elbow'
 import { computed } from 'vue';
-import { Point } from '@hfdraw/elbow/util/common-type';
+import { Point } from '@hfdraw/elbow';
 import { createEventHandler } from '../util/createEventHandler';
 import { StrokeColor } from '../util/common';
 const props = defineProps<{

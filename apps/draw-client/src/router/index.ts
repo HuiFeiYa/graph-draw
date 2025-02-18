@@ -18,6 +18,11 @@ const routes = [
         component: () => import('../views/Home.vue'),
       },
       {
+        path: 'mindMap',
+        name: 'mindMap',
+        component: () => import('../views/MindMap.vue')
+      },
+      {
         path: 'station',
         name: 'station',
         component: () => import('../views/Station.vue')
