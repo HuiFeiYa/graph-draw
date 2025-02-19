@@ -48,4 +48,26 @@ export const blockOption:Partial<ShapeOption> = {
   
   };
 
+  export const  mindMapOption =  {
+    ...baseShapeOption,
+    style: {
+      retrospectOption: {
+        expand: false, // 默认不展开
+        shapeDepth: 1, // 默认一级
+        parentNodeId: '', // 默认没有对应的父图形
+        relationTypes: [] // 关联关系
+      }
+    },
+    shapeType: ShapeType.Symbol,
+    showKeywords: false,
+    showIcon: true,
+    icon: '',
+    shapeKey: ShapeKey.MindMapShape,
+    subShapeType: SubShapeType.MindMap,
+    nameBounds: {
+      absX: 0, absY: 0, width: 40, height: 20, x: 22, y: 0
+    },
+    bounds: { absX: 0, absY: 0, width: 100, height: 20, x: 0, y: 0 },
+  }
+
   export const connectEdgeLength = 100;

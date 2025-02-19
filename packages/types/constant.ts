@@ -70,7 +70,8 @@ export enum StType {
   "SysML::Blocks::Block" = "SysML::Blocks::Block",
   "SysML::ItemFlow" = "SysML::ItemFlow",
   "SysML::Decide" = "SysML::Decide",
-  "SysML::Association" = "SysML::Association"
+  "SysML::Association" = "SysML::Association",
+  "SysML::MindMap" = "SysML::MindMap"
 }
 
 

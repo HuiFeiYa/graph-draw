@@ -10,7 +10,8 @@ export enum ShapeType {
     TextBox = "TextBox",
     Block = "Block",
     Decide = 'Decide',
-    CommonEdge = 'CommonEdge' 
+    CommonEdge = 'CommonEdge' ,
+    MindMap="MindMap"
   }
   /**
  * shapeKey是最细的标识，用于标识各个图形，用于业务逻辑中的图形逻辑判断，基本每个模型都会对应一到多个
@@ -19,4 +20,5 @@ export enum ShapeKey {
     Block = "Block",
     Diagram = "Diagram",
     Association = "Association", // 关联
+    MindMapShape = "MindMapShape"
 }

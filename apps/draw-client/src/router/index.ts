@@ -5,7 +5,7 @@ const routes = [
   {
     path: "/",
     name: "index",
-    redirect: "/layout/home",
+    redirect: "/layout/mindMap",
   },
   {
     path: '/layout',
@@ -42,5 +42,6 @@ const router = createRouter({
   history: createWebHashHistory(),  // 使用 HTML5 历史模式
   routes,  // 传递路由规则
 });
-
+//@ts-ignore
+window.router = router;
 export default router;

@@ -16,4 +16,18 @@ export interface StyleObject {
         fillStart?: string
         fillEnd?: string
     }
+    retrospectOption?:RetrospectOption
 }
+
+export interface RetrospectRelationType {
+    id: string, // 跟哪个模型有关联关系
+    key: string // 关系的key
+    labels: string[]
+  }
+  export interface RetrospectOption {
+    expand: boolean, // 是否展开
+    shapeDepth: number // 图形层级
+    parentNodeId: string // 上连接线的图形id
+    relationTypes: RetrospectRelationType[]
+    isPort?: boolean // 是否是端口，用于显示属性
+  }
