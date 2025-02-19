@@ -86,7 +86,7 @@ onUnmounted(() => {
 .graph-view {
   position: relative;
   padding: 12px;
-
+  height: 100%;
 }
 
 svg {

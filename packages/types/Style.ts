@@ -17,6 +17,7 @@ export interface StyleObject {
         fillEnd?: string
     }
     retrospectOption?:RetrospectOption
+    stroke?: string
 }
 
 export interface RetrospectRelationType {

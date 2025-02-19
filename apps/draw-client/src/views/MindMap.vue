@@ -19,15 +19,31 @@ const graphData = reactive<{
   graph: new GraphModel(graphOption)
 });
 
-
-onMounted(async ()=> {
-    const params:SideBarDropDto = {
+async function  createRect() {
+  const params:SideBarDropDto = {
     diagramId: '1',
     point: {x: 100, y: 100},
-    projectId: 'p1',
+    projectId: 'p2',
     modelId: StType['SysML::MindMap']
   }
   const res = await shapeService.sidebarDrop(params)
+}
+
+async function fretchData() {
+  await shapeService.getAllShapes('p2').then(data => {
+    // console.log('data: ', data)
+    if (data.length > 0) {
+      graphData.graph.symbols = data;
+      data.forEach(shape => {
+        graphData.graph.addShape(shape)
+      })
+    } else {
+      createRect()
+    }
+  })
+}
+onMounted(async ()=> {
+  fretchData();
 })
 
 
@@ -63,4 +79,7 @@ emitter.onBatch(events)
   </div>
 </template>
 <style scoped>
+.mindMap-container {
+  height: 100%;
+}
 </style>

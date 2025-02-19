@@ -8,7 +8,7 @@ const props = defineProps<{
 }>();
 
 // 绑定图形的操作，并将 shape 作为参数
-const eventHandler = createEventHandler(props);
+const eventHandler = createEventHandler(props, {omit: ['mouseover', 'dragover']});
 
 const retrospectOption = computed(() => {
 //   return props.shape.style.retrospectOption;
@@ -18,8 +18,18 @@ return {
 }
 });
 
+const style = computed(() => {
+  const shape = props.shape;
 
-const style = {}
+  return Object.assign({}, shape.style);
+});
+
+function handleShrinkShape(){
+  
+}
+function handleExpandShape(){
+  
+}
 </script>
 <template>
   <g style="cursor: pointer;">
@@ -28,12 +38,11 @@ const style = {}
       :y="shape.bounds.absY"
       :width="shape.bounds.width"
       :height="shape.bounds.height "
-      stroke="rgba(21,71, 146,0.5)"
+      :stroke="style.stroke"
       :stroke-width="style.strokeWidth"
       fill="url(#blueDiagonalLines)"
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
-      :stroke-dasharray="style.strokeDasharray || ''"
        v-on="eventHandler"
     />
           <!-- 展开收起 icon -->
@@ -43,15 +52,15 @@ const style = {}
         v-if="retrospectOption.expand && shape.modelId"
         href="/statics/graph/treeiconspread.svg"
         :x="shape.bounds.absX + shape.bounds.width"
-        :y="isChangeAnalyseMap ? shape.bounds.absY + 12 : shape.bounds.absY + 3"
-        @click="shrinkShape" />
+        :y=" shape.bounds.absY + 3"
+        @click="handleShrinkShape" />
       <!-- 收缩 -->
       <image
         v-if="!retrospectOption.expand && shape.modelId"
         href="/statics/graph/treeiconshrink.svg"
         :x="shape.bounds.absX + shape.bounds.width"
-        :y="isChangeAnalyseMap ? shape.bounds.absY + 12 : shape.bounds.absY + 3"
-        @click="expandShape" />
+        :y=" shape.bounds.absY + 3"
+        @click="handleExpandShape" />
     </template>
   </g>
 </template>
