@@ -40,7 +40,7 @@ function handleExpandShape(){
       :height="shape.bounds.height "
       :stroke="style.stroke"
       :stroke-width="style.strokeWidth"
-      fill="url(#blueDiagonalLines)"
+      fill="#fff"
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
        v-on="eventHandler"

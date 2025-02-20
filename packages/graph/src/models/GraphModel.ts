@@ -1,4 +1,4 @@
-import { EdgeShape, EventType, Shape } from "@hfdraw/types";
+import { EdgeShape, EventType, Shape, ShapeKey } from "@hfdraw/types";
 import { ViewModel } from "./ViewModel";
 import { MoveModel } from "./MoveModel";
 import { SelectionModel } from "./SelectionModel";
@@ -7,6 +7,7 @@ import { emitter } from "../util/Emitter";
 import { shallowReactive, reactive } from "vue";
 import { HoverModel } from "./HoverModel";
 import { EdgeMoveModel } from "./EdgeMoveModel";
+import { MindMapModel } from './MindMapModel'
 
 export class GraphModel {
   /**
@@ -45,6 +46,10 @@ export class GraphModel {
    * 选入元素显示箭头
    */
   hoverModel = reactive(new HoverModel(this))
+  /**
+   * 脑图模型
+   */
+  mindMapModel = reactive(new MindMapModel(this))
   edges: EdgeShape[] = [];
 
   symbols: Shape[] = [];
@@ -77,11 +82,17 @@ export class GraphModel {
 
     // emitter.on(EventType.SHAPE_MOUSE_MOVE, this.mouseStateModel.onMouseMove.bind(this.mouseStateModel));
 
-    // emitter.on(EventType.SHAPE_MOUSE_UP, this.mouseStateModel.onMouseUp.bind(this.mouseStateModel));
+    emitter.on(EventType.SHAPE_MOUSE_UP, this.onMouseUp.bind(this));
   }
   shapeClick(event: any, shape: Shape) {
     this.selectionModel.onShapeClick(event, shape);
     this.hoverModel.clearHoverShape();
+    if (shape.shapeKey === ShapeKey.MindMapShape) {
+      this.mindMapModel.setSelectShape(shape) ;
+    } 
+  }
+  onMouseUp() {
+    this.moveModel.clear();
   }
   addShape(shape: Shape) {
     if (this.shapeMap.has(shape.id)) {
@@ -92,5 +103,6 @@ export class GraphModel {
   clear() {
     this.selectionModel.clearSelection();
     this.hoverModel.clearHoverShape();
+    this.mindMapModel.clearSelectShape(); 
   }
 }

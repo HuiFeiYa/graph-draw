@@ -7,6 +7,7 @@ import { emitter } from "./util/Emitter";
 import { EventType, Shape, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
 import HoverArrow from './shape/HoverArrow.vue';
+import MindMapQuickAdd from './shape/MindMapQuickAdd.vue';
 import ShapeMovePreview from "./shape/ShapeMovePreview.vue";
 import EdgeMovePreview from './shape/EdgeMovePreview.vue'
 const props = defineProps<GraphProps>();
@@ -79,6 +80,7 @@ onUnmounted(() => {
       <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
       <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
       <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :preview-path="graph.edgeMoveModel.previewPath" />
+      <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" />
     </svg>
   </div>
 </template>

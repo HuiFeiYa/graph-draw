@@ -140,3 +140,4 @@ export const  siderbarItemKeyToStTypeMap = {
  [SiderbarItemKey.Aggregation]: StType["SysML::Association"],
  [SiderbarItemKey.Block]: StType['SysML::Blocks::Block']
 }
+
