@@ -1,6 +1,8 @@
-import { Change, SiderbarItemKey, StType, StyleObject, VertexType } from "@hfdraw/types";
+import { Change, RetrospectOption, SiderbarItemKey, StType, StyleObject, VertexType } from "@hfdraw/types";
 import { IsArray, IsInt, IsNumber, IsString } from "class-validator";
 import { Point } from "src/utils/Point";
+import { ModelKey } from "./model.type";
+import { Model } from "src/entities/model.entity";
 export class BaseProjectDto {
   @IsString()
   projectId: string;
@@ -79,3 +81,25 @@ export class SideBarDropDto {
     @IsString()
     shapeId: string
   }
+
+
+  export class CreateMindMapRectDto extends BaseProjectDto {
+    @IsString()
+    shapeId: string
+    @IsString()
+    diagramId: string
+    modelKey: ModelKey
+    depth: number
+  }
+
+
+  export type ToCreateShapeModelTreeType = {
+    shapeId: string,
+    model: Model | null,
+    modelId: string,
+    width: number,
+    cx: number,
+    cy: number,
+    retrospectOption: RetrospectOption,
+    children: ToCreateShapeModelTreeType[]
+  };

@@ -125,10 +125,7 @@ function handleMouseEnter (index: VertexType) {
 function handleMouseout () {
     activeArrowIndex.value = -1;
 }
-function handleMouseDown(event: MouseEvent, index: VertexType) {
-    event.stopPropagation();
-    //   emit('vertex-mousedown', event, index);
-}
+
 function getColor(vertexType: VertexType) {
     return activeArrowIndex.value === vertexType ? 'rgba(0, 0, 255, 0.8)': 'rgba(0, 0, 255, 0.2)';
 }

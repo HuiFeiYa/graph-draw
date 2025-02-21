@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import {
   BaseProjectDto,
   ConnectShapeAndCreateDto,
+  CreateMindMapRectDto,
   FetchAllShapeDto,
   MoveEdgeDto,
   MoveShapeDto,
   PointDto,
   SideBarDropDto,
+  ToCreateShapeModelTreeType,
   UpdateStyleObj,
 } from 'src/types/shape.dto';
 import { SidebarModel } from '../models/SidebarModel';
@@ -25,6 +27,7 @@ import { shapeFactory } from '../models/ShapeFactory';
 import { shapeUtil } from 'src/utils/shape/ShapeUtil';
 import { ConnectModel } from '../models/ConnectModel';
 import { MoveManager } from './shapeBusiness/MoveManager';
+import { MindMapManager } from './shapeBusiness/MindMapManager';
 
 @Injectable()
 export class ShapeService  extends BaseService{
@@ -223,6 +226,40 @@ export class ShapeService  extends BaseService{
     const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity);
     return [change];
   }
+
+ 
+  async createMindMapRect(dto:CreateMindMapRectDto) {
+    return this.shapeRepository.manager.transaction(async manager => {
+      const { projectId,  modelKey, depth, shapeId} = dto;
+      const { shapeMap } = await this.getShapeTree(projectId);
+      const sourceShape = shapeMap.get(shapeId);
+      const createShape = await MindMapManager.createShape(dto, shapeMap)
+      // 更新 sourceShape 的追溯关联选项
+      const partialEntity: Partial<ShapeEntity> = {
+        style: {
+          retrospectOption: {
+            ...sourceShape.style.retrospectOption,
+            relationTypes: [...sourceShape.style.retrospectOption.relationTypes, {id: createShape.modelId, shapeId: createShape.id}]
+          }
+        }
+      }
+      
+      await manager.save(ShapeEntity, [createShape]);
+      const changes: Change[] = [createShape].map(s => {
+        const v: Change = {
+          type: ChangeType.INSERT,
+          newValue: JSON.stringify(s),
+          projectId: dto.projectId,
+          shapeId: s.id_
+        }
+        return v;
+      })
+      const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, sourceShape.id_, partialEntity)
+      changes.push(change);
+      return changes;
+    })
+  }
+  
   async test() {
     // return this.currentStepService.findStep();
   }

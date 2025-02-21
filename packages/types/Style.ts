@@ -22,8 +22,8 @@ export interface StyleObject {
 
 export interface RetrospectRelationType {
     id: string, // 跟哪个模型有关联关系
-    key: string // 关系的key
-    labels: string[]
+    shapeId: string // 跟哪个图形有关联
+    key?: string // 关系的线的key
   }
   export interface RetrospectOption {
     expand: boolean, // 是否展开
