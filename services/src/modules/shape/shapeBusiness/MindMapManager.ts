@@ -2,6 +2,7 @@ import { ShapeEntity } from "src/entities/shape.entity";
 import { RequireMapPosition, RetrospectTreeNode } from "src/modules/models/RetrospectDiagramUtil";
 import { shapeFactory } from "src/modules/models/ShapeFactory";
 import { CreateMindMapRectDto, ToCreateShapeModelTreeType } from "src/types/shape.dto";
+import { treeForEachAsync } from "src/utils/common";
 import { Point } from "src/utils/Point";
 
 export  class MindMapManager {
@@ -72,11 +73,32 @@ export  class MindMapManager {
         }
         return toCreateShapeModelTree;
       }
-      static async calcTreePosition() {
+      static async calcTreePosition(sourceShape: ShapeEntity,shapeMap:Map<string, ShapeEntity>) {
+        const updateShapes: Set<ShapeEntity> = new Set();
         // 获取需要更新的模型树
-        const toCreateShapeModelTree = await this.getMindMapTree();
+        const toCreateShapeModelTree = await this.getMindMapTree(sourceShape,shapeMap);
         const newTree = new RetrospectTreeNode(toCreateShapeModelTree, RequireMapPosition.horizontal);
+        const aboveTopHeight = this.getAboveTopHeight(newTree);
         newTree.calcExtent();
         newTree.calcPosition(newTree, toCreateShapeModelTree.cy, toCreateShapeModelTree.cx,  40);
+        await treeForEachAsync([newTree], async (item, parent) => {
+          const shape = shapeMap.get(item.shapeId);
+          this.refreshShape({ x: item.cy, y: item.cx + aboveTopHeight }, shape, sourceShape);
+          updateShapes.add(shape);
+        })
+        return updateShapes;
+      }
+      static getAboveTopHeight(newTree: RetrospectTreeNode) {
+        let minCy = 0;
+        function getCy(newTree2: RetrospectTreeNode) {
+          if (newTree2.cx < minCy) {
+            minCy = newTree2.cx;
+          }
+          for (let item of newTree2.children) {
+            getCy(item);
+          }
+        }
+        getCy(newTree);
+        return minCy < 0 ? Math.abs(minCy) : 0;
       }
 }

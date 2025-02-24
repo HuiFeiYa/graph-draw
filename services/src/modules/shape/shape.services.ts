@@ -245,6 +245,7 @@ export class ShapeService  extends BaseService{
       }
       
       await manager.save(ShapeEntity, [createShape]);
+      shapeMap.set(createShape.id, createShape);
       const changes: Change[] = [createShape].map(s => {
         const v: Change = {
           type: ChangeType.INSERT,
@@ -256,6 +257,12 @@ export class ShapeService  extends BaseService{
       })
       const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, sourceShape.id_, partialEntity)
       changes.push(change);
+      const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
+      if (updateShapes.size > 0) {
+        const updatedShapesArray = Array.from(updateShapes);
+        const updates = await this.bulkUpdateShapes( dto.projectId,updatedShapesArray);
+        changes.push(...updates);
+      }
       return changes;
     })
   }

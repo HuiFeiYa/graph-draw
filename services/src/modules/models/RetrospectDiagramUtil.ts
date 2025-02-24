@@ -14,34 +14,7 @@ export const defaultStyleOption = {
   verticalGap: 30,
   horizontalGap: 80
 };
-// 追溯图元素数组
-// export const RetropectElementArr = [ShapeKey.RequirementShape, ShapeKey.RetrospectShape, ShapeKey.StructureRetrospectShape];
-export const RetropectShapeKeys = [ShapeKey.RequirementShape, ShapeKey.RetrospectShape, ShapeKey.StructureRetrospectShape, ShapeKey.ChangeAnalysisMapShape];
-export const RetropectMapToShapeKey = {
-  [ShapeKey.SysMLRelationMap]: ShapeKey.RequirementShape,
-  [ShapeKey.SysMLRetrospectMap]: ShapeKey.RetrospectShape,
-  [ShapeKey.StructureSysMLRetrospectMap]: ShapeKey.StructureRetrospectShape,
-  [ShapeKey.ChangeAnalysisMap]: ShapeKey.ChangeAnalysisMapShape
-};
 
-export const RetrospectShapeKeys = Object.values(RetropectMapToShapeKey);
-export const RestrospectShapeMapKeys = Object.keys(RetropectMapToShapeKey) as ShapeKey[];
-export const RetropectMapToOpreationKey = {
-  [ShapeKey.SysMLRelationMap]: OperationKey.RequirementShape,
-  [ShapeKey.SysMLRetrospectMap]: OperationKey.RetrospectShape,
-  [ShapeKey.StructureSysMLRetrospectMap]: OperationKey.StructureRetrospectShape,
-  [ShapeKey.ChangeAnalysisMap]: OperationKey.ChangeAnalysisMapShape
-};
-
-export const RetropectMapToHeight = {
-  [ShapeKey.RequirementShape]: 40,
-  [ShapeKey.RetrospectShape]: 20,
-  [ShapeKey.StructureRetrospectShape]: 20,
-  [ShapeKey.ChangeAnalysisMapShape]: 20
-};
-// export relmaMapKeyToOption = {
-
-// }
 export type ToCreateShapeModelTreeType = {
   shapeId: string,
   model: Model | null,
@@ -162,14 +135,7 @@ export class RetrospectTreeNode {
       rtn.push([x0, x1]);
       i++;
     }
-    // for (let i = 0; left <= right; i++) {
-    //   while (left <= right && i >= extents[left].length) ++left;
-    //   while (left <= right && i >= extents[right].length) --right;
-    //   if (left > right) break;
-    //   let x0 = extents[left][i][0] + this.children[left].offset;
-    //   let x1 = extents[right][i][1] + this.children[right].offset;
-    //   rtn.push([x0, x1]);
-    // }
+
     return rtn;
   }
   calcPosition(node: any, cx: number, cy: number, height = 40) {
@@ -190,21 +156,3 @@ export class RetrospectTreeNode {
     node.cy = cy;
   }
 }
-// //
-// export function calcPosition(node: any, cx: number, cy: number, height = 40) {
-//   // TODO 兼容横向纵向
-//   let number = 0;
-//   // 横向的话  number 应该是水平间隔horizontalGap+宽度
-//   // 纵向的话 number应该是高度加垂直间隔verticalGap
-//   if (node.requireMapPosition === RequireMapPosition.horizontal) {
-//     number = defaultHVOption.horizontalGap + node.width;
-//   } else {
-//     number = defaultHVOption.verticalGap + height; // 高度40固定后续可能修改
-//   }
-//   const children = node?.children || [];
-//   children.forEach((child: any) => {
-//     calcPosition(child, cx + (child.offset || 0), cy + number + nodeSize);
-//   });
-//   node.cx = cx;
-//   node.cy = cy;
-// }

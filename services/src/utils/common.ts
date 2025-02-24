@@ -25,6 +25,30 @@ export const getUid = (() => {
     };
   })();
   
+  export interface ITreeNode {
+
+    children?: ITreeNode[]
+  
+    [prop: string]: any
+  
+  }
+  export async function treeForEachAsync<T extends ITreeNode>(tree: T[], fn: (node: T, parent?: T, index?:number) => Promise<boolean|void|'stopChildren'>, childrenKey = 'children', parent?: T) {
+
+    for (let curNode of tree) {
+      // const curNode = tree[i];
+      const result = await fn(curNode, parent);
+      if (result === false) return false;
+      if (result === 'stopChildren') return;
+      const children = curNode?.[childrenKey];
+      if (children?.length) {
+        const result2 = await treeForEachAsync(children, fn, childrenKey, curNode);
+        if (result2 === false) {
+          return false;
+        }
+      }
+  
+    }
+  }
 
   
 
