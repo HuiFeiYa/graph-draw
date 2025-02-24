@@ -15,6 +15,7 @@ export interface IGraphOption {
     customEndMove(moveModel: MoveModel, dx: number, dy: number): Promise<any>
     showPopover(index: VertexType, shape: Shape):void
     EdgePointEndMove(shapeId: string, waypoint: Point[], styleObject: StyleObject):void
+    addMindMapRect(index: VertexType, shape: Shape):void
 }
 
 export enum MovePointPosition {

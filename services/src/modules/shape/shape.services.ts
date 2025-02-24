@@ -28,6 +28,7 @@ import { shapeUtil } from 'src/utils/shape/ShapeUtil';
 import { ConnectModel } from '../models/ConnectModel';
 import { MoveManager } from './shapeBusiness/MoveManager';
 import { MindMapManager } from './shapeBusiness/MindMapManager';
+import { Model } from 'src/entities/model.entity';
 
 @Injectable()
 export class ShapeService  extends BaseService{
@@ -230,7 +231,7 @@ export class ShapeService  extends BaseService{
  
   async createMindMapRect(dto:CreateMindMapRectDto) {
     return this.shapeRepository.manager.transaction(async manager => {
-      const { projectId,  modelKey, depth, shapeId} = dto;
+      const { projectId, depth, shapeId} = dto;
       const { shapeMap } = await this.getShapeTree(projectId);
       const sourceShape = shapeMap.get(shapeId);
       const createShape = await MindMapManager.createShape(dto, shapeMap)

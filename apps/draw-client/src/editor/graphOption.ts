@@ -64,4 +64,7 @@ export class GraphOption implements IGraphOption {
     }
     store.setPopoverList([item])
   }
+  async addMindMapRect(index:VertexType, shape: Shape) {
+    await shapeService.createMindMapRect({shapeId: shape.id, diagramId: shape.diagramId, depth: shape.style.retrospectOption?.shapeDepth || 1, projectId: 'p2'});
+  }
 }

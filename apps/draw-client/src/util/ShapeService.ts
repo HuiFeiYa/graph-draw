@@ -39,5 +39,8 @@ export class ShapeService {
     async updateShapeStyle(data: {styleObject: StyleObject, projectId: string, shapeId: string}) {
         await httpClient.post(API.updateShapeStyle,data)
     }
+    async createMindMapRect(data: {shapeId: string, diagramId: string, depth: number, projectId: string}) {
+        await httpClient.post(API.createMindMapRect, data)
+    }
 }
 export const shapeService = new ShapeService();

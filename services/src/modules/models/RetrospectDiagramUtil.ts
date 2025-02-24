@@ -1,6 +1,5 @@
 // import { OperationKey } from "./shapeConfig/OperationConfig";
 import { RetrospectOption, ShapeKey } from "@hfdraw/types";
-import { Model } from "src/entities/model.entity";
 export enum RequireMapPosition {
   vertical = "vertical", // 纵向
   horizontal = "horizontal" // 横向
@@ -17,7 +16,6 @@ export const defaultStyleOption = {
 
 export type ToCreateShapeModelTreeType = {
   shapeId: string,
-  model: Model | null,
   modelId: string,
   width: number,
   cx: number,
@@ -30,7 +28,6 @@ export class RetrospectTreeNode {
   cx: number
   cy: number
   offset: number
-  model: Model
   shapeId: string
   children: Array<RetrospectTreeNode> = []
   retrospectOption: RetrospectOption
@@ -40,8 +37,7 @@ export class RetrospectTreeNode {
     verticalGap:number
     horizontalGap:number
   }
-  constructor({ cx, cy, children, retrospectOption, width, model, shapeId }: ToCreateShapeModelTreeType, requireMapPosition: RequireMapPosition, styleOption = defaultStyleOption) {
-    this.model = model;
+  constructor({ cx, cy, children, retrospectOption, width, shapeId }: ToCreateShapeModelTreeType, requireMapPosition: RequireMapPosition, styleOption = defaultStyleOption) {
     this.cx = cx;
     this.cy = cy;
     this.offset = 0;

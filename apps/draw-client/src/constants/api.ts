@@ -13,7 +13,8 @@ export const API = {
     stepStatus: 'step/stepStatus',
     connectShapeAndCreate: 'shape/connectShapeAndCreate',
     moveEdge: 'shape/moveEdge',
-    updateShapeStyle: 'shape/updateShapeStyle'
+    updateShapeStyle: 'shape/updateShapeStyle',
+    createMindMapRect: 'shape/createMindMapRect'
 }
 
 export const ApiCode =  {

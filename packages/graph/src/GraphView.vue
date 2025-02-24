@@ -12,6 +12,7 @@ import ShapeMovePreview from "./shape/ShapeMovePreview.vue";
 import EdgeMovePreview from './shape/EdgeMovePreview.vue'
 const props = defineProps<GraphProps>();
 provide("graphProps", props);
+provide('graph', props.graph);
 const viewDom = ref(null);
 
 // 是否显示选中效果
@@ -80,7 +81,7 @@ onUnmounted(() => {
       <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
       <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
       <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :preview-path="graph.edgeMoveModel.previewPath" />
-      <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" />
+      <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" :graph="graph" />
     </svg>
   </div>
 </template>

@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { EventType, Shape } from '@hfdraw/types';
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, watch, inject } from 'vue';
 import { VertexType } from '../util/common';
 import { TIP_GAP } from '../util/constant';
+import { GraphModel } from '../models/GraphModel';
 const props = defineProps<{
-    shape: Shape
+    shape: Shape,
+    graph: GraphModel
 }>();
 const emit = defineEmits<{
     (e: 'add', index: VertexType, shape: Shape): void
 }>()
-
 const activeArrowIndex = ref(-1);
 const bounds = computed(() => {
     return props.shape.bounds;
@@ -59,6 +60,9 @@ const leftPoint = computed(() => {
         y: y + height / 2
     }
 })
+const handleAdd = (index: VertexType, shape: Shape) => {
+    props.graph.graphOption.addMindMapRect(index, shape);
+}
 </script>
 <template>
     <!-- 这里需要设置 points-events 为auto才能捕获事件，在 svg 根元素上设置了 none -->
@@ -78,19 +82,19 @@ const leftPoint = computed(() => {
         </defs>
         <!-- 左侧 -->
         <g :fill="leftArrowColor" :stroke="leftArrowColor">
-            <use href="#add-icon" :x="leftPoint.x" :y="leftPoint.y" />
+            <use href="#add-icon" :x="leftPoint.x" :y="leftPoint.y" @click="handleAdd(VertexType.left, shape)" />
         </g>
         <!-- 上侧 -->
         <g :fill="topArrowColor" :stroke="topArrowColor">
-            <use href="#add-icon" :x="topPoint.x" :y="topPoint.y" />
+            <use href="#add-icon" :x="topPoint.x" :y="topPoint.y" @click="handleAdd(VertexType.top, shape)" />
         </g>
         <!-- 右侧 -->
         <g :fill="rightArrowColor" :stroke="rightArrowColor">
-            <use href="#add-icon" :x="rightPoint.x" :y="rightPoint.y" />
+            <use href="#add-icon" :x="rightPoint.x" :y="rightPoint.y"  @click="handleAdd(VertexType.right, shape)" />
         </g>
         <!-- 下侧 -->
         <g :fill="bottomArrowColor" :stroke="bottomArrowColor">
-            <use href="#add-icon" :x="bottomPoint.x" :y="bottomPoint.y" />
+            <use href="#add-icon" :x="bottomPoint.x" :y="bottomPoint.y" @click="handleAdd(VertexType.bottom, shape)" />
         </g>
     </g>
 </template>

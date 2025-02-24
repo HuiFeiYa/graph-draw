@@ -1,3 +1,5 @@
+import { StType } from "@hfdraw/types";
+import { Model } from "src/entities/model.entity";
 import { ShapeEntity } from "src/entities/shape.entity";
 import { RequireMapPosition, RetrospectTreeNode } from "src/modules/models/RetrospectDiagramUtil";
 import { shapeFactory } from "src/modules/models/ShapeFactory";
@@ -9,11 +11,11 @@ export  class MindMapManager {
     static async createShape(dto:CreateMindMapRectDto, shapeMap:Map<string, ShapeEntity>) {
         
     
-        const { projectId, modelKey, depth, shapeId, diagramId} = dto;
+        const { projectId, depth, shapeId, diagramId} = dto;
       // 基于 shapeId 查找 sourceShape
       const sourceShape = shapeMap.get(shapeId);
       const diagramShape = shapeMap.get(diagramId);
-      const shapeOption = shapeFactory.getModelShapeOption(modelKey);
+      const shapeOption = shapeFactory.getModelShapeOption(StType["SysML::MindMap"]);
       const createShape = ShapeEntity.fromOption(shapeOption, projectId);
       const point = { x: sourceShape.bounds.absX, y: sourceShape.bounds.absY };
       const shapeDepth = depth + 1;
@@ -38,7 +40,6 @@ export  class MindMapManager {
     static async getMindMapTree(startShape: ShapeEntity,shapeMap:Map<string, ShapeEntity>) {
         const toCreateShapeModelTree: ToCreateShapeModelTreeType = {
           shapeId: startShape.id,
-          model: null,
           modelId: startShape.modelId,
           width: startShape.bounds.width,
           cx: startShape.bounds.absX,
@@ -46,12 +47,10 @@ export  class MindMapManager {
           retrospectOption: startShape.style.retrospectOption,
           children: []
         };
-        const models = [];
-        for (let item of models) {
+        for (let item of toCreateShapeModelTree.retrospectOption.relationTypes) {
           const treeNode: ToCreateShapeModelTreeType = {
             shapeId: '',
             modelId: item.id,
-            model: item,
             width: 0,
             cx: 0,
             cy: 0,
