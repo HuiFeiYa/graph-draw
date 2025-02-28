@@ -33,31 +33,31 @@ function getColor(vertexType: VertexType) {
 }
 
 const rightPoint = computed(() => {
-    const { x, y, width, height } = bounds.value;
+    const { absX, absY, width, height } = bounds.value;
     return {
-        x: x + width + TIP_GAP,
-        y: y + height / 2
+        x: absX + width + TIP_GAP,
+        y: absY + height / 2
     }
 })
 const bottomPoint = computed(() => {
-    const { x, y, width, height } = bounds.value;
+    const { absX, absY, width, height } = bounds.value;
     return {
-        x: x + width / 2,
-        y: y + height + TIP_GAP
+        x: absX + width / 2,
+        y: absY + height + TIP_GAP
     }
 })
 const topPoint = computed(() => {
-    const { x, y, width, height } = bounds.value;
+    const { absX, absY, width, height } = bounds.value;
     return {
-        x: x + width / 2,
-        y: y - TIP_GAP
+        x: absX + width / 2,
+        y: absY - TIP_GAP
     }
 })
 const leftPoint = computed(() => {
-    const { x, y, width, height } = bounds.value;
+    const { absX, absY, width, height } = bounds.value;
     return {
-        x: x - TIP_GAP,
-        y: y + height / 2
+        x: absX - TIP_GAP,
+        y: absY + height / 2
     }
 })
 const handleAdd = (index: VertexType, shape: Shape) => {
@@ -66,7 +66,7 @@ const handleAdd = (index: VertexType, shape: Shape) => {
 </script>
 <template>
     <!-- 这里需要设置 points-events 为auto才能捕获事件，在 svg 根元素上设置了 none -->
-    <g style="transform: translate(12px,12px);pointer-events: auto; cursor: pointer;"
+    <g  style="transform: translate(12px,12px);pointer-events: auto; cursor: pointer;"
         class='mind-map-quick-add-container'>
         <defs>
             <g id="add-icon">
