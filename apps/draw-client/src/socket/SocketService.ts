@@ -22,7 +22,7 @@ export class SocketService {
   maxReconnectTime = 3;
   msgHandler: {[key:string]:Function} = {
     connect:() => {
-      this.sendJSON({ type: "subscribeProject", projectId: 'p1' });
+      this.sendJSON({ type: "subscribeProject", projectId: 'p2' });
     },
     async step(messageData:{ type:'step', data: Step}) {
       const { data: { changes, stepType } } = messageData;

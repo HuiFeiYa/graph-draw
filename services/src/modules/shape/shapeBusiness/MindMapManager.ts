@@ -49,7 +49,7 @@ export  class MindMapManager {
         };
         for (let item of toCreateShapeModelTree.retrospectOption.relationTypes) {
           const treeNode: ToCreateShapeModelTreeType = {
-            shapeId: '',
+            shapeId: item.shapeId,
             modelId: item.id,
             width: 0,
             cx: 0,
@@ -68,6 +68,7 @@ export  class MindMapManager {
             treeNode.width = existShape.bounds.width;
             treeNode.modelId = existShape.modelId;
             treeNode.retrospectOption = { ...existShape.style.retrospectOption };
+            toCreateShapeModelTree.children.push(treeNode)
           }
         }
         return toCreateShapeModelTree;

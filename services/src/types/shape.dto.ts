@@ -88,14 +88,12 @@ export class SideBarDropDto {
     shapeId: string
     @IsString()
     diagramId: string
-    modelKey: ModelKey
     depth: number
   }
 
 
   export type ToCreateShapeModelTreeType = {
     shapeId: string,
-    model: Model | null,
     modelId: string,
     width: number,
     cx: number,

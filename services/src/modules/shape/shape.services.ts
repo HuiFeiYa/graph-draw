@@ -238,10 +238,11 @@ export class ShapeService  extends BaseService{
       // 更新 sourceShape 的追溯关联选项
       const partialEntity: Partial<ShapeEntity> = {
         style: {
+          ...(createShape.style || {}),
           retrospectOption: {
             ...sourceShape.style.retrospectOption,
             relationTypes: [...sourceShape.style.retrospectOption.relationTypes, {id: createShape.modelId, shapeId: createShape.id}]
-          }
+          },
         }
       }
       
@@ -257,6 +258,7 @@ export class ShapeService  extends BaseService{
         return v;
       })
       const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, sourceShape.id_, partialEntity)
+      sourceShape.style = partialEntity.style;
       changes.push(change);
       const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
       if (updateShapes.size > 0) {
