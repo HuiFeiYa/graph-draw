@@ -30,7 +30,10 @@ export interface PlaitElement {
 }
 
 export type Point = [number, number];
-
+export interface IPoint {
+    x:number
+    y:number
+  }
 
 export interface ArrowLineHandleRef {
     key: ArrowLineHandleKey;

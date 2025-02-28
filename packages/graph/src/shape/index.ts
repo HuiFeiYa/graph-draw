@@ -4,6 +4,7 @@ import CommonEdge from "./CommonEdge.vue";
 import MindMapRect from "./MindMapRect.vue";
 import { markRaw } from "vue";
 import { shapeCompManager } from "./ShapeManager";
+import MindMapLine from "./MindMapLine.vue";
 export * from './ShapeManager';
 
 export const shapeComps: { key: SubShapeType; comp: any }[] = [
@@ -18,6 +19,10 @@ export const shapeComps: { key: SubShapeType; comp: any }[] = [
   {
     key: SubShapeType.MindMap,
     comp: MindMapRect
+  },
+  {
+    key: SubShapeType.MindMapLine,
+    comp: MindMapLine
   }
 ];
 

@@ -7,11 +7,9 @@ export enum RequireMapPosition {
 
 // TODO 兼容横向纵向
 const nodeSize = 12;
-// const verticalGap = 30; // 垂直
-// const horizontalGap = 80; // 水平
 export const defaultStyleOption = {
-  verticalGap: 30,
-  horizontalGap: 80
+  verticalGap: 80, // 控制脑图垂直间距
+  horizontalGap: 140 // 控制脑图水平间距
 };
 
 export type ToCreateShapeModelTreeType = {
@@ -134,7 +132,7 @@ export class RetrospectTreeNode {
 
     return rtn;
   }
-  calcPosition(node: any, cx: number, cy: number, height = 40) {
+  calcPosition(node: any, cx: number, cy: number, height = 80) {
     // TODO 兼容横向纵向
     let number = 0;
     // 横向的话  number 应该是水平间隔horizontalGap+宽度
@@ -142,7 +140,7 @@ export class RetrospectTreeNode {
     if (node.requireMapPosition === RequireMapPosition.horizontal) {
       number = this.styleOption.horizontalGap + node.width;
     } else {
-      number = this.styleOption.verticalGap + height; // 高度40固定后续可能修改
+      number = this.styleOption.verticalGap + height; // 高度80固定后续可能修改
     }
     const children = node?.children || [];
     children.forEach((child: any) => {
