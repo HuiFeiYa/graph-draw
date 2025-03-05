@@ -68,6 +68,9 @@ export const blockOption:Partial<ShapeOption> = {
     shapeKey: ShapeKey.MindMapShape,
     subShapeType: SubShapeType.MindMap,
     bounds: { absX: 0, absY: 0, width: 150, height: 50, x: 0, y: 0 },
+    nameBounds: {
+      absX: 0, absY: 0, width: 140, height: 40, x: 5, y: 5
+    },
   }
 
   export const connectEdgeLength = 100;

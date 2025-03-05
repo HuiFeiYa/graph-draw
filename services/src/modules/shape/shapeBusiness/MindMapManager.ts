@@ -34,6 +34,11 @@ export  class MindMapManager {
         shape.bounds.absY = point.y;
         shape.bounds.x = shape.bounds.absX - diagramShape.bounds.absX;
         shape.bounds.y = shape.bounds.absY - diagramShape.bounds.absY;
+        if (shape.nameBounds) {
+          shape.nameBounds.absX = shape.bounds.absX + shape.nameBounds.x;
+          shape.nameBounds.absY = shape.bounds.absY + shape.nameBounds.y;
+          shape.nameBoundsChanged = true;
+        }
         shape.boundsChanged = true;
         return shape;
     }

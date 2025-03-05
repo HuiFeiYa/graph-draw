@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Shape } from '@hfdraw/types';
+import { EventType, Shape } from '@hfdraw/types';
 import { ref, computed, onMounted  } from 'vue'
 import { createEventHandler } from '../util/createEventHandler';
+import { emitter } from '../util/Emitter';
 
 const props = defineProps<{
   shape: Shape
@@ -30,6 +31,10 @@ function handleShrinkShape(){
 function handleExpandShape(){
   
 }
+
+function handleNameLabelClick(event: MouseEvent) {
+  emitter.emit(EventType.NAME_LABEL_CLICK, event, props.shape);
+}
 </script>
 <template>
   <g style="cursor: pointer;">
@@ -44,6 +49,7 @@ function handleExpandShape(){
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
        v-on="eventHandler"
+       @click="handleNameLabelClick"
     />
           <!-- 展开收起 icon -->
     <template>

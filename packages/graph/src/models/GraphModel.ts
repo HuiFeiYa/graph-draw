@@ -85,6 +85,7 @@ export class GraphModel {
     emitter.on(EventType.SHAPE_CLEAR, this.clear.bind(this))
     emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
     emitter.on(EventType.EDGE_POINT_MOUSE_DOWN, this.edgeMoveModel.onEdgeStartOrEndPointMousedown.bind(this.edgeMoveModel));
+    emitter.on(EventType.NAME_LABEL_CLICK, this.labelEditorModel.onShapeNameLabelClick.bind(this.labelEditorModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.multipleSelectModel.startSelect.bind(this.multipleSelectModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
 

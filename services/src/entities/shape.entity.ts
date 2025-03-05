@@ -63,6 +63,13 @@ export class ShapeEntity {
   @Column({
     type: 'simple-json',
     nullable: true,
+    comment: '图形边框',
+    transformer: new BoundsTransformer(),
+  })
+  nameBounds: Bounds; // Bounds的json串
+  @Column({
+    type: 'simple-json',
+    nullable: true,
     comment: '针对整个shape样式对象',
   })
   style: StyleObject; // styleObject的json串
@@ -116,6 +123,7 @@ export class ShapeEntity {
   modelName: string;
 
   boundsChanged:boolean
+  nameBoundsChanged:boolean
   static fromOption(
     shapeOption: Partial<ShapeOption>,
     projectId: string,

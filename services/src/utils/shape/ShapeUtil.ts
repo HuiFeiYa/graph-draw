@@ -23,6 +23,10 @@ export class ShapeUtil {
     shape.bounds.absY = point.y;
     shape.bounds.x = shape.bounds.absX;
     shape.bounds.y = shape.bounds.absY;
+    if (shape.nameBounds) {
+      shape.nameBounds.absX = point.x + shape.nameBounds.x;
+      shape.nameBounds.absY = point.y + shape.nameBounds.y;
+    }
     const minWidth = this.getNameAndKeywordMinWidth(shape);
     if (shape.bounds.width < minWidth) {
       shape.bounds.width = minWidth;

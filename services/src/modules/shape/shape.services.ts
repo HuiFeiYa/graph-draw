@@ -227,7 +227,6 @@ export class ShapeService  extends BaseService{
     const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity);
     return [change];
   }
-
  
   async createMindMapRect(dto:CreateMindMapRectDto) {
     return this.shapeRepository.manager.transaction(async manager => {
