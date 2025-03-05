@@ -8,6 +8,7 @@ import { shallowReactive, reactive } from "vue";
 import { HoverModel } from "./HoverModel";
 import { EdgeMoveModel } from "./EdgeMoveModel";
 import { MindMapModel } from './MindMapModel'
+import { LabelEditorModel } from "./LabelEditorModel";
 
 export class GraphModel {
   /**
@@ -50,6 +51,13 @@ export class GraphModel {
    * 脑图模型
    */
   mindMapModel = reactive(new MindMapModel(this))
+  /**
+   * 标签编辑器模型
+   */
+  labelEditorModel = reactive(new LabelEditorModel(this))
+  /**
+   * 
+   */
   edges: EdgeShape[] = [];
 
   symbols: Shape[] = [];

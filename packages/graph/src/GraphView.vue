@@ -10,6 +10,7 @@ import HoverArrow from './shape/HoverArrow.vue';
 import MindMapQuickAdd from './shape/MindMapQuickAdd.vue';
 import ShapeMovePreview from "./shape/ShapeMovePreview.vue";
 import EdgeMovePreview from './shape/EdgeMovePreview.vue'
+import LabelEditor from './shape/LabelEditor.vue'
 const props = defineProps<GraphProps>();
 provide("graphProps", props);
 provide('graph', props.graph);
@@ -49,6 +50,13 @@ function handleArrowHover(index: VertexType, shape: Shape) {
 }
 
 const handleDrop = () => { };
+
+const handleLabelInput = (text: string, rect: {clientX: number; clientY: number}, shape?: Shape) => {
+  props.graph.labelEditorModel.changeTextValue(text);
+}
+const handleLabelBlur = () => {
+  props.graph.labelEditorModel.labelEditorBlur();
+}
 onMounted(() => {
   if (!viewDom.value) return;
   props.graph.viewModel.setViewDom(viewDom.value);
@@ -82,6 +90,7 @@ onUnmounted(() => {
       <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
       <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :preview-path="graph.edgeMoveModel.previewPath" />
       <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" :graph="graph" />
+      <label-editor v-if="graph.labelEditorModel.showPreview" :editor-model="graph.labelEditorModel" @input="handleLabelInput" @blur="handleLabelBlur" />
     </svg>
   </div>
 </template>
