@@ -72,7 +72,7 @@ function handleNameLabelClick(event: MouseEvent) {
     <!-- 文本 -->
 
     <foreignObject :x="shape.nameBounds.absX" :y="shape.nameBounds.absY" :width="shape.nameBounds.width" :height="shape.nameBounds.height">
-      <div style="pointer-events:auto"  @click="handleNameLabelClick" >
+      <div style="pointer-events:auto;line-height: 1.5;" :style="{fontSize: shape.style.fontSize+'px'}"  @click="handleNameLabelClick" >
         {{ shape.modelName }}
       </div>
     </foreignObject>

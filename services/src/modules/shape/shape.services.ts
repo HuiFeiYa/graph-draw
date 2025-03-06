@@ -30,6 +30,7 @@ import { ConnectModel } from '../models/ConnectModel';
 import { MoveManager } from './shapeBusiness/MoveManager';
 import { MindMapManager } from './shapeBusiness/MindMapManager';
 import { Model } from 'src/entities/model.entity';
+import { calculateTextHeight } from 'src/utils/common';
 
 @Injectable()
 export class ShapeService  extends BaseService{
@@ -295,7 +296,15 @@ export class ShapeService  extends BaseService{
       const { shapeId, text, projectId } = dto;
       const shape = await manager.findOne(ShapeEntity, { where: { id: shapeId, projectId } });
       shape.modelName = text;
-      shape.modelNameChanged = true
+      shape.modelNameChanged = true;
+      const h = calculateTextHeight(text, shape.nameBounds.width, shape.style.fontSize)
+      if (h > shape.nameBounds.height) {
+        const diffH = h - shape.nameBounds.height;
+        shape.bounds.height +=diffH
+        shape.nameBounds.height = h;
+        shape.boundsChanged = true;
+        shape.nameBoundsChanged = true;
+      }
       // await manager.save(shape);
       // return shape;
       const changes = await this.updateShapeChanges([shape])

@@ -59,7 +59,8 @@ export const blockOption:Partial<ShapeOption> = {
       },
       borderRadius: 25,
       stroke: "#ad22c5",
-      strokeWidth: 2
+      strokeWidth: 2,
+      fontSize: 14
     },
     shapeType: ShapeType.Symbol,
     showKeywords: false,

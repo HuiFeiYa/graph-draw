@@ -30,7 +30,7 @@ const previewBounds = computed(() => {
   return bounds ? {
     absX: bounds.absX,
     absY: bounds.absY,
-    width: Math.max(bounds.width, textWidth.value),
+    width: bounds.width,
     height: Math.max(bounds.height, textHeight.value)
   } : {};
 });
@@ -56,6 +56,7 @@ function handleSave() {
       :y="previewBounds.absY"
 
     >
+    <!-- todo 限制编辑时的宽度，和自动撑开 -->
       <textarea
         id="graph"
         ref="textarea"
@@ -67,7 +68,7 @@ function handleSave() {
           fontSize:editorModel.style.fontSize+'px',
           fontWeight:editorModel.style.fontWeight,
           background:editorModel.style.background,
-          lineHeight:(editorModel.style.fontSize||12) +2+'px',
+          lineHeight: 1.5,
         }"
         @input="handleInput"
         @blur="handleSave"

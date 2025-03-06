@@ -12,7 +12,7 @@ export class LabelEditorModel {
   constructor(public graph: GraphModel) { }
   labelEditorBlur() {
     this.save();
-    this.initPreviewState();
+    // this.initPreviewState();
     // this.graph.graphOption.labelEditorBlur?.();
   }
   changeTextValue(v: string) {
