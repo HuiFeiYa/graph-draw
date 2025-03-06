@@ -90,5 +90,17 @@ export class ShapeUtil {
     }
     return { shapePoint, sourcePoint, targetPoint};
   }
+  pickChange(shape: ShapeEntity) {
+    const change: Partial<ShapeEntity> = {};
+    if (shape.boundsChanged) {
+      change.bounds = shape.bounds;
+    }
+
+    if (shape.nameBoundsChanged) {
+      change.nameBounds = shape.nameBounds;
+    }
+
+    return change;
+  }
 }
 export const shapeUtil = new ShapeUtil()

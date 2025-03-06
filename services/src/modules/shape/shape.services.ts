@@ -109,20 +109,21 @@ export class ShapeService  extends BaseService{
     const changes: Change[] = []
     const updatePromises = shapes.map(async (shape) => {
       // 提取要更新的字段和值
-      const partialEntity: Partial<ShapeEntity> = {
-        bounds: {
-          ...shape.bounds,
-          x: shape.bounds.x,
-          y: shape.bounds.y,
-          absX: shape.bounds.absX,
-          absY: shape.bounds.absY,
-        },
-      };
-      // 如果没改变不需要更新 --todo
+      // const partialEntity: Partial<ShapeEntity> = {
+      //   bounds: {
+      //     ...shape.bounds,
+      //     x: shape.bounds.x,
+      //     y: shape.bounds.y,
+      //     absX: shape.bounds.absX,
+      //     absY: shape.bounds.absY,
+      //   },
+      // };
+ 
+      const partialEntity = shapeUtil.pickChange(shape);
+     // 如果没改变不需要更新 --todo
       if (shape.subShapeType === SubShapeType.CommonEdge) {
         partialEntity.waypoint = shape.waypoint;
       }
-
       // 根据 shape.id 更新对应的记录
       const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)
       changes.push(change);

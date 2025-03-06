@@ -81,7 +81,7 @@ onUnmounted(() => {
     </svg>
     <!-- 交互层 -->
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" transform-origin="0 0"
-      style="min-width: 100%; min-height: 100%;position: absolute; top: 0; left: 0; pointer-events: none;shape-rendering: geometricPrecision;"
+      style="min-width: 100%; min-height: 100%;position: absolute; top: 12px; left: 12px; pointer-events: none;shape-rendering: geometricPrecision;"
       @click="handleClickOut" @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" />

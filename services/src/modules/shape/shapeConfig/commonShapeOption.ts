@@ -69,7 +69,7 @@ export const blockOption:Partial<ShapeOption> = {
     subShapeType: SubShapeType.MindMap,
     bounds: { absX: 0, absY: 0, width: 150, height: 50, x: 0, y: 0 },
     nameBounds: {
-      absX: 0, absY: 0, width: 140, height: 40, x: 5, y: 5
+      absX: 0, absY: 0, width: 130, height: 30, x: 10, y: 10
     },
   }
 

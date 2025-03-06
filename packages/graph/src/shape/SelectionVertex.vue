@@ -72,7 +72,7 @@ function handleCircleMouseDown(event: MouseEvent, index:MovePointPosition) {
 }
 </script>
 <template>
-    <g transform="translate(12,12)">
+    <g>
         <!-- 偏移 padding 的距离 -->
         <g v-for="shape in shapeGroup.commonShapes" :key="shape.id" >
             <!-- 移动一半 rect 的宽高的距离 -->

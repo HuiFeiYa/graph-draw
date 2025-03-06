@@ -66,7 +66,7 @@ const handleAdd = (index: VertexType, shape: Shape) => {
 </script>
 <template>
     <!-- 这里需要设置 points-events 为auto才能捕获事件，在 svg 根元素上设置了 none -->
-    <g  style="transform: translate(12px,12px);pointer-events: auto; cursor: pointer;"
+    <g  style="pointer-events: auto; cursor: pointer;"
         class='mind-map-quick-add-container'>
         <defs>
             <g id="add-icon">
