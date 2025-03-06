@@ -100,6 +100,10 @@ export class ShapeUtil {
       change.nameBounds = shape.nameBounds;
     }
 
+    if (shape.modelNameChanged) {
+      change.modelName = shape.modelName;
+    }
+
     return change;
   }
 }

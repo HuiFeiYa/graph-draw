@@ -11,6 +11,7 @@ export class LabelEditorModel {
   textareaRef: HTMLInputElement | null = null;
   constructor(public graph: GraphModel) { }
   labelEditorBlur() {
+    this.save();
     this.initPreviewState();
     // this.graph.graphOption.labelEditorBlur?.();
   }
@@ -20,9 +21,9 @@ export class LabelEditorModel {
 
   onShapeNameLabelClick(event: MouseEvent, shape: Shape, labelType: string) {
     const selection = this.graph.selectionModel.selection;
-    if (selection.length === 1 && selection[0] === shape) {
+    // if (selection.length === 1 && selection[0] === shape) {
         this.trySetInEdit(shape, event);
-      }
+      // }
   }
   async trySetInEdit(shape:Shape, event: MouseEvent) {
 
@@ -42,5 +43,10 @@ export class LabelEditorModel {
     this.bounds = undefined;
     this.showPreview = false;
     this.originText = '';
+  }
+  save() {
+    
+    if (!this.editingShape) return;
+    this.graph.graphOption.saveText(this.editingShape, this.text)
   }
 }

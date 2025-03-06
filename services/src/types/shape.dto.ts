@@ -101,3 +101,10 @@ export class SideBarDropDto {
     retrospectOption: RetrospectOption,
     children: ToCreateShapeModelTreeType[]
   };
+
+  export class SaveTextDto extends BaseProjectDto {
+    @IsString()
+    shapeId: string
+    @IsString()
+    text: string
+  }

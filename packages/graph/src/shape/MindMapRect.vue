@@ -68,6 +68,14 @@ function handleNameLabelClick(event: MouseEvent) {
         :y=" shape.bounds.absY + 3"
         @click="handleExpandShape" />
     </template>
+
+    <!-- 文本 -->
+
+    <foreignObject :x="shape.nameBounds.absX" :y="shape.nameBounds.absY" :width="shape.nameBounds.width" :height="shape.nameBounds.height">
+      <div style="pointer-events:auto"  @click="handleNameLabelClick" >
+        {{ shape.modelName }}
+      </div>
+    </foreignObject>
   </g>
 </template>
 <style scoped>

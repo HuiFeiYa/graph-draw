@@ -67,4 +67,9 @@ export class GraphOption implements IGraphOption {
   async addMindMapRect(index:VertexType, shape: Shape) {
     await shapeService.createMindMapRect({shapeId: shape.id, diagramId: shape.diagramId, depth: shape.style.retrospectOption?.shapeDepth || 1, projectId: 'p2'});
   }
+  async saveText(shape: Shape, text: string) {
+    if (shape.modelName !== text) {
+      await shapeService.saveText({shapeId: shape.id, text, projectId: 'p2'});
+    }
+  }
 }

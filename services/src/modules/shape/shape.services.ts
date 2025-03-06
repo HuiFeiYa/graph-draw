@@ -7,6 +7,7 @@ import {
   MoveEdgeDto,
   MoveShapeDto,
   PointDto,
+  SaveTextDto,
   SideBarDropDto,
   ToCreateShapeModelTreeType,
   UpdateStyleObj,
@@ -132,6 +133,26 @@ export class ShapeService  extends BaseService{
 
     await Promise.all(updatePromises);
     return changes;
+  }
+
+  /**
+   * 更新所有变化的属性到数据库里
+   * @param affectedShapes
+   * @returns
+   */
+  async updateShapeChanges(affectedShapes: ShapeEntity[] ) {
+    if (affectedShapes.length === 0) return;
+    const updatePromises = affectedShapes.map(async it => {
+
+      const partialEntity: Partial<ShapeEntity> = shapeUtil.pickChange(it);
+      const change = await this.updateEntity(it.projectId,this.shapeRepository.manager, ShapeEntity, it.id_, partialEntity)
+
+      return change;
+    });
+    
+    const changes = await Promise.all(updatePromises);
+    return changes;
+
   }
 
   async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
@@ -269,7 +290,18 @@ export class ShapeService  extends BaseService{
       return changes;
     })
   }
-  
+  async saveText(dto:SaveTextDto) {
+    return this.shapeRepository.manager.transaction(async manager => {
+      const { shapeId, text, projectId } = dto;
+      const shape = await manager.findOne(ShapeEntity, { where: { id: shapeId, projectId } });
+      shape.modelName = text;
+      shape.modelNameChanged = true
+      // await manager.save(shape);
+      // return shape;
+      const changes = await this.updateShapeChanges([shape])
+      return changes;
+    })
+  }
   async test() {
     // return this.currentStepService.findStep();
   }

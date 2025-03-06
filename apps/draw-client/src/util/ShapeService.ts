@@ -42,5 +42,8 @@ export class ShapeService {
     async createMindMapRect(data: {shapeId: string, diagramId: string, depth: number, projectId: string}) {
         await httpClient.post(API.createMindMapRect, data)
     }
+    async saveText(data: {shapeId: string,text: string, projectId: string}) {
+        await httpClient.post(API.saveText, data)
+    }
 }
 export const shapeService = new ShapeService();

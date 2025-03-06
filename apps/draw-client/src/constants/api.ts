@@ -14,7 +14,8 @@ export const API = {
     connectShapeAndCreate: 'shape/connectShapeAndCreate',
     moveEdge: 'shape/moveEdge',
     updateShapeStyle: 'shape/updateShapeStyle',
-    createMindMapRect: 'shape/createMindMapRect'
+    createMindMapRect: 'shape/createMindMapRect',
+    saveText: 'shape/saveText',
 }
 
 export const ApiCode =  {

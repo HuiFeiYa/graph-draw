@@ -124,6 +124,7 @@ export class ShapeEntity {
 
   boundsChanged:boolean
   nameBoundsChanged:boolean
+  modelNameChanged: boolean
   static fromOption(
     shapeOption: Partial<ShapeOption>,
     projectId: string,
