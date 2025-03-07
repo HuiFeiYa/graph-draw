@@ -108,17 +108,6 @@ export class ShapeService  extends BaseService{
     // 使用 Promise.all 并行执行所有更新操作
     const changes: Change[] = []
     const updatePromises = shapes.map(async (shape) => {
-      // 提取要更新的字段和值
-      // const partialEntity: Partial<ShapeEntity> = {
-      //   bounds: {
-      //     ...shape.bounds,
-      //     x: shape.bounds.x,
-      //     y: shape.bounds.y,
-      //     absX: shape.bounds.absX,
-      //     absY: shape.bounds.absY,
-      //   },
-      // };
- 
       const partialEntity = shapeUtil.pickChange(shape);
      // 如果没改变不需要更新 --todo
       if (shape.subShapeType === SubShapeType.CommonEdge) {
@@ -139,9 +128,15 @@ export class ShapeService  extends BaseService{
    * @param affectedShapes
    * @returns
    */
-  async updateShapeChanges(affectedShapes: ShapeEntity[] ) {
-    if (affectedShapes.length === 0) return;
-    const updatePromises = affectedShapes.map(async it => {
+  async updateShapeChanges(affectedShapes: ShapeEntity[]  | Set<ShapeEntity>) {
+    let  shapes: ShapeEntity[] = [];
+    if (affectedShapes instanceof Set) {
+      shapes = [...affectedShapes];
+    } else {
+      shapes = affectedShapes;
+    }
+    if (shapes.length === 0) return;
+    const updatePromises = shapes.map(async it => {
 
       const partialEntity: Partial<ShapeEntity> = shapeUtil.pickChange(it);
       const change = await this.updateEntity(it.projectId,this.shapeRepository.manager, ShapeEntity, it.id_, partialEntity)
@@ -289,6 +284,14 @@ export class ShapeService  extends BaseService{
       return changes;
     })
   }
+  async updateMindMapRectChildrenPosition(dto: {shapeId: string; projectId:string}) {
+    const {projectId, shapeId} = dto;
+    const { shapeMap } = await this.getShapeTree(projectId);
+    const sourceShape = shapeMap.get(shapeId);
+    const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
+    const changes = await this.updateShapeChanges(updateShapes);
+    return changes;
+  }
   async saveText(dto:SaveTextDto) {
     return this.shapeRepository.manager.transaction(async manager => {
       const { shapeId, text, projectId } = dto;
@@ -304,10 +307,9 @@ export class ShapeService  extends BaseService{
         shape.boundsChanged = true;
         shape.nameBoundsChanged = true;
       }
-      // await manager.save(shape);
-      // return shape;
       const changes = await this.updateShapeChanges([shape])
-      return changes;
+      const updateChanges = await this.updateMindMapRectChildrenPosition({shapeId: shapeId, projectId})
+      return changes.concat(updateChanges);
     })
   }
   async test() {
