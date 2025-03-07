@@ -96,6 +96,7 @@ export class SideBarDropDto {
     shapeId: string,
     modelId: string,
     width: number,
+    height: number,
     cx: number,
     cy: number,
     retrospectOption: RetrospectOption,

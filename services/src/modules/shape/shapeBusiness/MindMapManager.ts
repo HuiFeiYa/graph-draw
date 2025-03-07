@@ -6,6 +6,7 @@ import { shapeFactory } from "src/modules/models/ShapeFactory";
 import { CreateMindMapRectDto, ToCreateShapeModelTreeType } from "src/types/shape.dto";
 import { treeForEachAsync } from "src/utils/common";
 import { Point } from "src/utils/Point";
+import { mindMapOption } from "../shapeConfig/commonShapeOption";
 
 export  class MindMapManager {
     static async createShape(dto:CreateMindMapRectDto, shapeMap:Map<string, ShapeEntity>) {
@@ -47,6 +48,7 @@ export  class MindMapManager {
           shapeId: startShape.id,
           modelId: startShape.modelId,
           width: startShape.bounds.width,
+          height: startShape.bounds.height,
           cx: startShape.bounds.absX,
           cy: startShape.bounds.absY,
           retrospectOption: startShape.style.retrospectOption,
@@ -57,6 +59,7 @@ export  class MindMapManager {
             shapeId: item.shapeId,
             modelId: item.id,
             width: 0,
+            height: 0,
             cx: 0,
             cy: 0,
             retrospectOption: {
@@ -71,6 +74,7 @@ export  class MindMapManager {
           if (existShape) {
             treeNode.shapeId = existShape.id;
             treeNode.width = existShape.bounds.width;
+            treeNode.height = existShape.bounds.height;
             treeNode.modelId = existShape.modelId;
             treeNode.retrospectOption = { ...existShape.style.retrospectOption };
             toCreateShapeModelTree.children.push(treeNode)
@@ -88,7 +92,9 @@ export  class MindMapManager {
         newTree.calcPosition(newTree, toCreateShapeModelTree.cy, toCreateShapeModelTree.cx,  40);
         await treeForEachAsync([newTree], async (item, parent) => {
           const shape = shapeMap.get(item.shapeId);
-          this.refreshShape({ x: item.cy, y: item.cx + aboveTopHeight }, shape, sourceShape);
+          // 根据父节点的高度计算子节点的位置，需要和父节点高度的中点计算
+          const diffY = parent ? (parent?.height - mindMapOption.bounds.height) / 2  : 0;
+          this.refreshShape({ x: item.cy, y: item.cx + aboveTopHeight + diffY}, shape, sourceShape);
           updateShapes.add(shape);
         })
         return updateShapes;

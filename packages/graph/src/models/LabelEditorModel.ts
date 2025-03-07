@@ -8,6 +8,7 @@ export class LabelEditorModel {
   text = "";
   originText = "";
   bounds?: Bounds;
+  
   textareaRef: HTMLInputElement | null = null;
   constructor(public graph: GraphModel) { }
   async labelEditorBlur() {
