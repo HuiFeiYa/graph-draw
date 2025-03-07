@@ -31,7 +31,7 @@ const previewBounds = computed(() => {
     absX: bounds.absX,
     absY: bounds.absY,
     width: bounds.width,
-    height: Math.max(bounds.height, textHeight.value)
+    height: Math.max(bounds.height, textHeight.value) // todo 改为跟服务端获取高度一致的方法
   } : {};
 });
 

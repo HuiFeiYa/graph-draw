@@ -15,6 +15,7 @@
     "b:all": "pnpm run b:elbow & pnpm run b:types",
     "b:elbow": "pnpm --filter elbow  run build",
     "b:types": "pnpm --filter types  run build",
+    "b:utils": "pnpm --filter utils run build",
     "i:client": "pnpm --filter draw-client install",
     "i:server": "pnpm --filter services install",
     "i:graph": "pnpm --filter graph install",

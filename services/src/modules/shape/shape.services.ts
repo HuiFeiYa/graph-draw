@@ -30,7 +30,7 @@ import { ConnectModel } from '../models/ConnectModel';
 import { MoveManager } from './shapeBusiness/MoveManager';
 import { MindMapManager } from './shapeBusiness/MindMapManager';
 import { Model } from 'src/entities/model.entity';
-import { calculateTextHeight } from 'src/utils/common';
+import { calculateTextHeight } from '@hfdraw/utils';
 
 @Injectable()
 export class ShapeService  extends BaseService{
