@@ -5,8 +5,9 @@
     "exports": {
       ".": {
       "import": "./dist/esm/index.d.ts",
-      "require": "./dist/cjs/index.js"
-      }
+      "require": "./dist/cjs/src/index.js"
+      },
+        "./package.json": "./package.json"
     },
     "scripts": {
       "build:esm": "tsc -p tsconfig.esm.json",

@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { add } from '@hfdraw/utils'
 import { GraphView } from '@hfdraw/graph'
 // @ts-ignore
 import { modelService } from '@/util/ModelService'
 // @ts-ignore
 import { generateRandomNumber } from '@/util/common'
 
-const res = add(1, 2)
-console.log('res:', res)
+
 async function getApplication() {
   const data = await modelService.getApplicationProject()
   console.log('data:', data)

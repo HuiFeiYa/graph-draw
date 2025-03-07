@@ -31,7 +31,7 @@ import { MoveManager } from './shapeBusiness/MoveManager';
 import { MindMapManager } from './shapeBusiness/MindMapManager';
 import { Model } from 'src/entities/model.entity';
 import { calculateTextHeight } from '@hfdraw/utils';
-
+console.log('calculateTextHeight:',calculateTextHeight)
 @Injectable()
 export class ShapeService  extends BaseService{
   constructor(
