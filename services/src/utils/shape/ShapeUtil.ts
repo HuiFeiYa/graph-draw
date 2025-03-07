@@ -104,6 +104,10 @@ export class ShapeUtil {
       change.modelName = shape.modelName;
     }
 
+    if (shape.isDeleteChanged) {
+      change.isDelete = shape.isDelete;
+    }
+
     return change;
   }
 }

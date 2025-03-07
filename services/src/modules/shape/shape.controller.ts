@@ -10,6 +10,7 @@ import {
   UpdateStyleObj,
   CreateMindMapRectDto,
   SaveTextDto,
+  ExpandShapeDto,
 } from 'src/types/shape.dto';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
@@ -149,6 +150,23 @@ export class ShapeController {
   @Post('saveText')
   async saveText(@Body() dto:SaveTextDto) {
     const changes = await this.shapeService.saveText(dto);
+    await this.stepService.initStep({
+      projectId: dto.projectId,
+      changes,
+    });
+    await this.wsService.sendToSubscribedClient(dto.projectId, {
+      type: WsMessageType.step,
+      data: {
+        projectId: dto.projectId,
+        changes,
+        stepType: StepType.edit
+      }
+    })
+    return new ResData(null);
+  }
+  @Post('expandShape')
+  async expandShape(@Body() dto:ExpandShapeDto) {
+    const changes = await this.shapeService.expandShape(dto);
     await this.stepService.initStep({
       projectId: dto.projectId,
       changes,

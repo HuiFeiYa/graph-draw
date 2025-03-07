@@ -16,6 +16,7 @@ export const API = {
     updateShapeStyle: 'shape/updateShapeStyle',
     createMindMapRect: 'shape/createMindMapRect',
     saveText: 'shape/saveText',
+    expandShape: 'shape/expandShape'
 }
 
 export const ApiCode =  {

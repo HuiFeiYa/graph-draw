@@ -3,6 +3,7 @@ import {
   BaseProjectDto,
   ConnectShapeAndCreateDto,
   CreateMindMapRectDto,
+  ExpandShapeDto,
   FetchAllShapeDto,
   MoveEdgeDto,
   MoveShapeDto,
@@ -311,6 +312,33 @@ export class ShapeService  extends BaseService{
       const updateChanges = await this.updateMindMapRectChildrenPosition({shapeId: shapeId, projectId})
       return changes.concat(updateChanges);
     })
+  }
+  async expandShape(dto:ExpandShapeDto) {
+    return this.shapeRepository.manager.transaction(async manager => {
+      const { shapeId, projectId, expand } = dto;
+      const shape = await manager.findOne(ShapeEntity, { where: { id: shapeId, projectId } });
+      const shapeMap = (await this.getShapeTree(projectId)).shapeMap;
+      shape.style.retrospectOption.expand = dto.expand;
+      shape.styleChanged = true;
+      const toUpdateShapeSet = new Set([shape]);
+      // 更新子节点的展示状态
+      this.updateShapeExpand(shape, toUpdateShapeSet, shapeMap, expand);
+      const changes = await this.updateShapeChanges(toUpdateShapeSet)
+      return changes;
+    })
+  }
+
+  async updateShapeExpand(shape: ShapeEntity, toUpdateShapeSet: Set<ShapeEntity>, shapeMap:Map<string, ShapeEntity>, expand:boolean) {   
+    shape.style.retrospectOption.relationTypes.forEach(item =>{
+      const childShape = shapeMap.get(item.shapeId);
+      /** 删除或者显示子节点 */
+      childShape.isDelete = expand;
+      childShape.isDeleteChanged = true;
+      toUpdateShapeSet.add(childShape)
+      if (shape.style.retrospectOption.relationTypes) {
+        this.updateShapeExpand(childShape, toUpdateShapeSet, shapeMap, expand)
+      }
+    }) 
   }
   async test() {
     // return this.currentStepService.findStep();

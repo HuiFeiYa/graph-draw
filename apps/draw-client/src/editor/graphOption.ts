@@ -72,4 +72,7 @@ export class GraphOption implements IGraphOption {
       await shapeService.saveText({shapeId: shape.id, text, projectId: 'p2'});
     }
   }
+  async expandShape(shapeId: string, expand: boolean) {
+    await shapeService.expandShape({shapeId, expand, projectId: 'p2'});
+  }
 }

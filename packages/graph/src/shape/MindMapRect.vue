@@ -4,6 +4,7 @@ import { ref, computed, onMounted  } from 'vue'
 import { createEventHandler } from '../util/createEventHandler';
 import { emitter } from '../util/Emitter';
 import { GraphModel } from '../main';
+import { EXPAND_GAP, EXPAND_ICON_R } from '../util/constant';
 
 const props = defineProps<{
   shape: Shape
@@ -15,25 +16,45 @@ const eventHandler = createEventHandler(props, {omit: ['mouseover', 'dragover']}
 
 const retrospectOption = computed(() => {
   return {
-      expand: true,
-      relationTypes: []
+      expand: props.shape.style.retrospectOption?.expand,
+      relationTypes: props.shape.style.retrospectOption?.relationTypes || []
   }
 });
 const isShowName = computed(() => {
   return !props.graph.labelEditorModel.showPreview  && props.shape.modelName
 })
+const expand = computed(() => {
+  return props.shape.style.retrospectOption?.expand
+})
 
+const iconPosition = computed(() => {
+  return {
+    x: props.shape.bounds.absX + props.shape.bounds.width + EXPAND_GAP,
+    y: props.shape.bounds.absY + (props.shape.bounds.height ) / 2 
+  }
+})
+const textPosition = computed(() => {
+  return {
+    x: props.shape.bounds.absX + props.shape.bounds.width  + 10,
+    y: props.shape.bounds.absY + (props.shape.bounds.height ) / 2 + 4
+  }
+})
+const closeLinePosition = computed(()=> {
+  return {
+    x: props.shape.bounds.absX + props.shape.bounds.width  + 9,
+    y: props.shape.bounds.absY + (props.shape.bounds.height ) / 2 
+  }
+  
+})
 const style = computed(() => {
   const shape = props.shape;
 
   return Object.assign({}, shape.style);
 });
 
-function handleShrinkShape(){
-  
-}
+
 function handleExpandShape(){
-  
+  props.graph.graphOption.expandShape(props.shape.id, retrospectOption.value.expand || false);
 }
 
 function handleNameLabelClick(event: MouseEvent) {
@@ -56,22 +77,12 @@ function handleNameLabelClick(event: MouseEvent) {
        @click="handleNameLabelClick"
     />
           <!-- 展开收起 icon -->
-    <template>
-      <!-- 展开 -->
-      <image
-        v-if="retrospectOption.expand && shape.modelId"
-        href="/statics/graph/treeiconspread.svg"
-        :x="shape.bounds.absX + shape.bounds.width"
-        :y=" shape.bounds.absY + 3"
-        @click="handleShrinkShape" />
-      <!-- 收缩 -->
-      <image
-        v-if="!retrospectOption.expand && shape.modelId"
-        href="/statics/graph/treeiconshrink.svg"
-        :x="shape.bounds.absX + shape.bounds.width"
-        :y=" shape.bounds.absY + 3"
-        @click="handleExpandShape" />
-    </template>
+           <g v-if="retrospectOption.relationTypes.length" @click="handleExpandShape">
+            <circle :cx="iconPosition.x" :cy="iconPosition.y" :r="EXPAND_ICON_R" fill="none" :stroke="style.stroke" stroke-width="1"/>
+            <path v-if="expand" :d="`M ${closeLinePosition.x} ${closeLinePosition.y} l10 0`"  :stroke="style.stroke" stroke-width="2"/>
+            <text v-else :x="textPosition.x" :y="textPosition.y" fill="#666" font-size="12">{{ retrospectOption.relationTypes.length }}</text>
+           </g>
+
 
     <!-- 文本 -->
 

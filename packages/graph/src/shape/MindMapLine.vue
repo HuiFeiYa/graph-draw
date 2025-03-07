@@ -3,6 +3,7 @@ import { curve } from '@hfdraw/elbow';
 import { Shape } from '@hfdraw/types';
 import { computed, ref } from 'vue'
 import { GraphModel } from '../models/GraphModel';
+import { EXPAND_GAP, EXPAND_ICON_R } from '../util/constant';
 const props = defineProps<{
     shape: Shape;
     graph: GraphModel
@@ -32,7 +33,7 @@ const pathArray = computed(() => {
 
             // 计算矩形1的右侧重点和矩形2的左侧中点
             const point1 = {
-                x: sourceBounds.absX + sourceBounds.width,
+                x: sourceBounds.absX + sourceBounds.width + EXPAND_GAP + EXPAND_ICON_R,
                 y: sourceBounds.absY + sourceBounds.height / 2
             };
 

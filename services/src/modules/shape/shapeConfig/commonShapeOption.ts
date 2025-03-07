@@ -52,7 +52,7 @@ export const blockOption:Partial<ShapeOption> = {
     ...baseShapeOption,
     style: {
       retrospectOption: {
-        expand: false, // 默认不展开
+        expand: true, // 默认展开
         shapeDepth: 1, // 默认一级
         parentNodeId: '', // 默认没有对应的父图形
         relationTypes: [] // 关联关系

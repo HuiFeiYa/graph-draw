@@ -17,6 +17,7 @@ export interface IGraphOption {
     EdgePointEndMove(shapeId: string, waypoint: Point[], styleObject: StyleObject):void
     addMindMapRect(index: VertexType, shape: Shape):void
     saveText(shape: Shape, text: string):Promise<void>
+    expandShape(shapeId: string, expand: boolean):Promise<void>
 }
 
 export enum MovePointPosition {

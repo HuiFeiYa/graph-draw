@@ -45,5 +45,8 @@ export class ShapeService {
     async saveText(data: {shapeId: string,text: string, projectId: string}) {
         await httpClient.post(API.saveText, data)
     }
+    async expandShape(data: {shapeId: string, expand: boolean, projectId: string}) {
+        await httpClient.post(API.expandShape, data)
+    }
 }
 export const shapeService = new ShapeService();

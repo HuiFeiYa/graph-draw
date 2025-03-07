@@ -125,6 +125,8 @@ export class ShapeEntity {
   boundsChanged:boolean
   nameBoundsChanged:boolean
   modelNameChanged: boolean
+  styleChanged: boolean
+  isDeleteChanged: boolean
   static fromOption(
     shapeOption: Partial<ShapeOption>,
     projectId: string,

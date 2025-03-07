@@ -112,4 +112,9 @@ export  class MindMapManager {
         getCy(newTree);
         return minCy < 0 ? Math.abs(minCy) : 0;
       }
+      // static async updateShapeExpand(shape: ShapeEntity, expand: boolean) {
+      //   shape.style.retrospectOption.expand = expand;
+      //   shape.styleChanged = true;
+      //   return await this.updateShapeChanges([shape]);
+      // }
 }
