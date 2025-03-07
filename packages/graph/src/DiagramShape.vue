@@ -25,7 +25,7 @@ const edges = computed(() => {
   <g @click.stop @mousedown.stop @mouseup.stop @mousemove.stop @dragenter.stop @dragleave.stop @dragover.stop>
     <g>
       <component v-for="childShape in symbols" :key="childShape.id"
-        :is="shapeCompManager.get(childShape.subShapeType)" :shape="childShape"></component>
+        :is="shapeCompManager.get(childShape.subShapeType)" :shape="childShape" :graph="graph"></component>
     </g>
     <component v-for="edge in edges" :key="edge.id" :is="shapeCompManager.get(edge.subShapeType)" :shape="edge" :graph="graph">
     </component>

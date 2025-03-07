@@ -10,10 +10,10 @@ export class LabelEditorModel {
   bounds?: Bounds;
   textareaRef: HTMLInputElement | null = null;
   constructor(public graph: GraphModel) { }
-  labelEditorBlur() {
-    this.save();
-    // this.initPreviewState();
-    // this.graph.graphOption.labelEditorBlur?.();
+  async labelEditorBlur() {
+    // 等待文本内容更新以后再初始化状态
+    await this.save();
+    this.initPreviewState();
   }
   changeTextValue(v: string) {
     this.text = v;
@@ -44,9 +44,8 @@ export class LabelEditorModel {
     this.showPreview = false;
     this.originText = '';
   }
-  save() {
-    
+  async save() {
     if (!this.editingShape) return;
-    this.graph.graphOption.saveText(this.editingShape, this.text)
+    await this.graph.graphOption.saveText(this.editingShape, this.text)
   }
 }

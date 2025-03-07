@@ -29,9 +29,7 @@ import { shapeUtil } from 'src/utils/shape/ShapeUtil';
 import { ConnectModel } from '../models/ConnectModel';
 import { MoveManager } from './shapeBusiness/MoveManager';
 import { MindMapManager } from './shapeBusiness/MindMapManager';
-import { Model } from 'src/entities/model.entity';
-import { calculateTextHeight } from '@hfdraw/utils';
-console.log('calculateTextHeight:',calculateTextHeight)
+import {  getTextSize } from '@hfdraw/utils';
 @Injectable()
 export class ShapeService  extends BaseService{
   constructor(
@@ -297,8 +295,9 @@ export class ShapeService  extends BaseService{
       const shape = await manager.findOne(ShapeEntity, { where: { id: shapeId, projectId } });
       shape.modelName = text;
       shape.modelNameChanged = true;
-      const h = calculateTextHeight(text, shape.nameBounds.width, shape.style.fontSize)
-      if (h > shape.nameBounds.height) {
+      const h = getTextSize(text,  shape.style.fontSize,shape.nameBounds.width).height;
+      // 自动更新 shape 的高度
+      if (Math.abs(h  -  shape.nameBounds.height)> 5) {
         const diffH = h - shape.nameBounds.height;
         shape.bounds.height +=diffH
         shape.nameBounds.height = h;

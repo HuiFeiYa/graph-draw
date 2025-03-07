@@ -3,21 +3,25 @@ import { EventType, Shape } from '@hfdraw/types';
 import { ref, computed, onMounted  } from 'vue'
 import { createEventHandler } from '../util/createEventHandler';
 import { emitter } from '../util/Emitter';
+import { GraphModel } from '../main';
 
 const props = defineProps<{
   shape: Shape
+  graph: GraphModel
 }>();
 
 // 绑定图形的操作，并将 shape 作为参数
 const eventHandler = createEventHandler(props, {omit: ['mouseover', 'dragover']});
 
 const retrospectOption = computed(() => {
-//   return props.shape.style.retrospectOption;
-return {
-    expand: true,
-    relationTypes: []
-}
+  return {
+      expand: true,
+      relationTypes: []
+  }
 });
+const isShowName = computed(() => {
+  return !props.graph.labelEditorModel.showPreview  && props.shape.modelName
+})
 
 const style = computed(() => {
   const shape = props.shape;
@@ -71,7 +75,7 @@ function handleNameLabelClick(event: MouseEvent) {
 
     <!-- 文本 -->
 
-    <foreignObject :x="shape.nameBounds.absX" :y="shape.nameBounds.absY" :width="shape.nameBounds.width" :height="shape.nameBounds.height">
+    <foreignObject v-if="isShowName" :x="shape.nameBounds.absX" :y="shape.nameBounds.absY" :width="shape.nameBounds.width" :height="shape.nameBounds.height">
       <div style="pointer-events:auto;line-height: 1.5;" :style="{fontSize: shape.style.fontSize+'px'}"  @click="handleNameLabelClick" >
         {{ shape.modelName }}
       </div>
