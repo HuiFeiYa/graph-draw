@@ -90,9 +90,9 @@ export class ShapeService  extends BaseService{
     return changes;
     
   }
-  async getShapeTree(projectId: string) {
+  async getShapeTree(projectId: string, where?: Record<string, any>) {
     const query: FindManyOptions<ShapeEntity> = {
-      where: { projectId, isDelete: false },
+      where: { projectId,  ...(where ? where : {isDelete:false}) },
     };
     const shapes = await this.shapeRepository.find(query);
     const shapeMap = new Map<string, ShapeEntity>();
@@ -317,7 +317,10 @@ export class ShapeService  extends BaseService{
     return this.shapeRepository.manager.transaction(async manager => {
       const { shapeId, projectId, expand } = dto;
       const shape = await manager.findOne(ShapeEntity, { where: { id: shapeId, projectId } });
-      const shapeMap = (await this.getShapeTree(projectId)).shapeMap;
+      if (!shape) {
+        throw new Error('展开图形不存在')
+      }
+      const shapeMap = (await this.getShapeTree(projectId, {})).shapeMap;
       shape.style.retrospectOption.expand = dto.expand;
       shape.styleChanged = true;
       const toUpdateShapeSet = new Set([shape]);
@@ -332,7 +335,7 @@ export class ShapeService  extends BaseService{
     shape.style.retrospectOption.relationTypes.forEach(item =>{
       const childShape = shapeMap.get(item.shapeId);
       /** 删除或者显示子节点 */
-      childShape.isDelete = expand;
+      childShape.isDelete = !expand;
       childShape.isDeleteChanged = true;
       toUpdateShapeSet.add(childShape)
       if (shape.style.retrospectOption.relationTypes) {

@@ -54,7 +54,7 @@ const style = computed(() => {
 
 
 function handleExpandShape(){
-  props.graph.graphOption.expandShape(props.shape.id, retrospectOption.value.expand || false);
+  props.graph.graphOption.expandShape(props.shape.id, !retrospectOption.value.expand || false);
 }
 
 function handleNameLabelClick(event: MouseEvent) {
