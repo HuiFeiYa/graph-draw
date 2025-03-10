@@ -85,7 +85,6 @@ export class ShapeService  extends BaseService{
     if (updateShapeSet.size > 0) {
       const updatedShapesArray = Array.from(updateShapeSet);
       changes = await this.bulkUpdateShapes( dto.projectId,updatedShapesArray);
-      console.log('res:',changes)
     }
     return changes;
     
@@ -189,24 +188,7 @@ export class ShapeService  extends BaseService{
     const ids = shapesIds.map(item => item.id);
     await this.shapeRepository.update({id: In(ids)}, {isDelete: true});
   }
-  // async createConnectTargetShape(dto: ConnectShapeAndCreateDto) {
-  //   const { sourceShapeId, projectId, index, modelId: stType } = dto;
-  //   const shape = await this.shapeRepository.findOne({
-  //     where: {
-  //       id: sourceShapeId
-  //     },
-  //     select: ['bounds', 'id']
-  //   })
-  //   const {shapePoint, targetPoint, sourcePoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
-  //   const options = {
-  //     projectId,
-  //     stType,
-  //     point: shapePoint
-  //   }
-  //   const sideBar = new SidebarModel(options);
-  //   await sideBar.run();
-  //   return sideBar.createdShapes;
-  // }
+
   async createConnectEdge(dto: ConnectShapeAndCreateDto, waypoint: PointDto[]) {
     const { sourceShapeId, projectId, index, modelId: stType } = dto;
   }
@@ -247,39 +229,20 @@ export class ShapeService  extends BaseService{
  
   async createMindMapRect(dto:CreateMindMapRectDto) {
     return this.shapeRepository.manager.transaction(async manager => {
-      const { projectId, depth, shapeId} = dto;
+      const { projectId, shapeId} = dto;
       const { shapeMap } = await this.getShapeTree(projectId);
       const sourceShape = shapeMap.get(shapeId);
       const createShape = await MindMapManager.createShape(dto, shapeMap)
-      // 更新 sourceShape 的追溯关联选项
-      const partialEntity: Partial<ShapeEntity> = {
-        style: {
-          ...(createShape.style || {}),
-          retrospectOption: {
-            ...sourceShape.style.retrospectOption,
-            relationTypes: [...sourceShape.style.retrospectOption.relationTypes, {id: createShape.modelId, shapeId: createShape.id}]
-          },
-        }
-      }
-      
-      await manager.save(ShapeEntity, [createShape]);
+      const changes = await this.addEntitys(manager, ShapeEntity, [createShape]);
       shapeMap.set(createShape.id, createShape);
-      const changes: Change[] = [createShape].map(s => {
-        const v: Change = {
-          type: ChangeType.INSERT,
-          newValue: JSON.stringify(s),
-          projectId: dto.projectId,
-          shapeId: s.id_
-        }
-        return v;
-      })
-      const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, sourceShape.id_, partialEntity)
-      sourceShape.style = partialEntity.style;
+      MindMapManager.addRetrospectOption(sourceShape, createShape.id);
+      const partialEntity = shapeUtil.pickChange(sourceShape);
+      const change = await this.updateEntity(dto.projectId, manager, ShapeEntity, sourceShape.id_, partialEntity);
       changes.push(change);
       const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
       if (updateShapes.size > 0) {
         const updatedShapesArray = Array.from(updateShapes);
-        const updates = await this.bulkUpdateShapes( dto.projectId,updatedShapesArray);
+        const updates = await this.updateShapeChanges(updatedShapesArray);
         changes.push(...updates);
       }
       return changes;

@@ -94,7 +94,6 @@ export class SideBarDropDto {
 
   export type ToCreateShapeModelTreeType = {
     shapeId: string,
-    modelId: string,
     width: number,
     height: number,
     cx: number,

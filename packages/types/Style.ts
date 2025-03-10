@@ -21,7 +21,6 @@ export interface StyleObject {
 }
 
 export interface RetrospectRelationType {
-    id: string, // 跟哪个模型有关联关系
     shapeId: string // 跟哪个图形有关联
     key?: string // 关系的线的key
   }

@@ -14,7 +14,6 @@ export const defaultStyleOption = {
 
 export type ToCreateShapeModelTreeType = {
   shapeId: string,
-  modelId: string,
   width: number,
   height: number,
   cx: number,
