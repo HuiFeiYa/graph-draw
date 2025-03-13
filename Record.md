@@ -26,3 +26,12 @@ NODE_MODULE_VERSION 130. Please try re-compiling or re-installing
 console.log('EventType.SHAPE_MOUSE_OVER:',EventType.SHAPE_MOUSE_OVER)
 
 需要重新到 types 目录下 npm run build 。
+
+
+## 项目中多版本 node
+使用 volta 管理
+```JSON
+  "volta": {
+    "node": "20.18.0"
+  },
+```
