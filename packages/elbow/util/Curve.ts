@@ -76,16 +76,8 @@ export class Curve {
     return angle;
   }
   drawThirdOrderBezierForRetrospect(point1: {x: number, y: number}, point2: {x: number, y: number}) {
-    // const centerX = (point1.x + point2.x) / 2;
-    // const centerY = (point1.y + point2.y) / 2;
-    // const labelX = centerX - 21;
-    // const labelY = centerY - 14;
-    // let linePath = `M ${point1.x} ${point1.y} C ${centerX} ${point1.y} ${centerX} ${point2.y} ${point2.x} ${point2.y}`;
-    // return { labelX, labelY, linePath };
      // 计算两个点之间的中心点
      const centerX = (point1.x + point2.x) / 2;
-     const centerY = (point1.y + point2.y) / 2;
- 
      // 调整控制点的位置，使曲线更平滑
      const control1X = centerX + (point2.x - point1.x) * 0.25; // 控制点1向右偏移
      const control1Y = point1.y;

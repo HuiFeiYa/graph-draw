@@ -14,7 +14,6 @@ const pathArray = computed(() => {
         color: string
     }[] = [];
     const shapeDepth = props.shape.style.retrospectOption?.shapeDepth;
-    const shapeId = props.shape.id;
     const sourceBounds = props.shape.bounds;
     // 关联的下一级图形
     props.shape.style.retrospectOption?.relationTypes?.forEach(

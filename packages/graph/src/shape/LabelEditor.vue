@@ -55,9 +55,7 @@ function handleSave() {
       :y="previewBounds.absY"
 
     >
-    <!-- todo 限制编辑时的宽度，和自动撑开 -->
       <textarea
-        id="graph"
         ref="textarea"
         :value="editorModel.text"
         class="v-label-Editor"

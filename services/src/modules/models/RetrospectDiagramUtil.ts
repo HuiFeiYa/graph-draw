@@ -71,7 +71,6 @@ export class RetrospectTreeNode {
     extents.forEach((ext, index: number) => {
       offset = 0;
       for (let j = 0; j < Math.min(ext.length, rightMost.length); j++) {
-        // TODO 兼容横向纵向
         //  纵向的话  horizontalGap+width
         // 横向的话 取verticalGap
         let number = 0;

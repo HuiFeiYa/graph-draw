@@ -22,7 +22,6 @@ export class MindMapManager {
     const { projectId, depth, shapeId, diagramId } = dto;
     // 基于 shapeId 查找 sourceShape
     const sourceShape = shapeMap.get(shapeId);
-    const diagramShape = shapeMap.get(diagramId);
     const shapeOption = shapeFactory.getModelShapeOption(
       StType['SysML::MindMap'],
     );
