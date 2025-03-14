@@ -99,6 +99,16 @@ function handleMousemoveSvg(event:MouseEvent) {
   };
 }
 
+function handleWheel(event:WheelEvent) {
+  if (!svgElement.value) return;
+  event.preventDefault();
+
+  const CTM = svgElement.value.getScreenCTM();
+  if (!CTM) return ;
+  const delta = event.deltaY < 0 ? 1.02 : 0.98;
+  scale.value *= delta;
+}
+
 onMounted(() => {
   if (!viewDom.value) return;
   props.graph.viewModel.setViewDom(viewDom.value);
@@ -118,7 +128,7 @@ onUnmounted(() => {
       style="min-width: 100%; min-height: 100%;background-color: white;cursor:move" @click="handleClickOut"
       @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop"
-       @mouseleave="handleMouseupOut">
+       @mouseleave="handleMouseupOut" @wheel="handleWheel">
       <Grid />
       <g ref="rootGroup"
       :transform="`matrix(${scale}, 0, 0, ${scale}, ${transform.x}, ${transform.y})`">

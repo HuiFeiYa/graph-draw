@@ -301,7 +301,7 @@ export class ShapeService  extends BaseService{
       childShape.isDelete = !expand;
       childShape.isDeleteChanged = true;
       toUpdateShapeSet.add(childShape)
-      if (shape.style.retrospectOption.relationTypes) {
+      if (childShape.style.retrospectOption.relationTypes) {
         this.updateShapeExpand(childShape, toUpdateShapeSet, shapeMap, expand)
       }
     }) 
