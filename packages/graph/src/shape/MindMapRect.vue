@@ -21,7 +21,7 @@ const retrospectOption = computed(() => {
   }
 });
 const isShowName = computed(() => {
-  return !props.graph.labelEditorModel.showPreview  && props.shape.modelName
+  return props.graph.labelEditorModel.editingShape?.id !== props.shape.id  && props.shape.modelName
 })
 const expand = computed(() => {
   return props.shape.style.retrospectOption?.expand

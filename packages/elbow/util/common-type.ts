@@ -23,6 +23,8 @@ export interface ArrowLineHandle {
     connection: PointOfRectangle;
 }
 export interface PlaitElement {
+    [key: string]: any;
+    points?: Point[];
     source: ArrowLineHandle;
     target: ArrowLineHandle;
 }
