@@ -35,3 +35,11 @@ console.log('EventType.SHAPE_MOUSE_OVER:',EventType.SHAPE_MOUSE_OVER)
     "node": "20.18.0"
   },
 ```
+
+
+## client 中报错 '@hfdraw/utils' 导出错误
+
+import {  getTextSize } from '@hfdraw/utils'
+
+解决：
+将根目录下 node_modules 删除重新 pnpm i 
