@@ -128,30 +128,143 @@ xmlns全称是“XML Namespaces”，指“XML命名空间”。
 将复杂的图形逻辑集中管理，提高代码可读性和维护性。
 
 ## path 路径
+<path>标签是SVG中非常强大且灵活的元素，用于定义任意形状的路径。
 
-### 图形属性
-* stroke
-* stroke-width
-* stroke-dasharray
-* stroke-dashoffset
-* fill
-
+### d 属性定义路径
+* M x y：绝对坐标移动到点 (x, y)，不绘制任何内容。
+* L x y：从当前位置绘制一条直线到绝对坐标点 (x, y)。
+* H x：从当前位置绘制一条水平直线到绝对 x 坐标。
+* V y：从当前位置绘制一条垂直直线到绝对 y 坐标。
+* C x1 y1 x2 y2 x y：绘制一条三次贝塞尔曲线，控制点为 (x1, y1) 和 (x2, y2)，终点为 (x, y)。
+* Q x1 y1 x y：绘制一条二次贝塞尔曲线，控制点为 (x1, y1)，终点为 (x, y)。
+* Z：闭合路径，将当前点连接到路径的起始点。
+```html
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+    <!-- 使用大写命令（绝对坐标）绘制矩形 -->
+    <path d="M 20 20 L 100 20 L 100 80 L 20 80 Z" stroke="blue" stroke-width="2" fill="lightblue" />
+</svg>
+```
+d 属性路径所有指令支持小写的指令，小写表示是相对位置。
+```html
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+    <!-- 使用小写命令（相对坐标）绘制矩形 -->
+    <path d="m 20 20 l 80 0 l 0 60 l -80 0 Z" stroke="blue" stroke-width="2" fill="lightblue" />
+</svg>
+```
+### 其他图形属性
+* stroke="blue"：边框颜色
+* stroke-width="3"：边框宽度
+* stroke-dasharray="5, 5"：虚线样式
+* stroke-dashoffset="2"：虚线偏移量
+* fill="red"：填充颜色
+* fill-opacity="0.5"：填充透明度
+* stroke-opacity="0.8"：边框透明度
+* opacity="0.7"：整体透明度
+* transform="translate(10, 20)"：图形变换（平移）
+* class="shape"：CSS类名
+* id="uniqueId"：元素唯一标识符
+* style="stroke: green; fill: yellow;"：内联样式
+* pointer-events="none"：鼠标事件响应
+* clip-path="url(#clipPathId)"：裁剪路径
+* mask="url(#maskId)"：遮罩效果
 ### 绘制曲线
+三次贝塞尔曲线
+```HTML
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <!-- 贝塞尔曲线 -->
+    <path id="bezier-curve" class="curve" d="M 100 300 
+                 C 200 100, 
+                    338 272, 
+                    500 300"></path>
+    <!-- 控制点和起点/终点 -->
+    <circle id="start-point" cx="100" cy="300" r="8"></circle>
+    <circle id="control-point1" class="control-point" cx="200" cy="100" r="8"></circle>
+    <circle id="control-point2" class="control-point" cx="338" cy="272" r="8"></circle>
+    <circle id="end-point" cx="500" cy="300" r="8"></circle>
+    <!-- 控制线 -->
+    <path class="control-line" d="M 100 300 L 200 100"></path>
+    <path class="control-line" d="M 400 100 L 500 300"></path>
+</svg>
+```
 
+通过组合多个三次贝塞尔曲线来实现更复杂的曲线形状。
+```html
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg">
+    <!-- 复杂的贝塞尔曲线 -->
+    <path d="
+      M 50 400
+      C 100 100, 200 100, 300 400
+      C 400 700, 500 700, 600 400
+      C 700 100, 800 100, 850 400
+    " stroke="blue" stroke-width="3" fill="none"></path>
+</svg>
+```
 ## 图形复用
 
-### 直接复用图形
-
 ### 复用图形组
+* 通过 use 复用 defs 中定义 g 标签定义的图形组。
+* 在 use 标签上应用的样式会应用到 g 标签下的每一个图形上。如果不需要，可以在图形本身上设置样式。
+```HTML
+<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <g id="btn">
+            <!-- 定义按钮 -->
+            <rect id="button" x="50" y="50" width="300" height="100" rx="10" ry="10" />
+            <!-- 定义按钮阴影 -->
+            <rect x="50" y="50" width="300" height="100" rx="10" ry="10" fill="rgba(0, 0, 0, 0.2)" />
+            <!-- 定义按钮上的文案 -->
+            <!-- 将 stroke 设置为 none，防止被覆盖 -->
+            <text x="200" y="100" font-size="24" fill="white" text-anchor="middle" alignment-baseline="central" stroke="none">Click
+                Me</text>
+        </g>
+    </defs>
+    <!-- 使用图形组，并覆盖填充颜色 -->
+    <use href="#btn" x="0" y="0" style="fill: #FF5733;stroke:#333;stroke-width:3px" />
+    <use href="#btn" x="0" y="150" style="fill: #33FF57;" />
+</svg>
+```
+### symbol 模板元素
+* <symbol> 是一个模板元素，可以像 <g> 元素那样将需要复用的元素包裹起来。
+* <symbol> 具有自己的 viewBox 属性，可以定义独立的坐标系。支持通过 viewBox 自适应缩放。相比与直接复用 g 标签有更好的自适应效果。
+```html
+  <svg width="1000" height="800" xmlns="http://www.w3.org/2000/svg">
+    <!-- 定义一个可复用的按钮模板 -->
+    <symbol id="sym02" viewBox="0 0 350 100">
+        <!-- 定义按钮 -->
+        <rect id="button"  width="300" height="100" rx="10" ry="10" />
+        <!-- 定义按钮阴影 -->
+        <rect  width="300" height="100" rx="10" ry="10" fill="rgba(0, 0, 0, 0.2)" />
+        <!-- 定义按钮上的文案 -->
+        <text x="150" y="50" font-size="24" fill="white" text-anchor="middle" alignment-baseline="central" stroke="none">Click
+            Me</text>
+    </symbol>
 
-### symbol 包裹复用图形
-
-### 图形遮罩 mask
-
-### 图形裁剪 clipPath
+    <!-- 复用按钮模板 -->
+    <!-- 按比例缩放 -->
+    <use href="#sym02" x="0" y="0" width="140" height="40" style="fill: #FF5733;stroke:#333;stroke-width:3px" />
+    <use href="#sym02" x="9" y="100"  width="350" height="100" style="fill: #33FF57;" />
+</svg>
+```
+碰到坑点，当我们使用 use 只设置了宽高中的一个，另外一边则会默认居中对齐，即使你设置了 x、y 也是无效的。如果你想要按照自己设置的坐标来，就需要将宽高都设置上。
 
 ### 渐变
-
+SVG本身提供了两种渐变类型：线性渐变（<linearGradient>）和径向渐变（<radialGradient>）
+```HTML
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 定义一个线性渐变 -->
+    <linearGradient id="gradient1">
+      <stop offset="0%" stop-color="red" />
+      <stop offset="100%" stop-color="blue" />
+    </linearGradient>
+  </defs>
+  <!-- 使用fill属性引用渐变 -->
+  <rect x="10" y="10" width="380" height="180" fill="url(#gradient1)" />
+</svg>
+```
+### href 属性和 url() 函数
+* href 用于<use>复用内部定义的图形、<a>、<image> 引用外部链接。
+* url() 函数用于引用内部 css 样式。例如引用 <linearGradient>、<filter>、<clipPath> 等。
 ### foreignObject
 
 
