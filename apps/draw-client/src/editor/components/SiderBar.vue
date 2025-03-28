@@ -5,14 +5,16 @@ import { SideBarWidth, siderBarList } from '@/constants/config';
 import { shapeService } from "../../util/ShapeService";
 import { SideBarDropDto } from "../../types/shape.dto";
 import { SiderbarItemKey } from "@hfdraw/types";
+import { useProjectStore } from '../../stores/project';
 const props = defineProps();
 const active = ref("common");
+const projectStore = useProjectStore();
 
 const onMousedown = async (item: { modelId: any; }) => {
   const params:SideBarDropDto = {
     diagramId: '1',
     point: {x: 100, y: 100},
-    projectId: 'p1',
+    projectId: projectStore.projectId,
     modelId: item.modelId
   }
   const res = await shapeService.sidebarDrop(params)

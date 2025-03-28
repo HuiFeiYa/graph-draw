@@ -40,6 +40,8 @@ import { stepStatusReactive } from '../util/StepStatus';
 import { useUiStore } from '../stores/ui';
 import { emitter } from '../util/Emitter';
 import { BusEvent } from '../constants/config';
+import { useProjectStore } from '../stores/project';
+const projectStore = useProjectStore();
 let activeTab = ref('Project');
 let selectButtonValue = ref('');
 const uiStore = useUiStore();
@@ -65,15 +67,15 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
   }
   switch(child.value) {
     case 'undo': {
-      await shapeService.undo('p1')
+      await shapeService.undo(projectStore.projectId)
       break;
     }
     case 'redo': {
-      await shapeService.redo('p1');
+      await shapeService.redo(projectStore.projectId);
       break;
     }
     case 'clear': {
-      await shapeService.clear('p1')
+      await shapeService.clear(projectStore.projectId)
       emitter.emit(BusEvent.REFRESH)
       break;
     }
@@ -85,7 +87,7 @@ function clear() {
   emitter.emit(BusEvent.CLEAR_STATUS)
 }
 function freshStepStatus() {
-  stepStatusReactive.fresh('p1')
+  stepStatusReactive.fresh(projectStore.projectId)
 
 }
 onMounted(()=> {

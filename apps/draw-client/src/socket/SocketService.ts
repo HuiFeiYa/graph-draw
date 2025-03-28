@@ -3,6 +3,7 @@ import { BusEvent, ConnectStatus } from "../constants/config";
 import { emitter } from "../util/Emitter";
 import { stepStatusReactive } from "../util/StepStatus";
 import { shapeService } from "../util/ShapeService";
+import { useProjectStore } from "../stores/project";
 class SocketOption {
   /**
    * 最大尝试重连次数
@@ -20,12 +21,14 @@ export class SocketService {
   status: ConnectStatus = ConnectStatus.UNCONNECT;
   uri: string;
   maxReconnectTime = 3;
+  
   msgHandler: {[key:string]:Function} = {
     connect:() => {
-      this.sendJSON({ type: "subscribeProject", projectId: 'p2' });
+      const store = useProjectStore();
+      this.sendJSON({ type: "subscribeProject", projectId: store.projectId });
     },
     async step(messageData:{ type:'step', data: Step}) {
-      const { data: { changes, stepType } } = messageData;
+      const { data: { changes, stepType, projectId } } = messageData;
       const isUndo = stepType === StepType.undo;
       const isEdit = stepType === StepType.edit;
       changes.forEach(change => {
@@ -62,7 +65,7 @@ export class SocketService {
        * 3. undo，此时 redo 应该可以点击
        * 4. 添加图形，此时 redo 应该不可以点击
        */
-      await stepStatusReactive.fresh('p1')
+      await stepStatusReactive.fresh(projectId)
     }
   };
   constructor(option: SocketOption) {

@@ -7,8 +7,10 @@ import { GraphOption } from '../editor/graphOption';
 import { emitter } from "../util/Emitter";
 import {  StType } from "@hfdraw/types";
 import { shapeService } from "../util/ShapeService";
+import { useProjectStore } from "../stores/projectStore";
+const projectStore = useProjectStore();
 import { SideBarDropDto } from '../types/shape.dto';
-const graphOption = new GraphOption('p1');
+const graphOption = new GraphOption(projectStore.projectId);
 const graphData = reactive<{
   edges: Shape[],
   symbols: Shape[],
@@ -23,14 +25,14 @@ async function  createRect() {
   const params:SideBarDropDto = {
     diagramId: '1',
     point: {x: 100, y: 100},
-    projectId: 'p2',
+    projectId: projectStore.projectId,
     modelId: StType['SysML::MindMap']
   }
   const res = await shapeService.sidebarDrop(params)
 }
 
 async function fretchData() {
-  await shapeService.getAllShapes('p2').then(data => {
+  await shapeService.getAllShapes(projectStore.projectId).then(data => {
     // console.log('data: ', data)
     if (data.length > 0) {
       graphData.graph.symbols = data;

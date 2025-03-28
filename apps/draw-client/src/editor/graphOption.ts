@@ -9,6 +9,7 @@ import { PopoverListItem, PopoverListItemType } from '../types/ui'
 import { Point } from "@hfdraw/graph/src/util/Point";
 
 export class GraphOption implements IGraphOption {
+  // 在构造函数中获取 store 实例
   graph!: GraphModel;
   constructor(public projectId: string) {
 
@@ -20,13 +21,13 @@ export class GraphOption implements IGraphOption {
     const movingShapes = moveModel.movingShapes;
     const shapeIds = movingShapes.map(it => it.id);
     await shapeService.moveShape({
-      projectId: 'p1', shapeIds, dx, dy
+      projectId: this.projectId, shapeIds, dx, dy
     })
   }
 
   async EdgePointEndMove(shapeId: string, waypoint: Point[], styleObject: StyleObject) {
     await shapeService.moveEdge({
-      shapeId, waypoint, projectId: 'p1', styleObject
+      shapeId, waypoint, projectId: this.projectId, styleObject
     })
   }
 
@@ -65,14 +66,14 @@ export class GraphOption implements IGraphOption {
     store.setPopoverList([item])
   }
   async addMindMapRect(index:VertexType, shape: Shape) {
-    await shapeService.createMindMapRect({shapeId: shape.id, diagramId: shape.diagramId, depth: shape.style.retrospectOption?.shapeDepth || 1, projectId: 'p2'});
+    await shapeService.createMindMapRect({shapeId: shape.id, diagramId: shape.diagramId, depth: shape.style.retrospectOption?.shapeDepth || 1, projectId: this.projectId});
   }
   async saveText(shape: Shape, text: string) {
     if (shape.modelName !== text) {
-      await shapeService.saveText({shapeId: shape.id, text, projectId: 'p2'});
+      await shapeService.saveText({shapeId: shape.id, text, projectId: this.projectId});
     }
   }
   async expandShape(shapeId: string, expand: boolean) {
-    await shapeService.expandShape({shapeId, expand, projectId: 'p2'});
+    await shapeService.expandShape({shapeId, expand, projectId: this.projectId});
   }
 }
