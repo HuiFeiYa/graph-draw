@@ -7,9 +7,9 @@ import { GraphOption } from '../editor/graphOption';
 import { emitter } from "../util/Emitter";
 import {  StType } from "@hfdraw/types";
 import { shapeService } from "../util/ShapeService";
-import { useProjectStore } from "../stores/projectStore";
-const projectStore = useProjectStore();
 import { SideBarDropDto } from '../types/shape.dto';
+import { useProjectStore } from '../stores/project';
+const projectStore = useProjectStore();
 const graphOption = new GraphOption(projectStore.projectId);
 const graphData = reactive<{
   edges: Shape[],
