@@ -156,6 +156,7 @@ export class MindMapManager {
             ...sourceShape.style.retrospectOption.relationTypes,
             { shapeId: childShapeId },
           ],
+          expand: true, // 标记展开状态
         },
       },
     };
