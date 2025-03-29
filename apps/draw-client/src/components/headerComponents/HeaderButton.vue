@@ -1,5 +1,5 @@
 <template>
-  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex" >
+  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex" :class="{ disabled: data.disabled}">
     <el-tooltip
       :show-after="500"
       placement="bottom"
@@ -54,7 +54,10 @@ const isSelected = computed(()=> {
   }
  
 }
-.v-header-btn.selected {
-    background-color: #0000ff30;
-  }
+.v-header-btn.disabled  {
+  filter: grayscale(85%) !important;
+  color: #c1c5cb !important;
+  cursor: not-allowed !important;
+}
+
 </style>

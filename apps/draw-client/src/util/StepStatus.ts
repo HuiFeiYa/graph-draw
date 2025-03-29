@@ -44,5 +44,4 @@ export class StepStatus {
       Object.assign(this, stepStatus);
     }
   }
-const stepStatus = new StepStatus();
-export const stepStatusReactive = reactive(stepStatus);
+export const stepStatusReactive = reactive(new StepStatus());
