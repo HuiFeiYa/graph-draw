@@ -43,7 +43,7 @@ export class SocketService {
 
           if (isUndo) {
            
-            emitter.emit(BusEvent.INSERT_SHAPE, change)
+            emitter.emit(BusEvent.INSERT_SHAPE, {...change, oldValue: change.newValue, newValue: change.oldValue})
 
           } else {
             emitter.emit(BusEvent.DELETE_SHAPE, change)

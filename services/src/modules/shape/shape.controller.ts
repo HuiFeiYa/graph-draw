@@ -27,22 +27,22 @@ export class ShapeController {
   ) {}
   @Post('sidebarDrop')
   async sidebarDrop(@Body() dto: SideBarDropDto) {
-    const res = await this.shapeService.sideBarItemDrop(dto);
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes: res.map((item) => {
-          return {
-            type: ChangeType.INSERT,
-            newValue: JSON.stringify(item),
-            projectId: dto.projectId,
-            shapeId: item.id_,
-          };
-        }),
-        stepType: StepType.edit,
-      },
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      const res = await stepManager.shapeService.sideBarItemDrop(dto);
+      return res.map((item) => {
+        return {
+          type: ChangeType.INSERT,
+          newValue: JSON.stringify(item),
+          projectId: dto.projectId,
+          shapeId: item.id_,
+        };
+      });
     });
+    return handle();
   }
   @Get('diagram/allShape')
   async getDiagramAllShape(@Query() dto: FetchAllShapeDto) {
@@ -51,85 +51,70 @@ export class ShapeController {
   }
   @Post('move')
   async moveShape(@Body() dto: MoveShapeDto) {
-    const changes = await this.shapeService.moveShape(dto);
-    await this.stepService.initStep({ projectId: dto.projectId, changes });
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes,
-        stepType: StepType.edit,
-      },
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      return await stepManager.shapeService.moveShape(dto);
     });
-    return new ResData(null);
+    return handle();
   }
-
   @Post('connectShapeAndCreate')
   async connectShapeAndCreate(
     @Body() connectShapeAndCreateDto: ConnectShapeAndCreateDto,
   ) {
-    const res = await this.shapeService.connectShapeAndCreate(
-      connectShapeAndCreateDto,
-    );
-    const changes = res.map((item) => {
-      return {
-        type: ChangeType.INSERT,
-        newValue: JSON.stringify(item),
-        projectId: connectShapeAndCreateDto.projectId,
-        shapeId: item.id_,
-      };
-    });
-    await this.wsService.sendToSubscribedClient(
-      connectShapeAndCreateDto.projectId,
-      {
-        type: WsMessageType.step,
-        data: {
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, connectShapeAndCreateDto, async (stepManager) => {
+      const res = await stepManager.shapeService.connectShapeAndCreate(connectShapeAndCreateDto);
+      return res.map((item) => {
+        return {
+          type: ChangeType.INSERT,
+          newValue: JSON.stringify(item),
           projectId: connectShapeAndCreateDto.projectId,
-          changes,
-          stepType: StepType.edit,
-        },
-      },
-    );
-    await this.stepService.initStep({
-      projectId: connectShapeAndCreateDto.projectId,
-      changes,
+          shapeId: item.id_,
+        };
+      });
     });
-    return new ResData(null);
+    return handle();
   }
   @Post('moveEdge') 
   async moveEdge(@Body() dto: MoveEdgeDto) {
-    const changes = await this.shapeService.moveEdge(dto);
-    await this.stepService.initStep({
-      projectId: dto.projectId,
-      changes,
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      return await stepManager.shapeService.moveEdge(dto);
     });
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes,
-        stepType: StepType.edit
-      }
-    })
-    return new ResData(null);
+    return handle();
   }
-
   @Post('updateShapeStyle')
   async updateShapeStyle(@Body() dto:UpdateStyleObj) {
-    const changes = await this.shapeService.updateShapeStyle(dto);
-    await this.stepService.initStep({
-      projectId: dto.projectId,
-      changes,
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      return await stepManager.shapeService.updateShapeStyle(dto);
     });
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes,
-        stepType: StepType.edit
-      }
-    })
-    return new ResData(null);
+    return handle();
+  }
+ 
+ 
+  @Post('clear')
+  async clearProject(@Body() dto: BaseProjectDto) {
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      return await stepManager.shapeService.clearShapes(dto);
+    });
+    return handle();
   }
   @Post('createMindMapRect')
   async createMindMapRect(@Body() dto:CreateMindMapRectDto) {
@@ -141,59 +126,37 @@ export class ShapeController {
       const changes = await stepManager.shapeService.createMindMapRect(dto);
       return changes;
     })
-    return handle(); // 调用 transaction 函数并返回其返回值，即 ResData 实例，包含处理结果和错误信息
+    return handle();
   }
   @Post('saveText')
   async saveText(@Body() dto:SaveTextDto) {
-    const changes = await this.shapeService.saveText(dto);
-    await this.stepService.initStep({
-      projectId: dto.projectId,
-      changes,
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      const changes = await stepManager.shapeService.saveText(dto);
+      return changes;
     });
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes,
-        stepType: StepType.edit
-      }
-    })
-    return new ResData(null);
+    return handle();
   }
   @Post('expandShape')
   async expandShape(@Body() dto:ExpandShapeDto) {
-    const changes = await this.shapeService.expandShape(dto);
-    await this.stepService.initStep({
-      projectId: dto.projectId,
-      changes,
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      const changes = await stepManager.shapeService.expandShape(dto);
+      return changes;
     });
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes,
-        stepType: StepType.edit
-      }
-    })
-    return new ResData(null);
+    return handle();
   }
   @Get('test')
   async test() {
     return this.shapeService.test();
   }
-  @Post('clear')
-  async clearProject(@Body() dto: BaseProjectDto) {
-    const changes = await this.shapeService.clearShapes(dto);
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes,
-        stepType: StepType.edit
-      }
-    });
-    return new ResData();
-  }
+  
 }
 interface ControllerInstance { shapeService: ShapeService; wsService: WsService; stepService: StepService };
 function transaction<T>(

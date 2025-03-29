@@ -31,7 +31,8 @@ export class BaseService {
             } as any
         });
         let changeType =  ChangeType.UPDATE;
-        if ('isDelete' in partialEntity ) {
+        const isDelete = 'isDelete' in partialEntity;
+        if (isDelete) {
             if (partialEntity.isDelete) {
                 changeType = ChangeType.DELETE
             } else {
@@ -50,7 +51,9 @@ export class BaseService {
         if (!oldEntity) {
             oldEntity = {} as ShapeEntity;
         }
-        oldEntity = pickProp(oldEntity, keys) as ShapeEntity; // 防止默认值导致额外字段
+        if (!isDelete) {
+            oldEntity = pickProp(oldEntity, keys) as ShapeEntity; // 防止默认值导致额外字段
+        }
         keys.forEach((key:keyof ShapeEntity) => {
             if (oldEntity[key] === undefined) {
                 // @ts-ignore
