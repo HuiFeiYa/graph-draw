@@ -15,7 +15,7 @@ import {
 } from 'src/types/shape.dto';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
-import { ChangeType, StepType } from '@hfdraw/types';
+import { Change, ChangeType, StepType } from '@hfdraw/types';
 import { StepService } from '../step/stepService';
 
 @Controller('shape')
@@ -133,20 +133,15 @@ export class ShapeController {
   }
   @Post('createMindMapRect')
   async createMindMapRect(@Body() dto:CreateMindMapRectDto) {
-    const changes = await this.shapeService.createMindMapRect(dto);
-    await this.stepService.initStep({
-      projectId: dto.projectId,
-      changes,
-    });
-    await this.wsService.sendToSubscribedClient(dto.projectId, {
-      type: WsMessageType.step,
-      data: {
-        projectId: dto.projectId,
-        changes,
-        stepType: StepType.edit
-      }
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      const changes = await stepManager.shapeService.createMindMapRect(dto);
+      return changes;
     })
-    return new ResData(null);
+    return handle(); // 调用 transaction 函数并返回其返回值，即 ResData 实例，包含处理结果和错误信息
   }
   @Post('saveText')
   async saveText(@Body() dto:SaveTextDto) {
@@ -199,4 +194,29 @@ export class ShapeController {
     });
     return new ResData();
   }
+}
+interface ControllerInstance { shapeService: ShapeService; wsService: WsService; stepService: StepService };
+function transaction<T>(
+  controllerInstance: ControllerInstance, 
+  projectParams: { projectId: string }, 
+  callback: (stepManager: ControllerInstance) => Promise<Change[]>
+): () => Promise<ResData<T>> {
+  return async () => {
+    const stepManager = {
+      shapeService: controllerInstance.shapeService,
+      wsService: controllerInstance.wsService,
+      stepService: controllerInstance.stepService
+    };
+    const changes = await callback(stepManager);
+    await stepManager.stepService.initStep({ projectId: projectParams.projectId, changes });
+    await stepManager.wsService.sendToSubscribedClient(projectParams.projectId, {
+      type: WsMessageType.step,
+      data: {
+        projectId: projectParams.projectId,
+        changes,
+        stepType: StepType.edit
+      }
+    });
+    return new ResData(null);
+  };
 }
