@@ -54,7 +54,4 @@ export class ProjectService {
         await writeFile(projectDbFilePath, buffer);
     }
   }
-  async clearProject(dto: BaseProjectDto) {
-    await this.shapeService.clearProject(dto);
-  }
 }

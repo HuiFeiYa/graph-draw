@@ -9,7 +9,7 @@ export const API = {
     moveShapes: 'shape/move',
     redo: 'step/redo',
     undo: 'step/undo',
-    clear: 'project/clear',
+    clear: 'shape/clear',
     stepStatus: 'step/stepStatus',
     connectShapeAndCreate: 'shape/connectShapeAndCreate',
     moveEdge: 'shape/moveEdge',

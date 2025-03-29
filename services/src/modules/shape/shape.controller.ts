@@ -11,6 +11,7 @@ import {
   CreateMindMapRectDto,
   SaveTextDto,
   ExpandShapeDto,
+  BaseProjectDto,
 } from 'src/types/shape.dto';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
@@ -184,5 +185,18 @@ export class ShapeController {
   @Get('test')
   async test() {
     return this.shapeService.test();
+  }
+  @Post('clear')
+  async clearProject(@Body() dto: BaseProjectDto) {
+    const changes = await this.shapeService.clearShapes(dto);
+    await this.wsService.sendToSubscribedClient(dto.projectId, {
+      type: WsMessageType.step,
+      data: {
+        projectId: dto.projectId,
+        changes,
+        stepType: StepType.edit
+      }
+    });
+    return new ResData();
   }
 }

@@ -183,10 +183,15 @@ export class ShapeService  extends BaseService{
       return res;
     })
   }
-  async clearProject(dto: BaseProjectDto) {
-    const shapesIds = await this.shapeRepository.find({where: {projectId: dto.projectId}, select: ['id']})
-    const ids = shapesIds.map(item => item.id);
-    await this.shapeRepository.update({id: In(ids)}, {isDelete: true});
+  async clearShapes(dto: BaseProjectDto) {
+    const shapes = await this.shapeRepository.find({where: {projectId: dto.projectId}});
+    const updatePromises = shapes.map(async it => {
+      const partialEntity: Partial<ShapeEntity> = {isDelete: true};
+      const change = await this.updateEntity(it.projectId,this.shapeRepository.manager, ShapeEntity, it.id_, partialEntity)
+      return change;
+    });
+    const changes = await Promise.all(updatePromises);
+    return changes;
   }
 
   async createConnectEdge(dto: ConnectShapeAndCreateDto, waypoint: PointDto[]) {

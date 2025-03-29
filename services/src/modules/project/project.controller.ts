@@ -25,9 +25,4 @@ export class ProjectController {
     await this.projectService.saveProject(dto);
     return new ResData();
   }
-  @Post('clear')
-  async clearProject(@Body() dto: BaseProjectDto) {
-    await this.projectService.clearProject(dto);
-    return new ResData();
-  }
 }
