@@ -65,6 +65,7 @@ export class MindMapManager {
       height: startShape.bounds.height,
       cx: startShape.bounds.absX,
       cy: startShape.bounds.absY,
+      modelName: startShape.modelName,
       retrospectOption: startShape.style.retrospectOption,
       children: [],
     };
@@ -88,6 +89,7 @@ export class MindMapManager {
         treeNode.shapeId = existShape.id;
         treeNode.width = existShape.bounds.width;
         treeNode.height = existShape.bounds.height;
+        treeNode.modelName = existShape.modelName;
         treeNode.retrospectOption = { ...existShape.style.retrospectOption };
         toCreateShapeModelTree.children.push(treeNode);
       }

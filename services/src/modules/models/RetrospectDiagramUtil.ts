@@ -20,6 +20,7 @@ export type ToCreateShapeModelTreeType = {
   cy: number,
   retrospectOption: RetrospectOption,
   children: ToCreateShapeModelTreeType[]
+  modelName?:string
 };
 // 纵向
 export class RetrospectTreeNode {
@@ -32,11 +33,12 @@ export class RetrospectTreeNode {
   width: number
   height: number
   requireMapPosition: RequireMapPosition
+  modelName?: string
   styleOption:{
     verticalGap:number
     horizontalGap:number
   }
-  constructor({ cx, cy, children, retrospectOption, width, height, shapeId }: ToCreateShapeModelTreeType, requireMapPosition: RequireMapPosition, styleOption = defaultStyleOption) {
+  constructor({ cx, cy, children, retrospectOption, width, height, shapeId, modelName }: ToCreateShapeModelTreeType, requireMapPosition: RequireMapPosition, styleOption = defaultStyleOption) {
     this.cx = cx;
     this.cy = cy;
     this.offset = 0;
@@ -45,6 +47,7 @@ export class RetrospectTreeNode {
     this.height = height;
     this.shapeId = shapeId;
     this.requireMapPosition = requireMapPosition;
+    this.modelName = modelName;
     this.children = children?.map((child: any) => new RetrospectTreeNode(child, requireMapPosition, styleOption)) || [];
     this.styleOption = styleOption;
   }

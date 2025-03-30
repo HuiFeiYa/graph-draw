@@ -100,6 +100,7 @@ export class SideBarDropDto {
     cy: number,
     retrospectOption: RetrospectOption,
     children: ToCreateShapeModelTreeType[]
+    modelName?:string
   };
 
   export class SaveTextDto extends BaseProjectDto {
