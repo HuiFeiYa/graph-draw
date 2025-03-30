@@ -14,6 +14,9 @@ export class MindMapModel {
     return this.selectShape.style.retrospectOption?.shapeDepth === 1;
   }
   setSelectShape(shape: Shape) {
+    if (!shape.style.retrospectOption?.shapeDepth || shape.style.retrospectOption?.shapeDepth  >=3) {
+      return 
+    }
     this.selectShape = shape;
   }
   clearSelectShape() {
