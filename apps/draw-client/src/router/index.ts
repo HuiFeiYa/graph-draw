@@ -5,7 +5,12 @@ const routes = [
   {
     path: "/",
     name: "index",
-    redirect: "/layout/mindMap",
+    redirect: "/create-project",
+  },
+  {
+    path: '/create-project',
+    name: 'CreateProject',
+    component: () => import('../views/CreateProject.vue'),
   },
   {
     path: '/layout',
@@ -13,8 +18,8 @@ const routes = [
     name: "layout",
     children: [
       {
-        path: 'home',
-        name: 'Home',
+        path: 'flow',
+        name: 'flow',
         component: () => import('../views/Home.vue'),
       },
       {

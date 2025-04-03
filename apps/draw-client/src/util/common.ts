@@ -6,3 +6,24 @@ export function generateRandomNumber(length = 5) {
     return randomNumber.toString().padStart(length, '0');
   }
   
+
+  /**
+   * 日期格式化
+   * @param date 日期对象或时间戳
+   * @param format 格式化字符串，如 'yyyy-MM-dd HH:mm:ss'
+   * @returns 格式化后的日期字符串
+   */
+  export function formatDate(date: Date | number, format: string): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1并 补零 
+    const day = d.getDate().toString().padStart(2, '0'); // 日期 补零
+    const hours = d.getHours().toString().padStart(2, '0'); // 小时 补零
+    const minutes = d.getMinutes().toString().padStart(2, '0'); // 分钟 补零
+    const seconds = d.getSeconds().toString().padStart(2, '0'); // 秒 补零
+
+    return format.replace('yyyy', year.toString())
+                 .replace('MM', month)
+                 .replace('dd', day)
+                 .replace('HH', hours)
+  }
