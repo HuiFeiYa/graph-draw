@@ -1,5 +1,5 @@
 import { Change, RetrospectOption, SiderbarItemKey, StType, StyleObject, VertexType } from "@hfdraw/types";
-import { IsArray, IsBoolean, IsInt, IsNumber, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsInt, IsNumber, IsObject, IsString } from "class-validator";
 import { Point } from "src/utils/Point";
 import { ModelKey } from "./model.type";
 import { Model } from "src/entities/model.entity";
@@ -110,8 +110,15 @@ export class SideBarDropDto {
     text: string
   }
 
-  export class ExpandShapeDto extends BaseProjectDto {
+  export class UpdateShapeBoundsDto extends BaseProjectDto {
+    @IsObject()
+    bounds: any;
+
     @IsString()
+    shapeId: string;
+  }
+
+  export class ExpandShapeDto extends BaseProjectDto {    @IsString()
     shapeId: string
     @IsBoolean()
     expand: boolean

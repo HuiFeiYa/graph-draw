@@ -3,6 +3,7 @@ import { ShapeService } from './shape.services';
 import { ResData } from 'src/utils/http/ResData';
 import {
   FetchAllShapeDto,
+  UpdateShapeBoundsDto,
   MoveShapeDto,
   SideBarDropDto,
   ConnectShapeAndCreateDto,
@@ -152,6 +153,18 @@ export class ShapeController {
     });
     return handle();
   }
+  @Post('updateShapeBounds')
+  async updateShapeBounds(@Body() dto: UpdateShapeBoundsDto) {
+    const handle = transaction({
+      shapeService: this.shapeService,
+      wsService: this.wsService,
+      stepService: this.stepService
+    }, dto, async (stepManager) => {
+      return await stepManager.shapeService.updateShapeBounds(dto);
+    });
+    return handle();
+  }
+
   @Get('test')
   async test() {
     return this.shapeService.test();

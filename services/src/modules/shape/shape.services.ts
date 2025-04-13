@@ -11,6 +11,7 @@ import {
   SaveTextDto,
   SideBarDropDto,
   ToCreateShapeModelTreeType,
+  UpdateShapeBoundsDto,
   UpdateStyleObj,
 } from 'src/types/shape.dto';
 import { SidebarModel } from '../models/SidebarModel';
@@ -311,6 +312,19 @@ export class ShapeService  extends BaseService{
       }
     }) 
   }
+  async updateShapeBounds(dto: UpdateShapeBoundsDto) {
+    return this.shapeRepository.manager.transaction(async manager => {
+      const shape = await manager.findOne(ShapeEntity, { where: { id: dto.shapeId, projectId: dto.projectId } });
+      if (!shape) {
+        throw new Error('未找到对应的图形')
+      }
+      shape.bounds = dto.bounds;
+      shape.boundsChanged = true;
+      const changes = await this.updateShapeChanges([shape]);
+      return changes;
+    })
+  }
+
   async test() {
     // return this.currentStepService.findStep();
   }
