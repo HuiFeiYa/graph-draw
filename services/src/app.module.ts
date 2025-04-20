@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { MainDataSource } from './database/main-datasource';
 import { MainModule } from './modules/main/main.module';
 import { ProjectModule } from './modules/project/project.module';
@@ -8,6 +8,8 @@ import { WsModule } from './modules/socket/wsModule';
 import { StepModule } from './modules/step/stepModule';
 import { CurrentStepModule } from './modules/currentStep/currentStepModule';
 import { connectionNames, dbConfig } from './database/config';
+import { createConnection } from 'typeorm';
+
 
 @Module({
   imports: [
