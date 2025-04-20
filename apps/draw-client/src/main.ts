@@ -8,6 +8,8 @@ import './assets/css/app.scss';
 import "./socket/SocketService";
 const app = createApp(App)
 const pinia = createPinia()
+// @ts-ignore
+window.router = router;
 app.use(router);
 app.use(pinia)
 app.use(ElementPlus);

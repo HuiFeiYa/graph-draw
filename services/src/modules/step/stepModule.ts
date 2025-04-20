@@ -10,16 +10,7 @@ import { ShapeEntity } from "src/entities/shape.entity";
 
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([StepEntity]),
-        TypeOrmModule.forFeature([ShapeEntity]),
-        CurrentStepModule,
-        forwardRef(() => ShapeModule),
-        WsModule
-    ],
-    controllers: [StepController],
-    providers: [StepService],
-    exports: [StepService]
+    controllers: [StepController]
 })
 export class StepModule {
 

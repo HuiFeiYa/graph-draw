@@ -7,16 +7,24 @@ import { ShapeModule } from './modules/shape/shape.module';
 import { WsModule } from './modules/socket/wsModule';
 import { StepModule } from './modules/step/stepModule';
 import { CurrentStepModule } from './modules/currentStep/currentStepModule';
+import { connectionNames, dbConfig } from './database/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(MainDataSource.options), // 注册主数据库
+    // TypeOrmModule.forRoot(MainDataSource.options), // 注册主数据库
+    ...connectionNames.map(name => {
+      return TypeOrmModule.forRoot({
+        ...dbConfig,
+        name: name
+
+      });
+    }),
     MainModule, // 导入主模块
-    ProjectModule,
+    // ProjectModule,
     ShapeModule,
     WsModule,
-    StepModule,
-    CurrentStepModule
+    // StepModule,
+    // CurrentStepModule
   ],
 })
 export class AppModule {}

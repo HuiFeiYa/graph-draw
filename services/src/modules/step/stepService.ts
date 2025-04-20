@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { StepEntity } from "src/entities/step.entity"
 import { UndoDto } from "src/types/shape.dto"
 import { getUid } from "src/utils/common"
@@ -6,14 +7,11 @@ import { CurrentStepService } from "../currentStep/currentStepService"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Change, ChangeType } from "@hfdraw/types"
 import { ShapeEntity } from "src/entities/shape.entity"
+import { StepManager } from "src/utils/StepManager"
 
 export class StepService {
     constructor(
-      @InjectRepository(StepEntity)
-    private readonly stepRepository: Repository<StepEntity>,
-    @InjectRepository(ShapeEntity)
-    private readonly shapeRepository: Repository<ShapeEntity>,
-    private readonly currentStepService: CurrentStepService,
+      public stepManager: StepManager
     ) {
 
     }

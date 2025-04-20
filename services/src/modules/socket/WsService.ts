@@ -60,3 +60,5 @@ export class WsService implements OnModuleInit, OnApplicationShutdown {
     }
   }
 }
+
+export const wsService = new WsService();

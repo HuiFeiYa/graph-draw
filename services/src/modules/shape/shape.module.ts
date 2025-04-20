@@ -8,15 +8,7 @@ import { CurrentStepModule } from "../currentStep/currentStepModule";
 import { StepModule } from "../step/stepModule";
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([ShapeEntity]),
-        WsModule,
-        CurrentStepModule,
-        StepModule
-    ],
     controllers: [ShapeController],
-    providers: [ShapeService],
-    exports: [ShapeService]
 
 })
 export class ShapeModule {}
