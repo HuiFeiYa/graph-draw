@@ -10,5 +10,5 @@ export const MainDataSource = new DataSource({
     database: databasePath, // 主数据库文件路径
     entities: SystemEntityList, // 主数据库实体
     synchronize: true, // 开发环境中开启同步表结构，生产环境应关闭
-    logging: true,
+    logging: false,
 });

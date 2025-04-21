@@ -4,26 +4,28 @@ import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './exceptionFilter/AllExceptionsFilter';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { createConnection, DataSourceOptions } from 'typeorm';
-
-
-const secondaryDbConfig: DataSourceOptions = {
-  type: 'sqlite',
+import { WRITE_CONNECTION_NAME } from './utils/transaction';
+import { SystemEntityList } from './entities';
+// 必须定义在 main.ts 中否则会报错，未连接，todo 时机问题？
+export const writeDbConfig: DataSourceOptions = {
+  type: 'better-sqlite3',
   database: 'db/mdesign.db',
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  entities: [...SystemEntityList],
   synchronize: true,
-  name: 'secondary',
+  name: WRITE_CONNECTION_NAME,
 };
 
-async function setupConnections() {
+export async function setupConnections() {
   try {
     // 连接从数据库
-    await createConnection(secondaryDbConfig);
-    console.log('Connected to secondary database');
+    await createConnection(writeDbConfig);
+    console.log('Connected to writeDbConfig database');
   } catch (error) {
     console.error('Error connecting to databases:', error);
     throw error;
   }
 }
+
 
 
 async function bootstrap() {

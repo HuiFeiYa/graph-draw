@@ -5,7 +5,7 @@ const routes = [
   {
     path: "/",
     name: "index",
-    redirect: "/create-project",
+    redirect: "/layout/flow",
   },
   {
     path: '/create-project',

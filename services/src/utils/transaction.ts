@@ -46,7 +46,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
         lockProject = projectId ? true : false, // 有项目id则默认加锁
         initStep = projectId ? true : false// 有项目id则默认初始化步骤
     } = tranOption;
-    const conName = tranOption.useConnectionName || (lockProject ? 'secondary' : READ_CONNECTION_NAME);
+    const conName = tranOption.useConnectionName || (lockProject ? WRITE_CONNECTION_NAME : READ_CONNECTION_NAME);
     let manager: EntityManager;
     try {
         console.log('Getting manager for connection:', conName);
