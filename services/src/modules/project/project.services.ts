@@ -6,52 +6,45 @@ import { projectZipFileName } from 'src/constants';
 import { resourceUtil } from 'src/utils/ResourceUtil';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
-import { projectUtil } from './ProjectUtil';
 import { BaseProjectDto } from 'src/types/shape.dto';
 import { ShapeService } from '../shape/shape.services';
+import { StepManager } from 'src/utils/StepManager';
+import { Repository } from 'typeorm';
+import { ApplicationProject } from 'src/entities/applicationProject.entity';
+import { getUid } from 'src/utils/common';
+import { pcmm } from 'src/utils/ConnectionManager';
 @Injectable()
 export class ProjectService {
-  constructor(
-    private mainService: MainService,
-    private shapeService: ShapeService
-  ) {}
-  async createProject(dto) {
-    await this.mainService.createProject(dto);
+  constructor(public stepManager: StepManager) {}
+  get manager() {
+    return this.stepManager.manager;
   }
-  async saveProject(dto) {
-      // const {projectId, dirPath, filename} = dto;
-      // const fullPath = join(dirPath, filename + '.hf')
-      // const arrayBuffer = await this.generateZip(projectId);
-      // // 写入文件
-      // await writeFile(fullPath, arrayBuffer);
-  }
-  // 生成一个ZIP文件的缓冲区（ArrayBuffer）
-  async generateZip(projectId) {
-    // 获取项目信息
-    // const project = await this.mainService.findProjectById(projectId);
-    // const projectStr = JSON.stringify(project);
-    // // 往zip中添加数据
-    // const zip = new JsZip();
-    // zip.file(projectZipFileName.config, projectStr)
-    // const dataBaseName = resourceUtil.getProjectDbName(projectId)
-    // const connection = await pcm.getConnection(dataBaseName);
-    // const sqlite = (connection.driver as any).databaseConnection; // 获取底层bettersqlite3的Database实例
-    // const projectDbBuffer = sqlite.serialize();
-    // zip.file(projectZipFileName.projectDB, projectDbBuffer);
-    // return zip.generateAsync({ type: 'uint8array', compression:'DEFLATE', compressionOptions: { level: 3 } })
-  }
+  private _projectMainRep: Repository<ApplicationProject>;
 
-  async openProject(dto) {
-    const { filePath } = dto;
-    const zip = await projectUtil.getZipByFilePath(filePath);
-    // const buffer = await readFile(filePath);
-    const projectStr = await zip.file(projectZipFileName.config).async('string');
-    const project = JSON.parse(projectStr)
-    const projectDbFilePath = resourceUtil.getProjectDbFilePath(project.projectId);
-    if (zip.files[projectZipFileName.projectDB]) {
-      const projectDBFile = zip.file(projectZipFileName.projectDB);
-        const buffer = await projectDBFile.async('uint8array');
-        await writeFile(projectDbFilePath, buffer);
-    }
+  /**
+   * 系统数据库的
+   */
+  get projectMainRep() {
+    return (
+      this._projectMainRep ||
+      (this._projectMainRep = this.manager.getRepository(ApplicationProject))
+    );
   }
+  async createProject(dto) {
+    const project = this.projectMainRep.create({
+      projectId: getUid(),
+      name: dto.name,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+    const connection = await pcmm.getWriteConnByProjectId(project.projectId, true, true);
+    await connection.synchronize();
+    await this.projectMainRep.save(project);
+    return project;
+  }
+  async saveProject(dto) {}
+  // 生成一个ZIP文件的缓冲区（ArrayBuffer）
+  async generateZip(projectId) {}
+
+  async openProject(dto) {}
 }

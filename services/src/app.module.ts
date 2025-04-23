@@ -13,7 +13,7 @@ import { CurrentStepModule } from './modules/currentStep/currentStepModule';
   imports: [
     TypeOrmModule.forRoot(MainDataSource.options),
     MainModule, // 导入主模块
-    // ProjectModule,
+    ProjectModule,
     ShapeModule,
     WsModule,
     // StepModule,

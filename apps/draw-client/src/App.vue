@@ -6,11 +6,11 @@ import { modelService } from '@/util/ModelService'
 // @ts-ignore
 import { generateRandomNumber } from '@/util/common'
 
-
 async function getApplication() {
   const data = await modelService.getApplicationProject()
   console.log('data:', data)
 }
+
 async function createApplication() {
   const projectId = generateRandomNumber();
   const params = {
@@ -22,15 +22,20 @@ async function createApplication() {
   const data = await modelService.createApplicationProject(params)
   console.log('data:', data)
 }
+
+async function createProject() {
+  const projectId = generateRandomNumber();
+  const params = {
+    "name": "项目1" 
+  }
+  const data = await modelService.createProject(params)
+  console.log('创建项目结果:', data)
+}
 </script>
 
 <template>
-  <!-- <GraphView/>
-  <button @click="createApplication">创建应用项目</button>
-  <button  >创建项目</button>
-  <button @click="getApplication">获取项目</button> -->
-
   <div class="v-app-container">
+    <button @click="createProject">创建项目</button>
     <router-view />
   </div>
 </template>

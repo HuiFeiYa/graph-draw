@@ -51,7 +51,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
     try {
         console.log('Getting manager for connection:', conName);
         manager = getManager(conName);
-    } catch (error) {
+    } catch (error:any) {
         console.error('Failed to get manager:', error);
         throw new Error(`Failed to get database manager: ${error.message}`);
     }

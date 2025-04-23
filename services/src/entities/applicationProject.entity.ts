@@ -5,8 +5,8 @@ export class ApplicationProject {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'integer' })
-  projectId: number;
+  @Column()
+  projectId: string;
 
   @Column({ type: 'varchar', length: 255 })
   name: string;

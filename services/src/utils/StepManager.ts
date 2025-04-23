@@ -7,6 +7,7 @@ import { ShapeService } from "src/modules/shape/shape.services"
 import { ShapeEntity } from "src/entities/shape.entity"
 import { StepService } from "src/modules/step/stepService"
 import { WsService, wsService } from "src/modules/socket/WsService"
+import { ProjectService } from "src/modules/project/project.services"
 
 export type ExtConnection = Connection & {inUse?:boolean}
 export class StepManager {
@@ -138,5 +139,10 @@ export class StepManager {
   }
 
   wsService: WsService = wsService
+
+  private _projectService: ProjectService
+  get projectService():ProjectService {
+    return this._projectService || (this._projectService = new ProjectService(this));
+  }
 
 }
