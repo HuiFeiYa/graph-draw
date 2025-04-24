@@ -6,10 +6,9 @@ import { BaseProjectDto } from 'src/types/shape.dto';
 import { transaction } from 'src/utils/transaction';
 @Controller('project')
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor() {}
   @Post('open')
   async openProjectNew(@Body() dto) {
-    await this.projectService.openProject(dto);
   }
   @Post('create')
   async createProject(@Body() dto) {
@@ -32,7 +31,6 @@ export class ProjectController {
   }
   @Post('save')
   async saveProject(@Body() dto) {
-    await this.projectService.saveProject(dto);
-    return new ResData();
+   
   }
 }

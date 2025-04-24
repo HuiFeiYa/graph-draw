@@ -31,6 +31,8 @@
       //  这几项配置的作用比较显而易见，具体可查阅文档：
       // https://www.typescriptlang.org/tsconfig#resolveJsonModule
       // https://www.typescriptlang.org/tsconfig#strict
-    }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "services/node_modules"]
   }
   

@@ -7,12 +7,6 @@ import { MainModule } from '../main/main.module';
 import { ShapeModule } from '../shape/shape.module';
 
 @Module({
-  imports: [
-    MainModule,
-    ShapeModule,
-    TypeOrmModule.forFeature([Project]), // 注册主数据库的实体
-  ],
-  controllers: [ProjectController],
-  providers: [ProjectService],
+  controllers: [ProjectController]
 })
 export class ProjectModule {}
