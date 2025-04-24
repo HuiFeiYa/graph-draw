@@ -31,12 +31,13 @@ export class StepManager {
   }
 
   async initStep() {
-    this.step = this.projectManager.create(StepEntity, { id_: getUid(), projectId: this.projectId, modelChangeIds: [], desc: '', index: 0 });
+    const stepId = getUid();
+    this.step = this.projectManager.create(StepEntity, { id_:stepId, projectId: this.projectId, modelChangeIds: [], desc: '', index: 0 });
     this.step.changes = [];
-    const curStep = await this.projectManager.getRepository(CurrentStep).findOne({ where: { projectId: this.projectId }, relations: ['step'] });
+    const curStep = await this.projectManager.getRepository(CurrentStep).findOne({ where: { projectId: this.projectId, stepId } });
 
     //
-    if (curStep.stepId === null) {
+    if (!curStep) {
       this.step.index = 0;
     } else {
       this.step.index = curStep.index + 1;
@@ -50,7 +51,7 @@ export class StepManager {
     if (this.step?.changes?.length ) {
       const stepRep  = this.stepRep;
       // 如果当前步骤不是最后一步，则清除大于这个index的步骤
-      if (this.step.index < this.curStep.stepSize) {
+      if (this.step.index < this.curStep?.stepSize) {
         const steps = await stepRep.find({ select: ['id_'], where: { projectId: this.projectId, index: MoreThanOrEqual(this.step.index) } });
         // const changeIds:string[] = [];
         if (steps.length > 0) {
@@ -61,15 +62,22 @@ export class StepManager {
         }
 
       }
-      //  this.mergeStepChanges(this.step);
       await this.projectManager.save(StepEntity, this.step);
-      await this.projectManager.update(CurrentStep, {
-        projectId: this.projectId
-      }, {
-        stepId: this.step.id_,
-        stepSize: this.step.index + 1
-
-      });
+      const currentStepOne = await this.currentStepRep.findOne({ where: { projectId: this.projectId } });
+      if (!currentStepOne) {
+        const currentStep = new CurrentStep();
+        currentStep.projectId = this.projectId;
+        currentStep.stepId = this.step.id_;
+        currentStep.stepSize = this.step.index + 1;
+        currentStep.index = this.step.index;
+        await this.currentStepRep.save(currentStep);
+      } else {
+        await this.currentStepRep.update({ projectId: this.projectId },{
+          stepId: this.step.id_,
+          stepSize: currentStepOne.stepSize + 1,
+          index: currentStepOne.index + 1,
+        });
+      }
 
     }
 
@@ -126,6 +134,9 @@ export class StepManager {
     return this.projectManager.getRepository(StepEntity);
   }
 
+  get currentStepRep() {
+    return this.projectManager.getRepository(CurrentStep);
+  }
   private _shapeService: ShapeService
   get shapeService(): ShapeService {
     return this._shapeService || (this._shapeService = new ShapeService(this));

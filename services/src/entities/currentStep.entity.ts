@@ -16,17 +16,6 @@ import { StepEntity } from './step.entity'
       nullable: true
     })
     index: number; // 当前步骤对应的序号
-  
-    // @OneToOne(() => StepEntity, {
-    //   onDelete: "SET NULL"
-    // })
-    // @JoinColumn({
-    //   name: 'stepId',
-    //   referencedColumnName: 'id_'
-    // })
-    // step: StepEntity;
-  
-    // @RelationId((c:CurrentStep) => c.step)
     @Column({
       type: String,
       nullable: true

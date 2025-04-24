@@ -31,16 +31,15 @@ export class ProjectService {
     );
   }
   async createProject(dto) {
-    const project = this.projectMainRep.create({
-      projectId: getUid(),
-      name: dto.name,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
-    const connection = await pcmm.getWriteConnByProjectId(project.projectId, true, true);
+    const p = new ApplicationProject();
+    p.projectId = getUid();
+    p.name = dto.name;
+    p.createdAt = new Date();
+    p.updatedAt = new Date();
+    const connection = await pcmm.getWriteConnByProjectId(p.projectId, true, true);
     await connection.synchronize();
-    await this.projectMainRep.save(project);
-    return project;
+    await this.projectMainRep.save(p);
+    return p;
   }
   async saveProject(dto) {}
   // 生成一个ZIP文件的缓冲区（ArrayBuffer）

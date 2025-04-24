@@ -9,7 +9,7 @@ import { SystemEntityList } from './entities';
 // 必须定义在 main.ts 中否则会报错，未连接，todo 时机问题？
 export const writeDbConfig: DataSourceOptions = {
   type: 'better-sqlite3',
-  database: 'db/mdesign.db',
+  database: 'db/application.db',
   entities: [...SystemEntityList],
   synchronize: true,
   name: WRITE_CONNECTION_NAME,

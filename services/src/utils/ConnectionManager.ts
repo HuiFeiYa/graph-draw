@@ -152,7 +152,10 @@ export class ProjectConnectionManager {
     // console.log(connectionName);
     if (!autoCreateDb) {
     // 必须校验当前项目db文件已存在，否则会自动创建空的db文件
-      const existFile = existsSync(join(resourceUtil.projectDbDir, `${dataBaseName}.db`));
+    const dbPath = join(resourceUtil.projectDbDir, `${dataBaseName}.db`);
+    console.log("resourceUtil.projectDbDir:",resourceUtil.projectDbDir)
+    console.log('dbPath:',dbPath);
+      const existFile = existsSync(dbPath);
       if (!existFile) {
         throw new ResException(ApiCode.NO_TIP_ERROR, "项目不存在");
       }

@@ -4,32 +4,20 @@ import { GraphView } from '@hfdraw/graph'
 // @ts-ignore
 import { modelService } from '@/util/ModelService'
 // @ts-ignore
-import { generateRandomNumber } from '@/util/common'
+import { useProjectStore } from './stores/project' // 引入 useProjectStore
 
-async function getApplication() {
-  const data = await modelService.getApplicationProject()
-  console.log('data:', data)
-}
-
-async function createApplication() {
-  const projectId = generateRandomNumber();
-  const params = {
-    projectId,
-    "name": "文件" + projectId,
-    "createdAt": "2024-10-1",
-    "updatedAt": "2024-11-4"
-  }
-  const data = await modelService.createApplicationProject(params)
-  console.log('data:', data)
-}
+const projectStore = useProjectStore(); // 初始化 store
 
 async function createProject() {
-  const projectId = generateRandomNumber();
   const params = {
     "name": "项目1" 
   }
   const data = await modelService.createProject(params)
   console.log('创建项目结果:', data)
+  if (data.code === 1000) {
+    // projectStore.addProject(data.data.projectId); // 将 projectId 添加到 store
+    projectStore.setCurrentProjectId(data.data.projectId);
+  }
 }
 </script>
 

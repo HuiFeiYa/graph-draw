@@ -3,6 +3,7 @@ import { ExtConnection, StepManager } from "./StepManager"
 import { pcmm } from "./ConnectionManager";
 import { WsMessageType } from "src/types/common";
 import { StepType } from "@hfdraw/types";
+import { HttpException, HttpStatus } from "@nestjs/common";
 /**
  * 只有一个连接负责写,写的连接不能并发执行，必须等待上一次写的接口执行结束
  */
@@ -56,29 +57,31 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
         throw new Error(`Failed to get database manager: ${error.message}`);
     }
     let projectManager: EntityManager;
-    const databaseName = `project_${projectId}`;
-    let conn: ExtConnection;
-
-    // const conn = conManager.has(projectConName) && conManager.get(projectConName);
-    if (conName === WRITE_CONNECTION_NAME) {
-        conn = await pcmm.getWriteConn(databaseName);
-
-    } else {
-        conn = await pcmm.getReadConn(databaseName);
-
-    }
-    conn.inUse = true;
-
-    try {
-        if (!conn.isConnected) {
-            await conn.connect();
+    if (projectId) {        
+        const databaseName = `project_${projectId}`;
+        let conn: ExtConnection;
+    
+        // const conn = conManager.has(projectConName) && conManager.get(projectConName);
+        if (conName === WRITE_CONNECTION_NAME) {
+            conn = await pcmm.getWriteConn(databaseName);
+    
+        } else {
+            conn = await pcmm.getReadConn(databaseName);
+    
         }
-        projectManager = conn.manager;
-    } catch (e) {
-        conn.inUse = false;
-        throw e;
+        conn.inUse = true;
+        try {
+            if (!conn.isConnected) {
+                await conn.connect();
+            }
+            projectManager = conn.manager;
+        } catch (e) {
+            conn.inUse = false;
+            throw e;
+        }
     }
-    return projectManager.transaction(async m => {
+
+    return (projectManager || manager).transaction(async m => {
         let stepManager = new StepManager(manager, m, projectId);
         try {
 
@@ -88,7 +91,11 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
             await stepManager.commitStep();
             return { ret, stepManager };
         } catch (error) {
-            throw error;
+            throw new HttpException({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                error: 'Transaction failed',
+                message: error.message,
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }).then((res) => {
         if (res.stepManager.step?.changes?.length) {

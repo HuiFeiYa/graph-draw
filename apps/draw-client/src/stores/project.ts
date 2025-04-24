@@ -12,5 +12,8 @@ export const useProjectStore = defineStore('project', {
     addProject(project: object) {
       this.projects.push(project);
     },
+    setCurrentProjectId(projectId: string) {
+      this.projectId = projectId; 
+    }
   },
 });

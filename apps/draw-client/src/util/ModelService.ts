@@ -13,8 +13,8 @@ export class ModelService {
         const res = await httpClient.get<{data:any}>(API.get_application_project)
         return res.data
     }
-    async createProject(name: string) {
-        const res = await httpClient.post<{data:any}>(API.projectCreate, { name })
+    async createProject(params: any) {
+        const res = await httpClient.post<{data:any}>(API.projectCreate, params)
         return res.data
     }
 }

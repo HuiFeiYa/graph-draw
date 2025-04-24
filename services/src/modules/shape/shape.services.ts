@@ -62,7 +62,7 @@ export class ShapeService  extends BaseService{
         }
         return v;
       })
-      await this.stepService.initStep({projectId:dto.projectId, changes});
+      this.stepManager.step.changes = changes;
       return res
     // })
   }

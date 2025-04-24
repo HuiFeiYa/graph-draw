@@ -4,3 +4,5 @@ apps/draw-client/dist-electron/
 dist-a
 *.d.ts
 *.d.ts.map
+
+services/db
