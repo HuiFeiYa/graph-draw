@@ -4,17 +4,23 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const routes = [
   {
     path: "/",
-  },
-  {
-    path: '/create-project',
-    name: 'CreateProject',
-    component: () => import('../views/CreateProject.vue'),
+    redirect: '/layout/project-list'
   },
   {
     path: '/layout',
     component: () => import('../components/Layout.vue'),
     name: "layout",
     children: [
+      {
+        path: 'project-list',
+        name: 'ProjectList',
+        component: () => import('../views/ProjectList.vue')
+      },
+      {
+        path: 'create-project',
+        name: 'CreateProject',
+        component: () => import('../views/CreateProject.vue'),
+      },
       {
         path: 'flow',
         name: 'flow',
@@ -34,6 +40,11 @@ const routes = [
         path: '/test',
         name: 'Test',
         component: () => import('../views/Station.vue'),
+      },
+      {
+        path: 'project-list',
+        name: 'ProjectList',
+        component: () => import('../views/ProjectList.vue')
       }
     ]
   },

@@ -1,7 +1,7 @@
 <template>
     <div class="v-layout">
         <m-window-bar />
-        <m-header  class="v-layout-header"/>
+        <m-header v-if="showHeader" class="v-layout-header"/>
         <div class="_layout-content" @dragover.stop.prevent >
             <router-view />
         <div v-if="popoverList.length > 0">
@@ -17,10 +17,14 @@ import MWindowBar from './WindowBar.vue';
 import { useUiStore } from '../stores/ui'
 import { storeToRefs } from 'pinia'
 import Popover from '../components/Popver.vue'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
-
+const route = useRoute()
 const uiStore = useUiStore();
 const { popoverList } = storeToRefs(uiStore)
+
+const showHeader = computed(() => !['/layout/project-list', '/layout/create-project'].includes(route.path))
 </script>
 <style lang="scss">
 .v-layout {
