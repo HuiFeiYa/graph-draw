@@ -1,19 +1,22 @@
 import { Server } from 'ws';
 import { Injectable, OnModuleInit, OnApplicationShutdown } from '@nestjs/common';
 import { IncomingMessage } from 'node:http';
-import { WsClient } from 'src/utils/SocketServer/WsClient';
+import { WsClient } from 'src/modules/socket/WsClient';
 import { WsMessageType } from 'src/types/common';
 import { Step, StepMessageData } from '@hfdraw/types';
-const port = 3005;
-@Injectable()
-export class WsService implements OnModuleInit, OnApplicationShutdown {
+export class WsService {
   private wsServer: Server;
   private clients: WsClient[] = [];
   private port = 3005;
+  id=''
 
-  constructor() {}
+  constructor() {
+    console.log('init wsService')
+    this.id = Math.random().toString(36).substr(2, 9);
+    this.init();
+  }
 
-  onModuleInit() {
+  init() {
     // 创建 WebSocket 服务器
     this.wsServer = new Server({ port: this.port });
     this.wsServer.addListener('connection', this.onConnection.bind(this));

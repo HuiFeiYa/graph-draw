@@ -123,5 +123,5 @@ const socketOption: SocketOption = {
   maxReconnectTime: 3,
 };
 
-const socketService = new SocketService(socketOption);
+export const socketService = new SocketService(socketOption);
 socketService.start();

@@ -6,7 +6,7 @@ export const useProjectStore = defineStore('project', {
     projects: any[]
   }) => ({
     projects: [],
-    projectId: 'p2'
+    projectId: ''
   }),
   actions: {
     addProject(project: object) {

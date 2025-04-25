@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { GraphView } from '@hfdraw/graph'
+import { socketService } from './socket/SocketService' // 引入 socketService
 // @ts-ignore
 import { modelService } from '@/util/ModelService'
 // @ts-ignore
@@ -16,7 +15,9 @@ async function createProject() {
   console.log('创建项目结果:', data)
   if (data.code === 1000) {
     // projectStore.addProject(data.data.projectId); // 将 projectId 添加到 store
-    projectStore.setCurrentProjectId(data.data.projectId);
+    const projectId = data.data.projectId;
+    projectStore.setCurrentProjectId(projectId);
+    socketService.sendJSON({ type: 'subscribeProject', projectId });
   }
 }
 </script>

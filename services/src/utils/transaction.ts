@@ -99,7 +99,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
         }
     }).then((res) => {
         if (res.stepManager.step?.changes?.length) {
-            //     await stepManager.wsService.
+            // todo 将信息发送给客户度
             res.stepManager.wsService.sendToSubscribedClient(projectId, {
                 type: WsMessageType.step,
                 data: {
