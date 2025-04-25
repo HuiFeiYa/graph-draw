@@ -17,7 +17,8 @@ export const API = {
     createMindMapRect: 'shape/createMindMapRect',
     saveText: 'shape/saveText',
     expandShape: 'shape/expandShape',
-    projectList: 'project/list'
+    projectList: 'project/projectList',
+    projectUnCloseList: 'project/unCloseList',
 }
 
 export const ApiCode =  {

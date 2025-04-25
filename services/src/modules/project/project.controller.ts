@@ -18,20 +18,20 @@ export class ProjectController {
 
       return res;
     });
-    // const projectId = getUid();
-    // const params = {
-    //   ...dto,
-    //   projectId
-    // }
-    // await this.projectService.createProject(params);
-    // return new ResData();
   }
   @Post('save')
   async saveProject(@Body() dto) {
    
   }
 
-  @Get('list')
+  @Get('unCloseList')
+  async getUnCloseProjectList() {
+    return transaction({}, async st => {
+      const projects = await st.projectService.getUnCloseProjectList();
+      return new ResData(projects);
+    });
+  }
+  @Get('projectList')
   async getProjectList() {
     return transaction({}, async st => {
       const projects = await st.projectService.getProjectList();
