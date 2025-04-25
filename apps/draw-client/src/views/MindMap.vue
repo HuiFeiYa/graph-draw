@@ -9,6 +9,7 @@ import {  StType } from "@hfdraw/types";
 import { shapeService } from "../util/ShapeService";
 import { SideBarDropDto } from '../types/shape.dto';
 import { useProjectStore } from '../stores/project';
+import { useRoute } from 'vue-router';
 const projectStore = useProjectStore();
 const graphOption = new GraphOption(projectStore.projectId);
 const graphData = reactive<{
@@ -45,6 +46,12 @@ async function fretchData() {
   })
 }
 onMounted(async ()=> {
+  const route = useRoute();
+  const projectId = route.query.projectId as string;
+  console.log('projectId: ', projectId,route.query);
+  if (projectId) {
+    projectStore.setCurrentProjectId(projectId);
+  }
   fretchData();
 })
 

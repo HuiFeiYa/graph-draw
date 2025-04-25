@@ -43,7 +43,7 @@
               <h3>{{ project.name }}</h3>
               <p class="project-type">{{ project.type === 'flowchart' ? '流程图' : '思维导图' }}</p>
             </div>
-            <button class="open-btn" @click="openProject(project.id)">打开项目</button>
+            <button class="open-btn" @click="openProject(project.projectId)">打开项目</button>
           </div>
         </template>
         <div v-else class="empty-state">
@@ -75,11 +75,11 @@ const projectStore = useProjectStore(); // 初始化 store
 
 const openProject = (projectId: number) => {
   // 根据项目类型跳转到对应页面
-  const project = projects.value.find(p => p.id === projectId)
-  if (project?.type === 'flowchart') {
-    router.push({ name: 'flow' })
+  const project = projects.value.find(p => p.projectId === projectId)
+  if (project) {
+    router.push({ path: '/layout/flow', query: { projectId } })
   } else {
-    router.push({ name: 'mindMap' })
+    router.push({ path: '/layout/mindMap',query: { projectId } })
   }
 }
 const getProjects = async () => {

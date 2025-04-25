@@ -15,6 +15,9 @@ import { emitter } from "../util/Emitter";
 import { shapeService } from "../util/ShapeService";
 import { GraphOption } from "../editor/graphOption";
 import { HeaderDropdownEnum, StrokeColor } from "../types/enum";
+import { useProjectStore } from '../stores/project';
+import { useRoute } from 'vue-router';
+const projectStore = useProjectStore();
 const graphOption = new GraphOption('p1');
 const graphData = reactive<{
   edges: Shape[],
@@ -127,6 +130,12 @@ async function fretchData() {
 emitter.onBatch(events)
 
 onMounted(()=> {
+  const route = useRoute();
+  const projectId = route.query.projectId as string;
+  console.log('projectId----: ', projectId,route.query);
+  if (projectId) {
+    projectStore.setCurrentProjectId(projectId);
+  }
   fretchData()
 })
 </script>

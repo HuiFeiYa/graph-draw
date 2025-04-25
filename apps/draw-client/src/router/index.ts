@@ -24,7 +24,7 @@ const routes = [
       {
         path: 'flow',
         name: 'flow',
-        component: () => import('../views/Home.vue'),
+        component: () => import('../views/Flow.vue'),
       },
       {
         path: 'mindMap',
