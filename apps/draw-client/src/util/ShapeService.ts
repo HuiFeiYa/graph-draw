@@ -3,6 +3,7 @@ import { API } from '../constants/api'
 import { ConnectShapeAndCreateDto, MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
 import { Shape, StyleObject } from '@hfdraw/types'
 import { AxiosResponse } from 'axios';
+// @ts-nocheck
 import { Point } from '@hfdraw/graph/src/util/Point';
 
 export class ShapeService {

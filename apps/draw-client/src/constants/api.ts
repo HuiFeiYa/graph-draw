@@ -16,7 +16,8 @@ export const API = {
     updateShapeStyle: 'shape/updateShapeStyle',
     createMindMapRect: 'shape/createMindMapRect',
     saveText: 'shape/saveText',
-    expandShape: 'shape/expandShape'
+    expandShape: 'shape/expandShape',
+    projectList: 'project/list'
 }
 
 export const ApiCode =  {

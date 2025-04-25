@@ -32,7 +32,5 @@
       // https://www.typescriptlang.org/tsconfig#resolveJsonModule
       // https://www.typescriptlang.org/tsconfig#strict
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "services/node_modules"]
   }
   

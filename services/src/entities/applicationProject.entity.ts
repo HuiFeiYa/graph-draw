@@ -22,4 +22,12 @@ export class ApplicationProject {
     nullable: false
   })
   updatedAt: Date;
+
+  @Column({
+    type: 'boolean',
+    nullable: true,
+    default: false
+
+  })
+  dbClose?:boolean // 标记数据库关闭
 }

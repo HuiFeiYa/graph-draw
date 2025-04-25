@@ -4,8 +4,6 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const routes = [
   {
     path: "/",
-    name: "index",
-    redirect: "/layout/flow",
   },
   {
     path: '/create-project',

@@ -41,7 +41,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useProjectStore } from '../stores/project' // 引入 useProjectStore
+import { modelService } from '../util/ModelService'
+import { socketService } from '../socket/SocketService'
 
+const projectStore = useProjectStore(); // 初始化 store
 const router = useRouter()
 const projectName = ref('')
 const projectType = ref<'flowchart' | 'mindmap'>('flowchart')
@@ -53,6 +57,20 @@ const handleSubmit = () => {
     router.push({ name: 'flow' })
   } else {
     router.push({ name: 'mindMap' })
+  }
+}
+
+async function createProject() {
+  const params = {
+    "name": "项目1" 
+  }
+  const data = await modelService.createProject(params)
+  console.log('创建项目结果:', data)
+  if (data.code === 1000) {
+    // projectStore.addProject(data.data.projectId); // 将 projectId 添加到 store
+    const projectId = data.data.projectId;
+    projectStore.setCurrentProjectId(projectId);
+    socketService.sendJSON({ type: 'subscribeProject', projectId });
   }
 }
 </script>

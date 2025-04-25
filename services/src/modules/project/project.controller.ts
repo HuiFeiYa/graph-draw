@@ -1,8 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ProjectService } from './project.services';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ResData } from 'src/utils/http/ResData';
-import { getUid } from 'src/utils/common';
-import { BaseProjectDto } from 'src/types/shape.dto';
 import { transaction } from 'src/utils/transaction';
 @Controller('project')
 export class ProjectController {
@@ -32,5 +29,13 @@ export class ProjectController {
   @Post('save')
   async saveProject(@Body() dto) {
    
+  }
+
+  @Get('list')
+  async getProjectList() {
+    return transaction({}, async st => {
+      const projects = await st.projectService.getProjectList();
+      return new ResData(projects);
+    });
   }
 }

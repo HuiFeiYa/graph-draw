@@ -6,10 +6,7 @@ import { StepEntity } from "./step.entity";
 
 
 export const SystemEntityList = [ 
-    ApplicationProject,
-    ShapeEntity,
-    StepEntity,
-    CurrentStep
+    ApplicationProject
 ]
 export const ProjectEntityList = [
     Project,

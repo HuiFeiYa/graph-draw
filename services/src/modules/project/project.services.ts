@@ -41,6 +41,10 @@ export class ProjectService {
     await this.projectMainRep.save(p);
     return p;
   }
+
+  async getProjectList() {
+    return this.projectMainRep.find({ where: {  dbClose: false } });
+  }
   async saveProject(dto) {}
   // 生成一个ZIP文件的缓冲区（ArrayBuffer）
   async generateZip(projectId) {}
