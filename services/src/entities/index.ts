@@ -12,5 +12,5 @@ export const ProjectEntityList = [
     Project,
     ShapeEntity,
     StepEntity,
-    CurrentStep
+    CurrentStep,
 ]

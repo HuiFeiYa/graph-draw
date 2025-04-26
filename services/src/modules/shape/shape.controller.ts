@@ -40,11 +40,15 @@ export class ShapeController {
       });
     });
   }
-//   @Get('diagram/allShape')
-//   async getDiagramAllShape(@Query() dto: FetchAllShapeDto) {
-//     const result = await this.shapeService.getDiagramAllShape(dto);
-//     return new ResData(result);
-//   }
+  @Get('diagram/allShape')
+  async getDiagramAllShape(@Query() dto: FetchAllShapeDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.getDiagramAllShape(dto);
+    return new ResData(result);
+    });
+  }
 //   @Post('move')
 //   async moveShape(@Body() dto: MoveShapeDto) {
 //     const handle = transaction({

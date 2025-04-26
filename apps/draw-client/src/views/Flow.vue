@@ -116,7 +116,7 @@ const events = {
   }
 };
 async function fretchData() {
-  await shapeService.getAllShapes('p1').then(data => {
+  await shapeService.getAllShapes(projectStore.projectId).then(data => {
     // console.log('data: ', data)
     if (data) {
       graphData.graph.symbols = data;

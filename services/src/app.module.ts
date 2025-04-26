@@ -4,6 +4,8 @@ import { MainDataSource } from './database/main-datasource';
 import { MainModule } from './modules/main/main.module';
 import { ProjectModule } from './modules/project/project.module';
 import { ShapeModule } from './modules/shape/shape.module';
+import { StepModule } from './modules/step/stepModule';
+import { CurrentStepModule } from './modules/currentStep/currentStepModule';
 
 
 @Module({
@@ -12,8 +14,8 @@ import { ShapeModule } from './modules/shape/shape.module';
     MainModule, // 导入主模块
     ProjectModule,
     ShapeModule,
-    // StepModule,
-    // CurrentStepModule
+    StepModule,
+    CurrentStepModule
   ],
 })
 export class AppModule {}

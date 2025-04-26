@@ -17,7 +17,7 @@ export class StepService {
     }
     async undoStep(projectId:string) {
       // 这里要找 currentStep 对应的 stepId
-      const currentStep = await this.currentStepService.findCurrentStep(projectId)
+      const currentStep = await this.stepManager.currentStepService.findCurrentStep(projectId)
 
         const steps = await this.stepRepository.find({
           where: {
@@ -137,13 +137,13 @@ export class StepService {
     // 生成一个 step，并且更新 currentStep
     async initStep(dto: { projectId: string, changes: Change[] }) {
       const step = await this.createStep({projectId: dto.projectId, changes: dto.changes});
-      const currentStep = await this.currentStepService.findCurrentStep(dto.projectId);
+      const currentStep = await this.stepManager.currentStepService.findCurrentStep(dto.projectId);
       // todo 查找 step 个数，更新到 stepSize 中
-      const stepSize = await this.stepRepository.count();
+      const stepSize = await this.stepManager.stepRepository.count();
       if (currentStep) {
-        await this.currentStepService.updateCurrentStep(currentStep.id_, {projectId: dto.projectId,stepId: step.id_, stepSize: stepSize, index: step.index})
+        await this.stepManager.currentStepService.updateCurrentStep(currentStep.id_, {projectId: dto.projectId,stepId: step.id_, stepSize: stepSize, index: step.index})
       } else {
-        await this.currentStepService.createCurrentStep({
+        await this.stepManager.currentStepService.createCurrentStep({
           projectId: dto.projectId,
           stepId: step.id_,
           index: step.index,
@@ -158,7 +158,7 @@ export class StepService {
         hasPreStep: false, // 是否有前面的步骤（可以undo）
         hasNextStep: false //  是否有后面的步骤（可以redo）
       };
-      const currentStep = await this.currentStepService.findCurrentStep(projectId);
+      const currentStep = await this.stepManager.currentStepService.findCurrentStep(projectId);
       if (!currentStep) {
         return result
       }
@@ -167,7 +167,7 @@ export class StepService {
   
       if (currentStep.stepId) {
         result.hasPreStep = true;
-        step = await this.stepRepository.findOne({ where: {id_: currentStep.stepId }});
+        step = await this.stepManager.stepRepository.findOne({ where: {id_: currentStep.stepId }});
       }
   
       if (step) {

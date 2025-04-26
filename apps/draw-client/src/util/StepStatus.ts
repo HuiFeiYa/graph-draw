@@ -26,6 +26,10 @@ export class StepStatus {
     async fresh(projectId: string) {
       this.isFresh = true;
       const data = await shapeService.getStepStatus(projectId);
+      if (!data) {
+        this.clear();
+        return;
+      }
       const { currentStepId, hasNextStep, hasPreStep } = data;
       this.isFresh = false;
       this.currentStepId = currentStepId;

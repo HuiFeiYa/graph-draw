@@ -30,7 +30,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { headerMenus } from './menuItem/index'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 import MHeaderButton from './headerComponents/HeaderButton.vue';
@@ -86,10 +86,17 @@ function clear() {
   uiStore.clearPopoverList();
   emitter.emit(BusEvent.CLEAR_STATUS)
 }
-function freshStepStatus() {
-  stepStatusReactive.fresh(projectStore.projectId)
-
+function freshStepStatus(projectId?: string) {
+  if (projectStore.projectId || projectId) {
+    stepStatusReactive.fresh(projectStore.projectId)
+  }
 }
+
+watch(() => projectStore.projectId, (newVal) => {
+  console.log('projectId:',newVal)
+  freshStepStatus(newVal)
+})
+
 onMounted(()=> {
   freshStepStatus()
 })

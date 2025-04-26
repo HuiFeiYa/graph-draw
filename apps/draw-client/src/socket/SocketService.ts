@@ -25,6 +25,10 @@ export class SocketService {
   msgHandler: {[key:string]:Function} = {
     connect:() => {
       const store = useProjectStore();
+      if (!store.projectId) {
+        console.log('msgHandler projectId is 空')
+        return;
+      }
       this.sendJSON({ type: "subscribeProject", projectId: store.projectId });
     },
     async step(messageData:{ type:'step', data: Step}) {

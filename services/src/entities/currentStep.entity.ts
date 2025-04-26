@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
-import { StepEntity } from './step.entity'
 @Entity({
-    name: 'current_step'
+    name: 'currentStep'
   })
   export class CurrentStep {
   

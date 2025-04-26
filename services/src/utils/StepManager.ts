@@ -8,6 +8,7 @@ import { ShapeEntity } from "src/entities/shape.entity"
 import { StepService } from "src/modules/step/stepService"
 import { WsService, wsService } from "src/modules/socket/WsService"
 import { ProjectService } from "src/modules/project/project.services"
+import { CurrentStepService } from "src/modules/currentStep/currentStepService"
 
 export type ExtConnection = Connection & {inUse?:boolean}
 export class StepManager {
@@ -154,6 +155,11 @@ export class StepManager {
   private _projectService: ProjectService
   get projectService():ProjectService {
     return this._projectService || (this._projectService = new ProjectService(this));
+  }
+
+  private _currentStepService: CurrentStepService
+  get currentStepService():CurrentStepService {
+    return this._currentStepService || (this._currentStepService = new CurrentStepService(this));
   }
 
 }
