@@ -19,7 +19,7 @@ export class StepService {
       // 这里要找 currentStep 对应的 stepId
       const currentStep = await this.stepManager.currentStepService.findCurrentStep(projectId)
 
-        const steps = await this.stepRepository.find({
+        const steps = await this.stepManager.stepRep.find({
           where: {
             projectId,
             index: LessThanOrEqual(currentStep.index)
@@ -57,7 +57,7 @@ export class StepService {
     async redoStep(projectId: string) {
       const currentStep = await this.currentStepService.findCurrentStep(projectId);
       // 不存在 currentstep时，例如回退到最开始的时候，
-      const steps = await this.stepRepository.find({
+      const steps = await this.stepManager.stepRep.find({
         where: {
           projectId,
           index: MoreThan(currentStep.stepId? currentStep.index : -1)
@@ -111,7 +111,7 @@ export class StepService {
       const currentStep = await this.currentStepService.findCurrentStep(dto.projectId);
       let preStep = null;
       if (currentStep) {
-        preStep = await this.stepRepository.findOne({where: { id_: currentStep.stepId}});
+        preStep = await this.stepManager.stepRep.findOne({where: { id_: currentStep.stepId}});
         await this.shapeRepository.createQueryBuilder()
               .delete()
               .from(StepEntity)
@@ -124,14 +124,14 @@ export class StepService {
 
       // todo 需要根据当前 currentStep 指针位置判断是否需要删除，还是新增
       // 如果回退两步，然后再更新一步，需要将指针后面的 step 都删除掉然后重新新增 step
-      const step =  this.stepRepository.manager.create(StepEntity, {
+      const step =  this.stepManager.stepRep.manager.create(StepEntity, {
         id_: getUid(),
         projectId: dto.projectId,
         index: preStep? preStep.index + 1 :  0,
         desc: '',
         changes: dto.changes
       })
-      const savedStep = await this.stepRepository.save(step);
+      const savedStep = await this.stepManager.stepRep.save(step);
       return savedStep;
     }
     // 生成一个 step，并且更新 currentStep
@@ -139,7 +139,7 @@ export class StepService {
       const step = await this.createStep({projectId: dto.projectId, changes: dto.changes});
       const currentStep = await this.stepManager.currentStepService.findCurrentStep(dto.projectId);
       // todo 查找 step 个数，更新到 stepSize 中
-      const stepSize = await this.stepManager.stepRepository.count();
+      const stepSize = await this.stepManager.stepRep.count();
       if (currentStep) {
         await this.stepManager.currentStepService.updateCurrentStep(currentStep.id_, {projectId: dto.projectId,stepId: step.id_, stepSize: stepSize, index: step.index})
       } else {
@@ -167,7 +167,7 @@ export class StepService {
   
       if (currentStep.stepId) {
         result.hasPreStep = true;
-        step = await this.stepManager.stepRepository.findOne({ where: {id_: currentStep.stepId }});
+        step = await this.stepManager.stepRep.findOne({ where: {id_: currentStep.stepId }});
       }
   
       if (step) {

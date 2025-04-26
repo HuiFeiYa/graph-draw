@@ -17,6 +17,7 @@ import { GraphOption } from "../editor/graphOption";
 import { HeaderDropdownEnum, StrokeColor } from "../types/enum";
 import { useProjectStore } from '../stores/project';
 import { useRoute } from 'vue-router';
+import { socketService } from "../socket/SocketService";
 const projectStore = useProjectStore();
 const graphOption = new GraphOption('p1');
 const graphData = reactive<{
@@ -135,6 +136,7 @@ onMounted(()=> {
   console.log('projectId----: ', projectId,route.query);
   if (projectId) {
     projectStore.setCurrentProjectId(projectId);
+    socketService.sendJSON({ type: 'subscribeProject', projectId });
   }
   fretchData()
 })
