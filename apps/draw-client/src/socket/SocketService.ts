@@ -111,13 +111,39 @@ export class SocketService {
     if (this.status === ConnectStatus.CLOSED) {
       return;
     }
+    this.status = ConnectStatus.UNCONNECT;
+    if (this.reconnectTime < this.maxReconnectTime) {
+      this.reconnectTime++;
+      console.log(`WebSocket连接关闭，${this.reconnectTime}秒后重试...`);
+      setTimeout(() => {
+        this.start();
+      }, this.reconnectTime * 1000);
+    } else {
+      console.error('WebSocket重连次数超过最大限制，请检查服务是否可用');
+    }
   }
   onError(e: Event) {
-    console.error(e);
+    console.error('WebSocket连接错误:', e);
+    this.status = ConnectStatus.UNCONNECT;
+    if (this.reconnectTime < this.maxReconnectTime) {
+      this.reconnectTime++;
+      console.log(`WebSocket连接错误，${this.reconnectTime}秒后重试...`);
+      setTimeout(() => {
+        this.start();
+      }, this.reconnectTime * 1000);
+    }
   }
 
   sendJSON(obj: any) {
-    this.ws?.send(JSON.stringify(obj));
+    try {
+      if (this.ws?.readyState === WebSocket.OPEN) {
+        this.ws.send(JSON.stringify(obj));
+      } else {
+        console.warn('WebSocket未连接，消息发送失败');
+      }
+    } catch (error) {
+      console.error('发送消息失败:', error);
+    }
   }
 }
 

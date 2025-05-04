@@ -7,6 +7,8 @@ const httpConfig = {
   getHeaders: {},
   requestInterceptors: [
     function setTip(config: any) {
+      config.retryCount = 0;
+      config.maxRetries = 3;
       return config;
     },
   ],
@@ -65,8 +67,16 @@ export const setupAxios = (
     });
   });
   responseInterceptors.forEach((interceptor: any) => {
-    axiosInstance.interceptors.response.use(interceptor, (err: any) => {
-      throw err;
+    axiosInstance.interceptors.response.use(interceptor, async (err: any) => {
+      const config = err.config;
+      if (!config || !config.retryCount || config.retryCount >= config.maxRetries) {
+        throw err;
+      }
+      config.retryCount++;
+      const retryDelay = config.retryCount * 1000;
+      console.log(`请求失败，${config.retryCount}秒后重试...`);
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+      return axiosInstance(config);
     });
   });
 };

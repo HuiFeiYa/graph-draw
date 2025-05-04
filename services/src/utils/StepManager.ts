@@ -16,7 +16,7 @@ export class StepManager {
   dataBaseName:string
   step: StepEntity
   readonly manager: EntityManager
-  projectManager:EntityManager
+  projectManager:EntityManager // 项目级数据库
   curStep: CurrentStep
 
   projectConnectionMap = new Map<string, ExtConnection>()

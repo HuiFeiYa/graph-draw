@@ -59,3 +59,23 @@ export const getUid = (() => {
     });
     return result;
   }
+
+
+  /**
+ * 数组分段
+ * @param arr
+ * @param size 每段的长度
+ * @returns
+ */
+export function breakArray<T>(arr:T[], size = 300) {
+  const result:T[][] = [];
+  const length = arr.length;
+
+  let index = 0;
+  while (index * size < length) {
+    result.push(arr.slice(size * index, size * (index + 1)));
+    index++;
+  }
+  return result;
+
+}

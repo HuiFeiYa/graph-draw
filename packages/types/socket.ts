@@ -17,18 +17,21 @@ export enum StepType {
     UPDATE = 2, // 更新某个或多个字段
     DELETE = 3, // 删除对象
   }
-  export interface  Change    {
+  export class Change {
+
+    type!: ChangeType;
   
-    type: ChangeType;
+    table!: string; // 更改的表名 实体的tableName
   
-    oldValue?: string; // 更新前的key-value对象的 json串，只记录变更的字段即可，undo的时候会用这个keyValue去update对应的table
+    objectId!: number; // 更新的对象id_,删除和创建都是软删除，只变更isDelete
+    elementId?:string // 模型的id或者图形的id
   
-    newValue?: string; // 更新后的key-value对象的 json串，只记录变更的字段即可，redo的时候会用这个keyValue去update对应的table
-    
-    shapeId: number // 当前操作的图形 id_
+    oldValue?: {[p:string]:any}; // 更新前的key-value对象的 json串，只记录变更的字段即可，undo的时候会用这个keyValue去update对应的table
   
-    projectId: string
+    newValue?: {[p:string]:any}; // 更新后的key-value对象的 json串，只记录变更的字段即可，redo的时候会用这个keyValue去update对应的table
+  
   }
+  
 
   export type Step = {
 

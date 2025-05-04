@@ -109,7 +109,9 @@ export class ShapeUtil {
     if (shape.isDeleteChanged) {
       change.isDelete = shape.isDelete;
     }
-
+    if (shape.waypointChanged) {
+      change.waypoint = shape.waypoint;
+    }
     return change;
   }
 }

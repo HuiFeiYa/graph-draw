@@ -127,6 +127,7 @@ export class ShapeEntity {
   modelNameChanged: boolean
   styleChanged: boolean
   isDeleteChanged: boolean
+  waypointChanged: boolean
   static fromOption(
     shapeOption: Partial<ShapeOption>,
     projectId: string,

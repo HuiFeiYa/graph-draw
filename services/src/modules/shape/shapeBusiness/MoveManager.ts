@@ -20,7 +20,7 @@ export class MoveManager {
             shape.bounds.y += dto.dy;
             shape.bounds.absX += dto.dx;
             shape.bounds.absY += dto.dy;
-            //   shape.boundsChanged = true;
+            shape.boundsChanged = true;
             updateShapeSet.add(shape);
         });
     }
@@ -63,5 +63,6 @@ export class MoveManager {
             }
         });
         edge.waypoint = transformWaypoint
+        edge.waypointChanged = true;
     }
 }

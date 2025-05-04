@@ -50,7 +50,11 @@ function handleMouseupOut(event:MouseEvent) {
 }
 function handleMousemove(event:MouseEvent) {
   emitter.emit(EventType.SHAPE_MOUSE_MOVE, event, undefined);
-  handleMousemoveSvg(event);
+  /**
+   * if (思维脑图) {
+   * handleMousemoveSvg(event);
+   * }
+   */
 }
 function handleDragOver(event:MouseEvent) {
   emitter.emit(EventType.SHAPE_DRAG_OVER, event);
@@ -128,7 +132,7 @@ onUnmounted(() => {
       style="min-width: 100%; min-height: 100%;background-color: white;cursor:move" @click="handleClickOut"
       @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop"
-       @mouseleave="handleMouseupOut" @wheel="handleWheel">
+        @wheel="handleWheel">
       <Grid />
       <g ref="rootGroup"
       :transform="`matrix(${scale}, 0, 0, ${scale}, ${transform.x}, ${transform.y})`">

@@ -49,17 +49,14 @@ export class ShapeController {
     return new ResData(result);
     });
   }
-//   @Post('move')
-//   async moveShape(@Body() dto: MoveShapeDto) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       return await stepManager.shapeService.moveShape(dto);
-//     });
-//     return handle();
-//   }
+  @Post('move')
+  async moveShape(@Body() dto: MoveShapeDto) {
+    transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      return await stepManager.shapeService.moveShape(dto);
+    });
+  }
 //   @Post('connectShapeAndCreate')
 //   async connectShapeAndCreate(
 //     @Body() connectShapeAndCreateDto: ConnectShapeAndCreateDto,

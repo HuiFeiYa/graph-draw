@@ -40,10 +40,9 @@ export class ShapeService  extends BaseService{
   constructor(
     public stepManager: StepManager
   ) {
-    super();
+    super(stepManager);
   }
   async sideBarItemDrop(dto: SideBarDropDto) {
-    // return await this.shapeRepository.manager.transaction(async manager => {
       const options = {
         projectId: dto.projectId,
         point: dto.point,
@@ -51,20 +50,8 @@ export class ShapeService  extends BaseService{
       };
       const sideBar = new SidebarModel(options);
       await sideBar.run();
-      // const res = await this.shapeRepository.save([...sideBar.createdShapes]);
-      const res = await this.stepManager.shapeRep.save([...sideBar.createdShapes]);
-      const changes: Change[] = [...sideBar.createdShapes].map(s => {
-        const v: Change = {
-          type: ChangeType.INSERT,
-          newValue: JSON.stringify(s),
-          projectId: dto.projectId,
-          shapeId: s.id_
-        }
-        return v;
-      })
-      this.stepManager.step.changes = changes;
+     const res = await this.addEntities(ShapeEntity, [...sideBar.createdShapes]);
       return res
-    // })
   }
   async getDiagramAllShape(dto: FetchAllShapeDto) {
     const res = await this.stepManager.shapeRep.find({
@@ -75,35 +62,35 @@ export class ShapeService  extends BaseService{
     });
     return res;
   }
-  // async moveShape(dto: MoveShapeDto) {
-  //   const { shapeMap } = await this.getShapeTree(dto.projectId);
-  //   const updateShapeSet = new Set<ShapeEntity>();
-  //   MoveManager.updateShapes(shapeMap, dto, updateShapeSet);
-  //   MoveManager.updateEdgeShapes(shapeMap, dto, updateShapeSet);
-  //   // 将 Set 转换为数组，并调用 shapeRepository 的 bulkUpdate 方法进行批量更新
-  //   let changes:Change[] = []
-  //   if (updateShapeSet.size > 0) {
-  //     const updatedShapesArray = Array.from(updateShapeSet);
-  //     changes = await this.bulkUpdateShapes( dto.projectId,updatedShapesArray);
-  //   }
-  //   return changes;
+  async moveShape(dto: MoveShapeDto) {
+    const { shapeMap } = await this.getShapeTree(dto.projectId);
+    const updateShapeSet = new Set<ShapeEntity>();
+    MoveManager.updateShapes(shapeMap, dto, updateShapeSet);
+    MoveManager.updateEdgeShapes(shapeMap, dto, updateShapeSet);
+    // 将 Set 转换为数组，并调用 shapeRepository 的 bulkUpdate 方法进行批量更新
+    let changes:Change[] = []
+    if (updateShapeSet.size > 0) {
+      const res = await this.addEntities(ShapeEntity,[...updateShapeSet])
+      return res;
+    }
+    return [];
     
-  // }
-  // async getShapeTree(projectId: string, where?: Record<string, any>) {
-  //   const query: FindManyOptions<ShapeEntity> = {
-  //     where: { projectId,  ...(where ? where : {isDelete:false}) },
-  //   };
-  //   const shapes = await this.shapeRepository.find(query);
-  //   const shapeMap = new Map<string, ShapeEntity>();
-  //   shapes.forEach((shape) => {
-  //     shapeMap.set(shape.id, shape);
-  //   });
-  //   return {
-  //     shapeMap,
-  //     shapes,
-  //   };
-  // }
-  // // 批量更新逻辑
+  }
+  async getShapeTree(projectId: string, where?: Record<string, any>) {
+    const query: FindManyOptions<ShapeEntity> = {
+      where: { projectId,  ...(where ? where : {isDelete:false}) },
+    };
+    const shapes = await this.stepManager.shapeRep.find(query);
+    const shapeMap = new Map<string, ShapeEntity>();
+    shapes.forEach((shape) => {
+      shapeMap.set(shape.id, shape);
+    });
+    return {
+      shapeMap,
+      shapes,
+    };
+  }
+  // 批量更新逻辑
   // async bulkUpdateShapes(projectId: string,shapes: ShapeEntity[]): Promise<Change[]> {
   //   // 使用 Promise.all 并行执行所有更新操作
   //   const changes: Change[] = []
