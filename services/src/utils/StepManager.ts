@@ -97,22 +97,22 @@ export class StepManager {
       // model的change和shape的change 需要互相隔离，互不影响
       let existChange :Change;
       let changeMap:Map<number, Change>;
-      existChange = shapeChangeMap.get(change.shapeId);
+      existChange = shapeChangeMap.get(change.objectId);
 
 
       if (!existChange) {
-        changeMap.set(change.shapeId, change);
+        changeMap.set(change.objectId, change);
       } else {
         if (change.type === ChangeType.UPDATE) {
           if (existChange.type === ChangeType.INSERT || existChange.type === ChangeType.DELETE) {
             return;
           }
-          const newValue = JSON.parse(change.newValue || '{}');
-          const newExistValue = JSON.parse(existChange.newValue || '{}');
-          const oldExistValue = JSON.parse(existChange.oldValue || '{}');
-          const odlValue = JSON.parse(change.oldValue || '{}');
-          existChange.newValue = JSON.stringify({ ...newValue, ...newExistValue });
-          existChange.oldValue = JSON.stringify({...oldExistValue,...odlValue });
+          const newValue = change.newValue || {};
+          const newExistValue = existChange.newValue || {};
+          const oldExistValue = existChange.oldValue || {};
+          const odlValue = change.oldValue || {};
+          existChange.newValue = { ...newValue, ...newExistValue };
+          existChange.oldValue = {...oldExistValue,...odlValue };
         } else { 
           if (existChange.type === ChangeType.UPDATE) {
             existChange.oldValue = null;

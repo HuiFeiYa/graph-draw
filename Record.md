@@ -43,3 +43,9 @@ import {  getTextSize } from '@hfdraw/utils'
 
 解决：
 将根目录下 node_modules 删除重新 pnpm i 
+
+
+## "types_1.Change is not a constructor"
+
+* 将 types 包重新打包
+* 然后在 server node_modules 中删除 types 重新 pnpm i
