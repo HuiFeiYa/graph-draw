@@ -49,3 +49,20 @@ import {  getTextSize } from '@hfdraw/utils'
 
 * 将 types 包重新打包
 * 然后在 server node_modules 中删除 types 重新 pnpm i
+
+
+## Uncaught QueryFailedError QueryFailedError: SqliteError: cannot start a transaction within a transaction
+get 请求中 lockProject 设置为 false， initStep 设置为 false
+```
+ @Get('diagram/allShape')
+  async getDiagramAllShape(@Query() dto: FetchAllShapeDto) {
+    return transaction({
+      projectId: dto.projectId,
+      lockProject: false,
+      initStep:false
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.getDiagramAllShape(dto);
+    return new ResData(result);
+    });
+  }
+```

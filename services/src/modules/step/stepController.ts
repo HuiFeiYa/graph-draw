@@ -45,6 +45,8 @@ export class StepController {
   async stepStatus(@Query() query: BaseProjectDto) {
     transaction({
       projectId: query.projectId,
+      lockProject: false,
+      initStep: false
     }, async (stepManager) => {
       const res = await stepManager.stepService.stepStatus(query.projectId);
       return new ResData(res);

@@ -44,6 +44,8 @@ export class ShapeController {
   async getDiagramAllShape(@Query() dto: FetchAllShapeDto) {
     return transaction({
       projectId: dto.projectId,
+      lockProject: false,
+      initStep:false
     }, async (stepManager) => {
       const result = await stepManager.shapeService.getDiagramAllShape(dto);
     return new ResData(result);
