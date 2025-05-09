@@ -13,6 +13,10 @@ export class ProjectService {
     async saveProject(projectId: string) {
         await httpClient.post(API.projectSave, { projectId });
     }
+
+    async deleteProject(projectId: string) {
+        await httpClient.post(API.projectDelete, { projectId });
+    }
 }
 
 export const projectService = new ProjectService();

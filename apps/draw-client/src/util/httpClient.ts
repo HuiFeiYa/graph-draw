@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ElMessage } from 'element-plus';
 const MODEL_SERVER_URL = "http://localhost:8003";
 const httpConfig = {
   baseURL: MODEL_SERVER_URL,
@@ -14,6 +15,10 @@ const httpConfig = {
   ],
   responseInterceptors: [
     function tip(response: any) {
+      if (response.data && response.data.code !== 1000) {
+        ElMessage.error(response.data.message || '请求失败');
+        throw new Error(response.data.message || '请求失败');
+      }
       return response;
     },
   ],
@@ -70,6 +75,7 @@ export const setupAxios = (
     axiosInstance.interceptors.response.use(interceptor, async (err: any) => {
       const config = err.config;
       if (!config || !config.retryCount || config.retryCount >= config.maxRetries) {
+        ElMessage.error(err.message || '请求失败');
         throw err;
       }
       config.retryCount++;

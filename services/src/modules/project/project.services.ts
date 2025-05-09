@@ -73,6 +73,26 @@ export class ProjectService {
     await fs.writeFile(savePath, arrayBUffer);
     return savePath;
   }
+
+  async deleteProject(projectId: string) {
+    if (!projectId) {
+      throw new Error('projectId is required');
+    }
+    const project = await this.projectMainRep.findOneBy({ projectId });
+    if (!project) {
+      throw new Error(`Project not found: ${projectId}`);
+    }
+    // 删除项目记录
+    await this.projectMainRep.delete({ projectId });
+    // 删除项目数据库文件
+    const projectPath = resolve(process.cwd(), `${projectId}.draw`);
+    try {
+      await fs.unlink(projectPath);
+    } catch (error) {
+      console.error(`Failed to delete project file: ${error.message}`);
+    }
+  }
+
   // 生成一个ZIP文件的缓冲区（ArrayBuffer）
   async generateZip(projectId) {}
 

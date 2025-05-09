@@ -19,6 +19,7 @@ export const API = {
     expandShape: 'shape/expandShape',
     projectList: 'project/projectList',
     projectUnCloseList: 'project/unCloseList',
+    projectDelete: 'project/delete'
 }
 
 export const ApiCode =  {

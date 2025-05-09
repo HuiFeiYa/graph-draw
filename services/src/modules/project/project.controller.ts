@@ -29,7 +29,14 @@ export class ProjectController {
       st.projectService.saveProject(dto);
     })
   }
-
+  @Post('delete')
+  async deleteProject(@Body() dto) {
+    return transaction({
+    }, async st => {
+      await st.projectService.deleteProject(dto.projectId);
+      return new ResData(null);
+    });
+  }
   @Get('unCloseList')
   async getUnCloseProjectList() {
     return transaction({}, async st => {

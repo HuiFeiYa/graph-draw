@@ -43,7 +43,10 @@
               <h3>{{ project.name }}</h3>
               <p class="project-type">{{ project.type === 'flowchart' ? '流程图' : '思维导图' }}</p>
             </div>
-            <button class="open-btn" @click="openProject(project.projectId)">打开项目</button>
+            <div class="project-actions">
+              <button class="open-btn" @click="openProject(project.projectId)">打开项目</button>
+              <button class="delete-btn" @click="deleteProject(project.projectId)">删除项目</button>
+            </div>
           </div>
         </template>
         <div v-else class="empty-state">
@@ -105,6 +108,14 @@ const  createNewProject = async() => {
 onMounted(() => {
     getProjects()
 })
+const deleteProject = async (projectId) => {
+  if (confirm('确定要删除该项目吗？')) {
+      const res = await projectService.deleteProject(projectId)
+        getProjects()
+    
+   
+  }
+}
 </script>
 
 <style scoped>
@@ -180,7 +191,7 @@ onMounted(() => {
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  width: 200px;
+  width: 300px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
@@ -216,12 +227,12 @@ onMounted(() => {
 
 .open-btn {
   width: 100%;
-  padding: 0.75rem;
+  padding: 15px 10px;
   background: #2196F3;
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 14px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -283,5 +294,25 @@ onMounted(() => {
 .create-btn:hover {
   background: #0b7dda;
   transform: translateY(-1px);
+}
+.project-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.delete-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #c82333;
 }
 </style>
