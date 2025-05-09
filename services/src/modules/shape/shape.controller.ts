@@ -30,14 +30,7 @@ export class ShapeController {
       projectId: dto.projectId,
     },  async (stepManager) => {
       const res = await stepManager.shapeService.sideBarItemDrop(dto);
-      return res.map((item) => {
-        return {
-          type: ChangeType.INSERT,
-          newValue: JSON.stringify(item),
-          projectId: dto.projectId,
-          shapeId: item.id_,
-        };
-      });
+      return new ResData(res);
     });
   }
   @Get('diagram/allShape')
@@ -56,7 +49,8 @@ export class ShapeController {
     transaction({
       projectId: dto.projectId,
     }, async (stepManager) => {
-      return await stepManager.shapeService.moveShape(dto);
+       await stepManager.shapeService.moveShape(dto);
+       return new ResData(null);
     });
   }
 //   @Post('connectShapeAndCreate')
