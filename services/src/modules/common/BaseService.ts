@@ -26,6 +26,7 @@ export class BaseService {
     
           change.objectId = (entity as any).id_;
           change.elementId = entity.id;
+          change.newValue = entity;
           return change;
         });
         return changes;

@@ -32,19 +32,19 @@ const graphData = reactive<{
 const events = {
   [BusEvent.INSERT_SHAPE]: (change: Change) => {
     if (change.newValue) {
-      const shape = JSON.parse(change.newValue);
+      const shape = change.newValue as Shape;
       graphData.graph.symbols.push(shape)
       graphData.graph.addShape(shape)
     }
 
   },
   [BusEvent.DELETE_SHAPE]: (change: Change) => {
-    graphData.graph.symbols = graphData.graph.symbols.filter(s => s.id_ !== change.shapeId)
+    graphData.graph.symbols = graphData.graph.symbols.filter(s => s.id_ !== change.objectId)
   },
   [BusEvent.UPDATE_SHAPE]: async (change: Change) => {
     // console.log('update:', change)
-    const newValue = JSON.parse(change.newValue || '')
-    const i = graphData.graph.symbols.findIndex(s => s.id_ === change.shapeId);
+    const newValue = change.newValue 
+    const i = graphData.graph.symbols.findIndex(s => s.id_ === change.objectId);
     if (i !== -1) {
       // graphData.graph.symbols.splice(i, 1, shape)
       Object.assign(graphData.graph.symbols[i],{...newValue})
