@@ -7,12 +7,14 @@ import { getUid } from 'src/utils/common';
 import { pcmm } from 'src/utils/ConnectionManager';
 import * as fs from 'fs/promises';
 import { resolve } from 'path';
+import { Project } from 'src/entities/project.entity';
 export class ProjectService {
   constructor(public stepManager: StepManager) {}
   get manager() {
     return this.stepManager.manager;
   }
   private _projectMainRep: Repository<ApplicationProject>;
+  private _projectRep: Repository<Project>
 
   /**
    * 系统数据库的
@@ -21,6 +23,15 @@ export class ProjectService {
     return (
       this._projectMainRep ||
       (this._projectMainRep = this.manager.getRepository(ApplicationProject))
+    );
+  }
+/**
+   * 项目数据库的
+   */
+  get projectRep() {
+    return (
+      this._projectRep ||
+      (this._projectRep = this.manager.getRepository(Project))
     );
   }
   async createProject(dto) {

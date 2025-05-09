@@ -7,7 +7,9 @@ export class Project {
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
-
+  @Column()
+  projectId: string;
+  
   @Column({ type: 'text', nullable: true })
   description?: string;
 

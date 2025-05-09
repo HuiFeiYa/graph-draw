@@ -24,6 +24,7 @@ export class ProjectController {
     return transaction({
       lockProject: false,
       initStep: false,
+      projectId: dto.projectId,
     }, async st => {
       st.projectService.saveProject(dto);
     })

@@ -31,6 +31,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { headerMenus } from './menuItem/index'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 import MHeaderButton from './headerComponents/HeaderButton.vue';
@@ -43,6 +44,7 @@ import { emitter } from '../util/Emitter';
 import { BusEvent } from '../constants/config';
 import { useProjectStore } from '../stores/project';
 const projectStore = useProjectStore();
+const router = useRouter();
 let activeTab = ref('Project');
 let selectButtonValue = ref('');
 const uiStore = useUiStore();
@@ -82,6 +84,10 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
     }
     case 'saveProject': {
       await projectService.saveProject(projectStore.projectId)
+      break;
+    }
+    case 'linkToHome': {
+      router.push('/layout/project-list');
       break;
     }
   }

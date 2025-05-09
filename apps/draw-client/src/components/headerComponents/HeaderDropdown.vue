@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue';
-import { HeaderDropdownData } from '../menuItem';
+import { HeaderDropdownData, HeaderButtonData } from '../menuItem';
 defineProps<{
     data: HeaderDropdownData,
 }>()
 const emit = defineEmits<{
-    itemClick: () => void
+    itemClick: (item: HeaderButtonData) => any
 }>()
 </script>
 <template>
