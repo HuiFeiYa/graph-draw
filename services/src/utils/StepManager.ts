@@ -9,6 +9,7 @@ import { StepService } from "src/modules/step/stepService"
 import { WsService, wsService } from "src/modules/socket/WsService"
 import { ProjectService } from "src/modules/project/project.services"
 import { CurrentStepService } from "src/modules/currentStep/currentStepService"
+import { ApplicationProject } from "src/entities/applicationProject.entity"
 
 export type ExtConnection = Connection & {inUse?:boolean}
 export class StepManager {
@@ -20,6 +21,45 @@ export class StepManager {
   curStep: CurrentStep
 
   projectConnectionMap = new Map<string, ExtConnection>()
+
+  get shapeRep() {
+    return this.projectManager.getRepository(ShapeEntity);
+  }
+
+  get stepRep() {
+    return this.projectManager.getRepository(StepEntity);
+  }
+
+  get currentStepRep() {
+    return this.projectManager.getRepository(CurrentStep);
+  }
+
+  get projectRep() {
+    return this.projectManager.getRepository(ApplicationProject);
+  }
+  private _shapeService: ShapeService
+  get shapeService(): ShapeService {
+    return this._shapeService || (this._shapeService = new ShapeService(this));
+
+  }
+
+  private _stepService: StepService
+  get stepService() {
+    return this._stepService || (this._stepService = new StepService(this));
+
+  }
+
+  wsService: WsService = wsService
+
+  private _projectService: ProjectService
+  get projectService():ProjectService {
+    return this._projectService || (this._projectService = new ProjectService(this));
+  }
+
+  private _currentStepService: CurrentStepService
+  get currentStepService():CurrentStepService {
+    return this._currentStepService || (this._currentStepService = new CurrentStepService(this));
+  }
 
 
   constructor(manager: EntityManager, projectManager?:EntityManager, projectId?: string) {
@@ -125,41 +165,6 @@ export class StepManager {
 
     });
     step.changes = [...shapeChangeMap.values(), ...modelChangeMap.values()];
-  }
-
-  get shapeRep() {
-    return this.projectManager.getRepository(ShapeEntity);
-  }
-
-  get stepRep() {
-    return this.projectManager.getRepository(StepEntity);
-  }
-
-  get currentStepRep() {
-    return this.projectManager.getRepository(CurrentStep);
-  }
-  private _shapeService: ShapeService
-  get shapeService(): ShapeService {
-    return this._shapeService || (this._shapeService = new ShapeService(this));
-
-  }
-
-  private _stepService: StepService
-  get stepService() {
-    return this._stepService || (this._stepService = new StepService(this));
-
-  }
-
-  wsService: WsService = wsService
-
-  private _projectService: ProjectService
-  get projectService():ProjectService {
-    return this._projectService || (this._projectService = new ProjectService(this));
-  }
-
-  private _currentStepService: CurrentStepService
-  get currentStepService():CurrentStepService {
-    return this._currentStepService || (this._currentStepService = new CurrentStepService(this));
   }
 
 }

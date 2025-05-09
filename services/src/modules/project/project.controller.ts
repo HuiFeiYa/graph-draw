@@ -21,7 +21,12 @@ export class ProjectController {
   }
   @Post('save')
   async saveProject(@Body() dto) {
-   
+    return transaction({
+      lockProject: false,
+      initStep: false,
+    }, async st => {
+      st.projectService.saveProject(dto);
+    })
   }
 
   @Get('unCloseList')

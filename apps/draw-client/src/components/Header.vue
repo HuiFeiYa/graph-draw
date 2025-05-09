@@ -36,6 +36,7 @@ import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 import MHeaderButton from './headerComponents/HeaderButton.vue';
 import MHeaderDropdown from './headerComponents/HeaderDropdown.vue'
 import { shapeService } from '../util/ShapeService';
+import { projectService } from '../util/ProjectService';
 import { stepStatusReactive } from '../util/StepStatus';
 import { useUiStore } from '../stores/ui';
 import { emitter } from '../util/Emitter';
@@ -77,6 +78,10 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
     case 'clear': {
       await shapeService.clear(projectStore.projectId)
       emitter.emit(BusEvent.REFRESH)
+      break;
+    }
+    case 'saveProject': {
+      await projectService.saveProject(projectStore.projectId)
       break;
     }
   }

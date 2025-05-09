@@ -9,7 +9,6 @@ export const SystemEntityList = [
     ApplicationProject
 ]
 export const ProjectEntityList = [
-    Project,
     ShapeEntity,
     StepEntity,
     CurrentStep,

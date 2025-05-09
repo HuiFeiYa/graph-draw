@@ -10,6 +10,9 @@ export class ProjectService {
         const res = await httpClient.get<{data: any}>(API.projectList);
         return res.data;
     }
+    async saveProject(projectId: string) {
+        await httpClient.post(API.projectSave, { projectId });
+    }
 }
 
 export const projectService = new ProjectService();
