@@ -4,6 +4,8 @@ const fs = require("fs");
 const fork = require("child_process").fork;
 const dayjs = require("dayjs");
 const isDevelopment = process.env.NODE_ENV === 'development'
+const preloadFile = resolve(__dirname, './preload/index.ts')
+console.log("preloadFile------:", preloadFile);
 class AppInstance {
   async start() {
     if (!isDevelopment) {
@@ -17,7 +19,7 @@ class AppInstance {
       height: 600,
       frame: false,
       webPreferences: {
-        preload: resolve(__dirname, './preload/index.js'),
+        preload: preloadFile ,
         nodeIntegration: false, // 禁用 Node 集成
         contextIsolation: true, // 启用上下文隔离
          sandbox: true,

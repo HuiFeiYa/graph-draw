@@ -17,6 +17,11 @@ export class ProjectService {
     async deleteProject(projectId: string) {
         await httpClient.post(API.projectDelete, { projectId });
     }
+
+    async openProject(filePath: string) {
+        const res = await httpClient.post<{data: any}>(API.projectOpen, { filePath });
+        return res.data;
+    }
 }
 
 export const projectService = new ProjectService();

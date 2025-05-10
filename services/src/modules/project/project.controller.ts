@@ -1,11 +1,16 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ResData } from 'src/utils/http/ResData';
 import { transaction } from 'src/utils/transaction';
+
 @Controller('project')
 export class ProjectController {
   constructor() {}
   @Post('open')
-  async openProjectNew(@Body() dto) {
+  async openProjectNew(@Body() dto: {filePath: string}) {
+    return transaction({ lockProject: true }, async stepManager => {
+      await stepManager.projectService.openProject(dto);
+      return new ResData(null);
+    });
   }
   @Post('create')
   async createProject(@Body() dto) {
@@ -26,7 +31,8 @@ export class ProjectController {
       initStep: false,
       projectId: dto.projectId,
     }, async st => {
-      st.projectService.saveProject(dto);
+      await st.projectService.saveProject(dto);
+      return new ResData(null);
     })
   }
   @Post('delete')

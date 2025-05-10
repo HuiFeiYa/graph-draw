@@ -1,5 +1,7 @@
-const  { contextBridge, ipcRenderer } = require('electron') ;
+import { contextBridge, ipcRenderer } from 'electron';
 
+
+console.log('Preload script loaded successfully');
 contextBridge.exposeInMainWorld('electron', {
-  doThing: () => ipcRenderer.send('do-a-thing'),
+  openFileDialog: () => ipcRenderer.invoke('open-file-dialog')
 });

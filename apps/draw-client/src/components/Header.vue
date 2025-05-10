@@ -48,6 +48,14 @@ const router = useRouter();
 let activeTab = ref('Project');
 let selectButtonValue = ref('');
 const uiStore = useUiStore();
+
+declare global {
+  interface Window {
+    electron: {
+      openFileDialog: () => Promise<string[]>;
+    }
+  }
+}
 const activeHeaderMenu = computed(() => {
   return headerMenus.find(it => it.enName === activeTab.value);
 });
@@ -88,6 +96,21 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
     }
     case 'linkToHome': {
       router.push('/layout/project-list');
+      break;
+    }
+    case 'openProject': {
+      try {
+        const filePaths = await window.electron.openFileDialog();
+        if (filePaths && filePaths.length > 0) {
+          const filePath = filePaths[0];
+          const data = await projectService.openProject(filePath);
+          if (data) {
+            freshStepStatus();
+          }
+        }
+      } catch (error) {
+        console.error('Failed to open project:', error);
+      }
       break;
     }
   }

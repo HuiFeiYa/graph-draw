@@ -1,4 +1,4 @@
-import * as JsZip from 'jszip';
+import JSZip, * as JsZip from 'jszip';
 import { projectZipFileName } from 'src/constants';
 import { StepManager } from 'src/utils/StepManager';
 import { Repository } from 'typeorm';
@@ -8,6 +8,13 @@ import { pcmm } from 'src/utils/ConnectionManager';
 import * as fs from 'fs/promises';
 import { resolve } from 'path';
 import { Project } from 'src/entities/project.entity';
+
+import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { ResException } from 'src/utils/http/ResException';
+import { ApiCode } from 'src/utils/http/ApiCode';
+import { App } from 'supertest/types';
+
 export class ProjectService {
   constructor(public stepManager: StepManager) {}
   get manager() {
@@ -96,5 +103,34 @@ export class ProjectService {
   // 生成一个ZIP文件的缓冲区（ArrayBuffer）
   async generateZip(projectId) {}
 
-  async openProject(dto) {}
+  async openProject(dto: {filePath: string}) {
+    if (!existsSync(dto.filePath)) {
+      console.error(dto.filePath);
+      throw new ResException(ApiCode.ERROR, '文件不存在');
+    }
+    
+    let buffer: Buffer;
+    try {
+      buffer = await readFile(dto.filePath);
+    } catch (error) {
+      console.error(error);
+      if (error.code === 'EPERM') {
+        throw new ResException(ApiCode.ERROR, '文件权限不足');
+      } else {
+        throw new ResException(ApiCode.ERROR, '文件读取失败');
+      }
+    }
+
+    const zip = new JSZip();
+    try {
+      await zip.loadAsync(buffer);
+      let projectStr = await zip.file(projectZipFileName.config).async('string');
+      let project = JSON.parse(projectStr) as unknown as ApplicationProject;
+      const existProject = await this.projectMainRep.findOneBy({ id: project.id });
+      // return new ResData(project);
+    } catch (error) {
+      console.error(error);
+      throw new ResException(ApiCode.ERROR, 'zip格式错误');
+    }
+  }
 }
