@@ -52,7 +52,8 @@ const uiStore = useUiStore();
 declare global {
   interface Window {
     electron: {
-      openFileDialog: () => Promise<string[]>;
+      openFileDialog: () => Promise<string>;
+      openDevTools: () => void;
     }
   }
 }
@@ -77,6 +78,11 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
     selectButtonValue.value = ''
   }
   switch(child.value) {
+    case 'openDevTools': {
+      console.log('openDevTools menu')
+      window.electron.openDevTools();
+      break;
+    }
     case 'undo': {
       await shapeService.undo(projectStore.projectId)
       break;
@@ -100,9 +106,8 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
     }
     case 'openProject': {
       try {
-        const filePaths = await window.electron.openFileDialog();
-        if (filePaths && filePaths.length > 0) {
-          const filePath = filePaths[0];
+        const filePath = await window.electron.openFileDialog();
+        if (filePath) {
           const data = await projectService.openProject(filePath);
           if (data) {
             freshStepStatus();

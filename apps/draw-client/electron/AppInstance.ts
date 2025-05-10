@@ -1,44 +1,68 @@
 const { resolve } = require("path");
-const { app, Menu, BrowserWindow } = require("electron");
+const { app, Menu, BrowserWindow, ipcMain } = require("electron");
 const fs = require("fs");
 const fork = require("child_process").fork;
 const dayjs = require("dayjs");
 const isDevelopment = process.env.NODE_ENV === 'development'
-const preloadFile = resolve(__dirname, './preload/index.ts')
+const preloadFile = resolve(__dirname, './preload/index.js')
 console.log("preloadFile------:", preloadFile);
 class AppInstance {
+  mainWindow: any;
+
   async start() {
     if (!isDevelopment) {
       await this.startNodeServer();
     }
     await this.createMainWindow();
+    this.setupIPC();
   }
+
   async createMainWindow() {
-    const win = new BrowserWindow({
+    this.mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
       frame: false,
       webPreferences: {
-        preload: preloadFile ,
-        nodeIntegration: false, // 禁用 Node 集成
-        contextIsolation: true, // 启用上下文隔离
-         sandbox: true,
+        preload: preloadFile,
+        nodeIntegration: false,
+        contextIsolation: true,
+        sandbox: true,
       },
       title: "HfDraw",
       type: "normal"
     });
-    Menu.setApplicationMenu(null)
-
-  // process.env.VITE_DEV_SERVER_URL = ''
+    Menu.setApplicationMenu(null);
 
     if (process.env.VITE_DEV_SERVER_URL) {
-      win.loadURL(process.env.VITE_DEV_SERVER_URL);
+      this.mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
     } else {
-  const localPath = resolve(__dirname, '../dist/index.html');
-
-      console.log('localPath:',`file://${localPath}`)
-      win.loadURL(`file://${localPath}`);
+      const localPath = resolve(__dirname, '../dist/index.html');
+      this.mainWindow.loadURL(`file://${localPath}`);
     }
+  }
+
+  setupIPC() {
+    console.log("setupIPC - 开始注册IPC事件监听器");
+    ipcMain.on('open-dev-tools', () => {
+      console.log('收到open-dev-tools事件');
+      if (this.mainWindow) {
+        console.log('正在打开开发者工具...');
+        this.mainWindow.webContents.openDevTools();
+      } else {
+        console.log('mainWindow未初始化');
+      }
+    });
+
+    ipcMain.handle('open-file-dialog', async (event) => {
+        // 这里编写打开文件对话框的逻辑，比如使用electron的dialog模块
+        const { dialog } = require('electron');
+        const result = await dialog.showOpenDialog({
+            properties: ['openFile']
+        });
+        return result.filePaths[0]; // 返回选择的文件路径，可按需调整返回值
+    });
+
+    console.log("setupIPC - IPC事件监听器注册完成");
   }
   async startNodeServer() {
     const nodeScript = resolve(__dirname, isDevelopment ? "../public/nodeServer/main.js" : "../dist/nodeServer/main.js");
@@ -108,7 +132,4 @@ class AppInstance {
   }
 }
 
-module.exports = {
-  AppInstance,
-};
-export {}
+module.exports = AppInstance;

@@ -1,4 +1,4 @@
-const { globalShortcut, BrowserWindow, dialog, ipcMain } = require("electron");
+import { globalShortcut, BrowserWindow, dialog, ipcMain } from "electron";
 const { AppInstance } = require("./AppInstance");
 class ElectronInstance {
   appInstance: any
@@ -30,6 +30,7 @@ class ElectronInstance {
 
   setupIpcHandlers() {
     ipcMain.handle('open-file-dialog', async () => {
+      console.log('open-file-dialog');
       const result = await dialog.showOpenDialog({
         properties: ['openFile'],
         filters: [{ name: 'Draw Files', extensions: ['draw'] }]

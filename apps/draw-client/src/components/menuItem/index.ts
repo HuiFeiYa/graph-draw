@@ -104,7 +104,16 @@ export const Common: HeadItem[] = [
       return false;
     },
     icon: 'statics/header/toolbarfresh.svg',
-  }
+  },
+  {
+    label: "开发者工具",
+    notShowLabel: true,
+    value: "openDevTools",
+    icon: "statics/header/toolbarfresh.svg",
+    get disabled() {
+      return false;
+    }
+  },
 ]
 
 // 项目特有的菜单

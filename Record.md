@@ -66,3 +66,20 @@ get 请求中 lockProject 设置为 false， initStep 设置为 false
     });
   }
 ```
+
+## Header.vue:112 Failed to open project: TypeError: window.electron.openFileDialog is not a function
+
+electron 下的代码未使用 tsc 编译
+
+## ipcMain.handle vs ipcMain.on
+
+
+1. ipcMain.handle('open-file-dialog') :
+   
+   - 在主进程中使用 ipcMain.handle 来处理异步请求。它允许渲染进程通过 ipcRenderer.invoke 发起请求，并等待主进程返回结果。
+   - 在您的代码中， openFileDialog 方法使用 ipcRenderer.invoke('open-file-dialog') 来调用主进程的 open-file-dialog 处理器。这是用于打开文件选择对话框并返回选择的文件路径。
+2. ipcMain.on('open-dev-tools') :
+   
+   - 使用 ipcMain.on 来监听同步事件。渲染进程通过 ipcRenderer.send 发送事件，主进程接收到事件后执行相应的操作。
+   - 在您的代码中， openDevTools 方法使用 ipcRenderer.send('open-dev-tools') 来发送事件，主进程接收到后打开开发者工具。
+这两种方式的主要区别在于处理异步请求和同步事件的方式。 ipcMain.handle 适用于需要返回结果的异步操作，而 ipcMain.on 适用于不需要返回结果的简单事件通知。

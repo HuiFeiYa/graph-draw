@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron');
-const {electronInstance} = require("./ElectronInstance");
+const AppInstance = require('./AppInstance');
+const electronInstance = new AppInstance();
 
 app.whenReady().then(() => {
   electronInstance.start();
