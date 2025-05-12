@@ -18,5 +18,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       path: request.url,
       message: exception.message
     });
+    console.error(`Exception caught: ${exception.message}`, exception.stack);
   }
 }

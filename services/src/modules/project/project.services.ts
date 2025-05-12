@@ -113,7 +113,7 @@ export class ProjectService {
     try {
       buffer = await readFile(dto.filePath);
     } catch (error) {
-      console.error(error);
+      console.error(`Error in openProject: ${error.message}`);
       if (error.code === 'EPERM') {
         throw new ResException(ApiCode.ERROR, '文件权限不足');
       } else {
