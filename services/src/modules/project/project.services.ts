@@ -1,4 +1,4 @@
-import JSZip, * as JsZip from 'jszip';
+import * as JsZip from 'jszip';
 import { projectZipFileName } from 'src/constants';
 import { StepManager } from 'src/utils/StepManager';
 import { Repository } from 'typeorm';
@@ -14,6 +14,7 @@ import { existsSync } from 'node:fs';
 import { ResException } from 'src/utils/http/ResException';
 import { ApiCode } from 'src/utils/http/ApiCode';
 import { App } from 'supertest/types';
+import { resourceUtil } from 'src/utils/ResourceUtil';
 
 export class ProjectService {
   constructor(public stepManager: StepManager) {}
@@ -121,12 +122,20 @@ export class ProjectService {
       }
     }
 
-    const zip = new JSZip();
+    const zip: JsZip = new JsZip();
     try {
       await zip.loadAsync(buffer);
       let projectStr = await zip.file(projectZipFileName.config).async('string');
       let project = JSON.parse(projectStr) as unknown as ApplicationProject;
       const existProject = await this.projectMainRep.findOneBy({ id: project.id });
+      const unit8buffer = await zip.file(projectZipFileName.projectDB).async('uint8array');
+      const dbPath = resourceUtil.getProjectDbFilePath(project.projectId);
+
+      await fs.writeFile(dbPath, unit8buffer);
+      const connection = await pcmm.getWriteConnByProjectId(project.projectId, true);
+        await connection.manager.transaction(async manager => {
+          // todo 数据库操作
+        })
       // return new ResData(project);
     } catch (error) {
       console.error(error);
