@@ -16,6 +16,14 @@ export class MoveManager {
         dto.shapeIds.forEach((shapeId) => {
             // 直接更新 shapeMap 值
             const shape = shapeMap.get(shapeId);
+            if (!shape) {
+                console.warn(`Shape with id ${shapeId} not found in shapeMap`);
+                return;
+            }
+            if (!shape.bounds) {
+                console.warn(`Shape with id ${shapeId} has no bounds property`);
+                return;
+            }
             shape.bounds.x += dto.dx;
             shape.bounds.y += dto.dy;
             shape.bounds.absX += dto.dx;

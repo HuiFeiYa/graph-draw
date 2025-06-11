@@ -32,7 +32,6 @@ type TranOption = {
      * 调用指定的连接
      */
     useConnectionName?: string
-
 }
 /**
  * 启动一个事务
@@ -45,7 +44,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
     const {
         projectId,
         lockProject = projectId ? true : false, // 有项目id则默认加锁
-        initStep = projectId ? true : false// 有项目id则默认初始化步骤
+        initStep = projectId ? true : false,// 有项目id则默认初始化步骤
     } = tranOption;
     const conName = tranOption.useConnectionName || (lockProject ? WRITE_CONNECTION_NAME : READ_CONNECTION_NAME);
     let manager: EntityManager;

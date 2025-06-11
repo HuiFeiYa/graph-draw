@@ -48,14 +48,16 @@ export class StepService {
         // 更新当前 CurrentStep 指向
         const preStepId = preStep ? preStep.id_ : null;
         const preIndex = preStep ? preStep.index : null;
-        await this.currentStepService.updateCurrentStep(currentStep.id_, {
+        await this.stepManager.currentStepService.updateCurrentStep(currentStep.id_, {
           stepId: preStepId,
           index: preIndex
         })
+        
+        
         return step.changes;
     }
     async redoStep(projectId: string) {
-      const currentStep = await this.currentStepService.findCurrentStep(projectId);
+      const currentStep = await this.stepManager.currentStepService.findCurrentStep(projectId);
       // 不存在 currentstep时，例如回退到最开始的时候，
       const steps = await this.stepManager.stepRep.find({
         where: {
@@ -75,44 +77,55 @@ export class StepService {
       for(let change of nextStep.changes) {
         await this.redoChange(change);
       }
-      await this.currentStepService.updateCurrentStep(currentStep.id_, {
+      await this.stepManager.currentStepService.updateCurrentStep(currentStep.id_, {
         stepId: nextStep.id_,
         index: nextStep.index
       })
+      
       return nextStep.changes;
     }
 
     async undoChange(change:Change) {
+      if (!change.elementId) {
+        console.warn('Change elementId is empty, skipping update:', change);
+        return;
+      }
+      
       if (change.type === ChangeType.INSERT) {
-          await this.shapeRepository.update(change.shapeId, { isDelete: true });
+          await this.stepManager.shapeRep.update(change.elementId, { isDelete: true });
       } else if (change.type === ChangeType.DELETE) {
-        await this.shapeRepository.update(change.shapeId, { isDelete: false });
+        await this.stepManager.shapeRep.update(change.elementId, { isDelete: false });
       } else if (change.type === ChangeType.UPDATE) {
         const modelKV = change.oldValue;
-        await this.shapeRepository.update(change.shapeId, JSON.parse(modelKV));
+        await this.stepManager.shapeRep.update(change.elementId, modelKV);
       }
     }
 
     async redoChange(change:Change) {
+      if (!change.elementId) {
+        console.warn('Change elementId is empty, skipping update:', change);
+        return;
+      }
+      
       if (change.type === ChangeType.INSERT) {
-        await this.shapeRepository.update(change.shapeId, { isDelete: false });
+        await this.stepManager.shapeRep.update(change.elementId, { isDelete: false });
   
       } else if (change.type === ChangeType.DELETE) {
-        await this.shapeRepository.update(change.shapeId, { isDelete: true });
+        await this.stepManager.shapeRep.update(change.elementId, { isDelete: true });
   
       } else if (change.type === ChangeType.UPDATE) {
         const modelKV = change.newValue;
-        await this.shapeRepository.update(change.shapeId, JSON.parse(modelKV));
+        await this.stepManager.shapeRep.update(change.elementId, modelKV);
   
       }
     }
     // 创建一个新的 step
     async createStep(dto: { projectId: string, changes: Change[]}) {
-      const currentStep = await this.currentStepService.findCurrentStep(dto.projectId);
+      const currentStep = await this.stepManager.currentStepService.findCurrentStep(dto.projectId);
       let preStep = null;
       if (currentStep) {
         preStep = await this.stepManager.stepRep.findOne({where: { id_: currentStep.stepId}});
-        await this.shapeRepository.createQueryBuilder()
+        await this.stepManager.stepRep.createQueryBuilder()
               .delete()
               .from(StepEntity)
               .where('projectId =:projectId AND index > :index', {

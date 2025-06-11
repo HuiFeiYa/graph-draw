@@ -72,10 +72,15 @@ export class StepManager {
   }
 
   async initStep() {
-    const stepId = getUid();
-    this.step = this.projectManager.create(StepEntity, { id_:stepId, projectId: this.projectId, modelChangeIds: [], desc: '', index: 0 });
+    this.step = this.projectManager.create(StepEntity, { 
+      id_: getUid(), 
+      projectId: this.projectId, 
+      modelChangeIds: [], 
+      desc: '', 
+      index: 0 
+    });
     this.step.changes = [];
-    const curStep = await this.projectManager.getRepository(CurrentStep).findOne({ where: { projectId: this.projectId, stepId } });
+    const curStep = await this.projectManager.getRepository(CurrentStep).findOne({ where: { projectId: this.projectId } });
 
     //
     if (!curStep) {
