@@ -102,6 +102,8 @@ const  createNewProject = async() => {
     projectStore.setCurrentProjectId(projectId);
     socketService.sendJSON({ type: 'subscribeProject', projectId });
     getProjects()
+    router.push({ path: '/layout/flow', query: { projectId } })
+
   }
 }
 

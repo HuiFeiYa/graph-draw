@@ -67,10 +67,8 @@ export class ShapeService  extends BaseService{
     const updateShapeSet = new Set<ShapeEntity>();
     MoveManager.updateShapes(shapeMap, dto, updateShapeSet);
     MoveManager.updateEdgeShapes(shapeMap, dto, updateShapeSet);
-    // 将 Set 转换为数组，并调用 shapeRepository 的 bulkUpdate 方法进行批量更新
-    let changes:Change[] = []
     if (updateShapeSet.size > 0) {
-      const res = await this.addEntities(ShapeEntity,[...updateShapeSet])
+      const res = await this.updateShapeChanges(updateShapeSet);
       return res;
     }
     return [];
@@ -90,6 +88,32 @@ export class ShapeService  extends BaseService{
       shapes,
     };
   }
+
+    /**
+   * 更新所有变化的属性到数据库里
+   * @param affectedShapes
+   * @returns
+   */
+    async updateShapeChanges(affectedShapes: ShapeEntity[] | Set<ShapeEntity>) {
+      if (affectedShapes instanceof Set) {
+        affectedShapes = Array.from(affectedShapes);
+      }
+      if (affectedShapes.length === 0) return;
+  
+      // const boundsChangedShapes = affectedShapes.filter(it => it.boundsChanged);
+  
+      const ids_ = affectedShapes.map(it => it.id_);
+      const changes = affectedShapes.map(it => {
+  
+        const change: Partial<ShapeEntity> = shapeUtil.pickChange(it);
+  
+        return change;
+      });
+  
+      await this.updateEntities(ShapeEntity, ids_, changes);
+  
+    }
+
   // 批量更新逻辑
   // async bulkUpdateShapes(projectId: string,shapes: ShapeEntity[]): Promise<Change[]> {
   //   // 使用 Promise.all 并行执行所有更新操作

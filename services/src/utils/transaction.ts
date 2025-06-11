@@ -57,9 +57,9 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
         throw new Error(`Failed to get database manager: ${error.message}`);
     }
     let projectManager: EntityManager;
+    let conn: ExtConnection;
     if (projectId) {        
         const databaseName = `project_${projectId}`;
-        let conn: ExtConnection;
     
         // const conn = conManager.has(projectConName) && conManager.get(projectConName);
         if (conName === WRITE_CONNECTION_NAME) {
@@ -67,7 +67,6 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
     
         } else {
             conn = await pcmm.getReadConn(databaseName);
-    
         }
         conn.inUse = true;
         try {
@@ -81,37 +80,44 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
         }
     }
 
-    return (projectManager || manager).transaction(async m => {
-        let stepManager = new StepManager(manager, m, projectId);
-        try {
+    try {
+        return await (projectManager || manager).transaction(async m => {
+            let stepManager = new StepManager(manager, m, projectId);
+            try {
 
-            if (initStep) await stepManager.init();
-            const ret = await run(stepManager);
-            // 业务方法结束，提交此过程的所有步骤
-            await stepManager.commitStep();
-            return { ret, stepManager };
-        } catch (error) {
-            throw new HttpException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                error: 'Transaction failed',
-                message: error.message,
-            }, HttpStatus.INTERNAL_SERVER_ERROR);
+                if (initStep) await stepManager.init();
+                const ret = await run(stepManager);
+                // 业务方法结束，提交此过程的所有步骤
+                await stepManager.commitStep();
+                return { ret, stepManager };
+            } catch (error) {
+                throw new HttpException({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Transaction failed',
+                    message: error.message,
+                }, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }).then((res) => {
+            if (res.stepManager.step?.changes?.length) {
+                // todo 将信息发送给客户度
+                res.stepManager.wsService.sendToSubscribedClient(projectId, {
+                    type: WsMessageType.step,
+                    data: {
+                        projectId,
+                        changes: res.stepManager.step?.changes,
+                        stepType: StepType.edit
+                    }
+                });
+
+            }
+
+            return res.ret;
+        });
+    } finally {
+        // 确保连接始终被释放，防止连接泄漏
+        if (conn && projectId) {
+            conn.inUse = false;
         }
-    }).then((res) => {
-        if (res.stepManager.step?.changes?.length) {
-            // todo 将信息发送给客户度
-            res.stepManager.wsService.sendToSubscribedClient(projectId, {
-                type: WsMessageType.step,
-                data: {
-                    projectId,
-                    changes: res.stepManager.step?.changes,
-                    stepType: StepType.edit
-                }
-            });
-
-        }
-
-        return res.ret;
-    })
+    }
 
 }

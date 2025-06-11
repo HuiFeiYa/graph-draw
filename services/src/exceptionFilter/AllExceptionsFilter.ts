@@ -10,14 +10,29 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const status = exception instanceof HttpException
       ? exception.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
-    // 处理异常，例如记录日志、发送监控事件等
-    // 然后重新抛出异常或者返回一个错误响应
-    response.status(status).json({
-      statusCode: status,
+    
+    // 记录详细错误信息
+    console.error(`Exception caught at ${request.url}:`, {
+      message: exception.message,
+      stack: exception.stack,
       timestamp: new Date().toISOString(),
-      path: request.url,
-      message: exception.message
+      method: request.method,
+      body: request.body,
+      query: request.query,
+      params: request.params
     });
-    console.error(`Exception caught: ${exception.message}`, exception.stack);
+    
+    // 确保响应被正确发送
+    if (!response.headersSent) {
+      response.status(status).json({
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+        method: request.method,
+        message: exception.message || 'Internal server error'
+      });
+    } else {
+      console.warn('Response headers already sent, cannot send error response');
+    }
   }
 }

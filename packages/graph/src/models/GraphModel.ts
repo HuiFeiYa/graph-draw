@@ -101,7 +101,9 @@ export class GraphModel {
     } 
   }
   onMouseUp() {
-    this.moveModel.clear();
+    setTimeout(() => {
+      this.moveModel.clear();
+    },500);
   }
   addShape(shape: Shape) {
     if (this.shapeMap.has(shape.id)) {

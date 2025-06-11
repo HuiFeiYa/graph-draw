@@ -19,11 +19,15 @@ import { useProjectStore } from '../stores/project';
 import { useRoute } from 'vue-router';
 import { socketService } from "../socket/SocketService";
 const projectStore = useProjectStore();
-const graphOption = new GraphOption('p1');
+const route = useRoute();
+const projectId = route.query.projectId as string;
+console.log('projectId: ', projectId)
+const graphOption = new GraphOption(projectId);
+
 const graphData = reactive<{
   edges: Shape[],
   symbols: Shape[],
-  graph: GraphModel
+  graph: GraphModel 
 }>({
   edges:[],
   symbols: [],
@@ -131,8 +135,7 @@ async function fretchData() {
 emitter.onBatch(events)
 
 onMounted(()=> {
-  const route = useRoute();
-  const projectId = route.query.projectId as string;
+  
   console.log('projectId----: ', projectId,route.query);
   if (projectId) {
     projectStore.setCurrentProjectId(projectId);
