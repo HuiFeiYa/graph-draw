@@ -161,12 +161,19 @@ onUnmounted(() => {
       @click="handleClickOut" @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <g :transform="`matrix(${scale}, 0, 0, ${scale}, ${transform.x}, ${transform.y})`">
+        <!-- 拉伸图形预览 -->
+        <!-- <m-shape-resize-preview v-if="graph.resizeModel.showResizePreview" :bounds="graph.resizeModel.previewBounds" :color="graph.resizeModel.resizeShape?.style.strokeColor||'black'" /> -->
+         <!-- 图形拉伸控制点 -->
         <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" @vertex-mousedown="handleVertexMousedown"/>
         <!-- 悬浮箭头 -->
         <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
+        <!-- 图形移动预览 -->
         <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
+        <!-- 线移动预览 -->
         <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :preview-path="graph.edgeMoveModel.previewPath" />
+        <!-- 快速添加图形辅助箭头 -->
         <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" :graph="graph" />
+        <!-- icon编辑框 -->
         <label-editor v-if="graph.labelEditorModel.showPreview" :editor-model="graph.labelEditorModel" @input="handleLabelInput" @blur="handleLabelBlur" />
       </g>
     </svg>
