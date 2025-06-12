@@ -1,4 +1,4 @@
-import { EdgeShape, EventType, Shape, ShapeKey } from "@hfdraw/types";
+import { Shape, EdgeShape, EventType, Bounds, StyleObject, IPoint, ShapeKey } from "@hfdraw/types";
 import { ViewModel } from "./ViewModel";
 import { MoveModel } from "./MoveModel";
 import { SelectionModel } from "./SelectionModel";
@@ -7,7 +7,7 @@ import { emitter } from "../util/Emitter";
 import { shallowReactive, reactive } from "vue";
 import { HoverModel } from "./HoverModel";
 import { EdgeMoveModel } from "./EdgeMoveModel";
-import { MindMapModel } from './MindMapModel'
+import { MindMapModel } from './MindMapModel';
 import { LabelEditorModel } from "./LabelEditorModel";
 
 export class GraphModel {
@@ -37,24 +37,24 @@ export class GraphModel {
   /**
    * 选中元素模型
    */
-  selectionModel = reactive(new SelectionModel(this));
+  selectionModel: SelectionModel = reactive(new SelectionModel(this));
 
   /**
   * 线移动模型(线的线段移动)
   */
-  edgeMoveModel = reactive(new EdgeMoveModel(this))
+  edgeMoveModel: EdgeMoveModel = reactive(new EdgeMoveModel(this))
   /**
    * 选入元素显示箭头
    */
-  hoverModel = reactive(new HoverModel(this))
+  hoverModel: HoverModel = reactive(new HoverModel(this))
   /**
    * 脑图模型
    */
-  mindMapModel = reactive(new MindMapModel(this))
+  mindMapModel: MindMapModel = reactive(new MindMapModel(this))
   /**
    * 标签编辑器模型
    */
-  labelEditorModel = reactive(new LabelEditorModel(this))
+  labelEditorModel: LabelEditorModel = reactive(new LabelEditorModel(this))
   /**
    * 
    */
