@@ -2,7 +2,7 @@ import { GraphModel } from "@hfdraw/graph";
 import { MoveModel } from "@hfdraw/graph/src/models/MoveModel";
 import { IGraphOption } from "@hfdraw/graph/src/types";
 import { shapeService } from "../util/ShapeService";
-import { Shape, StyleObject, VertexType } from "@hfdraw/types";
+import { IBounds, Shape, StyleObject, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
 import { SideBarWidth, popoverGap, popoverHeight, popoverList, popoverWidth } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
@@ -75,5 +75,9 @@ export class GraphOption implements IGraphOption {
   }
   async expandShape(shapeId: string, expand: boolean) {
     await shapeService.expandShape({shapeId, expand, projectId: this.projectId});
+  }
+
+  async onShapeResized(shape: Shape, vertexType: VertexType, newBounds: IBounds) {
+    console.log('onShapeResized', shape, vertexType, newBounds);
   }
 }

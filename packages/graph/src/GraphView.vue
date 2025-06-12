@@ -4,7 +4,7 @@ import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
 import { GraphProps } from "./types";
 import { emitter } from "./util/Emitter";
-import { EventType, Shape, VertexType } from "@hfdraw/types";
+import { EventType, Shape, ShapeType, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
 import HoverArrow from './shape/HoverArrow.vue';
 import MindMapQuickAdd from './shape/MindMapQuickAdd.vue';
@@ -113,6 +113,22 @@ function handleWheel(event:WheelEvent) {
   scale.value *= delta;
 }
 
+function handleVertexMousedown(event: MouseEvent, index: VertexType) {
+  const { graph } = props;
+  if (graph.selectionModel.selection.length === 0) return;
+  if (graph.selectionModel.selection.length > 1) {
+    graph.selectionModel.clearSelection();
+  } else {
+    const targetShape = graph.selectionModel.selection[0];
+
+    if (targetShape.shapeType === ShapeType.Edge) {
+      // graph.edgePointMoveModel.onEdgePointMouseDown(event, targetShape as unknown as EdgeShape, index);
+    }  else {
+      graph.resizeModel.startResize(event, graph.selectionModel.selection[0], index);
+    }
+  }
+}
+
 onMounted(() => {
   if (!viewDom.value) return;
   props.graph.viewModel.setViewDom(viewDom.value);
@@ -129,7 +145,7 @@ onUnmounted(() => {
           * 整个画布的事件监听
         -->
     <svg version="1.1" ref="svgElement" xmlns="http://www.w3.org/2000/svg" transform-origin="0 0"
-      style="min-width: 100%; min-height: 100%;background-color: white;cursor:move" @click="handleClickOut"
+      style="min-width: 100%; min-height: 100%;background-color: white;" @click="handleClickOut"
       @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop"
         @wheel="handleWheel">
@@ -145,7 +161,7 @@ onUnmounted(() => {
       @click="handleClickOut" @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <g :transform="`matrix(${scale}, 0, 0, ${scale}, ${transform.x}, ${transform.y})`">
-        <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" />
+        <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" @vertex-mousedown="handleVertexMousedown"/>
         <!-- 悬浮箭头 -->
         <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
         <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
@@ -156,7 +172,7 @@ onUnmounted(() => {
     </svg>
   </div>
 </template>
-<style>
+<style lang="scss">
 .graph-view {
   position: relative;
   padding: 12px;

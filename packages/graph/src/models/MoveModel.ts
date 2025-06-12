@@ -74,7 +74,7 @@ export class MoveModel {
 
         this.previewDx = dx;
         this.previewDy = dy;
-        console.log('previewDx', this.previewDx, 'previewDy', this.previewDy)
+        // console.log('previewDx', this.previewDx, 'previewDy', this.previewDy)
     }
     async endMove() {
         this.graph.selectionModel.setSelection(this.movingShapes)

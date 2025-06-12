@@ -8,6 +8,10 @@ import { MovePointPosition } from '../types';
 const props = defineProps<{
     selection: Shape[]
 }>();
+const emit = defineEmits<{
+  (event: 'change'): void
+  (event: 'vertex-mousedown', evt: MouseEvent, index: VertexType): void
+}>();
 console.log('selection:', props.selection)
 const resizable = true;
 
@@ -62,7 +66,7 @@ const waypointsNotInline = computed((oldValue: IPoint[] | undefined)=> {
 
 function handleMouseDown(event: MouseEvent, index: VertexType) {
     event.stopPropagation();
-    //   emit('vertex-mousedown', event, index);
+      emit('vertex-mousedown', event, index);
 
 }
 
@@ -72,7 +76,7 @@ function handleCircleMouseDown(event: MouseEvent, index:MovePointPosition) {
 }
 </script>
 <template>
-    <g>
+    <g style="pointer-events:all">
         <!-- 偏移 padding 的距离 -->
         <g v-for="shape in shapeGroup.commonShapes" :key="shape.id" >
             <!-- 移动一半 rect 的宽高的距离 -->
@@ -94,3 +98,6 @@ function handleCircleMouseDown(event: MouseEvent, index:MovePointPosition) {
         </g>
     </g>
 </template>
+<style lang="scss">
+
+</style>

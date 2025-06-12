@@ -9,6 +9,7 @@ import { HoverModel } from "./HoverModel";
 import { EdgeMoveModel } from "./EdgeMoveModel";
 import { MindMapModel } from './MindMapModel';
 import { LabelEditorModel } from "./LabelEditorModel";
+import { ResizeModel } from "./ResizeModel";
 
 export class GraphModel {
   /**
@@ -55,6 +56,10 @@ export class GraphModel {
    * 标签编辑器模型
    */
   labelEditorModel: LabelEditorModel = reactive(new LabelEditorModel(this))
+  /**
+   * 图形缩放模型
+   */
+  resizeModel: ResizeModel = reactive(new ResizeModel(this))
   /**
    * 
    */
