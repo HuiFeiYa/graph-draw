@@ -12,7 +12,7 @@ export class Emitter {
         this.store[event] = [];
       }
       // 检查是否已经注册了相同的回调函数，避免重复注册
-      if (this.store[event].indexOf(callback) === -1) {
+      if (this.store[event].map(fn => fn.name).indexOf(callback.name) === -1) {
         this.store[event].push(callback);
       }
     }
