@@ -56,6 +56,7 @@ export class MoveModel {
         }
     }
     async onMouseMove(event: MouseEvent, shape: Shape) {
+        if (!this.mouseDown || !this.moved) return ;
         const movingShapes = this.movingShapes
         // 移动时展示预览框
         this.showMovingPreview = true;
@@ -74,12 +75,11 @@ export class MoveModel {
 
         this.previewDx = dx;
         this.previewDy = dy;
-        // console.log('previewDx', this.previewDx, 'previewDy', this.previewDy)
     }
     async endMove() {
-        this.graph.selectionModel.setSelection(this.movingShapes)
-        this.graph.graphOption.customEndMove?.(this, this.previewDx, this.previewDy)
-        this.mouseDown = false;
+        if (this.previewDx !== 0 || this.previewDy !== 0) {
+            this.graph.graphOption.customEndMove?.(this, this.previewDx, this.previewDy)
+        }
         this.clear();
     }
     clear() {
