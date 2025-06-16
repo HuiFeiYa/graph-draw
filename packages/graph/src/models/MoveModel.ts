@@ -56,7 +56,7 @@ export class MoveModel {
         }
     }
     async onMouseMove(event: MouseEvent, shape: Shape) {
-        if (!this.mouseDown || !this.moved) return ;
+        if (!this.mouseDown || this.movingShapes.length === 0 || shape) return ;
         const movingShapes = this.movingShapes
         // 移动时展示预览框
         this.showMovingPreview = true;

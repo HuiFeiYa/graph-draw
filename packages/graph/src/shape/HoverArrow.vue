@@ -21,33 +21,33 @@ const arrowWidth = 8;
 const arrowHeight = 16;
 
 const leftPoint = computed(()=> {
-    const { x,y, width, height} = bounds.value;
+    const { absX, absY, width, height} = bounds.value;
     return {
-        x,
-        y: y+ height/2
+        x: absX,
+        y: absY + height/2
     }
 })
 
 const topPoint = computed(()=> {
-    const { x,y, width, height} = bounds.value;
+    const { absX, absY, width, height} = bounds.value;
     return {
-        x: x + width/2,
-        y
+        x: absX + width/2,
+        y: absY
     }
 })
 
 const rightPoint = computed(() => {
-    const { x,y, width, height} = bounds.value;
+    const { absX, absY, width, height} = bounds.value;
     return {
-        x: x + width,
-        y: y+ height/2
+        x: absX + width,
+        y: absY + height/2
     }
 })
 const bottomPoint = computed(() => {
-    const { x,y, width, height} = bounds.value;
+    const { absX, absY, width, height} = bounds.value;
     return {
-        x: x + width/2,
-        y: y+ height
+        x: absX + width/2,
+        y: absY + height
     }
 })
 

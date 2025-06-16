@@ -11,7 +11,10 @@ export class Emitter {
       if (!this.store[event]) {
         this.store[event] = [];
       }
-      this.store[event].push(callback);
+      // 检查是否已经注册了相同的回调函数，避免重复注册
+      if (this.store[event].indexOf(callback) === -1) {
+        this.store[event].push(callback);
+      }
     }
     onBatch(obj:{[propName:string]:Function}) {
       Object.keys(obj).forEach(key => {
