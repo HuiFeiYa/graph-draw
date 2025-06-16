@@ -19,7 +19,9 @@ export const API = {
     expandShape: 'shape/expandShape',
     projectList: 'project/projectList',
     projectUnCloseList: 'project/unCloseList',
-    projectDelete: 'project/delete'
+    projectDelete: 'project/delete',
+    resizeShape: 'shape/resize',
+    SHAPE_MINIMUM_BOUNDS: "shape/minimumBounds",
 }
 
 export const ApiCode =  {

@@ -1,7 +1,7 @@
 import { IBounds, Shape, StyleObject } from "@hfdraw/types";
 import { MoveModel } from "../models/MoveModel";
 import { GraphModel } from "../models/GraphModel";
-import { VertexType } from "../util/common";
+import { ResData, VertexType } from "../util/common";
 import { Point } from "../util/Point";
 
 export interface GraphProps {
@@ -30,6 +30,7 @@ export interface IGraphOption {
     vertexType: VertexType,
     newBounds: IBounds
   ) => Promise<any>;
+  getMinimumBounds?: (shape: Shape, resizeIndex: VertexType) => Promise<ResData<IBounds>>
 }
 
 export enum MovePointPosition {

@@ -1,3 +1,5 @@
+import { ApiCode } from "../../../../services/src/utils/http/ApiCode";
+
 export function generateRandomNumber(length = 5) {
     // 生成一个 0 到 99999 之间的随机整数
     const randomNumber = Math.floor(Math.random() * Math.pow(10, length));
@@ -26,4 +28,18 @@ export function generateRandomNumber(length = 5) {
                  .replace('MM', month)
                  .replace('dd', day)
                  .replace('HH', hours)
+  }
+
+
+
+  export class ResData<T> {
+    code = 1000
+    message = ''
+    data?: T
+    title = ''
+    constructor(code:ApiCode, data?: T, message?:string) {
+      this.data = data;
+      this.code = code || ApiCode.SUCCESS;
+      this.message = message || 'success';
+    }
   }

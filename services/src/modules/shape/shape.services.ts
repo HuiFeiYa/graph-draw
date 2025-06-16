@@ -5,10 +5,12 @@ import {
   CreateMindMapRectDto,
   ExpandShapeDto,
   FetchAllShapeDto,
+  GetMinimumBoundsDto,
   MoveEdgeDto,
   MoveShapeDto,
   PointDto,
   SaveTextDto,
+  ShapeResizeDto,
   SideBarDropDto,
   ToCreateShapeModelTreeType,
   UpdateShapeBoundsDto,
@@ -19,8 +21,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ShapeEntity } from 'src/entities/shape.entity';
 import { EntityTarget, FindManyOptions, In, Repository } from 'typeorm';
 import { WsService } from '../socket/WsService';
-import { WsMessageType } from 'src/types/common';
-import { Change, ChangeType, StType, StepType, StyleObject, SubShapeType, VertexType } from '@hfdraw/types';
+import { ShapeMap, WsMessageType } from 'src/types/common';
+import { Bounds, Change, ChangeType, StType, StepType, StyleObject, SubShapeType, VertexType } from '@hfdraw/types';
 import { CurrentStepService } from '../currentStep/currentStepService';
 import { StepService } from '../step/stepService';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
@@ -33,6 +35,10 @@ import { MoveManager } from './shapeBusiness/MoveManager';
 import { MindMapManager } from './shapeBusiness/MindMapManager';
 import {  getTextSize } from '@hfdraw/utils';
 import { StepManager } from 'src/utils/StepManager';
+import { clone, cloneDeep } from 'lodash';
+import { equalBounds } from 'src/utils/common';
+import { ResizeUtil } from 'src/utils/ResizeUtil';
+import { MinBoundsUtil } from 'src/utils/shape/MinBoundsUtil';
 @Injectable()
 export class ShapeService  extends BaseService{
   private readonly stepService: StepService
@@ -88,7 +94,41 @@ export class ShapeService  extends BaseService{
       shapes,
     };
   }
+  async resizeShape(resizeDto: ShapeResizeDto,  shapeMap?:ShapeMap) {
+    if (!shapeMap) {
+      const shapeTree = await this.getShapeTree(resizeDto.projectId);
+      shapeMap = shapeTree.shapeMap;
+    }
+    // const { shapeMap, diagramShape } = await this.getShapeTree(resizeDto.projectId, resizeDto.diagramId);
+    const oldShapeMap = shapeUtil.cloneShapeMap(shapeMap, ['id',  'bounds', 'waypoint', 'style']);
+    const shape = shapeMap.get(resizeDto.shapeId);
+    const oldBounds = clone(shape.bounds);
+    shape.bounds = { ...resizeDto.bounds };
+    const newBounds = resizeDto.bounds;
+    let affectedShapes = new Set<ShapeEntity>();
+    const dx = newBounds.absX - oldBounds.absX; // 新的x坐标比旧的x坐标大多少
+    const dy = newBounds.absY - oldBounds.absY;
+    const dHeight = newBounds.height - oldBounds.height;
+    const dWidth = newBounds.width - oldBounds.width;
+    const dCenter = newBounds.absX + newBounds.width / 2 - (oldBounds.absX + oldBounds.width / 2);
+    if (!equalBounds(oldBounds, newBounds)) {
+      affectedShapes.add(shape);
+      shape.boundsChanged = true;
+    }
+    const resizeUtil = new ResizeUtil(shapeMap);
+    resizeUtil.expandParent(shape);
+    resizeUtil.affectedShapes.forEach(it => {
+      affectedShapes.add(it);
+    });
+    await this.updateShapeChanges(affectedShapes);
+    return Array.from(affectedShapes);
+  }
 
+  async getMinBounds(minimumBounds: GetMinimumBoundsDto) {
+    const { shapeMap } = await this.getShapeTree(minimumBounds.projectId);
+    const minBoundsUtil = new MinBoundsUtil(shapeMap);
+    return minBoundsUtil.getMinBounds(shapeMap.get(minimumBounds.shapeId), minimumBounds.vertexType);
+  }
     /**
    * 更新所有变化的属性到数据库里
    * @param affectedShapes

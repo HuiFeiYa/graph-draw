@@ -18,6 +18,12 @@ export interface StyleObject {
     }
     retrospectOption?:RetrospectOption
     stroke?: string
+    minWidth?: number
+    minHeight?: number
+    paddingTop?: number
+    paddingLeft?: number
+    paddingBottom?: number
+    paddingRight?: number
 }
 
 export interface RetrospectRelationType {

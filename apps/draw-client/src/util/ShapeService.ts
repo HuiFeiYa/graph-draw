@@ -1,10 +1,11 @@
 import { httpClient } from './httpClient'
 import { API } from '../constants/api'
 import { ConnectShapeAndCreateDto, MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
-import { Shape, StyleObject } from '@hfdraw/types'
+import { Bounds, IBounds, Shape, StyleObject } from '@hfdraw/types'
 import { AxiosResponse } from 'axios';
 // @ts-nocheck
 import { Point } from '@hfdraw/graph/src/util/Point';
+import { ResData } from './common';
 
 export class ShapeService {
     async sidebarDrop(data: SideBarDropDto) {
@@ -49,5 +50,13 @@ export class ShapeService {
     async expandShape(data: {shapeId: string, expand: boolean, projectId: string}) {
         await httpClient.post(API.expandShape, data)
     }
+    async resizeShape(data: {shapeId: string, bounds: Bounds, projectId: string}) {
+        await httpClient.post(API.resizeShape, data)
+    }
+    async getResizeMinimumBounds(projectId: string,  shapeId: string, vertexType: number): Promise<ResData<Bounds>> {
+        return httpClient.post(API.SHAPE_MINIMUM_BOUNDS,{  shapeId, projectId, vertexType }).then((res:any) => res.data);
+    }
+
+
 }
 export const shapeService = new ShapeService();

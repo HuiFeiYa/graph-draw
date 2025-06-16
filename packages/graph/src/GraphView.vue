@@ -11,6 +11,7 @@ import MindMapQuickAdd from './shape/MindMapQuickAdd.vue';
 import ShapeMovePreview from "./shape/ShapeMovePreview.vue";
 import EdgeMovePreview from './shape/EdgeMovePreview.vue'
 import LabelEditor from './shape/LabelEditor.vue'
+import ShapeResizePreview from './shape/ShapeResizePreview.vue';
 const props = defineProps<GraphProps>();
 provide("graphProps", props);
 provide('graph', props.graph);
@@ -162,7 +163,7 @@ onUnmounted(() => {
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <g :transform="`matrix(${scale}, 0, 0, ${scale}, ${transform.x}, ${transform.y})`">
         <!-- 拉伸图形预览 -->
-        <!-- <m-shape-resize-preview v-if="graph.resizeModel.showResizePreview" :bounds="graph.resizeModel.previewBounds" :color="graph.resizeModel.resizeShape?.style.strokeColor||'black'" /> -->
+        <shape-resize-preview v-if="graph.resizeModel.showResizePreview" :bounds="graph.resizeModel.previewBounds" :color="graph.resizeModel.resizeShape?.style.strokeColor||'black'" /> 
          <!-- 图形拉伸控制点 -->
         <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" @vertex-mousedown="handleVertexMousedown"/>
         <!-- 悬浮箭头 -->

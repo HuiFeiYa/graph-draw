@@ -1,3 +1,4 @@
+import { Bounds } from "@hfdraw/types";
 import { Base36 } from "./Base36";
 
 /**
@@ -78,4 +79,8 @@ export function breakArray<T>(arr:T[], size = 300) {
   }
   return result;
 
+}
+
+export function equalBounds(bounds1: Bounds, bounds2: Bounds) {
+  return bounds1.x === bounds2.x && bounds1.y === bounds2.y && bounds1.width === bounds2.width && bounds1.height === bounds2.height && bounds1.absX === bounds2.absX && bounds1.absY === bounds2.absY;
 }

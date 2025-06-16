@@ -13,3 +13,6 @@ export enum ErrorLevel {
     INFO = 'INFO',
     ERROR = 'ERROR',
   }
+
+
+  export const NAME_MARGIN = 6;

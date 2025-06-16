@@ -4,7 +4,7 @@ import { IGraphOption } from "@hfdraw/graph/src/types";
 import { shapeService } from "../util/ShapeService";
 import { IBounds, Shape, StyleObject, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
-import { SideBarWidth, popoverGap, popoverHeight, popoverList, popoverWidth } from "../constants/config";
+import { SideBarWidth, popoverGap, popoverList, popoverWidth } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
 import { Point } from "@hfdraw/graph/src/util/Point";
 
@@ -79,5 +79,13 @@ export class GraphOption implements IGraphOption {
 
   async onShapeResized(shape: Shape, vertexType: VertexType, newBounds: IBounds) {
     console.log('onShapeResized', shape, vertexType, newBounds);
+    await shapeService.resizeShape({
+      shapeId: shape.id,
+      projectId: this.projectId,
+      bounds: newBounds
+    })
+  }
+  getMinimumBounds(shape: Shape, vtxIndex: VertexType) {
+    return shapeService.getResizeMinimumBounds(this.projectId,  shape.id, vtxIndex);
   }
 }

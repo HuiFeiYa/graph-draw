@@ -1,7 +1,6 @@
 import { Shape, Bounds, IPoint, EventType, ShapeType, SubShapeType, ShapeKey, VertexType } from "@hfdraw/types";
 import { Point } from "../util/Point";
 import { GraphModel } from "./GraphModel";
-import { reactive } from "vue";
 import { emitter } from "../util/Emitter";
 
 // 简化的网格对齐函数
@@ -36,6 +35,12 @@ export class ResizeModel {
   }
 
   async startResize(event: MouseEvent, resizeShape: Shape, resizeIndex: VertexType) {
+    const res = await this.graph.graphOption.getMinimumBounds?.(resizeShape, resizeIndex);
+    const data = res?.data;
+    if (data) {
+      const { x, y, width, height, absX, absY } = data;
+      this.minimumBounds = new Bounds(x, y, width, height, absX, absY);
+    }
     this.resizeShape = resizeShape;
     this.resizeIndex = resizeIndex;
     this.mouseDown = true;
@@ -104,7 +109,8 @@ export class ResizeModel {
           if (previewBounds.absX + previewBounds.width < this.minimumBounds.absX + this.minimumBounds.width) {
             previewBounds.width = this.minimumBounds.absX + this.minimumBounds.width - previewBounds.absX;
           }
-
+          const RectContainerHeight = 12;
+          previewBounds.height = originBounds.absY + originBounds.height - Math.max(previewBounds.absY, RectContainerHeight);
           break;
         }
         case VertexType.rightBottom: {

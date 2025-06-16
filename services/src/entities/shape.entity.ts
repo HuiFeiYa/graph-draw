@@ -121,7 +121,7 @@ export class ShapeEntity {
     comment: '代表的模型名称',
   })
   modelName: string;
-
+  children:ShapeEntity[]
   boundsChanged:boolean
   nameBoundsChanged:boolean
   modelNameChanged: boolean

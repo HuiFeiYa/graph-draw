@@ -13,6 +13,8 @@ import {
   SaveTextDto,
   ExpandShapeDto,
   BaseProjectDto,
+  ShapeResizeDto,
+  GetMinimumBoundsDto,
 } from 'src/types/shape.dto';
 import { WsService } from '../socket/WsService';
 import { WsMessageType } from 'src/types/common';
@@ -51,6 +53,24 @@ export class ShapeController {
     }, async (stepManager) => {
        await stepManager.shapeService.moveShape(dto);
        return new ResData(null);
+    });
+  }
+
+
+  @Post("resize")
+  async resizeShape(@Body() resizeDto: ShapeResizeDto) {
+    return transaction({ projectId: resizeDto.projectId }, async stepManager => {
+      const data = await stepManager.shapeService.resizeShape(resizeDto);
+      return new ResData(data);
+    });
+
+  }
+
+  @Post('minimumBounds')
+  async minimumBounds(@Body() minimumBounds: GetMinimumBoundsDto) {
+    return transaction({ projectId: minimumBounds.projectId, lockProject: false, initStep: false }, async stepManager => {
+      const data = await stepManager.shapeService.getMinBounds(minimumBounds);
+      return new ResData(data);
     });
   }
 //   @Post('connectShapeAndCreate')

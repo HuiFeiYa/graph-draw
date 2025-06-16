@@ -5,6 +5,8 @@ import { ShapeEntity } from "src/entities/shape.entity";
 import { Bounds, ShapeKey, StType, VertexType } from "@hfdraw/types";
 import { shapeFactory } from "src/modules/models/ShapeFactory";
 import { connectEdgeLength } from "src/modules/shape/shapeConfig/commonShapeOption";
+import { cloneDeep } from "lodash";
+import { NAME_MARGIN } from "src/constants";
 
 export class ShapeUtil {
   getModelKey(model: Model): ModelKey {
@@ -113,6 +115,27 @@ export class ShapeUtil {
       change.waypoint = shape.waypoint;
     }
     return change;
+  }
+
+  cloneShapeMap(shapeMap: Map<string, ShapeEntity>, props: (keyof ShapeEntity)[] = ['id',  'bounds', 'waypoint']) {
+   
+    const map = new Map<string, ShapeEntity>();
+    shapeMap.forEach((val, key) => {
+      const newShape = new ShapeEntity();
+      for (let it of props) {
+        (newShape as any)[it] = cloneDeep(val[it]);
+      }
+      map.set(key, newShape);
+
+    });
+    return map;
+  }
+
+  getTopPartMinHeight(shape: ShapeEntity) {
+    let height = shape.style.paddingTop || 0;
+    height += NAME_MARGIN;
+    return height;
+
   }
 }
 export const shapeUtil = new ShapeUtil()
