@@ -11,7 +11,7 @@ import { GraphView, GraphModel } from "@hfdraw/graph";
 import { Change, Shape, StyleObject, SubShapeType } from "@hfdraw/types";
 import Siderbar from "../editor/components/SiderBar.vue";
 import { BusEvent } from "../constants/config";
-import { emitter } from "../util/Emitter";
+import { useEvents } from "../util/useEvents";
 import { shapeService } from "../util/ShapeService";
 import { GraphOption } from "../editor/graphOption";
 import { HeaderDropdownEnum, StrokeColor } from "../types/enum";
@@ -132,7 +132,7 @@ async function fretchData() {
   })
 }
 // 监听事件
-emitter.onBatch(events)
+useEvents(events)
 
 onMounted(()=> {
   

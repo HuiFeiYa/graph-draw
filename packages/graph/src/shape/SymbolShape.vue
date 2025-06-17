@@ -42,14 +42,14 @@
 </template>
 <script lang="ts" setup>
 import { Shape } from '@hfdraw/types';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { createEventHandler } from '../util/createEventHandler';
-
+import { GraphModel } from '../models/GraphModel';
 const props = defineProps<{
   shape:Shape
 }>();
-// 绑定图形的操作，并将 shape 作为参数
-const eventHandler = createEventHandler(props);
+const graph = inject<GraphModel>('graph') as GraphModel ;
+const eventHandler = createEventHandler(graph,props);
 const style = computed(() => {
   const shape = props.shape;
 

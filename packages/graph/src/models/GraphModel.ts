@@ -3,15 +3,19 @@ import { ViewModel } from "./ViewModel";
 import { MoveModel } from "./MoveModel";
 import { SelectionModel } from "./SelectionModel";
 import { IGraphOption } from "../types";
-import { emitter } from "../util/Emitter";
 import { shallowReactive, reactive } from "vue";
 import { HoverModel } from "./HoverModel";
 import { EdgeMoveModel } from "./EdgeMoveModel";
 import { MindMapModel } from './MindMapModel';
 import { LabelEditorModel } from "./LabelEditorModel";
 import { ResizeModel } from "./ResizeModel";
+import { Emitter } from "../util/Emitter";
 
 export class GraphModel {
+  /**
+   * 每个画布单独实例化一个 emitter 事件发射器
+   */
+  emitter = new Emitter()
   /**
    * 根图形
    */
@@ -82,21 +86,21 @@ export class GraphModel {
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.mouseStateModel.onMouseDown.bind(this.mouseStateModel));
 
     // 开始监听移动事件
-    emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
+    this.emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
     // 数据来源于 createEventHandler 绑定的图形操作
-    emitter.on(EventType.SHAPE_CLICK, this.shapeClick.bind(this));
-    emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
-    emitter.on(EventType.SHAPE_MOUSE_LEAVE, this.hoverModel.clearHoverShape.bind(this.hoverModel))
-    emitter.on(EventType.SHAPE_CLEAR, this.clear.bind(this))
-    emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
-    emitter.on(EventType.EDGE_POINT_MOUSE_DOWN, this.edgeMoveModel.onEdgeStartOrEndPointMousedown.bind(this.edgeMoveModel));
-    emitter.on(EventType.NAME_LABEL_CLICK, this.labelEditorModel.onShapeNameLabelClick.bind(this.labelEditorModel));
+    this.emitter.on(EventType.SHAPE_CLICK, this.shapeClick.bind(this));
+    this.emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
+    this.emitter.on(EventType.SHAPE_MOUSE_LEAVE, this.hoverModel.clearHoverShape.bind(this.hoverModel))
+    this.emitter.on(EventType.SHAPE_CLEAR, this.clear.bind(this))
+    this.emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
+    this.emitter.on(EventType.EDGE_POINT_MOUSE_DOWN, this.edgeMoveModel.onEdgeStartOrEndPointMousedown.bind(this.edgeMoveModel));
+    this.emitter.on(EventType.NAME_LABEL_CLICK, this.labelEditorModel.onShapeNameLabelClick.bind(this.labelEditorModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.multipleSelectModel.startSelect.bind(this.multipleSelectModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
 
     // emitter.on(EventType.SHAPE_MOUSE_MOVE, this.mouseStateModel.onMouseMove.bind(this.mouseStateModel));
 
-    emitter.on(EventType.SHAPE_MOUSE_UP, this.onMouseUp.bind(this));
+    this.emitter.on(EventType.SHAPE_MOUSE_UP, this.onMouseUp.bind(this));
   }
   shapeClick(event: any, shape: Shape) {
     this.selectionModel.onShapeClick(event, shape);

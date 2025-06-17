@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { EventType, Shape } from '@hfdraw/types';
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { VertexType } from '../util/common';
-import { emitter } from '../util/Emitter';
+import { GraphModel } from '../models/GraphModel';
 const props = defineProps<{
   shape:Shape
 }>();
+
+const graph = inject<GraphModel>('graph') as GraphModel;
 const emit = defineEmits<{
     (e: 'arrowHover', index: VertexType, shape: Shape): void
 }>()
@@ -131,7 +133,7 @@ function getColor(vertexType: VertexType) {
 }
 
 function handleMouseLeave() {
-    emitter.emit(EventType.SHAPE_MOUSE_LEAVE)
+    graph.emitter.emit(EventType.SHAPE_MOUSE_LEAVE)
 }
 
 </script>

@@ -10,6 +10,7 @@ import { shapeService } from "../util/ShapeService";
 import { SideBarDropDto } from '../types/shape.dto';
 import { useProjectStore } from '../stores/project';
 import { useRoute } from 'vue-router';
+import { useEvents } from '../util/useEvents';
 const projectStore = useProjectStore();
 const graphOption = new GraphOption(projectStore.projectId);
 const graphData = reactive<{
@@ -80,7 +81,7 @@ const events = {
 }
 
 // 监听事件
-emitter.onBatch(events)
+useEvents(events)
 </script>
 <template>
   <div class='mindMap-container'>

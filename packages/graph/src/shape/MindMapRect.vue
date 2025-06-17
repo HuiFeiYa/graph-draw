@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { EventType, Shape } from '@hfdraw/types';
-import { ref, computed, onMounted  } from 'vue'
+import { ref, computed, onMounted, inject  } from 'vue'
 import { createEventHandler } from '../util/createEventHandler';
-import { emitter } from '../util/Emitter';
+// import { emitter } from '../util/Emitter';
 import { GraphModel } from '../main';
 import { EXPAND_GAP, EXPAND_ICON_R } from '../util/constant';
 
@@ -11,8 +11,10 @@ const props = defineProps<{
   graph: GraphModel
 }>();
 
-// 绑定图形的操作，并将 shape 作为参数
-const eventHandler = createEventHandler(props, {omit: ['mouseover', 'dragover']});
+const graph = inject<GraphModel>('graph') as GraphModel ;
+const eventHandler = createEventHandler(graph,props, {
+  omit: ['mouseover', 'mousemove']
+});
 
 const retrospectOption = computed(() => {
   return {
@@ -58,7 +60,7 @@ function handleExpandShape(){
 }
 
 function handleNameLabelClick(event: MouseEvent) {
-  emitter.emit(EventType.NAME_LABEL_CLICK, event, props.shape);
+  graph.emitter.emit(EventType.NAME_LABEL_CLICK, event, props.shape);
 }
 </script>
 <template>

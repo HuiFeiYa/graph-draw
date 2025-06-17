@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { Shape } from '@hfdraw/types';
 import { PathBuilder } from '@hfdraw/elbow'
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { Point } from '@hfdraw/elbow';
 import { createEventHandler } from '../util/createEventHandler';
 import { StrokeColor } from '../util/common';
+import { GraphModel } from '../models/GraphModel';
 const props = defineProps<{
   shape: Shape
 }>();
 
-
-// 绑定图形的操作，并将 shape 作为参数
-const eventHandler = createEventHandler(props, {
+const graph = inject<GraphModel>('graph') as GraphModel ;
+const eventHandler = createEventHandler(graph,props, {
   omit: ['mouseover', 'mousemove']
 });
+// 绑定图形的操作，并将 shape 作为参数
 const computedData = computed(() => {
   const shape = props.shape;
   const pathBuilder = new PathBuilder({

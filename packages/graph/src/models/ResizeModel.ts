@@ -1,7 +1,6 @@
 import { Shape, Bounds, IPoint, EventType, ShapeType, SubShapeType, ShapeKey, VertexType } from "@hfdraw/types";
 import { Point } from "../util/Point";
 import { GraphModel } from "./GraphModel";
-import { emitter } from "../util/Emitter";
 
 // 简化的网格对齐函数
 function getGridNum(value: number): number {
@@ -54,8 +53,8 @@ export class ResizeModel {
     const onMouseMove = this.onMouseMove.bind(this);
     this.clearEvents?.();
     this.clearEvents = () => {
-      emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-      emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
+      this.graph.emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+      this.graph.emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
       window.removeEventListener('mouseup', onMouseUp);
     };
     
@@ -65,8 +64,8 @@ export class ResizeModel {
       this.endMove();
     };
     
-    emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-    emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
+    this.graph.emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+    this.graph.emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
     window.addEventListener('mouseup', onMouseUp);
   }
 

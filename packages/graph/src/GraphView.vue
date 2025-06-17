@@ -3,7 +3,6 @@ import { provide, onMounted, ref, onUnmounted, computed, watch } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
 import { GraphProps } from "./types";
-import { emitter } from "./util/Emitter";
 import { EventType, Shape, ShapeType, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
 import HoverArrow from './shape/HoverArrow.vue';
@@ -38,19 +37,19 @@ const showHoverArrow = computed(() => {
   return !!hoverModel.hoverShape
 })
 function handleClickOut() {
-  emitter.emit(EventType.SHAPE_CLEAR,window.event,undefined);
+  props.graph.emitter.emit(EventType.SHAPE_CLEAR,window.event,undefined);
  }
 
 function handleMousedownOut(event:MouseEvent) {
-  emitter.emit(EventType.SHAPE_MOUSE_DOWN, window.event, undefined);
+ props.graph.emitter.emit(EventType.SHAPE_MOUSE_DOWN, window.event, undefined);
   handleMousedown(event);
 }
 function handleMouseupOut(event:MouseEvent) {
-  emitter.emit(EventType.SHAPE_MOUSE_UP, window.event, undefined);
+ props.graph.emitter.emit(EventType.SHAPE_MOUSE_UP, window.event, undefined);
   isDragging.value = false;
 }
 function handleMousemove(event:MouseEvent) {
-  emitter.emit(EventType.SHAPE_MOUSE_MOVE, event, undefined);
+ props.graph.emitter.emit(EventType.SHAPE_MOUSE_MOVE, event, undefined);
   /**
    * if (思维脑图) {
    * handleMousemoveSvg(event);
@@ -58,7 +57,7 @@ function handleMousemove(event:MouseEvent) {
    */
 }
 function handleDragOver(event:MouseEvent) {
-  emitter.emit(EventType.SHAPE_DRAG_OVER, event);
+ props.graph.emitter.emit(EventType.SHAPE_DRAG_OVER, event);
 }
 
 function handleArrowHover(index: VertexType, shape: Shape) {

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { EdgeShape, EventType, IPoint, Shape, ShapeType } from '@hfdraw/types';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { isEqual } from 'lodash';
-import { emitter } from '../util/Emitter';
+// import { emitter } from '../util/Emitter';
 import { VertexType } from '../util/common';
 import { MovePointPosition } from '../types';
+import { GraphModel } from '../models/GraphModel';
 const props = defineProps<{
     selection: Shape[]
 }>();
+
+const graph = inject<GraphModel>('graph') as GraphModel;
 const emit = defineEmits<{
   (event: 'change'): void
   (event: 'vertex-mousedown', evt: MouseEvent, index: VertexType): void
@@ -72,7 +75,7 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
 
 function handleCircleMouseDown(event: MouseEvent, index:MovePointPosition) {
     event.stopPropagation();
-    emitter.emit(EventType.EDGE_POINT_MOUSE_DOWN, event,shapeGroup.value.edgeShapes[0],index)
+    graph.emitter.emit(EventType.EDGE_POINT_MOUSE_DOWN, event,shapeGroup.value.edgeShapes[0],index)
 }
 </script>
 <template>

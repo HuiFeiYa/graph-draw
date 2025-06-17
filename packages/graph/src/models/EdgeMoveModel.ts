@@ -5,7 +5,6 @@ import { MovePointPosition } from "../types"
 import { getKeyPoints } from "@hfdraw/elbow"
 import { PlaitElement, PointOfRectangle } from "@hfdraw/elbow/util/common-type"
 import { waypointUtil } from "../util/edgeUtil/WaypointUtil"
-import { emitter } from "../util/Emitter"
 
 export class EdgeMoveModel {
     movingShape?: EdgeShape // 正在移动的线的shape
@@ -66,14 +65,14 @@ export class EdgeMoveModel {
 
         const onMouseMove = this.onMouseMove.bind(this);
         const onMouseUp = () => {
-            emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-            emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
+            this.graph.emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+            this.graph.emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
             window.removeEventListener('mouseup', onMouseUp); // 如果移动到了画布或窗口之外
 
             this.endMove();
         };
-        emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-        emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
+        this.graph.emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+        this.graph.emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
         window.addEventListener('mouseup', onMouseUp);
     }
 

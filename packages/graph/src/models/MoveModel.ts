@@ -1,7 +1,6 @@
 import { EventType, Shape, SubShapeType } from "@hfdraw/types";
 import { Point } from "../util/Point";
 import { GraphModel } from "./GraphModel";
-import { emitter } from "../util/Emitter";
 
 export type MoveRange = {
     dxMin: number,
@@ -37,8 +36,8 @@ export class MoveModel {
             this.previewDy = 0;
             const onMouseMove = this.onMouseMove.bind(this);
             this.clearEvents = () => {
-                emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-                emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
+                this.graph.emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+                this.graph.emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
                 window.removeEventListener('mouseup', onMouseUp); // 如果移动到了画布或窗口之外
             };
             const onMouseUp = () => {
@@ -46,8 +45,8 @@ export class MoveModel {
                 this.clearEvents = undefined;
                 this.endMove();
             };
-            emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-            emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
+            this.graph.emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+            this.graph.emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
             window.addEventListener('mouseup', onMouseUp);
         } else {
             this.movingShapes = []
