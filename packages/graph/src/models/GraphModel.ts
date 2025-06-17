@@ -110,9 +110,14 @@ export class GraphModel {
     } 
   }
   onMouseUp() {
-    setTimeout(() => {
-      this.moveModel.clear();
-    },500);
+    /**
+     * 不要使用定时器清楚状态。会造成快速上移动的时候，被上一个定时器清除掉状态引发bug
+     */
+    // if (this.moveModel.isMoving) {
+    //   setTimeout(() => {
+    //     this.moveModel.clear();
+    //   },500);
+    // }
   }
   addShape(shape: Shape) {
     if (this.shapeMap.has(shape.id)) {
