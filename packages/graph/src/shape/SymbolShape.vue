@@ -23,7 +23,7 @@
       :height="shape.bounds.height "
       stroke="rgba(21,71, 146,0.5)"
       :stroke-width="style.strokeWidth"
-      fill="url(#blueDiagonalLines)"
+      fill="#fff"
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
       :stroke-dasharray="style.strokeDasharray || ''"

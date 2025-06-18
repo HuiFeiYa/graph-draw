@@ -6,14 +6,17 @@ import { shapeService } from "../../util/ShapeService";
 import { SideBarDropDto } from "../../types/shape.dto";
 import { SiderbarItemKey } from "@hfdraw/types";
 import { useProjectStore } from '../../stores/project';
+import { useUiStore } from '../../stores/ui';
 const props = defineProps();
 const active = ref("common");
 const projectStore = useProjectStore();
+const uiStore = useUiStore();
 
 const onMousedown = async (item: { modelId: any; }) => {
+  const nextPosition = uiStore.getNextDropPosition();
   const params:SideBarDropDto = {
     diagramId: '1',
-    point: {x: 100, y: 100},
+    point: nextPosition,
     projectId: projectStore.projectId,
     modelId: item.modelId
   }
