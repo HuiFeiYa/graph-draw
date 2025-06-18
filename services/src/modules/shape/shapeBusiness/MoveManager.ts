@@ -29,16 +29,18 @@ export class MoveManager {
             shape.bounds.absX += dto.dx;
             shape.bounds.absY += dto.dy;
             shape.boundsChanged = true;
-            
-            // 同步更新 nameBounds
+            const newBounds = shape.bounds;
             if (shape.nameBounds) {
-                shape.nameBounds.x += dto.dx;
-                shape.nameBounds.y += dto.dy;
-                shape.nameBounds.absX += dto.dx;
-                shape.nameBounds.absY += dto.dy;
+                shape.nameBounds = {
+                  absX: newBounds.absX + 10,
+                  absY: newBounds.absY + 10,
+                  width: Math.max(0, newBounds.width - 20),
+                  height: Math.max(0, newBounds.height - 20),
+                  x: newBounds.x + 10,
+                  y: newBounds.y + 10
+                };
                 shape.nameBoundsChanged = true;
-            }
-            
+              }
             updateShapeSet.add(shape);
         });
     }

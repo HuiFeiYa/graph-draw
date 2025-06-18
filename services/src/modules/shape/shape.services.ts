@@ -216,180 +216,165 @@ export class ShapeService  extends BaseService{
 
   // }
 
-  // async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
-  //   return await this.shapeRepository.manager.transaction(async manager => {
-  //     const { sourceShapeId, projectId, index, modelId: stType, sourceConnection, targetConnection } = dto;
-  //     const shape = await this.shapeRepository.findOne({
-  //       where: {
-  //         id: sourceShapeId
-  //       },
-  //       select: ['bounds', 'id']
-  //     })
-  //     if (!shape) {
-  //       throw new Error('未找到源图形')
-  //     }
-  //     /** 创建 target Shape */
-  //     const {shapePoint, targetPoint, sourcePoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
-  //     const options = {
-  //       projectId,
-  //       stType,
-  //       point: shapePoint
-  //     }
-  //     const sideBar = new SidebarModel(options);
-  //     await sideBar.run();
-  //     const targetShape = [...sideBar.createdShapes][0]
-  //     /** 创建线 */
-  //     const styleObj: StyleObject = {
-  //       sourceConnection,
-  //       targetConnection
-  //     }
-  //     const connectModel = new ConnectModel(projectId, StType['SysML::Association'], [sourcePoint,targetPoint],shape,targetShape, styleObj);
-  //     await connectModel.connectShape()
-  //     const toCreateShapes = [...sideBar.createdShapes, ...connectModel.createdShapes];
-  //     const res = await manager.save(ShapeEntity, toCreateShapes)
-  //     return res;
-  //   })
-  // }
-  // async clearShapes(dto: BaseProjectDto) {
-  //   const shapes = await this.shapeRepository.find({where: {projectId: dto.projectId}});
-  //   const updatePromises = shapes.map(async it => {
-  //     const partialEntity: Partial<ShapeEntity> = {isDelete: true};
-  //     const change = await this.updateEntity(it.projectId,this.shapeRepository.manager, ShapeEntity, it.id_, partialEntity)
-  //     return change;
-  //   });
-  //   const changes = await Promise.all(updatePromises);
-  //   return changes;
-  // }
+  async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
+    const { sourceShapeId, projectId, index, modelId: stType, sourceConnection, targetConnection } = dto;
+    const shape = await this.stepManager.shapeRep.findOne({
+      where: {
+        id: sourceShapeId
+      },
+      select: ['bounds', 'id']
+    })
+    if (!shape) {
+      throw new Error('未找到源图形')
+    }
+    /** 创建 target Shape */
+    const {shapePoint, targetPoint, sourcePoint} = shapeUtil.getTargetShapePoint(shape.bounds, stType, index)
+    const options = {
+      projectId,
+      stType,
+      point: shapePoint
+    }
+    const sideBar = new SidebarModel(options);
+    await sideBar.run();
+    const targetShape = [...sideBar.createdShapes][0]
+    /** 创建线 */
+    const styleObj: StyleObject = {
+      sourceConnection,
+      targetConnection
+    }
+    const connectModel = new ConnectModel(projectId, StType['SysML::Association'], [sourcePoint,targetPoint],shape,targetShape, styleObj);
+    await connectModel.connectShape()
+    const toCreateShapes = [...sideBar.createdShapes, ...connectModel.createdShapes];
+    const res = await this.addEntities(ShapeEntity, toCreateShapes)
+    return res;
+  }
+  async clearShapes(dto: BaseProjectDto) {
+    const shapes = await this.stepManager.shapeRep.find({where: {projectId: dto.projectId}});
+    const affectedShapes = shapes.map(shape => {
+      shape.isDelete = true;
+      shape.isDeleteChanged = true;
+      return shape;
+    });
+    await this.updateShapeChanges(affectedShapes);
+    return affectedShapes;
+  }
 
   // async createConnectEdge(dto: ConnectShapeAndCreateDto, waypoint: PointDto[]) {
   //   const { sourceShapeId, projectId, index, modelId: stType } = dto;
   // }
 
-  // async moveEdge(dto: MoveEdgeDto) {
-  //   const shape = await this.shapeRepository.findOne({where: {
-  //     id: dto.shapeId
-  //   }});
-  //   const partialEntity: Partial<ShapeEntity> = {
-  //     waypoint: dto.waypoint,
-  //     style: {
-  //       ...shape.style,
-  //       sourceConnection: dto.styleObject.sourceConnection,
-  //       targetConnection: dto.styleObject.targetConnection
-  //     }
-  //   }
-  //   const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)
+  async moveEdge(dto: MoveEdgeDto) {
+    const shape = await this.stepManager.shapeRep.findOne({where: {
+      id: dto.shapeId
+    }});
+    shape.waypoint = dto.waypoint;
+    shape.waypointChanged = true;
+    shape.style = {
+      ...shape.style,
+      sourceConnection: dto.styleObject.sourceConnection,
+      targetConnection: dto.styleObject.targetConnection
+    };
+    shape.styleChanged = true;
+    await this.updateShapeChanges([shape]);
+    return [shape];
+  }
 
-  //   return [change];
-  // }
-
-  // async updateShapeStyle(dto: UpdateStyleObj) {
-  //   const shape = await this.shapeRepository.findOne({
-  //     where: {
-  //       id: dto.shapeId,
-  //       projectId: dto.projectId
-  //     }
-  //   })
-  //   const partialEntity:Partial<ShapeEntity> = {
-  //     style: {
-  //       ...shape.style,
-  //       ...dto.styleObject
-  //     }
-  //   }
-  //   const change = await this.updateEntity(dto.projectId, this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity);
-  //   return [change];
-  // }
+  async updateShapeStyle(dto: UpdateStyleObj) {
+    const shape = await this.stepManager.shapeRep.findOne({
+      where: {
+        id: dto.shapeId,
+        projectId: dto.projectId
+      }
+    })
+    shape.style = {
+      ...shape.style,
+      ...dto.styleObject
+    };
+    shape.styleChanged = true;
+    await this.updateShapeChanges([shape]);
+    return [shape];
+  }
  
-  // async createMindMapRect(dto:CreateMindMapRectDto) {
-  //   return this.shapeRepository.manager.transaction(async manager => {
-  //     const { projectId, shapeId} = dto;
-  //     const { shapeMap } = await this.getShapeTree(projectId);
-  //     const sourceShape = shapeMap.get(shapeId);
-  //     const createShape = await MindMapManager.createShape(dto, shapeMap)
-  //     const changes = await this.addEntitys(manager, ShapeEntity, [createShape]);
-  //     shapeMap.set(createShape.id, createShape);
-  //     MindMapManager.addRetrospectOption(sourceShape, createShape.id);
-  //     const partialEntity = shapeUtil.pickChange(sourceShape);
-  //     const change = await this.updateEntity(dto.projectId, manager, ShapeEntity, sourceShape.id_, partialEntity);
-  //     changes.push(change);
-  //     const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
-  //     if (updateShapes.size > 0) {
-  //       const updatedShapesArray = Array.from(updateShapes);
-  //       const updates = await this.updateShapeChanges(updatedShapesArray);
-  //       changes.push(...updates);
-  //     }
-  //     return changes;
-  //   })
-  // }
-  // async updateMindMapRectChildrenPosition(dto: {shapeId: string; projectId:string}) {
-  //   const {projectId, shapeId} = dto;
-  //   const { shapeMap } = await this.getShapeTree(projectId);
-  //   const sourceShape = shapeMap.get(shapeId);
-  //   const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
-  //   const changes = await this.updateShapeChanges(updateShapes);
-  //   return changes;
-  // }
-  // async saveText(dto:SaveTextDto) {
-  //   return this.shapeRepository.manager.transaction(async manager => {
-  //     const { shapeId, text, projectId } = dto;
-  //     const shape = await manager.findOne(ShapeEntity, { where: { id: shapeId, projectId } });
-  //     shape.modelName = text;
-  //     shape.modelNameChanged = true;
-  //     const h = getTextSize(text,  shape.style.fontSize,shape.nameBounds.width).height;
-  //     // 自动更新 shape 的高度
-  //     if (Math.abs(h  -  shape.nameBounds.height)> 5) {
-  //       const diffH = h - shape.nameBounds.height;
-  //       shape.bounds.height +=diffH
-  //       shape.nameBounds.height = h;
-  //       shape.boundsChanged = true;
-  //       shape.nameBoundsChanged = true;
-  //     }
-  //     const changes = await this.updateShapeChanges([shape])
-  //     const updateChanges = await this.updateMindMapRectChildrenPosition({shapeId: shapeId, projectId})
-  //     return changes.concat(updateChanges);
-  //   })
-  // }
-  // async expandShape(dto:ExpandShapeDto) {
-  //   return this.shapeRepository.manager.transaction(async manager => {
-  //     const { shapeId, projectId, expand } = dto;
-  //     const shape = await manager.findOne(ShapeEntity, { where: { id: shapeId, projectId } });
-  //     if (!shape) {
-  //       throw new Error('展开图形不存在')
-  //     }
-  //     const shapeMap = (await this.getShapeTree(projectId, {})).shapeMap;
-  //     shape.style.retrospectOption.expand = dto.expand;
-  //     shape.styleChanged = true;
-  //     const toUpdateShapeSet = new Set([shape]);
-  //     // 更新子节点的展示状态
-  //     this.updateShapeExpand(shape, toUpdateShapeSet, shapeMap, expand);
-  //     const changes = await this.updateShapeChanges(toUpdateShapeSet)
-  //     return changes;
-  //   })
-  // }
+  async createMindMapRect(dto:CreateMindMapRectDto) {
+    const { projectId, shapeId} = dto;
+    const { shapeMap } = await this.getShapeTree(projectId);
+    const sourceShape = shapeMap.get(shapeId);
+    const createShape = await MindMapManager.createShape(dto, shapeMap)
+    await this.addEntities(ShapeEntity, [createShape]);
+    shapeMap.set(createShape.id, createShape);
+    MindMapManager.addRetrospectOption(sourceShape, createShape.id);
+    const affectedShapes = new Set<ShapeEntity>([sourceShape]);
+    const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
+    if (updateShapes.size > 0) {
+      updateShapes.forEach(shape => affectedShapes.add(shape));
+    }
+    await this.updateShapeChanges(affectedShapes);
+    return Array.from(affectedShapes);
+  }
+  async updateMindMapRectChildrenPosition(dto: {shapeId: string; projectId:string}) {
+    const {projectId, shapeId} = dto;
+    const { shapeMap } = await this.getShapeTree(projectId);
+    const sourceShape = shapeMap.get(shapeId);
+    const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
+    await this.updateShapeChanges(updateShapes);
+    return Array.from(updateShapes);
+  }
+  async saveText(dto:SaveTextDto) {
+    const { shapeId, text, projectId } = dto;
+    const PADDING = 10;
+    const shape = await this.stepManager.shapeRep.findOne({ where: { id: shapeId, projectId } });
+    shape.modelName = text;
+    shape.modelNameChanged = true;
+    const h = getTextSize(text,  shape.style.fontSize,shape.nameBounds.width).height;
+    // 自动更新 shape 的高度
+    if (Math.abs(h  -  shape.nameBounds.height)> 5) {
+      const diffH = h - shape.nameBounds.height;
+      shape.bounds.height +=(diffH + PADDING)
+      shape.nameBounds.height = h;
+      shape.boundsChanged = true;
+      shape.nameBoundsChanged = true;
+    }
+    await this.updateShapeChanges([shape])
+   
+  }
+  async expandShape(dto:ExpandShapeDto) {
+    const { shapeId, projectId, expand } = dto;
+    const shape = await this.stepManager.shapeRep.findOne({ where: { id: shapeId, projectId } });
+    if (!shape) {
+      throw new Error('展开图形不存在')
+    }
+    const shapeMap = (await this.getShapeTree(projectId, {})).shapeMap;
+    shape.style.retrospectOption.expand = dto.expand;
+    shape.styleChanged = true;
+    const toUpdateShapeSet = new Set([shape]);
+    // 更新子节点的展示状态
+    this.updateShapeExpand(shape, toUpdateShapeSet, shapeMap, expand);
+    await this.updateShapeChanges(toUpdateShapeSet)
+    return Array.from(toUpdateShapeSet);
+  }
 
-  // async updateShapeExpand(shape: ShapeEntity, toUpdateShapeSet: Set<ShapeEntity>, shapeMap:Map<string, ShapeEntity>, expand:boolean) {   
-  //   shape.style.retrospectOption.relationTypes.forEach(item =>{
-  //     const childShape = shapeMap.get(item.shapeId);
-  //     /** 删除或者显示子节点 */
-  //     childShape.isDelete = !expand;
-  //     childShape.isDeleteChanged = true;
-  //     toUpdateShapeSet.add(childShape)
-  //     if (childShape.style.retrospectOption.relationTypes) {
-  //       this.updateShapeExpand(childShape, toUpdateShapeSet, shapeMap, expand)
-  //     }
-  //   }) 
-  // }
-  // async updateShapeBounds(dto: UpdateShapeBoundsDto) {
-  //   return this.shapeRepository.manager.transaction(async manager => {
-  //     const shape = await manager.findOne(ShapeEntity, { where: { id: dto.shapeId, projectId: dto.projectId } });
-  //     if (!shape) {
-  //       throw new Error('未找到对应的图形')
-  //     }
-  //     shape.bounds = dto.bounds;
-  //     shape.boundsChanged = true;
-  //     const changes = await this.updateShapeChanges([shape]);
-  //     return changes;
-  //   })
-  // }
+  async updateShapeExpand(shape: ShapeEntity, toUpdateShapeSet: Set<ShapeEntity>, shapeMap:Map<string, ShapeEntity>, expand:boolean) {   
+    shape.style.retrospectOption.relationTypes.forEach(item =>{
+      const childShape = shapeMap.get(item.shapeId);
+      /** 删除或者显示子节点 */
+      childShape.isDelete = !expand;
+      childShape.isDeleteChanged = true;
+      toUpdateShapeSet.add(childShape)
+      if (childShape.style.retrospectOption.relationTypes) {
+        this.updateShapeExpand(childShape, toUpdateShapeSet, shapeMap, expand)
+      }
+    }) 
+  }
+  async updateShapeBounds(dto: UpdateShapeBoundsDto) {
+    const shape = await this.stepManager.shapeRep.findOne({ where: { id: dto.shapeId, projectId: dto.projectId } });
+    if (!shape) {
+      throw new Error('未找到对应的图形')
+    }
+    shape.bounds = dto.bounds;
+    shape.boundsChanged = true;
+    await this.updateShapeChanges([shape]);
+    return [shape];
+  }
 
   async test() {
     // return this.currentStepService.findStep();

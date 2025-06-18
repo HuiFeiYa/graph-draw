@@ -12,13 +12,13 @@ const emit = defineEmits<{
 }>();
 const textWidth = ref(0);
 const textHeight = ref(0);
-const textarea = ref<HTMLInputElement|null>(null);
+const textarea = ref<any>(null);
 const rectBounding = ref({ clientX: 0, clientY: 0 });
 onMounted(() => {
   if (textarea.value) {
     textarea.value.focus();
     props.editorModel.textareaRef = textarea.value;
-    const rect = textarea.value.getBoundingClientRect();
+    const rect = textarea.value.$el.getBoundingClientRect();
     rectBounding.value = {
       clientX: rect.x,
       clientY: rect.y
@@ -35,11 +35,10 @@ const previewBounds = computed(() => {
   } : {};
 });
 
-function handleInput(event:Event) {
-  let text = (event.target as HTMLInputElement).value;
-  emit('input', text, rectBounding.value, props.editorModel.editingShape);
-  const height = getTextSize(text, props.editorModel.style.fontSize || 12, props.editorModel.editingShape?.nameBounds.width || 100 ).height;
-  textHeight.value = height ;
+function handleInput(value: string) {
+  emit('input', value, rectBounding.value, props.editorModel.editingShape);
+  const height = getTextSize(value, props.editorModel.style.fontSize || 12, props.editorModel.editingShape?.nameBounds.width || 100 ).height;
+  textHeight.value = height;
 }
 
 function handleSave() {
@@ -55,17 +54,17 @@ function handleSave() {
       :y="previewBounds.absY"
 
     >
-      <textarea
+      <el-input
         ref="textarea"
-        :value="editorModel.text"
+        v-model="editorModel.text"
+        type="textarea"
+        :autosize="{ minRows: 2 }"
+        placeholder="请输入内容"
         class="v-label-Editor"
-        style="width:100%;height:100%;background: transparent;word-break: break-all;"
-        :spellcheck="false"
         :style="{
-          fontSize:editorModel.style.fontSize+'px',
-          fontWeight:editorModel.style.fontWeight,
-          background:editorModel.style.background,
-          lineHeight: 1.5,
+          background: editorModel.style.background,
+          fontSize: '14px',
+          fontFamily: 'inherit'
         }"
         @input="handleInput"
         @blur="handleSave"
@@ -75,21 +74,29 @@ function handleSave() {
 </template>
 <style scoped lang="scss">
 .v-label-Editor {
-  position: absolute;
-  pointer-events: all;
-  border: none;
-  outline: none;
-  display: block;
-  resize: none;
-  font-family: pingfang SC, helvetica neue, arial, hiragino sans gb, microsoft yahei ui,
-   microsoft yahei, simsun, sans-serif, PingFangSC-Medium, -apple-system,
-   BlinkMacSystemFont, segoe ui, Roboto, Arial, noto sans,
-   apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
-  &:focus-visible {
-      outline: none;
-
+  width: 100%;
+  
+  :deep(.el-textarea) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
   }
-  overflow: hidden;
-
+  
+  :deep(.el-textarea__inner) {
+    border: none;
+    outline: none;
+    resize: none;
+    line-height: normal;
+    height:100%;
+    border: 1px solid red;
+    box-shadow: none;
+    &:focus {
+      border: none;
+      outline: none;
+      box-shadow: none;
+      height:100%;
+      border: 1px solid red;
+    }
+  }
 }
 </style>

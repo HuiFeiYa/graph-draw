@@ -29,15 +29,35 @@
       :stroke-dasharray="style.strokeDasharray || ''"
        v-on="eventHandler"
     >
-    <foreignObject
+  </rect>
+  <foreignObject
       :width="shape.bounds.width"
       :height="shape.bounds.height"
       :x="shape.bounds.absX"
       :y="shape.bounds.absY"
-      style="overflow:visible"
+      style="overflow:visible;pointer-events: none;line-height: 'normal';"
      
-    ></foreignObject>
-  </rect>
+    >
+    <div 
+      :value="shape.modelName" 
+      class="v-label" 
+      readonly  
+      :editable="false"  
+      :style="{
+        top: shape.nameBounds.y + 'px', 
+        left: shape.nameBounds.x +'px',
+        width: (shape.bounds.width - 20) + 'px',
+        fontSize: '14px',
+        fontFamily: 'inherit',
+        lineHeight: 'normal',
+        padding: '0',
+        margin: '0',
+      }" 
+      v-if="shape.modelName"
+    >
+      {{ shape.modelName }}
+    </div>
+  </foreignObject>
 </g>
 </template>
 <script lang="ts" setup>
@@ -98,5 +118,23 @@ const style = computed(() => {
 
 .show-underline {
   text-decoration: underline;
+}
+
+.v-label {
+  position: absolute;
+  pointer-events: all;
+  border: none;
+  outline: none;
+  display: block;
+  resize: none;
+  pointer-events: none;
+  font-size: 14px;
+  height: 100%;
+  &:focus-visible {
+      outline: none;
+
+  }
+  overflow: hidden;
+
 }
 </style>

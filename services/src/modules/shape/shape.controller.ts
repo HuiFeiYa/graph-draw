@@ -150,9 +150,5 @@ export class ShapeController {
     });
   }
 
-  @Get('test')
-  async test() {
-    return this.shapeService.test();
-  }
   
 }

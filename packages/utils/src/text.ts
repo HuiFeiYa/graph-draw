@@ -5,11 +5,11 @@ import { charWidthConfig } from "./constant";
  * @param {string} text - 需要计算高度的文本内容
  * @param {number} containerWidth - 容器的宽度（单位：px）
  * @param {number} [charWidth=8] - 单个字符的估计宽度（单位：px，默认值为8）
- * @param {number} [fontSize=12] - 字体大小（单位：px，默认值为12）
+ * @param {number} [fontSize=14] - 字体大小（单位：px，默认值为14）
  * @param {number} [lineHeight=1.5] - 行高（倍数，默认值为1.5）
  * @returns {number} - 计算出的文本高度（单位：px）
  */
-export function calculateTextHeight(text:string, containerWidth:number, fontSize = 12,charWidth=12,  lineHeight = 1.5) {
+export function calculateTextHeight(text:string, containerWidth:number, fontSize = 14,charWidth=14,  lineHeight = 1.5) {
     // 计算每行能容纳的字符数
     const charsPerLine = Math.floor(containerWidth / charWidth);
 
@@ -36,7 +36,7 @@ export function calculateTextHeight(text:string, containerWidth:number, fontSize
     if (str === null || str === undefined) {
       return width;
     }
-    const scale = (fontSize / 12);
+    const scale = (fontSize / 14);
     const oneFontSize = fontSize * 1000;
     for (let i = 0; i < str.length; i++) {
       char = str.charAt(i);
@@ -101,7 +101,7 @@ export function getWrapTextWidths(str: string, fontSize: number, limitWidth:numb
   if (str === null || str === undefined) {
     return widths;
   }
-  const scale = (fontSize / 12);
+  const scale = (fontSize / 14);
   const oneFontSize = fontSize * 1000;
 
   for (let i = 0; i < str.length; i++) {
