@@ -105,6 +105,19 @@ export class ShapeService  extends BaseService{
     const oldBounds = clone(shape.bounds);
     shape.bounds = { ...resizeDto.bounds };
     const newBounds = resizeDto.bounds;
+    
+    // 同步更新nameBounds，保持10px的边距
+    if (shape.nameBounds) {
+      shape.nameBounds = {
+        absX: newBounds.absX + 10,
+        absY: newBounds.absY + 10,
+        width: Math.max(0, newBounds.width - 20),
+        height: Math.max(0, newBounds.height - 20),
+        x: newBounds.x + 10,
+        y: newBounds.y + 10
+      };
+      shape.nameBoundsChanged = true;
+    }
     let affectedShapes = new Set<ShapeEntity>();
     const dx = newBounds.absX - oldBounds.absX; // 新的x坐标比旧的x坐标大多少
     const dy = newBounds.absY - oldBounds.absY;
@@ -130,8 +143,11 @@ export class ShapeService  extends BaseService{
     return minBoundsUtil.getMinBounds(shapeMap.get(minimumBounds.shapeId), minimumBounds.vertexType);
   }
     /**
+     * 更新重要的方法
    * 更新所有变化的属性到数据库里
    * @param affectedShapes
+   * 不需要手动去生成 changes 了，只需要调用对应的 updateShapeChanges ，
+   * 传入对应的  affectedShapes，并在上面标记了 ShapeUtil.ts 97-116 就会自动生成 changes
    * @returns
    */
     async updateShapeChanges(affectedShapes: ShapeEntity[] | Set<ShapeEntity>) {

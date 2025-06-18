@@ -48,11 +48,11 @@ export class ShapeController {
   }
   @Post('move')
   async moveShape(@Body() dto: MoveShapeDto) {
-    transaction({
+    return transaction({
       projectId: dto.projectId,
     }, async (stepManager) => {
-       await stepManager.shapeService.moveShape(dto);
-       return new ResData(null);
+       const result = await stepManager.shapeService.moveShape(dto);
+       return new ResData(result);
     });
   }
 
@@ -73,138 +73,86 @@ export class ShapeController {
       return new ResData(data);
     });
   }
-//   @Post('connectShapeAndCreate')
-//   async connectShapeAndCreate(
-//     @Body() connectShapeAndCreateDto: ConnectShapeAndCreateDto,
-//   ) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, connectShapeAndCreateDto, async (stepManager) => {
-//       const res = await stepManager.shapeService.connectShapeAndCreate(connectShapeAndCreateDto);
-//       return res.map((item) => {
-//         return {
-//           type: ChangeType.INSERT,
-//           newValue: JSON.stringify(item),
-//           projectId: connectShapeAndCreateDto.projectId,
-//           shapeId: item.id_,
-//         };
-//       });
-//     });
-//     return handle();
-//   }
-//   @Post('moveEdge') 
-//   async moveEdge(@Body() dto: MoveEdgeDto) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       return await stepManager.shapeService.moveEdge(dto);
-//     });
-//     return handle();
-//   }
-//   @Post('updateShapeStyle')
-//   async updateShapeStyle(@Body() dto:UpdateStyleObj) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       return await stepManager.shapeService.updateShapeStyle(dto);
-//     });
-//     return handle();
-//   }
+  @Post('connectShapeAndCreate')
+  async connectShapeAndCreate(
+    @Body() connectShapeAndCreateDto: ConnectShapeAndCreateDto,
+  ) {
+    return transaction({
+      projectId: connectShapeAndCreateDto.projectId,
+    }, async (stepManager) => {
+      const res = await stepManager.shapeService.connectShapeAndCreate(connectShapeAndCreateDto);
+      return new ResData(res);
+    });
+  }
+  @Post('moveEdge') 
+  async moveEdge(@Body() dto: MoveEdgeDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.moveEdge(dto);
+      return new ResData(result);
+    });
+  }
+  @Post('updateShapeStyle')
+  async updateShapeStyle(@Body() dto:UpdateStyleObj) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.updateShapeStyle(dto);
+      return new ResData(result);
+    });
+  }
  
  
-//   @Post('clear')
-//   async clearProject(@Body() dto: BaseProjectDto) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       return await stepManager.shapeService.clearShapes(dto);
-//     });
-//     return handle();
-//   }
-//   @Post('createMindMapRect')
-//   async createMindMapRect(@Body() dto:CreateMindMapRectDto) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       const changes = await stepManager.shapeService.createMindMapRect(dto);
-//       return changes;
-//     })
-//     return handle();
-//   }
-//   @Post('saveText')
-//   async saveText(@Body() dto:SaveTextDto) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       const changes = await stepManager.shapeService.saveText(dto);
-//       return changes;
-//     });
-//     return handle();
-//   }
-//   @Post('expandShape')
-//   async expandShape(@Body() dto:ExpandShapeDto) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       const changes = await stepManager.shapeService.expandShape(dto);
-//       return changes;
-//     });
-//     return handle();
-//   }
-//   @Post('updateShapeBounds')
-//   async updateShapeBounds(@Body() dto: UpdateShapeBoundsDto) {
-//     const handle = transaction({
-//       shapeService: this.shapeService,
-//       wsService: this.wsService,
-//       stepService: this.stepService
-//     }, dto, async (stepManager) => {
-//       return await stepManager.shapeService.updateShapeBounds(dto);
-//     });
-//     return handle();
-//   }
+  @Post('clear')
+  async clearProject(@Body() dto: BaseProjectDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.clearShapes(dto);
+      return new ResData(result);
+    });
+  }
+  @Post('createMindMapRect')
+  async createMindMapRect(@Body() dto:CreateMindMapRectDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.createMindMapRect(dto);
+      return new ResData(result);
+    });
+  }
+  @Post('saveText')
+  async saveText(@Body() dto:SaveTextDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.saveText(dto);
+      return new ResData(result);
+    });
+  }
+  @Post('expandShape')
+  async expandShape(@Body() dto:ExpandShapeDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.expandShape(dto);
+      return new ResData(result);
+    });
+  }
+  @Post('updateShapeBounds')
+  async updateShapeBounds(@Body() dto: UpdateShapeBoundsDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.updateShapeBounds(dto);
+      return new ResData(result);
+    });
+  }
 
-//   @Get('test')
-//   async test() {
-//     return this.shapeService.test();
-//   }
+  @Get('test')
+  async test() {
+    return this.shapeService.test();
+  }
   
-// }
-// interface ControllerInstance { shapeService: ShapeService; wsService: WsService; stepService: StepService };
-// function transaction<T>(
-//   controllerInstance: ControllerInstance, 
-//   projectParams: { projectId: string }, 
-//   callback: (stepManager: ControllerInstance) => Promise<Change[]>
-// ): () => Promise<ResData<T>> {
-//   return async () => {
-//     const stepManager = {
-//       shapeService: controllerInstance.shapeService,
-//       wsService: controllerInstance.wsService,
-//       stepService: controllerInstance.stepService
-//     };
-//     const changes = await callback(stepManager);
-//     await stepManager.stepService.initStep({ projectId: projectParams.projectId, changes });
-//     await stepManager.wsService.sendToSubscribedClient(projectParams.projectId, {
-//       type: WsMessageType.step,
-//       data: {
-//         projectId: projectParams.projectId,
-//         changes,
-//         stepType: StepType.edit
-//       }
-//     });
-//     return new ResData(null);
-//   };
 }

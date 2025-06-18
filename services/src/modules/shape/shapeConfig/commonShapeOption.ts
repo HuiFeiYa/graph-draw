@@ -6,10 +6,11 @@ export const baseShapeOption:Partial<ShapeOption> = {
     subShapeType: SubShapeType.Block,
     shapeKey: undefined,
     style: {
-        background: 'linear-gradient(to right,#DDCD9E,#FDF7DF)',
+        background: '#fff',
         strokeColor: "#ad9d85"
     },
     bounds: { absX: 0, absY: 0, width: 100, height: 80, x: 0, y: 0 },
+    nameBounds: { absX: 10, absY: 10, width: 80, height: 60, x: 10, y: 10 },
 }
 
 
@@ -20,11 +21,12 @@ export const blockOption:Partial<ShapeOption> = {
     shapeKey: ShapeKey.Block,
     style: {
       ...baseShapeOption.style,
-      background: 'linear-gradient(to right,#DDCD9E,#FDF7DF)',
+      background: '#fff',
       strokeColor: "#ad9d85",
       strokeWidth: 1
     },
     bounds: { absX: 0, absY: 0, width: 100, height: 50, x: 0, y: 0 },
+    nameBounds: { absX: 10, absY: 10, width: 80, height: 30, x: 10, y: 10 },
   };
 
   export const edgeOption: Partial<ShapeOption> = {
@@ -70,7 +72,7 @@ export const blockOption:Partial<ShapeOption> = {
     subShapeType: SubShapeType.MindMap,
     bounds: { absX: 0, absY: 0, width: 150, height: 50, x: 0, y: 0 },
     nameBounds: {
-      absX: 0, absY: 0, width: 130, height: 30, x: 10, y: 10
+      absX: 10, absY: 10, width: 130, height: 30, x: 10, y: 10
     },
   }
 

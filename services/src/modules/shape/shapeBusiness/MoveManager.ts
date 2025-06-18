@@ -29,6 +29,16 @@ export class MoveManager {
             shape.bounds.absX += dto.dx;
             shape.bounds.absY += dto.dy;
             shape.boundsChanged = true;
+            
+            // 同步更新 nameBounds
+            if (shape.nameBounds) {
+                shape.nameBounds.x += dto.dx;
+                shape.nameBounds.y += dto.dy;
+                shape.nameBounds.absX += dto.dx;
+                shape.nameBounds.absY += dto.dy;
+                shape.nameBoundsChanged = true;
+            }
+            
             updateShapeSet.add(shape);
         });
     }
