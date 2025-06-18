@@ -19,7 +19,6 @@ const viewDom = ref(null);
 const isDragging = ref(false);
 const startPos = ref({ x: 0, y: 0 });
 const transform = ref({ x: 0, y: 0 });
-const scale = ref(1);
 
 // 获取 DOM 元素
 const rootGroup = ref(null);
@@ -105,12 +104,7 @@ function handleMousemoveSvg(event:MouseEvent) {
 
 function handleWheel(event:WheelEvent) {
   if (!svgElement.value) return;
-  event.preventDefault();
-
-  const CTM = svgElement.value.getScreenCTM();
-  if (!CTM) return ;
-  const delta = event.deltaY < 0 ? 1.02 : 0.98;
-  scale.value *= delta;
+  props.graph.graphOption.handleWheel(event);
 }
 
 function handleVertexMousedown(event: MouseEvent, index: VertexType) {
@@ -151,7 +145,7 @@ onUnmounted(() => {
         @wheel="handleWheel">
       <Grid />
       <g ref="rootGroup"
-      :transform="`matrix(${scale}, 0, 0, ${scale}, ${transform.x}, ${transform.y})`">
+      :transform="`matrix(${props.graph.graphOption.scale}, 0, 0, ${props.graph.graphOption.scale}, ${transform.x}, ${transform.y})`">
         <DiagramShape v-bind="props" />
       </g>
     </svg>
@@ -160,13 +154,13 @@ onUnmounted(() => {
       style="min-width: 100%; min-height: 100%;position: absolute; top: 12px; left: 12px; pointer-events: none;shape-rendering: geometricPrecision;"
       @click="handleClickOut" @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
-      <g :transform="`matrix(${scale}, 0, 0, ${scale}, ${transform.x}, ${transform.y})`">
+      <g :transform="`matrix(${props.graph.graphOption.scale}, 0, 0, ${props.graph.graphOption.scale}, ${transform.x}, ${transform.y})`">
         <!-- 拉伸图形预览 -->
         <shape-resize-preview v-if="graph.resizeModel.showResizePreview" :bounds="graph.resizeModel.previewBounds" :color="graph.resizeModel.resizeShape?.style.strokeColor||'black'" /> 
          <!-- 图形拉伸控制点 -->
         <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" @vertex-mousedown="handleVertexMousedown"/>
         <!-- 悬浮箭头 -->
-        <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
+        <!-- <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" /> -->
         <!-- 图形移动预览 -->
         <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
         <!-- 线移动预览 -->

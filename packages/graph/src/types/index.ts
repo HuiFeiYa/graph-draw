@@ -12,6 +12,7 @@ export interface GraphProps {
 
 export interface IGraphOption {
   graph: GraphModel; // 执行对应 graphModel 实例
+  scale: number; // 缩放比例
   customEndMove(moveModel: MoveModel, dx: number, dy: number): Promise<any>;
   showPopover(index: VertexType, shape: Shape): void;
   EdgePointEndMove(
@@ -30,7 +31,12 @@ export interface IGraphOption {
     vertexType: VertexType,
     newBounds: IBounds
   ) => Promise<any>;
-  getMinimumBounds?: (shape: Shape, resizeIndex: VertexType) => Promise<ResData<IBounds>>
+  getMinimumBounds?: (shape: Shape, resizeIndex: VertexType) => Promise<ResData<IBounds>>;
+  // 缩放相关方法
+  setScale(newScale: number): void;
+  zoomIn(): void;
+  zoomOut(): void;
+  handleWheel(event: WheelEvent): void;
 }
 
 export enum MovePointPosition {

@@ -1,7 +1,15 @@
 <template>
-  <div style="display: flex; height: 100%">
-    <Siderbar />
-    <GraphView v-bind="graphData" style="flex: 1"></GraphView>
+  <div style="display: flex; flex-direction: column; height: 100%">
+    <div style="display: flex; flex: 1">
+      <Siderbar />
+      <GraphView v-bind="graphData" style="flex: 1"></GraphView>
+    </div>
+    <Footer 
+      :scale="graphData.graph.graphOption.scale" 
+      @zoom-in="handleZoomIn" 
+      @zoom-out="handleZoomOut" 
+      @scale-change="handleScaleChange"
+    />
   </div>
 </template>
 
@@ -10,6 +18,7 @@ import { onMounted, reactive, ref } from "vue";
 import { GraphView, GraphModel } from "@hfdraw/graph";
 import { Change, Shape, StyleObject, SubShapeType } from "@hfdraw/types";
 import Siderbar from "../editor/components/SiderBar.vue";
+import Footer from "../components/Footer.vue";
 import { BusEvent } from "../constants/config";
 import { useEvents } from "../util/useEvents";
 import { shapeService } from "../util/ShapeService";
@@ -131,6 +140,19 @@ async function fretchData() {
     }
   })
 }
+// 缩放控制函数
+function handleZoomIn() {
+  graphData.graph.graphOption.zoomIn();
+}
+
+function handleZoomOut() {
+  graphData.graph.graphOption.zoomOut();
+}
+
+function handleScaleChange(scale: number) {
+  graphData.graph.graphOption.setScale(scale);
+}
+
 // 监听事件
 useEvents(events)
 

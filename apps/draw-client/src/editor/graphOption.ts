@@ -11,6 +11,8 @@ import { Point } from "@hfdraw/graph/src/util/Point";
 export class GraphOption implements IGraphOption {
   // 在构造函数中获取 store 实例
   graph!: GraphModel;
+  scale: number = 1;
+  
   constructor(public projectId: string) {
 
   }
@@ -87,5 +89,24 @@ export class GraphOption implements IGraphOption {
   }
   getMinimumBounds(shape: Shape, vtxIndex: VertexType) {
     return shapeService.getResizeMinimumBounds(this.projectId,  shape.id, vtxIndex);
+  }
+
+  // 缩放相关方法
+  setScale(newScale: number) {
+    this.scale = Math.max(0.1, Math.min(5, newScale)); // 限制缩放范围在0.1到5之间
+  }
+
+  zoomIn() {
+    this.setScale(this.scale * 1.1);
+  }
+
+  zoomOut() {
+    this.setScale(this.scale / 1.1);
+  }
+
+  handleWheel(event: WheelEvent) {
+    event.preventDefault();
+    const delta = event.deltaY < 0 ? 1.02 : 0.98;
+    this.setScale(this.scale * delta);
   }
 }
