@@ -35,25 +35,26 @@
       :height="shape.bounds.height"
       :x="shape.bounds.absX"
       :y="shape.bounds.absY"
-      style="overflow:visible;pointer-events: none;line-height: 'normal';"
-     
+      style="overflow: visible;"
     >
     <div 
-      :value="shape.modelName" 
+      ref="labelRef"
       class="v-label" 
-      readonly  
-      :editable="false"  
       :style="{
-        top: shape.nameBounds.y + 'px', 
-        left: shape.nameBounds.x +'px',
-        width: (shape.bounds.width - 20) + 'px',
+        width: shape.nameBounds.width + 'px',
+        height: shape.nameBounds.height + 'px', 
+        left: shape.nameBounds.x + 'px',
+        top: shape.nameBounds.y + 'px',
         fontSize: '14px',
         fontFamily: 'inherit',
         lineHeight: 'normal',
+        pointerEvents: 'all',
         padding: '0',
         margin: '0',
       }" 
-      v-if="shape.modelName"
+      @dblclick="startEdit"
+      @blur="endEdit"
+      @keydown.enter="endEdit"
     >
       {{ shape.modelName }}
     </div>
@@ -62,7 +63,7 @@
 </template>
 <script lang="ts" setup>
 import { Shape } from '@hfdraw/types';
-import { computed, inject } from 'vue';
+import { computed, inject, ref, nextTick } from 'vue';
 import { createEventHandler } from '../util/createEventHandler';
 import { GraphModel } from '../models/GraphModel';
 const props = defineProps<{
@@ -70,6 +71,34 @@ const props = defineProps<{
 }>();
 const graph = inject<GraphModel>('graph') as GraphModel ;
 const eventHandler = createEventHandler(graph,props);
+const labelRef = ref<HTMLDivElement>();
+
+const startEdit = () => {
+  if (labelRef.value) {
+    labelRef.value.contentEditable = 'true';
+    nextTick(() =>{
+      if (!labelRef.value) {
+        return;
+      }
+      labelRef.value.focus();
+      // 选中所有文案
+      const range = document.createRange();
+      range.selectNodeContents(labelRef.value);
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    })
+  }
+};
+
+const endEdit = () => {
+  if (labelRef.value) {
+    labelRef.value.contentEditable = 'false';
+    // 这里可以添加保存逻辑，更新shape.modelName
+    // props.shape.modelName = labelRef.value.textContent || '';
+  }
+};
+
 const style = computed(() => {
   const shape = props.shape;
 
@@ -134,7 +163,7 @@ const style = computed(() => {
       outline: none;
 
   }
-  overflow: hidden;
+  overflow: visible;
 
 }
 </style>
