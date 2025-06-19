@@ -7,10 +7,11 @@ export const baseShapeOption:Partial<ShapeOption> = {
     shapeKey: undefined,
     style: {
         background: '#fff',
-        strokeColor: "#ad9d85"
+        strokeColor: "#ad9d85",
+        fontSize: 14
     },
     bounds: { absX: 0, absY: 0, width: 100, height: 80, x: 0, y: 0 },
-    nameBounds: { absX: 10, absY: 10, width: 80, height: 60, x: 10, y: 10 },
+    nameBounds: { absX: 10, absY: 10, width: 80, height: 60, x: 10, y: 5 },
 }
 
 
@@ -26,7 +27,7 @@ export const blockOption:Partial<ShapeOption> = {
       strokeWidth: 1
     },
     bounds: { absX: 0, absY: 0, width: 100, height: 50, x: 0, y: 0 },
-    nameBounds: { absX: 10, absY: 10, width: 80, height: 30, x: 10, y: 10 },
+    nameBounds: { absX: 10, absY: 10, width: 80, height: 30, x: 10, y: 5 },
   };
 
   export const edgeOption: Partial<ShapeOption> = {
@@ -72,7 +73,7 @@ export const blockOption:Partial<ShapeOption> = {
     subShapeType: SubShapeType.MindMap,
     bounds: { absX: 0, absY: 0, width: 150, height: 50, x: 0, y: 0 },
     nameBounds: {
-      absX: 10, absY: 10, width: 130, height: 30, x: 10, y: 10
+      absX: 10, absY: 10, width: 130, height: 30, x: 10, y: 5
     },
   }
 

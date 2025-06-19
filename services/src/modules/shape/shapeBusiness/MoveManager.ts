@@ -32,12 +32,9 @@ export class MoveManager {
             const newBounds = shape.bounds;
             if (shape.nameBounds) {
                 shape.nameBounds = {
-                  absX: newBounds.absX + 10,
-                  absY: newBounds.absY + 10,
-                  width: Math.max(0, newBounds.width - 20),
-                  height: Math.max(0, newBounds.height - 20),
-                  x: newBounds.x + 10,
-                  y: newBounds.y + 10
+                  absX: newBounds.absX + shape.nameBounds.x,
+                  absY: newBounds.absY + shape.nameBounds.y,
+                  ...shape.nameBounds
                 };
                 shape.nameBoundsChanged = true;
               }

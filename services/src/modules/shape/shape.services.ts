@@ -104,12 +104,11 @@ export class ShapeService  extends BaseService{
     // 同步更新nameBounds，保持10px的边距
     if (shape.nameBounds) {
       shape.nameBounds = {
-        absX: newBounds.absX + 10,
-        absY: newBounds.absY + 10,
+        ...shape.nameBounds,
+        absX: newBounds.absX + shape.nameBounds.x,
+        absY: newBounds.absY + shape.nameBounds.y,
         width: Math.max(0, newBounds.width - 20),
         height: Math.max(0, newBounds.height - 20),
-        x: newBounds.x + 10,
-        y: newBounds.y + 10
       };
       shape.nameBoundsChanged = true;
     }
@@ -268,19 +267,16 @@ export class ShapeService  extends BaseService{
   }
   async saveText(dto:SaveTextDto) {
     const { shapeId, text, projectId } = dto;
-    const PADDING = 10;
+    const PADDING = 5;
     const shape = await this.stepManager.shapeRep.findOne({ where: { id: shapeId, projectId } });
     shape.modelName = text;
     shape.modelNameChanged = true;
     const h = getTextSize(text,  shape.style.fontSize,shape.nameBounds.width).height;
-    // 自动更新 shape 的高度
-    if (Math.abs(h  -  shape.nameBounds.height)> 5) {
-      const diffH = h - shape.nameBounds.height;
-      shape.bounds.height +=(diffH + PADDING)
-      shape.nameBounds.height = h;
-      shape.boundsChanged = true;
-      shape.nameBoundsChanged = true;
-    }
+    const ceilH = Math.ceil(h);
+    shape.bounds.height =  ceilH + PADDING * 2;
+    shape.nameBounds.height = ceilH;
+    shape.boundsChanged = true;
+    shape.nameBoundsChanged = true;
     await this.updateShapeChanges([shape])
    
   }

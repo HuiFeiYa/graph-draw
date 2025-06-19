@@ -55,7 +55,7 @@ export function calculateTextHeight(text:string, containerWidth:number, fontSize
   
   export function getTextSize(text:string, fontSize:number = 14, limitWidth?:number) {
     const strs = text.split('\n');
-    const lineHeight = 1.2;
+    const lineHeight = 1.5;
     const oneLineHeight = fontSize * lineHeight;
     let height = 0;
     let width = 0;

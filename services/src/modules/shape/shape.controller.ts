@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { ShapeService } from './shape.services';
 import { ResData } from 'src/utils/http/ResData';
 import {
   FetchAllShapeDto,
@@ -16,10 +15,6 @@ import {
   ShapeResizeDto,
   GetMinimumBoundsDto,
 } from 'src/types/shape.dto';
-import { WsService } from '../socket/WsService';
-import { WsMessageType } from 'src/types/common';
-import { Change, ChangeType, StepType } from '@hfdraw/types';
-import { StepService } from '../step/stepService';
 import { transaction } from 'src/utils/transaction';
 
 @Controller('shape')

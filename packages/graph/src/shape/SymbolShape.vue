@@ -49,10 +49,12 @@
         top: shape.nameBounds.y + 'px',
         fontSize: '14px',
         fontFamily: 'inherit',
-        lineHeight: 'normal',
         pointerEvents: 'all',
         padding: '0',
         margin: '0',
+        display: 'flex',
+        alignItems: 'center',
+        lineHeight: 1.5
       }" 
      
       @blur="endEdit"
