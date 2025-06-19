@@ -9,6 +9,8 @@
     @drop.stop
     @dragover.stop
     style="cursor: pointer;"
+     v-on="eventHandler"
+      @dblclick="startEdit"
   >
   <defs>
     <pattern id="blueDiagonalLines" patternUnits="userSpaceOnUse" width="8" height="8">
@@ -27,7 +29,7 @@
       :rx="style.borderRadius||0"
       :ry="style.borderRadius||0"
       :stroke-dasharray="style.strokeDasharray || ''"
-       v-on="eventHandler"
+      
     >
   </rect>
   <foreignObject
@@ -52,7 +54,7 @@
         padding: '0',
         margin: '0',
       }" 
-      @dblclick="startEdit"
+     
       @blur="endEdit"
       @keydown.enter="endEdit"
     >
@@ -91,11 +93,12 @@ const startEdit = () => {
   }
 };
 
+
+
 const endEdit = () => {
   if (labelRef.value) {
     labelRef.value.contentEditable = 'false';
-    // 这里可以添加保存逻辑，更新shape.modelName
-    // props.shape.modelName = labelRef.value.textContent || '';
+    graph.graphOption.saveText(props.shape, labelRef.value.innerText)
   }
 };
 

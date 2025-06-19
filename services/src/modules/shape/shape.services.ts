@@ -20,15 +20,10 @@ import { SidebarModel } from '../models/SidebarModel';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShapeEntity } from 'src/entities/shape.entity';
 import { EntityTarget, FindManyOptions, In, Repository } from 'typeorm';
-import { WsService } from '../socket/WsService';
 import { ShapeMap, WsMessageType } from 'src/types/common';
 import { Bounds, Change, ChangeType, StType, StepType, StyleObject, SubShapeType, VertexType } from '@hfdraw/types';
-import { CurrentStepService } from '../currentStep/currentStepService';
 import { StepService } from '../step/stepService';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseService } from '../common/BaseService';
-import { Point } from 'src/utils/Point';
-import { shapeFactory } from '../models/ShapeFactory';
 import { shapeUtil } from 'src/utils/shape/ShapeUtil';
 import { ConnectModel } from '../models/ConnectModel';
 import { MoveManager } from './shapeBusiness/MoveManager';
@@ -170,51 +165,6 @@ export class ShapeService  extends BaseService{
   
     }
 
-  // 批量更新逻辑
-  // async bulkUpdateShapes(projectId: string,shapes: ShapeEntity[]): Promise<Change[]> {
-  //   // 使用 Promise.all 并行执行所有更新操作
-  //   const changes: Change[] = []
-  //   const updatePromises = shapes.map(async (shape) => {
-  //     const partialEntity = shapeUtil.pickChange(shape);
-  //    // 如果没改变不需要更新 --todo
-  //     if (shape.subShapeType === SubShapeType.CommonEdge) {
-  //       partialEntity.waypoint = shape.waypoint;
-  //     }
-  //     // 根据 shape.id 更新对应的记录
-  //     const change = await this.updateEntity(projectId,this.shapeRepository.manager, ShapeEntity, shape.id_, partialEntity)
-  //     changes.push(change);
-  //     // return this.shapeRepository.update({ id: shape.id }, partialEntity);
-  //   });
-
-  //   await Promise.all(updatePromises);
-  //   return changes;
-  // }
-
-  // /**
-  //  * 更新所有变化的属性到数据库里
-  //  * @param affectedShapes
-  //  * @returns
-  //  */
-  // async updateShapeChanges(affectedShapes: ShapeEntity[]  | Set<ShapeEntity>) {
-  //   let  shapes: ShapeEntity[] = [];
-  //   if (affectedShapes instanceof Set) {
-  //     shapes = [...affectedShapes];
-  //   } else {
-  //     shapes = affectedShapes;
-  //   }
-  //   if (shapes.length === 0) return;
-  //   const updatePromises = shapes.map(async it => {
-
-  //     const partialEntity: Partial<ShapeEntity> = shapeUtil.pickChange(it);
-  //     const change = await this.updateEntity(it.projectId,this.shapeRepository.manager, ShapeEntity, it.id_, partialEntity)
-
-  //     return change;
-  //   });
-    
-  //   const changes = await Promise.all(updatePromises);
-  //   return changes;
-
-  // }
 
   async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
     const { sourceShapeId, projectId, index, modelId: stType, sourceConnection, targetConnection } = dto;
@@ -259,9 +209,6 @@ export class ShapeService  extends BaseService{
     return affectedShapes;
   }
 
-  // async createConnectEdge(dto: ConnectShapeAndCreateDto, waypoint: PointDto[]) {
-  //   const { sourceShapeId, projectId, index, modelId: stType } = dto;
-  // }
 
   async moveEdge(dto: MoveEdgeDto) {
     const shape = await this.stepManager.shapeRep.findOne({where: {
