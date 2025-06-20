@@ -24,7 +24,7 @@
         lineHeight: 1.5
       }" 
       @blur="endEdit"
-      @keydown.enter="endEdit"
+      @keydown.enter="handleEnterKey"
     >
       {{ label }}
     </div>
@@ -78,6 +78,36 @@ const startEdit = () => {
   }
 };
 
+const handleEnterKey = (event: KeyboardEvent) => {
+    // 在编辑状态下，阻止默认行为并手动插入换行
+    event.preventDefault();
+    
+    // 浏览器维护一个全局的Selection对象，
+    // 表示当前用户选择的文本范围。一个Selection可以包含多个Range对象（虽然通常只有一个）
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      // 创建换行符节点
+      const br = document.createElement('br');
+      const newNode = document.createTextNode('\n');
+      // 插入换行符
+      range.deleteContents();
+      range.insertNode(br);
+      // 以br元素作为参考插入光标，它后面必须要有节点才能实现换行，所以这里又添加了一个 \n 文本节点
+      range.insertNode(newNode);
+      
+      //  将光标移动到新行开头
+      range.setStartAfter(br);
+      /**
+       * 必须通过removeAllRanges()和addRange()来：
+        清除旧的选区状态
+        应用我们修改后的新选区状态
+       */
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+};
+
 const endEdit = () => {
   if (labelRef.value) {
     const newText = labelRef.value.innerText;
@@ -105,6 +135,8 @@ defineExpose({
   pointer-events: none;
   font-size: 14px;
   height: 100%;
+  white-space: pre-wrap; /* 保持换行和空格 */
+  word-wrap: break-word; /* 长单词自动换行 */
   
   &:focus-visible {
     outline: none;
