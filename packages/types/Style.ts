@@ -1,3 +1,5 @@
+import { VerHor } from "./constant";
+
 export interface StyleObject {
     fontWeight?: number
     fontSize?: number
@@ -24,6 +26,8 @@ export interface StyleObject {
     paddingLeft?: number
     paddingBottom?: number
     paddingRight?: number
+    rightAngle?: boolean
+    edgeDirection?:VerHor
 }
 
 export interface RetrospectRelationType {

@@ -3,7 +3,7 @@ import { provide, onMounted, ref, onUnmounted, computed, watch } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
 import { GraphProps } from "./types";
-import { EventType, Shape, ShapeType, VertexType } from "@hfdraw/types";
+import { EdgeShape, EventType, Shape, ShapeType, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
 import HoverArrow from './shape/HoverArrow.vue';
 import MindMapQuickAdd from './shape/MindMapQuickAdd.vue';
@@ -116,7 +116,7 @@ function handleVertexMousedown(event: MouseEvent, index: VertexType) {
     const targetShape = graph.selectionModel.selection[0];
 
     if (targetShape.shapeType === ShapeType.Edge) {
-      // graph.edgePointMoveModel.onEdgePointMouseDown(event, targetShape as unknown as EdgeShape, index);
+      graph.edgePointMoveModel.onEdgePointMouseDown(event, targetShape as unknown as EdgeShape, index);
     }  else {
       graph.resizeModel.startResize(event, graph.selectionModel.selection[0], index);
     }

@@ -1,5 +1,6 @@
 import { cloneDeep } from "lodash";
 import { int } from "./common";
+import { IPoint } from "@hfdraw/types";
 
 export class Point {
 
@@ -19,3 +20,9 @@ export class Point {
     }
   
   }
+
+  export const toIntPoint = (p:IPoint) => {
+    p.x = int(p.x);
+    p.y = int(p.y);
+    return p;
+  };

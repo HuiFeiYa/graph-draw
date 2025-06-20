@@ -143,3 +143,8 @@ export const  siderbarItemKeyToStTypeMap = {
  [SiderbarItemKey.Block]: StType['SysML::Blocks::Block']
 }
 
+
+export enum VerHor{
+  vertical="vertical",
+  horizontal="horizontal"
+}

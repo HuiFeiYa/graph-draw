@@ -2,7 +2,7 @@ import { GraphModel } from "@hfdraw/graph";
 import { MoveModel } from "@hfdraw/graph/src/models/MoveModel";
 import { IGraphOption } from "@hfdraw/graph/src/types";
 import { shapeService } from "../util/ShapeService";
-import { IBounds, Shape, StyleObject, VertexType } from "@hfdraw/types";
+import { EdgeMoveType, IBounds, IPoint, Shape, StyleObject, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
 import { SideBarWidth, popoverGap, popoverList, popoverWidth } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
@@ -108,5 +108,9 @@ export class GraphOption implements IGraphOption {
     event.preventDefault();
     const delta = event.deltaY < 0 ? 1.02 : 0.98;
     this.setScale(this.scale * delta);
+  }
+
+  async changeRelationshipEnds(edgeShape: Shape, sourceShape: Shape, targetShape: Shape, waypoint: IPoint[], moveType?:EdgeMoveType) {
+    console.log('changeRelationshipEnds', edgeShape, sourceShape, targetShape, waypoint);
   }
 }

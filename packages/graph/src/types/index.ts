@@ -1,4 +1,4 @@
-import { IBounds, Shape, StyleObject } from "@hfdraw/types";
+import { EdgeMoveType, IBounds, IPoint, Shape, StyleObject } from "@hfdraw/types";
 import { MoveModel } from "../models/MoveModel";
 import { GraphModel } from "../models/GraphModel";
 import { ResData, VertexType } from "../util/common";
@@ -37,6 +37,7 @@ export interface IGraphOption {
   zoomIn(): void;
   zoomOut(): void;
   handleWheel(event: WheelEvent): void;
+  changeRelationshipEnds?: (edgeShape: Shape, sourceShape: Shape, targetShape: Shape, waypoint: IPoint[], moveType?:EdgeMoveType) => Promise<void>
 }
 
 export enum MovePointPosition {

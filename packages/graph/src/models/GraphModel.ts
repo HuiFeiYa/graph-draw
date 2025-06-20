@@ -10,6 +10,8 @@ import { MindMapModel } from './MindMapModel';
 import { LabelEditorModel } from "./LabelEditorModel";
 import { ResizeModel } from "./ResizeModel";
 import { Emitter } from "../util/Emitter";
+import { MarkerModel } from "./Marker/MarkerModel";
+import { EdgePointMoveModel } from "./EdgePointMoveModel";
 
 export class GraphModel {
   /**
@@ -64,6 +66,20 @@ export class GraphModel {
    * 图形缩放模型
    */
   resizeModel: ResizeModel = reactive(new ResizeModel(this))
+
+    /**
+   * 图形标记（高亮效果）
+   */
+    markerModel:MarkerModel = reactive(new MarkerModel(this))
+    
+      /**
+ * 线的控制点移动模型
+ */
+  edgePointMoveModel:EdgePointMoveModel = reactive(new EdgePointMoveModel(this))
+
+  /**
+   * 图形样式
+   */
   /**
    * 
    */
@@ -125,6 +141,11 @@ export class GraphModel {
     }
     this.shapeMap.set(shape.id, shallowReactive(shape));
   }
+
+  getShape(id: string): Shape | undefined {
+    return this.shapeMap.get(id);
+  }
+
   clear() {
     this.selectionModel.clearSelection();
     this.hoverModel.clearHoverShape();

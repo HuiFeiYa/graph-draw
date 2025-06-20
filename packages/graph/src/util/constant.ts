@@ -12,3 +12,11 @@ export enum ApiCode {
   
     NO_AUTH = 1001,
 }
+
+/**
+ * 图形标亮的颜色
+ */
+export enum MarkerColor {
+    valid="green",
+    invalid="#FF181F"
+  }

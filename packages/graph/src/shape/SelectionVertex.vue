@@ -73,9 +73,11 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
 
 }
 
-function handleCircleMouseDown(event: MouseEvent, index:MovePointPosition) {
+function handleCircleMouseDown(event: MouseEvent, index:VertexType) {
     event.stopPropagation();
+    // todo 是否需要迁移到外部组件？
     graph.emitter.emit(EventType.EDGE_POINT_MOUSE_DOWN, event,shapeGroup.value.edgeShapes[0],index)
+    emit('vertex-mousedown', event, index);
 }
 </script>
 <template>
@@ -94,7 +96,7 @@ function handleCircleMouseDown(event: MouseEvent, index:MovePointPosition) {
                 fill="#000" :style="{ cursor: resizable ? 'sw-resize' : '' }" @mousedown="handleMouseDown($event, 4)" />
         </g>
         <g v-if="isShowEdgeWaypoint">
-            <circle style="cursor: move;pointer-events: auto" 
+            <circle style="cursor: move;pointer-events: all" 
                 v-for="(item,i) in waypointsInline" :cx="item.x" :cy="item.y" r="4" fill="rgba(0, 255, 0, 0.8)"
                 @mousedown="handleCircleMouseDown($event, i)"
                 />
