@@ -16,7 +16,7 @@ export class SideBarDropDto {
     point: Point;
     @IsString()
     projectId: string;
-    modelId: StType;
+    stType: StType;
     // @IsString()
     // targetShapeId: string;
   }

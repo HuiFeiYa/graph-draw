@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { ref } from "vue";
 // @ts-ignore
-import { SideBarWidth, siderBarList } from '@/constants/config';
+import { SideBarWidth, sideBarList } from '@/constants/config';
 import { shapeService } from "../../util/ShapeService";
 import { SideBarDropDto } from "../../types/shape.dto";
-import { SiderbarItemKey } from "@hfdraw/types";
 import { useProjectStore } from '../../stores/project';
 import { useUiStore } from '../../stores/ui';
+import { SidebarKeyItem } from "../../constants/config";
 const props = defineProps();
 const active = ref("common");
 const projectStore = useProjectStore();
 const uiStore = useUiStore();
 
-const onMousedown = async (item: { modelId: any; }) => {
+const onMousedown = async (item:SidebarKeyItem) => {
   const nextPosition = uiStore.getNextDropPosition();
   const params:SideBarDropDto = {
-    diagramId: '1',
     point: nextPosition,
     projectId: projectStore.projectId,
-    modelId: item.modelId
+    stType: item.sidebarKey
   }
   const res = await shapeService.sidebarDrop(params)
   console.log('res，', res)
@@ -32,11 +31,11 @@ const onDragstart = (event: { stopPropagation: () => void; }) => {
     <el-collapse v-model="active" style="margin-top: -3px">
       <el-collapse-item title="通用" name="common">
         <div class="collapse">
-          <div v-for="siderbarItem in siderBarList" :key="siderbarItem.modelId" class="collapse-item"
-            @mousedown="onMousedown( siderbarItem)">
-            <el-popover placement="bottom" :content="siderbarItem.showData.name" trigger="hover" width="60">
+          <div v-for="sidebarItem in sideBarList" :key="sidebarItem.modelId" class="collapse-item"
+            @mousedown="onMousedown( sidebarItem)">
+            <el-popover placement="bottom" :content="sidebarItem.showData.name" trigger="hover" width="60">
               <template #reference>
-                <img :src="siderbarItem.showData.icon" />
+                <img :src="sidebarItem.showData.icon" />
               </template>
             </el-popover>
           </div>

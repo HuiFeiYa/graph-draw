@@ -56,7 +56,8 @@ export enum SiderbarItemKey {
   FlowDiagram = "FlowDiagram",
   Start = "Start",
   Decide = "Decide",
-  Aggregation = "Aggregation"
+  Aggregation = "Aggregation",
+  Line = "Line"
 }
 
 export enum MetaclassType {
@@ -71,7 +72,8 @@ export enum StType {
   "SysML::ItemFlow" = "SysML::ItemFlow",
   "SysML::Decide" = "SysML::Decide",
   "SysML::Association" = "SysML::Association",
-  "SysML::MindMap" = "SysML::MindMap"
+  "SysML::MindMap" = "SysML::MindMap",
+  "SysML::Line" = "SysML::Line",
 }
 
 
@@ -93,7 +95,7 @@ export const showDashboardList = [
 ];
 
 // siderBarList 也不能直接转换为 enum 类型，因为它是一个对象数组
-export const siderBarList = [
+export const sideBarList = [
   {
     modelId: StType["SysML::Blocks::Block"],
     operation: "",
@@ -115,13 +117,13 @@ export const siderBarList = [
     },
   },
   {
-    modelId: StType["SysML::ItemFlow"],
+    modelId: StType["SysML::Line"],
     operation: "",
     dropdownTag: "",
     showData: {
       name: "直线",
       icon: "statics/siderBar/line.png",
-      siderBarkey: SiderbarItemKey.ItemFlow,
+      siderBarkey: SiderbarItemKey.Line,
     },
   },
   {

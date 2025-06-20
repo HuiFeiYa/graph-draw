@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { reactive, onMounted  } from 'vue'
 import { GraphView, GraphModel } from "@hfdraw/graph";
-import {  Change, Shape, SubShapeType } from "@hfdraw/types";
+import {  Change, Shape } from "@hfdraw/types";
 import { BusEvent } from "../constants/config";
 import { GraphOption } from '../editor/graphOption';
-import { emitter } from "../util/Emitter";
 import {  StType } from "@hfdraw/types";
 import { shapeService } from "../util/ShapeService";
 import { SideBarDropDto } from '../types/shape.dto';
@@ -28,12 +27,12 @@ async function  createRect() {
     diagramId: '1',
     point: {x: 100, y: 100},
     projectId: projectStore.projectId,
-    modelId: StType['SysML::MindMap']
+    stType: StType['SysML::MindMap']
   }
   const res = await shapeService.sidebarDrop(params)
 }
 
-async function fretchData() {
+async function fetchData() {
   await shapeService.getAllShapes(projectStore.projectId).then(data => {
     // console.log('data: ', data)
     if (data.length > 0) {
@@ -53,29 +52,28 @@ onMounted(async ()=> {
   if (projectId) {
     projectStore.setCurrentProjectId(projectId);
   }
-  fretchData();
+  fetchData();
 })
 
 
 const events = {
   [BusEvent.INSERT_SHAPE]: (change: Change) => {
     if (change.newValue) {
-      const shape = JSON.parse(change.newValue);
+      const shape =change.newValue as Shape;
       graphData.graph.symbols.push(shape)
       graphData.graph.addShape(shape)
     }
-
   },
   [BusEvent.DELETE_SHAPE]: (change: Change) => {
-    graphData.graph.symbols = graphData.graph.symbols.filter(s => s.id_ !== change.shapeId)
+    graphData.graph.symbols = graphData.graph.symbols.filter(s => s.id_ !== change.objectId)
   },
   [BusEvent.UPDATE_SHAPE]: async (change: Change) => {
     // console.log('update:', change)
-    const newValue = JSON.parse(change.newValue || '')
-    const i = graphData.graph.symbols.findIndex(s => s.id_ === change.shapeId);
+    const newValue = change.newValue || '' as Partial<Shape>
+    const i = graphData.graph.symbols.findIndex(s => s.id_ === change.objectId);
     if (i !== -1) {
       // graphData.graph.symbols.splice(i, 1, shape)
-      Object.assign(graphData.graph.symbols[i],{...newValue})
+      Object.assign(graphData.graph.symbols[i], {...newValue})
     }
   }
 }

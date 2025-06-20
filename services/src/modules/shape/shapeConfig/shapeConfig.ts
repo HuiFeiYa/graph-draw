@@ -12,6 +12,11 @@ export const modelKeyConfig: Record<string, ConfigItem> = {
     ...edgeOption,
     shapeKey: ShapeKey.Association,
   },
+  [StType["SysML::Line"]]: {
+    ...edgeOption,
+    shapeKey: ShapeKey.StraightLine,
+  },
+
   [StType["SysML::MindMap"]]: {
     ...mindMapOption,
     shapeKey: ShapeKey.MindMapShape

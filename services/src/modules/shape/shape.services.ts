@@ -47,7 +47,7 @@ export class ShapeService  extends BaseService{
       const options = {
         projectId: dto.projectId,
         point: dto.point,
-        stType: dto.modelId
+        stType: dto.stType
       };
       const sideBar = new SidebarModel(options);
       await sideBar.run();

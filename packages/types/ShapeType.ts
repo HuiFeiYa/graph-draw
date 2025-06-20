@@ -21,5 +21,6 @@ export enum ShapeKey {
     Block = "Block",
     Diagram = "Diagram",
     Association = "Association", // 关联
-    MindMapShape = "MindMapShape"
+    MindMapShape = "MindMapShape",
+    StraightLine = "StraightLine",
 }

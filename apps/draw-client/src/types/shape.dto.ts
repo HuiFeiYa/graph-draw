@@ -1,10 +1,8 @@
 import { SiderbarItemKey, VertexType } from "@hfdraw/types";
 export interface SideBarDropDto {
-    diagramId: string;
-    // {x: 95, y: 162}
     point: {x:number,y:number};
     projectId: string;
-    modelId: string;
+    stType: string;
   }
   
   export interface MoveShapeDto {

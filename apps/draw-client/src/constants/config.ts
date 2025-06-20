@@ -1,4 +1,4 @@
-import { SiderbarItemKey } from '@hfdraw/types'
+import { SiderbarItemKey, StType } from '@hfdraw/types'
 import { SiderBarItem } from '../types/common';
 export const HeaderHeight = 38;
 export const SideBarWidth = 200;
@@ -55,10 +55,7 @@ export const MetaclassType = {
   FlowDiagram: "FlowDiagram",
 };
 
-export const StType = {
-  "SysML::Blocks::Block": "SysML::Blocks::Block",
-  "SysML::ItemFlow": "SysML::ItemFlow",
-};
+
 
 export const SubShapeType = {
     Decide: "Decide",
@@ -78,38 +75,40 @@ export const showDashboardList = [
   SiderbarItemKey.Decide,
   SiderbarItemKey.Start,
 ];
-
-export const siderBarList = [
+export interface SidebarKeyItem {
+  sidebarKey: StType;
+  showData: {
+    name: string;
+    icon: string;
+  };
+}
+export const sideBarList: SidebarKeyItem[] = [
   {
-    modelId: "SysML::Blocks::Block",
+    sidebarKey: StType['SysML::Blocks::Block'],
     showData: {
       name: "开始/结束",
       icon: "statics/siderBar/startend.png",
-      siderBarkey: SiderbarItemKey.Start,
     },
   },
   {
-    modelId: "SysML::Blocks::Block",
+    sidebarKey: StType['SysML::Blocks::Block'],
     showData: {
       name: "矩形",
       icon: "statics/siderBar/rect.png",
-      siderBarkey: SiderbarItemKey.Block,
     },
   },
   {
-    modelId: "SysML::ItemFlow",
+    sidebarKey: StType["SysML::Line"],
     showData: {
       name: "直线",
       icon: "statics/siderBar/line.png",
-      siderBarkey: SiderbarItemKey.ItemFlow,
     },
   },
   {
-    modelId: "SysML::Decide",
+    sidebarKey: StType["SysML::Decide"],
     showData: {
       name: "判定",
       icon: "statics/siderBar/decide.png",
-      siderBarkey: SiderbarItemKey.Decide,
     },
   },
 ];

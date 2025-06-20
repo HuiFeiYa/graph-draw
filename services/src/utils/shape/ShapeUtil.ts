@@ -2,7 +2,7 @@ import { Model } from "src/entities/model.entity";
 import { ModelKey } from "src/types/model.type";
 import { Point } from 'src/utils/Point';
 import { ShapeEntity } from "src/entities/shape.entity";
-import { Bounds, ShapeKey, StType, VertexType } from "@hfdraw/types";
+import { Bounds, ShapeKey, StType, SubShapeType, VertexType } from "@hfdraw/types";
 import { shapeFactory } from "src/modules/models/ShapeFactory";
 import { connectEdgeLength } from "src/modules/shape/shapeConfig/commonShapeOption";
 import { cloneDeep } from "lodash";
@@ -20,21 +20,28 @@ export class ShapeUtil {
 * @param representModel
 */
   initShape(shape: ShapeEntity, point: Point) {
-
-    shape.bounds.absX = point.x;
-    shape.bounds.absY = point.y;
-    shape.bounds.x = shape.bounds.absX;
-    shape.bounds.y = shape.bounds.absY;
-    if (shape.nameBounds) {
-      shape.nameBounds.absX = point.x + shape.nameBounds.x;
-      shape.nameBounds.absY = point.y + shape.nameBounds.y;
-    }
-    const minWidth = this.getNameAndKeywordMinWidth(shape);
-    if (shape.bounds.width < minWidth) {
-      shape.bounds.width = minWidth;
+    if (shape.subShapeType === SubShapeType.CommonEdge) {
+      const { x, y } = point;
+      const firstPoint = new Point(x, y)
+      const nextPoint = new Point( x + connectEdgeLength,
+        y)
+      shape.waypoint = [firstPoint, nextPoint]
+      shape.waypointChanged = true;
+    } else {
+      shape.bounds.absX = point.x;
+      shape.bounds.absY = point.y;
+      shape.bounds.x = shape.bounds.absX;
+      shape.bounds.y = shape.bounds.absY;
+      if (shape.nameBounds) {
+        shape.nameBounds.absX = point.x + shape.nameBounds.x;
+        shape.nameBounds.absY = point.y + shape.nameBounds.y;
+      }
+      const minWidth = this.getNameAndKeywordMinWidth(shape);
+      if (shape.bounds.width < minWidth) {
+        shape.bounds.width = minWidth;
+      }
     }
     return shape;
-
   }
   getNameAndKeywordMinWidth(shape: ShapeEntity) {
     let width = 0;
