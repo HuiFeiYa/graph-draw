@@ -167,8 +167,6 @@ onUnmounted(() => {
         <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :preview-path="graph.edgeMoveModel.previewPath" />
         <!-- 快速添加图形辅助箭头 -->
         <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" :graph="graph" />
-        <!-- icon编辑框 -->
-        <label-editor v-if="graph.labelEditorModel.showPreview" :editor-model="graph.labelEditorModel" @input="handleLabelInput" @blur="handleLabelBlur" />
       </g>
     </svg>
   </div>

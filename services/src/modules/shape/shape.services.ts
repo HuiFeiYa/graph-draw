@@ -215,12 +215,14 @@ export class ShapeService  extends BaseService{
     }});
     shape.waypoint = dto.waypoint;
     shape.waypointChanged = true;
-    shape.style = {
-      ...shape.style,
-      sourceConnection: dto.styleObject.sourceConnection,
-      targetConnection: dto.styleObject.targetConnection
-    };
-    shape.styleChanged = true;
+    if (dto.styleObject?.sourceConnection) {
+      shape.style = {
+        ...shape.style,
+        sourceConnection: dto.styleObject.sourceConnection,
+        targetConnection: dto.styleObject.targetConnection
+      };
+      shape.styleChanged = true;
+    }
     await this.updateShapeChanges([shape]);
     return [shape];
   }

@@ -1,5 +1,5 @@
 <template>
-    <g transform="translate(12,12)">
+    <g >
       <path
         :d="previewPath"
         stroke="rgba(21,71, 146,0.5)"

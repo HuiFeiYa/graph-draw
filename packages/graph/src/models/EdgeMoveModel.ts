@@ -2,7 +2,7 @@ import { Bounds, EdgeShape, EventType, IPoint, ShapeType } from "@hfdraw/types"
 import { Point } from "../util/Point"
 import { GraphModel } from "./GraphModel"
 import { MovePointPosition } from "../types"
-import { getKeyPoints } from "@hfdraw/elbow"
+import { generateSmartRoute, getKeyPoints, Point as ElbowPoint } from "@hfdraw/elbow"
 import { PlaitElement, PointOfRectangle } from "@hfdraw/elbow/util/common-type"
 import { waypointUtil } from "../util/edgeUtil/WaypointUtil"
 
@@ -25,16 +25,47 @@ export class EdgeMoveModel {
         const edgeShape = this.edgeShape;
         const element:PlaitElement  = {
             source: {
-                connection: edgeShape.style.sourceConnection as PointOfRectangle
+                connection: (edgeShape.style.sourceConnection || [1,0.5]) as PointOfRectangle
             },
             target: {
-                connection: edgeShape.style.targetConnection as PointOfRectangle
+                connection: (edgeShape.style.targetConnection || [0, 0.5]) as PointOfRectangle
             }
         }
         const sourceElement = this.graph.shapeMap.get(edgeShape.sourceId);
         const targetElement = this.graph.shapeMap.get(edgeShape.targetId);
-        const sourceBounds = sourceElement?.bounds || new Bounds();
-        const targetBounds = targetElement?.bounds || new Bounds();
+        
+        // 处理源图形不存在的情况，使用waypoint的起始点生成fake图形
+        let sourceBounds: Bounds;
+        if (sourceElement?.bounds) {
+            sourceBounds = sourceElement.bounds;
+        } else {
+            // 使用waypoint的第一个点作为fake图形的中心点
+            const startPoint = edgeShape.waypoint?.[0] || { x: 0, y: 0 };
+            const fakeSize = 10; // fake图形的大小
+            sourceBounds = new Bounds(
+                startPoint.x - fakeSize / 2,
+                startPoint.y - fakeSize / 2,
+                fakeSize,
+                fakeSize
+            );
+        }
+        
+        // 处理目标图形不存在的情况，使用waypoint的终点生成fake图形
+        let targetBounds: Bounds;
+        if (targetElement?.bounds) {
+            targetBounds = targetElement.bounds;
+        } else {
+            // 使用waypoint的最后一个点作为fake图形的中心点
+            const endPoint = edgeShape.waypoint?.[edgeShape.waypoint.length - 1] || { x: 0, y: 0 };
+            const fakeSize = 10; // fake图形的大小
+            targetBounds = new Bounds(
+                endPoint.x - fakeSize / 2,
+                endPoint.y - fakeSize / 2,
+                fakeSize,
+                fakeSize
+            );
+        }
+        
         const sourceRect: PointOfRectangle[] = [
             [sourceBounds.x, sourceBounds.y],
             [sourceBounds.x + sourceBounds.width, sourceBounds.y + sourceBounds.height]
@@ -58,9 +89,10 @@ export class EdgeMoveModel {
         const waypoint = edgeShape.waypoint || [];
         this.startPoint = waypoint[0];
         this.endPoint = waypoint[waypoint.length - 1];
-        const { sourceRect, targetRect, element } = this.getEdgeParams();
-        const p = getKeyPoints(sourceRect, targetRect, element)
-        this.previewPath = waypointUtil.getPointsPath(p);
+        
+        // 初始预览路径使用原始起点和终点
+        const elbowPath2 = generateSmartRoute(this.startPoint, this.endPoint, 10);
+        this.previewPath = waypointUtil.getPointsPath(elbowPath2);
         this.showPreview = true;
 
         const onMouseMove = this.onMouseMove.bind(this);
@@ -84,48 +116,90 @@ export class EdgeMoveModel {
         let connection = [0, 0];
         if (this.index === MovePointPosition.start) {
             const sourceElement = this.graph.shapeMap.get(edgeShape.sourceId);
-            if (sourceElement) {
-                bounds = sourceElement.bounds ;
+            if (sourceElement?.bounds) {
+                bounds = sourceElement.bounds;
+            } else {
+                // 使用waypoint的第一个点作为fake图形的中心点
+                const startPoint = edgeShape.waypoint?.[0] || { x: 0, y: 0 };
+                const fakeSize = 10;
+                bounds = new Bounds(
+                    startPoint.x - fakeSize ,
+                    startPoint.y - fakeSize / 2,
+                    fakeSize,
+                    fakeSize
+                );
             }
             if (edgeShape.style.sourceConnection) {
                 connection = edgeShape.style.sourceConnection
             }
         } else if (this.index === MovePointPosition.end) {
             const targetElement = this.graph.shapeMap.get(edgeShape.targetId);
-            if (targetElement) {
-                bounds = targetElement.bounds ;
-                if (edgeShape.style.targetConnection) {
-                    connection = edgeShape.style.targetConnection
-                }
+            if (targetElement?.bounds) {
+                bounds = targetElement.bounds;
+            } else {
+                // 使用waypoint的最后一个点作为fake图形的中心点
+                const endPoint = edgeShape.waypoint?.[edgeShape.waypoint.length - 1] || { x: 0, y: 0 };
+                const fakeSize = 10;
+                bounds = new Bounds(
+                    endPoint.x ,
+                    endPoint.y - fakeSize / 2,
+                    fakeSize,
+                    fakeSize
+                );
+            }
+            if (edgeShape.style.targetConnection) {
+                connection = edgeShape.style.targetConnection
             }
         }
-        if (connection[0] === 0 || connection[0] === 1) {
-            const yRate = (currentPoint.y - bounds.y) / bounds.height;
-            connection[1] = yRate
-        }
-
-        if (connection[1] === 0 || connection[1] === 1) {
-            const xRate = (currentPoint.x - bounds.x) / bounds.width;
-            connection[0] = xRate
-        }
-
-        const { sourceRect, targetRect, element } = this.getEdgeParams();
+        // 根据移动的是起点还是终点，更新预览路径
+        let previewStartPoint: ElbowPoint;
+        let previewEndPoint: ElbowPoint;
+        
         if (this.index === MovePointPosition.start) {
-            element.source.connection = connection as PointOfRectangle;
+            // 移动起点，终点保持不变
+            previewStartPoint = [currentPoint.x, currentPoint.y];
+            previewEndPoint = [this.endPoint.x, this.endPoint.y];
         } else if (this.index === MovePointPosition.end) {
-            element.target.connection = connection as PointOfRectangle;
+            // 移动终点，起点保持不变
+            previewStartPoint = [this.startPoint.x, this.startPoint.y];
+            previewEndPoint = [currentPoint.x, currentPoint.y];
+        } else {
+            // 默认情况，使用原始起点和终点
+            previewStartPoint = [this.startPoint.x, this.startPoint.y];
+            previewEndPoint = [this.endPoint.x, this.endPoint.y];
         }
-        const waypoint = getKeyPoints(sourceRect, targetRect, element)
-        this.element = element;
-        this.previewPath = waypointUtil.getPointsPath(waypoint);
-        this.waypoint = waypoint;
+        
+        // 使用point-to-point-route生成预览路径
+        const previewWaypoint = generateSmartRoute(previewStartPoint, previewEndPoint, 10);
+        this.previewPath = waypointUtil.getPointsPath(previewWaypoint);
+        
+        // 同时计算用于最终提交的waypoint（使用原有逻辑）
+        // if (connection[0] === 0 || connection[0] === 1) {
+        //     const yRate = (currentPoint.y - bounds.y) / bounds.height;
+        //     connection[1] = yRate
+        // }
+
+        // if (connection[1] === 0 || connection[1] === 1) {
+        //     const xRate = (currentPoint.x - bounds.x) / bounds.width;
+        //     connection[0] = xRate
+        // }
+
+        // const { sourceRect, targetRect, element } = this.getEdgeParams();
+        // if (this.index === MovePointPosition.start) {
+        //     element.source.connection = connection as PointOfRectangle;
+        // } else if (this.index === MovePointPosition.end) {
+        //     element.target.connection = connection as PointOfRectangle;
+        // }
+        // const waypoint = getKeyPoints(sourceRect, targetRect, element)
+        // this.element = element;
+        this.waypoint = previewWaypoint;
     }
 
     endMove() {
         this.initPreviewState();
         this.graph.graphOption.EdgePointEndMove(this.edgeShape.id, this.waypoint.map(arr => {
             return new Point(arr[0],arr[1]);
-        }),{sourceConnection: this.element.source.connection, targetConnection: this.element.target.connection});
+        }),{});
     }
     // 鼠标按下线段时触发,在 createEventHandler.ts 中触发事件
     onEdgeMousedown(event: MouseEvent, shape: EdgeShape) {
