@@ -113,11 +113,11 @@ export class ShapeService  extends BaseService{
       shape.nameBoundsChanged = true;
     }
     let affectedShapes = new Set<ShapeEntity>();
-    const dx = newBounds.absX - oldBounds.absX; // 新的x坐标比旧的x坐标大多少
-    const dy = newBounds.absY - oldBounds.absY;
-    const dHeight = newBounds.height - oldBounds.height;
-    const dWidth = newBounds.width - oldBounds.width;
-    const dCenter = newBounds.absX + newBounds.width / 2 - (oldBounds.absX + oldBounds.width / 2);
+    // const dx = newBounds.absX - oldBounds.absX; // 新的x坐标比旧的x坐标大多少
+    // const dy = newBounds.absY - oldBounds.absY;
+    // const dHeight = newBounds.height - oldBounds.height;
+    // const dWidth = newBounds.width - oldBounds.width;
+    // const dCenter = newBounds.absX + newBounds.width / 2 - (oldBounds.absX + oldBounds.width / 2);
     if (!equalBounds(oldBounds, newBounds)) {
       affectedShapes.add(shape);
       shape.boundsChanged = true;
@@ -273,12 +273,15 @@ export class ShapeService  extends BaseService{
     shape.modelNameChanged = true;
     const h = getTextSize(text,  shape.style.fontSize,shape.nameBounds.width).height;
     const ceilH = Math.ceil(h);
-    shape.bounds.height =  ceilH + PADDING * 2;
-    shape.nameBounds.height = ceilH;
-    shape.boundsChanged = true;
-    shape.nameBoundsChanged = true;
+    const height = ceilH + PADDING * 2
+    // 当文案输入导致内容超出，则变更高度
+    if (height > shape.bounds.height) {
+      shape.bounds.height =  height;
+      shape.nameBounds.height = ceilH;
+      shape.boundsChanged = true;
+      shape.nameBoundsChanged = true;
+    }
     await this.updateShapeChanges([shape])
-   
   }
   async expandShape(dto:ExpandShapeDto) {
     const { shapeId, projectId, expand } = dto;

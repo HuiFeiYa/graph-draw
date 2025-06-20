@@ -10,7 +10,7 @@
     @dragover.stop
     style="cursor: pointer;"
      v-on="eventHandler"
-      @dblclick="startEdit"
+      @dblclick="handleStartEdit"
   >
   <defs>
     <pattern id="blueDiagonalLines" patternUnits="userSpaceOnUse" width="8" height="8">
@@ -32,81 +32,42 @@
       
     >
   </rect>
-  <foreignObject
-      :width="shape.bounds.width"
-      :height="shape.bounds.height"
-      :x="shape.bounds.absX"
-      :y="shape.bounds.absY"
-      style="overflow: visible;"
-    >
-    <div 
-      ref="labelRef"
-      class="v-label" 
-      :style="{
-        width: shape.nameBounds.width + 'px',
-        height: shape.nameBounds.height + 'px', 
-        left: shape.nameBounds.x + 'px',
-        top: shape.nameBounds.y + 'px',
-        fontSize: '14px',
-        fontFamily: 'inherit',
-        pointerEvents: 'all',
-        padding: '0',
-        margin: '0',
-        display: 'flex',
-        alignItems: 'center',
-        lineHeight: 1.5
-      }" 
-     
-      @blur="endEdit"
-      @keydown.enter="endEdit"
-    >
-      {{ shape.modelName }}
-    </div>
-  </foreignObject>
+  
+  <EditableLabel
+    ref="editableLabelRef"
+    :bounds="shape.bounds"
+    :name-bounds="shape.nameBounds"
+    :label="shape.modelName || ''"
+    :font-size="14"
+    @end-edit="handleEndEdit"
+  />
 </g>
 </template>
 <script lang="ts" setup>
 import { Shape } from '@hfdraw/types';
-import { computed, inject, ref, nextTick } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { createEventHandler } from '../util/createEventHandler';
 import { GraphModel } from '../models/GraphModel';
-const props = defineProps<{
-  shape:Shape
-}>();
-const graph = inject<GraphModel>('graph') as GraphModel ;
-const eventHandler = createEventHandler(graph,props);
-const labelRef = ref<HTMLDivElement>();
+import EditableLabel from '../components/EditableLabel.vue';
 
-const startEdit = () => {
-  if (labelRef.value) {
-    labelRef.value.contentEditable = 'true';
-    nextTick(() =>{
-      if (!labelRef.value) {
-        return;
-      }
-      labelRef.value.focus();
-      // 选中所有文案
-      const range = document.createRange();
-      range.selectNodeContents(labelRef.value);
-      const selection = window.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(range);
-    })
-  }
+const props = defineProps<{
+  shape: Shape
+}>();
+
+const graph = inject<GraphModel>('graph') as GraphModel;
+const eventHandler = createEventHandler(graph, props);
+const editableLabelRef = ref<InstanceType<typeof EditableLabel>>();
+
+const handleStartEdit = () => {
+  editableLabelRef.value?.startEdit();
 };
 
-
-
-const endEdit = () => {
-  if (labelRef.value) {
-    labelRef.value.contentEditable = 'false';
-    graph.graphOption.saveText(props.shape, labelRef.value.innerText)
-  }
+const handleEndEdit = (newText: string) => {
+  graph.graphOption.saveText(props.shape, newText);
 };
 
 const style = computed(() => {
   const shape = props.shape;
-
   return Object.assign({}, shape.style);
 });
 </script>
@@ -154,21 +115,5 @@ const style = computed(() => {
   text-decoration: underline;
 }
 
-.v-label {
-  position: absolute;
-  pointer-events: all;
-  border: none;
-  outline: none;
-  display: block;
-  resize: none;
-  pointer-events: none;
-  font-size: 14px;
-  height: 100%;
-  &:focus-visible {
-      outline: none;
-
-  }
-  overflow: visible;
-
-}
+// EditableLabel组件的样式已移至组件内部
 </style>
