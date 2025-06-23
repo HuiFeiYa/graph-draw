@@ -215,20 +215,25 @@ export class EdgePointMoveModel {
         // waypoints = generateSmartRoute(point, curPoint, 10).map(([x, y]) => new Point(x, y))
       }
     } else {
-      this.sourceShape = this.graph.getShape(edgeShape.sourceId);
-      this.targetShape = curShape;
-      const bounds = curShape?.bounds;
-      const point = new Point(bounds?.absX, bounds?.absY);
-      const valid = curShape ? await this.validateConnectShape(curShape) : false;
-      this.validConnect = valid;
-      // waypoints = generateSmartRoute(curPoint, point, 10).map(([x, y]) => new Point(x, y))
-      // waypoints = waypointUtil.generateConnectPreviewWaypoint(
-      //   this.graph.shapeMap,
-      //   edgeShape.style,
-      //   this.graph.getShape(edgeShape.sourceId),
-      //   curPoint,
-      //   this.targetShape
-      // );
+      if (curShape) {
+        this.sourceShape = this.graph.getShape(edgeShape.sourceId);
+        this.targetShape = curShape;
+        const bounds = curShape?.bounds;
+        const point = new Point(bounds?.absX, bounds?.absY);
+        const valid = curShape ? await this.validateConnectShape(curShape) : false;
+        this.validConnect = valid;
+        const sourceShape = this.graph.getShape(edgeShape.sourceId);
+        const firstPoint = edgeShape.waypoint[0];
+        waypoints = waypointUtil.generateConnectPreviewWaypoint(
+          this.graph.shapeMap,
+          edgeShape.style,
+          sourceShape,
+          curPoint,
+          curShape,
+          firstPoint
+        );
+        waypoints.reverse();
+      }
     }
     cleanWaypoint(waypoints, true);
     getGridWaypoints(waypoints, true);

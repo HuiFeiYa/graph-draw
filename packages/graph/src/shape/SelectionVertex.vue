@@ -6,6 +6,7 @@ import { isEqual } from 'lodash';
 import { VertexType } from '../util/common';
 import { MovePointPosition } from '../types';
 import { GraphModel } from '../models/GraphModel';
+import { Point } from '../util/Point';
 const props = defineProps<{
     selection: Shape[]
 }>();
@@ -49,10 +50,31 @@ const isShowEdgeWaypoint = computed(()=> {
     return edgeShapeWaypoint.value.length > 0;
 })
 const waypointsInline = computed((oldValue: IPoint[] | undefined)=> {
-    const newWaypoints = [
-        edgeShapeWaypoint.value[0],
-        edgeShapeWaypoint.value[edgeShapeWaypoint.value.length - 1]
-    ]
+    const waypoints = edgeShapeWaypoint.value;
+    if (waypoints.length <= 2) {
+        return waypoints;
+    }
+    
+    const newWaypoints:IPoint[] = [];
+    for(let i = 0; i <= waypoints.length; i++) {
+        if(i === 0) {
+            newWaypoints.push(waypoints[i]);
+            continue;
+        }
+        if (i === waypoints.length) {
+            newWaypoints.push(waypoints[i-1]);
+            continue;
+        }
+        
+        // 对于中间的点，计算前一个点和后一个点的中点
+        const prevPoint = waypoints[i - 1];
+        const curPoint = waypoints[i];
+        const midX = (prevPoint.x + curPoint.x) / 2;
+        const midY = (prevPoint.y + curPoint.y) / 2;
+        
+        newWaypoints.push(new Point(midX, midY)) ;
+    }
+    
     if (oldValue && isEqual(oldValue, newWaypoints)) {
         return oldValue;
     }
@@ -97,12 +119,22 @@ function handleCircleMouseDown(event: MouseEvent, index:VertexType) {
         </g>
         <g v-if="isShowEdgeWaypoint">
             <circle style="cursor: move;pointer-events: all" 
-                v-for="(item,i) in waypointsInline" :cx="item.x" :cy="item.y" r="4" fill="rgba(0, 255, 0, 0.8)"
+                :class="{'start-end-point': i === 0 || i === waypointsInline.length - 1, 'point': i !== 0 && i !== waypointsInline.length - 1}"
+                v-for="(item,i) in waypointsInline" :cx="item.x" :cy="item.y" r="4" 
                 @mousedown="handleCircleMouseDown($event, i)"
                 />
         </g>
     </g>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
+.start-end-point {
+    fill: none;
+    stroke-width:1px;
+    stroke: blue;
+}
+.point {
+    fill: #9b9bdd;
+    stroke-width: 0;
+}
 
 </style>
