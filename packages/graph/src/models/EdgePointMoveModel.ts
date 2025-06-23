@@ -73,10 +73,10 @@ export class EdgePointMoveModel {
     } else {
       this.moveType = EdgeMoveType.Waypoint;
     }
-    const isMovePoint = this.moveType == EdgeMoveType.SourcePoint || this.moveType == EdgeMoveType.TargetPoint;
-    if (isMovePoint ) {
-      return;
-    }
+    // const isMovePoint = this.moveType == EdgeMoveType.SourcePoint || this.moveType == EdgeMoveType.TargetPoint;
+    // if (isMovePoint ) {
+    //   return;
+    // }
 
     // const absPoint = tanslateClientPointToDiagramAbsPoint(new Point(event.clientX, event.clientY ), this.graph.viewModel.viewDom as HTMLDivElement);
     // this.startPoint = absPoint;
@@ -90,32 +90,32 @@ export class EdgePointMoveModel {
       }
     }
     // 直角折线
-    if ( this.isWaypoint) {
-      const points = this.movingShape.waypoint;
-      this.originControlPoint = points[index];
-      this.originPreControlPoint = points[index - 1];
-      this.originNextControlPoint = points[index + 1];
+    // if ( this.isWaypoint) {
+    //   const points = this.movingShape.waypoint;
+    //   this.originControlPoint = points[index];
+    //   this.originPreControlPoint = points[index - 1];
+    //   this.originNextControlPoint = points[index + 1];
 
-      this.isPreLineVertical = this.originPreControlPoint.x === this.originControlPoint.x;
-      this.isNextLineVertical = this.originControlPoint.x === this.originNextControlPoint.x;
+    //   this.isPreLineVertical = this.originPreControlPoint.x === this.originControlPoint.x;
+    //   this.isNextLineVertical = this.originControlPoint.x === this.originNextControlPoint.x;
 
-      this.previewWaypoint = points.map(p => ({ ...p }));
+    //   this.previewWaypoint = points.map(p => ({ ...p }));
 
-      this.previewControlPointIndex = index;
-      if (this.isSecondWayPoint) {
-        this.previewWaypoint.unshift({ ...this.previewWaypoint[0] });
-        this.previewControlPointIndex++;
-      }
-      if (this.isSecondLastWayPoint) {
-        this.previewWaypoint.push({ ...this.previewWaypoint[this.previewWaypoint.length - 1] });
-      // previewControlPointIndex++;
-      }
-      this.controlPoint = this.previewWaypoint[this.previewControlPointIndex];
-      this.preControlPoint = this.previewWaypoint[this.previewControlPointIndex - 1];
-      this.nextControlPoint = this.previewWaypoint[this.previewControlPointIndex + 1];
+    //   this.previewControlPointIndex = index;
+    //   if (this.isSecondWayPoint) {
+    //     this.previewWaypoint.unshift({ ...this.previewWaypoint[0] });
+    //     this.previewControlPointIndex++;
+    //   }
+    //   if (this.isSecondLastWayPoint) {
+    //     this.previewWaypoint.push({ ...this.previewWaypoint[this.previewWaypoint.length - 1] });
+    //   // previewControlPointIndex++;
+    //   }
+    //   this.controlPoint = this.previewWaypoint[this.previewControlPointIndex];
+    //   this.preControlPoint = this.previewWaypoint[this.previewControlPointIndex - 1];
+    //   this.nextControlPoint = this.previewWaypoint[this.previewControlPointIndex + 1];
 
-    // 普通折线
-    } 
+    // // 普通折线
+    // } 
     const startPoint = this.graph.viewModel.translateClientPointToDiagramAbsPoint(new Point(event.clientX, event.clientY));
     this.startPoint = startPoint;
     this.endPoint = startPoint.clone();

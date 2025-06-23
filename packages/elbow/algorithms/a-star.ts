@@ -1,4 +1,4 @@
-import { Point } from '../util/common-type'
+import { ElbowPoint } from '../util/common-type'
 import { PointGraph, PointNode } from './data-structures/graph';
 import { PriorityQueue } from './data-structures/priority-queue';
 
@@ -9,11 +9,11 @@ export class AStar {
         this.cameFrom = new Map<PointNode, PointNode>();
     }
 
-    heuristic(a: Point, b: Point) {
+    heuristic(a: ElbowPoint, b: ElbowPoint) {
         return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
     }
 
-    search(start: Point, end: Point, previousStart: Point) {
+    search(start: ElbowPoint, end: ElbowPoint, previousStart: ElbowPoint) {
         const frontier = new PriorityQueue();
         const startNode = this.graph.get(start);
         this.cameFrom = new Map<PointNode, PointNode>();
@@ -51,7 +51,7 @@ export class AStar {
         }
     }
 
-    getRoute(start: Point, end: Point) {
+    getRoute(start: ElbowPoint, end: ElbowPoint) {
         const result = [];
         let temp = end;
         while (temp[0] !== start[0] || temp[1] !== start[1]) {

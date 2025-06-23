@@ -1,14 +1,14 @@
-import { Point } from '../../util/common-type'
+import { ElbowPoint } from '../../util/common-type'
 export class PointNode {
     public distance = Number.MAX_SAFE_INTEGER;
     public adjacentNodes: PointNode[] = [];
-    constructor(public data: Point) {}
+    constructor(public data: ElbowPoint) {}
 }
 
 export class PointGraph {
     private index: { [x: string]: { [y: string]: PointNode } } = {};
 
-    add(p: Point) {
+    add(p: ElbowPoint) {
         const x = p[0];
         const y = p[1];
         const xs = x.toString(),
@@ -21,7 +21,7 @@ export class PointGraph {
             this.index[xs][ys] = new PointNode(p);
         }
     }
-    connect(a: Point, b: Point) {
+    connect(a: ElbowPoint, b: ElbowPoint) {
         const nodeA = this.get(a);
         const nodeB = this.get(b);
 
@@ -32,7 +32,7 @@ export class PointGraph {
         nodeA.adjacentNodes.push(nodeB);
     }
 
-    has(p: Point): boolean {
+    has(p: ElbowPoint): boolean {
         const x = p[0];
         const y = p[1];
         const xs = x.toString(),
@@ -40,7 +40,7 @@ export class PointGraph {
         return xs in this.index && ys in this.index[xs];
     }
 
-    get(p: Point): PointNode | null {
+    get(p: ElbowPoint): PointNode | null {
         const x = p[0];
         const y = p[1];
         const xs = x.toString(),

@@ -1,4 +1,4 @@
-import { PlaitElement, Point } from "./common-type";
+import { PlaitElement, ElbowPoint } from "./common-type";
 import { rotate } from "./math";
 import { RectangleClient } from "./rectangle-client";
 
@@ -21,14 +21,14 @@ export const rotatePointsByElement = <T>(points: T, element: PlaitElement): T | 
 };
 
 
-export const rotatePoints = <T>(points: T, centerPoint: Point, angle?: number): T => {
+export const rotatePoints = <T>(points: T, centerPoint: ElbowPoint, angle?: number): T => {
     if (!angle) {
         angle = 0;
     }
     if (Array.isArray(points) && typeof points[0] === 'number') {
         return rotate(points[0], points[1], centerPoint[0], centerPoint[1], angle) as T;
     } else {
-        return (points as Point[]).map(point => {
+        return (points as ElbowPoint[]).map(point => {
             return rotate(point[0], point[1], centerPoint[0], centerPoint[1], angle || 0);
         }) as T;
     }

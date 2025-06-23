@@ -1,4 +1,4 @@
-import { Direction, DirectionFactor, Point, PointOfRectangle, Vector } from "./common-type";
+import { Direction, DirectionFactor, ElbowPoint, PointOfRectangle, Vector } from "./common-type";
 
 const handleDirectionFactors = {
     [Direction.left]: { x: -1, y: 0 },
@@ -66,7 +66,7 @@ export function getDirectionByVector(vector: Vector): Direction | null {
     }
 }
 
-export function getDirectionBetweenPointAndPoint(source: Point, target: Point) {
+export function getDirectionBetweenPointAndPoint(source: ElbowPoint, target: ElbowPoint) {
     if (source[0] === target[0]) {
         if (source[1] >= target[1]) {
             return Direction.top;

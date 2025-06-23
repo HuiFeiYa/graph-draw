@@ -1,4 +1,4 @@
-import { Point } from './common-type';
+import { ElbowPoint } from './common-type';
 import { RectangleClient } from './rectangle-client';
 
 // https://stackoverflow.com/a/6853926/232122
@@ -33,7 +33,7 @@ export function distanceBetweenPointAndSegment(x: number, y: number, x1: number,
     return Math.hypot(dx, dy);
 }
 
-export function getNearestPointBetweenPointAndSegment(point: Point, linePoints: [Point, Point]) {
+export function getNearestPointBetweenPointAndSegment(point: ElbowPoint, linePoints: [ElbowPoint, ElbowPoint]) {
     const x = point[0],
         y = point[1],
         x1 = linePoints[0][0],
@@ -65,10 +65,10 @@ export function getNearestPointBetweenPointAndSegment(point: Point, linePoints: 
         yy = y1 + param * D;
     }
 
-    return [xx, yy] as Point;
+    return [xx, yy] as ElbowPoint;
 }
 
-export function distanceBetweenPointAndSegments(points: Point[], point: Point) {
+export function distanceBetweenPointAndSegments(points: ElbowPoint[], point: ElbowPoint) {
     const len = points.length;
     let distance = Infinity;
     for (let i = 0; i < len - 1; i++) {
@@ -82,10 +82,10 @@ export function distanceBetweenPointAndSegments(points: Point[], point: Point) {
     return distance;
 }
 
-export function getNearestPointBetweenPointAndSegments(point: Point, points: Point[], isClose: Boolean = true) {
+export function getNearestPointBetweenPointAndSegments(point: ElbowPoint, points: ElbowPoint[], isClose: Boolean = true) {
     const len = points.length;
     let distance = Infinity;
-    let result: Point = point;
+    let result: ElbowPoint = point;
 
     for (let i = 0; i < len; i++) {
         const p = points[i];
@@ -100,7 +100,7 @@ export function getNearestPointBetweenPointAndSegments(point: Point, points: Poi
     return result;
 }
 
-export function getNearestPointBetweenPointAndEllipse(point: Point, center: Point, rx: number, ry: number, rotation: number = 0): Point {
+export function getNearestPointBetweenPointAndEllipse(point: ElbowPoint, center: ElbowPoint, rx: number, ry: number, rotation: number = 0): ElbowPoint {
     const rectangleClient = {
         x: center[0] - rx,
         y: center[1] - ry,
@@ -165,21 +165,21 @@ export function distanceBetweenPointAndRectangle(x: number, y: number, rect: Rec
     return Math.sqrt(dx * dx + dy * dy);
 }
 
-export const isLineHitLine = (a: Point, b: Point, c: Point, d: Point): boolean => {
-    const crossProduct = (v1: Point, v2: Point) => v1[0] * v2[1] - v1[1] * v2[0];
+export const isLineHitLine = (a: ElbowPoint, b: ElbowPoint, c: ElbowPoint, d: ElbowPoint): boolean => {
+    const crossProduct = (v1: ElbowPoint, v2: ElbowPoint) => v1[0] * v2[1] - v1[1] * v2[0];
 
-    const ab: Point = [b[0] - a[0], b[1] - a[1]];
-    const ac: Point = [c[0] - a[0], c[1] - a[1]];
-    const ad: Point = [d[0] - a[0], d[1] - a[1]];
+    const ab: ElbowPoint = [b[0] - a[0], b[1] - a[1]];
+    const ac: ElbowPoint = [c[0] - a[0], c[1] - a[1]];
+    const ad: ElbowPoint = [d[0] - a[0], d[1] - a[1]];
 
-    const ca: Point = [a[0] - c[0], a[1] - c[1]];
-    const cb: Point = [b[0] - c[0], b[1] - c[1]];
-    const cd: Point = [d[0] - c[0], d[1] - c[1]];
+    const ca: ElbowPoint = [a[0] - c[0], a[1] - c[1]];
+    const cb: ElbowPoint = [b[0] - c[0], b[1] - c[1]];
+    const cd: ElbowPoint = [d[0] - c[0], d[1] - c[1]];
 
     return crossProduct(ab, ac) * crossProduct(ab, ad) <= 0 && crossProduct(cd, ca) * crossProduct(cd, cb) <= 0;
 };
 
-export const isLineHitRectangle = (points: Point[], rectangle: RectangleClient, isClose: boolean = true) => {
+export const isLineHitRectangle = (points: ElbowPoint[], rectangle: RectangleClient, isClose: boolean = true) => {
     const rectanglePoints = RectangleClient.getCornerPoints(rectangle);
     const len = points.length;
     for (let i = 0; i < len; i++) {
@@ -194,7 +194,7 @@ export const isLineHitRectangle = (points: Point[], rectangle: RectangleClient, 
     return false;
 };
 
-export const isLineHitRectangleEdge = (points: Point[], rectangle: RectangleClient, isClose: boolean = true) => {
+export const isLineHitRectangleEdge = (points: ElbowPoint[], rectangle: RectangleClient, isClose: boolean = true) => {
     const len = points.length;
     for (let i = 0; i < len; i++) {
         if (i === len - 1 && !isClose) continue;
@@ -208,7 +208,7 @@ export const isLineHitRectangleEdge = (points: Point[], rectangle: RectangleClie
     return false;
 };
 
-export const isSingleLineHitRectangleEdge = (p1: Point, p2: Point, rectangle: RectangleClient) => {
+export const isSingleLineHitRectangleEdge = (p1: ElbowPoint, p2: ElbowPoint, rectangle: RectangleClient) => {
     const rectanglePoints = RectangleClient.getCornerPoints(rectangle);
     return (
         isLineHitLine(p1, p2, rectanglePoints[0], rectanglePoints[1]) ||
@@ -219,7 +219,7 @@ export const isSingleLineHitRectangleEdge = (p1: Point, p2: Point, rectangle: Re
 };
 
 //https://stackoverflow.com/questions/22521982/check-if-point-is-inside-a-polygon
-export const isPointInPolygon = (point: Point, points: Point[]) => {
+export const isPointInPolygon = (point: ElbowPoint, points: ElbowPoint[]) => {
     // ray-casting algorithm based on
     // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
 
@@ -239,7 +239,7 @@ export const isPointInPolygon = (point: Point, points: Point[]) => {
     return inside;
 };
 
-export const isPointInEllipse = (point: Point, center: Point, rx: number, ry: number, angle = 0) => {
+export const isPointInEllipse = (point: ElbowPoint, center: ElbowPoint, rx: number, ry: number, angle = 0) => {
     const cosAngle = Math.cos(angle);
     const sinAngle = Math.sin(angle);
     const x1 = (point[0] - center[0]) * cosAngle + (point[1] - center[1]) * sinAngle;
@@ -248,7 +248,7 @@ export const isPointInEllipse = (point: Point, center: Point, rx: number, ry: nu
     return (x1 * x1) / (rx * rx) + (y1 * y1) / (ry * ry) <= 1;
 };
 
-export const isPointInRoundRectangle = (point: Point, rectangle: RectangleClient, radius: number, angle = 0) => {
+export const isPointInRoundRectangle = (point: ElbowPoint, rectangle: RectangleClient, radius: number, angle = 0) => {
     const { x: rectX, y: rectY, width, height } = rectangle;
     const isInRectangle = point[0] >= rectX && point[0] <= rectX + width && point[1] >= rectY && point[1] <= rectY + height;
     const handleLeftTop =
@@ -281,11 +281,11 @@ export const isPointInRoundRectangle = (point: Point, rectangle: RectangleClient
 };
 
 // https://gist.github.com/nicholaswmin/c2661eb11cad5671d816
-export const catmullRomFitting = function (points: Point[]) {
+export const catmullRomFitting = function (points: ElbowPoint[]) {
     const alpha = 0.5;
     let p0, p1, p2, p3, bp1, bp2, d1, d2, d3, A, B, N, M;
     var d3powA, d2powA, d3pow2A, d2pow2A, d1pow2A, d1powA;
-    const result: Point[] = [];
+    const result: ElbowPoint[] = [];
     result.push([Math.round(points[0][0]), Math.round(points[0][1])]);
     var length = points.length;
     for (var i = 0; i < length - 1; i++) {
@@ -334,7 +334,7 @@ export const catmullRomFitting = function (points: Point[]) {
             bp2 = p2;
         }
 
-        result.push(bp1 as Point, bp2 as Point, p2 as Point);
+        result.push(bp1 as ElbowPoint, bp2 as ElbowPoint, p2 as ElbowPoint);
     }
 
     return result;
@@ -357,15 +357,15 @@ export function getEllipseTangentSlope(x: number, y: number, a: number, b: numbe
  */
 export function getVectorFromPointAndSlope(x: number, y: number, slope: number) {
     if (slope === Infinity) {
-        return [0, -1] as Point;
+        return [0, -1] as ElbowPoint;
     } else if (slope === -Infinity) {
-        return [0, 1] as Point;
+        return [0, 1] as ElbowPoint;
     }
-    let vector = [1, -slope] as Point;
+    let vector = [1, -slope] as ElbowPoint;
     if (y < 0) {
         vector = [-vector[0], -vector[1]];
     }
-    return vector as Point;
+    return vector as ElbowPoint;
 }
 
 /**
@@ -397,8 +397,8 @@ export function approximately(a: number, b: number, precision = 0.000001) {
 
 // https://medium.com/@steveruiz/find-the-points-where-a-line-segment-intercepts-an-angled-ellipse-in-javascript-typescript-e451524beece
 export function getCrossingPointsBetweenEllipseAndSegment(
-    startPoint: Point,
-    endPoint: Point,
+    startPoint: ElbowPoint,
+    endPoint: ElbowPoint,
     cx: number,
     cy: number,
     rx: number,

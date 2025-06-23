@@ -1,8 +1,9 @@
-import { Point, IPoint } from './common-type';
+import { ElbowPoint, IPoint } from './common-type';
 import { RectangleClient } from './rectangle-client';
 import { generateElbowLineRoute } from './elbow-line-route';
 import { removeDuplicatePoints } from './line-path';
 import { getArrowLineHandleRefPair, getElbowLineRouteOptions } from './arrow-line-common';
+import { waypointUtil } from '@hfdraw/utils';
 
 export enum RouteType {
     STRAIGHT = 'straight',
@@ -23,10 +24,10 @@ export interface PointToPointOptions {
  * @returns 路径点数组
  */
 export function generatePointToPointRoute(
-    startPoint: IPoint | Point, 
-    endPoint: IPoint | Point, 
+    startPoint: IPoint | ElbowPoint, 
+    endPoint: IPoint | ElbowPoint, 
     options: PointToPointOptions = {}
-): Point[] {
+): ElbowPoint[] {
     const { 
         routeType = RouteType.STRAIGHT, 
         margin = 30, 
@@ -34,10 +35,10 @@ export function generatePointToPointRoute(
     } = options;
 
     // 标准化点格式
-    const start: Point = Array.isArray(startPoint) 
+    const start: ElbowPoint = Array.isArray(startPoint) 
         ? startPoint 
         : [startPoint.x, startPoint.y];
-    const end: Point = Array.isArray(endPoint) 
+    const end: ElbowPoint = Array.isArray(endPoint) 
         ? endPoint 
         : [endPoint.x, endPoint.y];
 
@@ -54,7 +55,7 @@ export function generatePointToPointRoute(
  * @param end 终点
  * @returns 包含起点和终点的数组
  */
-function generateStraightRoute(start: Point, end: Point): Point[] {
+function generateStraightRoute(start: ElbowPoint, end: ElbowPoint): ElbowPoint[] {
     return [start, end];
 }
 
@@ -66,7 +67,7 @@ function generateStraightRoute(start: Point, end: Point): Point[] {
  * @param fakeRectSize 假矩形大小
  * @returns 折线路径点数组
  */
-function generateElbowRoute(start: Point, end: Point, margin: number, fakeRectSize: number): Point[] {
+function generateElbowRoute(start: ElbowPoint, end: ElbowPoint, margin: number, fakeRectSize: number): ElbowPoint[] {
     // 在起点和终点周围创建小的假矩形，使用传入的margin参数
     const startRect = createFakeRectangleWithMargin(start, fakeRectSize, margin);
     const endRect = createFakeRectangleWithMargin(end, fakeRectSize, margin);
@@ -106,7 +107,7 @@ function generateElbowRoute(start: Point, end: Point, margin: number, fakeRectSi
  * @param size 矩形大小
  * @returns 矩形的四个角点
  */
-function createFakeRectangle(center: Point, size: number): Point[] {
+function createFakeRectangle(center: ElbowPoint, size: number): ElbowPoint[] {
     const halfSize = size / 2;
     const [x, y] = center;
     
@@ -123,7 +124,7 @@ function createFakeRectangle(center: Point, size: number): Point[] {
  * @param margin 边距
  * @returns 矩形的四个角点
  */
-function createFakeRectangleWithMargin(center: Point, size: number, margin: number): Point[] {
+function createFakeRectangleWithMargin(center: ElbowPoint, size: number, margin: number): ElbowPoint[] {
     const halfSize = (size + margin) / 2;
     const [x, y] = center;
     
@@ -140,7 +141,7 @@ function createFakeRectangleWithMargin(center: Point, size: number, margin: numb
  * @param isSource 是否为源连接点
  * @returns 连接点位置 [x比例, y比例]
  */
-function calculateConnectionPoint(fromPoint: Point, toPoint: Point, isSource: boolean): [number, number] {
+function calculateConnectionPoint(fromPoint: ElbowPoint, toPoint: ElbowPoint, isSource: boolean): [number, number] {
     const [fromX, fromY] = fromPoint;
     const [toX, toY] = toPoint;
     
@@ -176,7 +177,7 @@ function calculateConnectionPoint(fromPoint: Point, toPoint: Point, isSource: bo
  * @param endPoint 终点
  * @returns 直线路径点数组
  */
-export function generateStraightLine(startPoint: IPoint | Point, endPoint: IPoint | Point): Point[] {
+export function generateStraightLine(startPoint: IPoint | ElbowPoint, endPoint: IPoint | ElbowPoint): ElbowPoint[] {
     return generatePointToPointRoute(startPoint, endPoint, { routeType: RouteType.STRAIGHT });
 }
 
@@ -187,9 +188,12 @@ export function generateStraightLine(startPoint: IPoint | Point, endPoint: IPoin
  * @param margin 可选的边距设置
  * @returns 折线路径点数组
  */
-export function generateSmartRoute(startPoint: IPoint | Point, endPoint: IPoint | Point, margin?: number): Point[] {
-    return generatePointToPointRoute(startPoint, endPoint, { 
+export function generateSmartRoute(startPoint: IPoint | ElbowPoint, endPoint: IPoint | ElbowPoint, margin?: number): ElbowPoint[] {
+    const points = generatePointToPointRoute(startPoint, endPoint, { 
         routeType: RouteType.ELBOW, 
         margin 
     });
+    
+    // 合并连续的共线点
+    return waypointUtil.mergeCollinearPoints(points);
 }

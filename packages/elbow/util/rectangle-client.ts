@@ -1,4 +1,4 @@
-import { Point } from "./common-type";
+import { ElbowPoint } from "./common-type";
 
 /**
  * RectangleClient 接口定义了一个矩形对象的基本属性。
@@ -63,20 +63,20 @@ export const RectangleClient = {
         return [
             [rectangle.x, rectangle.y],
             [rectangle.x + rectangle.width, rectangle.y + rectangle.height]
-        ] as [Point, Point];
+        ] as [ElbowPoint, ElbowPoint];
     },
 
     /**
      * 根据中心点、宽度和高度生成一个新的矩形。
      */
-    getRectangleByCenterPoint(point: Point, width: number, height: number) {
+    getRectangleByCenterPoint(point: ElbowPoint, width: number, height: number) {
         return RectangleClient.getRectangleByPoint([point[0] - width / 2, point[1] - height / 2], width, height);
     },
 
     /**
      * 根据给定的起点、宽度和高度生成一个新的矩形。
      */
-    getRectangleByPoint(point: Point, width: number, height: number): RectangleClient {
+    getRectangleByPoint(point: ElbowPoint, width: number, height: number): RectangleClient {
         return {
             x: point[0],
             y: point[1],
@@ -88,7 +88,7 @@ export const RectangleClient = {
     /**
      * 根据一组或多组点生成最小包围矩形。
      */
-    getRectangleByPoints(points: Point[] | Point[][]): RectangleClient {
+    getRectangleByPoints(points: ElbowPoint[] | ElbowPoint[][]): RectangleClient {
         if (isPointArray(points as any)) {
             points = [points] as any;
         }
@@ -111,7 +111,7 @@ export const RectangleClient = {
     /**
      * 根据一组点获取它们形成的矩形的四个顶点。
      */
-    getCornerPointsByPoints(points: Point[]) {
+    getCornerPointsByPoints(points: ElbowPoint[]) {
         const xArray = points.map(ele => ele[0]);
         const yArray = points.map(ele => ele[1]);
         const xMin = Math.min(...xArray);
@@ -123,7 +123,7 @@ export const RectangleClient = {
             [xMax, yMin],
             [xMax, yMax],
             [xMin, yMax]
-        ] as [Point, Point, Point, Point];
+        ] as [ElbowPoint, ElbowPoint, ElbowPoint, ElbowPoint];
     },
 
     /**
@@ -172,20 +172,20 @@ export const RectangleClient = {
             [rectangle.x + rectangle.width, rectangle.y],
             [rectangle.x + rectangle.width, rectangle.y + rectangle.height],
             [rectangle.x, rectangle.y + rectangle.height]
-        ] as [Point, Point, Point, Point];
+        ] as [ElbowPoint, ElbowPoint, ElbowPoint, ElbowPoint];
     },
 
     /**
      * 获取矩形的中心点。
      */
     getCenterPoint: (rectangle: RectangleClient) => {
-        return [rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height / 2] as Point;
+        return [rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height / 2] as ElbowPoint;
     },
 
     /**
      * 根据一组点获取这些点形成的矩形的中心点。
      */
-    getCenterPointByPoints: (points: Point[]) => {
+    getCenterPointByPoints: (points: ElbowPoint[]) => {
         return RectangleClient.getCenterPoint(RectangleClient.getRectangleByPoints(points));
     },
 
@@ -198,7 +198,7 @@ export const RectangleClient = {
             [rectangle.x + rectangle.width, rectangle.y + rectangle.height / 2],
             [rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height],
             [rectangle.x, rectangle.y + rectangle.height / 2]
-        ] as [Point, Point, Point, Point];
+        ] as [ElbowPoint, ElbowPoint, ElbowPoint, ElbowPoint];
     },
 
     /**
@@ -206,7 +206,7 @@ export const RectangleClient = {
      * point 表示 [xRate,yRate] 的比例，用于计算矩形上指定点的位置
      */
     getConnectionPoint: (rectangle: RectangleClient, point: PointOfRectangle) => {
-        return [rectangle.x + rectangle.width * point[0], rectangle.y + rectangle.height * point[1]] as Point;
+        return [rectangle.x + rectangle.width * point[0], rectangle.y + rectangle.height * point[1]] as ElbowPoint;
     },
 
     /**
@@ -235,7 +235,7 @@ export const RectangleClient = {
     /**
      * 判断一个点是否位于矩形内部。
      */
-    isPointInRectangle(rectangle: RectangleClient, point: Point) {
+    isPointInRectangle(rectangle: RectangleClient, point: ElbowPoint) {
         const x = point[0],
             y = point[1];
         return x > rectangle.x && x < rectangle.x + rectangle.width && y > rectangle.y && y < rectangle.y + rectangle.height;
@@ -268,7 +268,7 @@ export const RectangleClient = {
 };
 
 // 辅助函数，用于判断数据是否为点数组
-function isPointArray(data: Point[] | Point[]): data is Point[] {
+function isPointArray(data: ElbowPoint[] | ElbowPoint[]): data is ElbowPoint[] {
     return (
         Array.isArray(data) &&
         data.every(item => Array.isArray(item) && item.length === 2 && typeof item[0] === 'number' && typeof item[1] === 'number')

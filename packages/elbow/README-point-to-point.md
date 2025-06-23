@@ -8,7 +8,7 @@
 
 - ✅ 支持直线路径生成
 - ✅ 支持智能折线路径生成（基于 A* 算法）
-- ✅ 兼容多种点格式（`IPoint` 和 `Point`）
+- ✅ 兼容多种点格式（`IPoint` 和 `ElbowPoint`）
 - ✅ 自动错误处理和回退机制
 - ✅ 与现有 `WaypointUtil` 完美集成
 - ✅ TypeScript 类型安全
@@ -22,12 +22,12 @@
 主要的路径生成函数，支持多种配置选项。
 
 **参数：**
-- `startPoint: IPoint | Point` - 起点坐标
-- `endPoint: IPoint | Point` - 终点坐标
+- `startPoint: IPoint | ElbowPoint` - 起点坐标
+- `endPoint: IPoint | ElbowPoint` - 终点坐标
 - `options?: PointToPointOptions` - 可选配置
 
 **返回值：**
-- `Point[]` - 路径点数组
+- `ElbowPoint[]` - 路径点数组
 
 **配置选项：**
 ```typescript
@@ -43,23 +43,23 @@ interface PointToPointOptions {
 生成直线路径的简化函数。
 
 **参数：**
-- `startPoint: IPoint | Point` - 起点坐标
-- `endPoint: IPoint | Point` - 终点坐标
+- `startPoint: IPoint | ElbowPoint` - 起点坐标
+- `endPoint: IPoint | ElbowPoint` - 终点坐标
 
 **返回值：**
-- `Point[]` - 包含起点和终点的数组
+- `ElbowPoint[]` - 包含起点和终点的数组
 
 #### `generateSmartRoute(startPoint, endPoint, margin?)`
 
 生成智能折线路径的简化函数。
 
 **参数：**
-- `startPoint: IPoint | Point` - 起点坐标
-- `endPoint: IPoint | Point` - 终点坐标
+- `startPoint: IPoint | ElbowPoint` - 起点坐标
+- `endPoint: IPoint | ElbowPoint` - 终点坐标
 - `margin?: number` - 可选的边距设置
 
 **返回值：**
-- `Point[]` - 折线路径点数组
+- `ElbowPoint[]` - 折线路径点数组
 
 ### 类型定义
 
@@ -71,7 +71,7 @@ enum RouteType {
 }
 
 // 点格式（数组形式）
-type Point = [number, number];
+type ElbowPoint = [number, number];
 
 // 点格式（对象形式）
 interface IPoint {
@@ -136,8 +136,8 @@ const point1 = { x: 10, y: 20 };
 const point2 = { x: 100, y: 80 };
 
 // 数组格式
-const point3: Point = [10, 20];
-const point4: Point = [100, 80];
+const point3: ElbowPoint = [10, 20];
+const point4: ElbowPoint = [100, 80];
 
 // 两种格式都支持
 const path1 = generateStraightLine(point1, point2);

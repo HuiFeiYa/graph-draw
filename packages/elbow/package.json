@@ -9,6 +9,9 @@
         },
         "./package.json": "./package.json"
     },
+    "dependencies": {
+      "@hfdraw/utils": "workspace:^"
+    },
     "scripts": {
         "build:esm": "tsc -p tsconfig.esm.json",
         "build:cjs": "tsc -p tsconfig.cjs.json",

@@ -1,13 +1,13 @@
 import { rotatePointsByElement } from "./angle";
 import { ArrowLineHandleKey } from "./common-enum";
-import { ArrowLineHandleRef, ArrowLineHandleRefPair, Direction, PlaitElement, Point, PointOfRectangle, Vector } from "./common-type";
+import { ArrowLineHandleRef, ArrowLineHandleRefPair, Direction, PlaitElement, ElbowPoint, PointOfRectangle, Vector } from "./common-type";
 import { getDirectionByPointOfRectangle, getDirectionByVector, getOppositeDirection } from "./direction";
 import { createFakePoints } from "./elbow";
 import { getNextPoint, getSourceAndTargetOuterRectangle } from "./elbow-line-route";
 import { RectangleClient } from "./rectangle-client";
 
 
-export const getArrowLineHandleRefPair = (sourcePoints: Point[], targetPoints: Point[], element:PlaitElement) => {
+export const getArrowLineHandleRefPair = (sourcePoints: ElbowPoint[], targetPoints: ElbowPoint[], element:PlaitElement) => {
     // 根据 sourcePoint 和 element 中的 connection 比例计算出连接起点的位置
     let sourcePoint = getConnectionPoint(sourcePoints, element.source.connection);
     let targetPoint = getConnectionPoint(targetPoints, element.target.connection);
@@ -63,7 +63,7 @@ export const getArrowLineHandleRefPair = (sourcePoints: Point[], targetPoints: P
  * @param handleRefPair - 箭头线的句柄引用对（未在该方法中使用）。
  * @returns 包含源形状和目标形状的最小包围矩形的对象。
  */
-export const getSourceAndTargetRectangle = (sourcePoints: Point[], targetPoints: Point[], element: PlaitElement, handleRefPair: ArrowLineHandleRefPair) => {
+export const getSourceAndTargetRectangle = (sourcePoints: ElbowPoint[], targetPoints: ElbowPoint[], element: PlaitElement, handleRefPair: ArrowLineHandleRefPair) => {
         // 不存在则创建对应 faker 元素用于计算
         if (!sourcePoints) {
             const source = handleRefPair.source;
@@ -95,7 +95,7 @@ export const getSourceAndTargetRectangle = (sourcePoints: Point[], targetPoints:
             vector: 一个二维数组 [dx, dy]，表示方向向量，用于数学计算，比如确定线条延伸的方向。
  * @returns 包含肘形线路由选项的对象，包括关键点、矩形和外接矩形。
  */
-export const getElbowLineRouteOptions = (sourcePoints: Point[], targetPoints: Point[],element:PlaitElement,handleRefPair?: ArrowLineHandleRefPair) => {
+export const getElbowLineRouteOptions = (sourcePoints: ElbowPoint[], targetPoints: ElbowPoint[],element:PlaitElement,handleRefPair?: ArrowLineHandleRefPair) => {
     handleRefPair = handleRefPair ?? getArrowLineHandleRefPair(sourcePoints,targetPoints, element);
     const { sourceRectangle, targetRectangle } = getSourceAndTargetRectangle(sourcePoints,targetPoints, element, handleRefPair);
     const { sourceOuterRectangle, targetOuterRectangle } = getSourceAndTargetOuterRectangle(sourceRectangle, targetRectangle);
@@ -137,7 +137,7 @@ export const getElbowLineRouteOptions = (sourcePoints: Point[], targetPoints: Po
  * @param delta 可选的偏移量，表示沿指定方向移动的距离
  * @returns 
  */
-export const getConnectionPoint = (points: Point[], connection: Point, direction?: Direction, delta?: number): Point => {
+export const getConnectionPoint = (points: ElbowPoint[], connection: ElbowPoint, direction?: Direction, delta?: number): ElbowPoint => {
     const rectangle = RectangleClient.getRectangleByPoints(points);
     if (direction && delta) {
         const directionFactor = getDirectionFactor(direction);
@@ -160,7 +160,7 @@ export function getDirectionFactor(direction: Direction) {
 }
 
 // 根据一个形状元素和连接点的比例位置，计算并返回一个向量。这个向量通常表示从形状的某个边缘或切线方向出发的方向
-export const getVectorByConnection = (points: Point[], connection: PointOfRectangle): Vector => {
+export const getVectorByConnection = (points: ElbowPoint[], connection: PointOfRectangle): Vector => {
     const rectangle = RectangleClient.getRectangleByPoints(points);
     let vector: Vector = [0, 0];
     const direction = getDirectionByPointOfRectangle(connection);

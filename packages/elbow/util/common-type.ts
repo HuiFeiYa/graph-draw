@@ -24,12 +24,12 @@ export interface ArrowLineHandle {
 }
 export interface PlaitElement {
     [key: string]: any;
-    points?: Point[];
+    points?: ElbowPoint[];
     source: ArrowLineHandle;
     target: ArrowLineHandle;
 }
 
-export type Point = [number, number];
+export type ElbowPoint = [number, number];
 export interface IPoint {
     x:number
     y:number
@@ -49,12 +49,12 @@ export interface ArrowLineHandleRefPair {
 }
 
 export interface ElbowLineRouteOptions {
-    sourcePoint: Point;
-    nextSourcePoint: Point;
+    sourcePoint: ElbowPoint;
+    nextSourcePoint: ElbowPoint;
     sourceRectangle: RectangleClient;
     sourceOuterRectangle: RectangleClient;
-    targetPoint: Point;
-    nextTargetPoint: Point;
+    targetPoint: ElbowPoint;
+    nextTargetPoint: ElbowPoint;
     targetOuterRectangle: RectangleClient;
     targetRectangle: RectangleClient;
 }
@@ -67,8 +67,8 @@ export interface RouteAdjustOptions {
 }
 
 export interface AdjustOptions {
-    parallelPaths: [Point, Point][];
-    pointOfHit: Point;
+    parallelPaths: [ElbowPoint, ElbowPoint][];
+    pointOfHit: ElbowPoint;
     sourceRectangle: RectangleClient;
     targetRectangle: RectangleClient;
 }

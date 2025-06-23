@@ -1,8 +1,8 @@
-import { Point } from "./common-type";
+import { ElbowPoint } from "./common-type";
 import { PointUtil } from "./point";
 
-export const removeDuplicatePoints = (points: Point[]) => {
-    const newArray: Point[] = [];
+export const removeDuplicatePoints = (points: ElbowPoint[]) => {
+    const newArray: ElbowPoint[] = [];
     points.forEach(point => {
         const index = newArray.findIndex(otherPoint => {
             return PointUtil.isEquals(point, otherPoint);
@@ -12,9 +12,9 @@ export const removeDuplicatePoints = (points: Point[]) => {
     return newArray;
 };
 
-export function simplifyOrthogonalPoints(points: Point[]) {
+export function simplifyOrthogonalPoints(points: ElbowPoint[]) {
     if (points.length <= 2) return points;
-    let simplifiedPoints: Point[] = [points[0]];
+    let simplifiedPoints: ElbowPoint[] = [points[0]];
     for (let i = 1; i < points.length - 1; i++) {
         const previous = points[i - 1];
         const current = points[i];

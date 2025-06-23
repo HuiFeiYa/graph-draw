@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-type Point = [number, number];
+type ElbowPoint = [number, number];
 interface ArrowConfig {
     distance: number;
     angle: number;
@@ -20,7 +20,7 @@ export class PathBuilder {
      * @param options - 包含绘制选项的对象，如是否需要起始箭头和结束箭头等。
      * @returns 返回一个对象，包含路径数据（pathData）和箭头数据（arrowData）。
      */
-    draw(points: Point[], options: DrawOptions) {
+    draw(points: ElbowPoint[], options: DrawOptions) {
         let pathData = '';
         let startArrow = '';
         let endArrow = '';
@@ -49,7 +49,7 @@ export class PathBuilder {
      * @param {Object} end - 终点坐标，包含 x 和 y 属性，例如 { x: 200, y: 0 }。
      * @returns {number} 箭头的角度，范围为 [0, 360) 度。
      */
-    calculateArrowAngle(start: Point, end: Point) {
+    calculateArrowAngle(start: ElbowPoint, end: ElbowPoint) {
         // 计算两点之间的差值
         const deltaX = end[0] - start[0]; // X 轴方向的差值
         const deltaY = end[1] - start[1]; // Y 轴方向的差值
@@ -76,7 +76,7 @@ export class PathBuilder {
      * @param {number} size - 箭头的大小（箭头的长度）。
      * @returns {string} 箭头的 SVG 路径。
      */
-    calculateArrowPath(point: Point, angle: number, distance: number, arrowAngle: number, size: number) {
+    calculateArrowPath(point: ElbowPoint, angle: number, distance: number, arrowAngle: number, size: number) {
         // 将角度转换为弧度
         const rad = (deg: number) => deg * (Math.PI / 180);
 
@@ -102,7 +102,7 @@ export class PathBuilder {
         return path;
     }
 
-    connectPointsWithTrim(points: Point[], arrowSize: number, isClipStart = false, isClipEnd = false) {
+    connectPointsWithTrim(points: ElbowPoint[], arrowSize: number, isClipStart = false, isClipEnd = false) {
         // 获取点的数量
         const len = points.length;
         const newPoints = [...points];
@@ -135,7 +135,7 @@ export class PathBuilder {
         return newPoints;
     }
 
-    connectPoints(points: Point[]) {
+    connectPoints(points: ElbowPoint[]) {
         // 生成 SVG 路径数据
     let pathData = `M ${points[0][0]},${points[0][1]}`; // 移动到第一个点
 

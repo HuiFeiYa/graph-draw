@@ -79,3 +79,6 @@ export interface Shape {
     style: StyleObject;
   
   }
+
+
+  export type ElbowPoint = [number, number];

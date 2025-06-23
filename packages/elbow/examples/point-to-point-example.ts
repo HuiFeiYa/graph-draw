@@ -8,7 +8,7 @@ import {
     generateStraightLine, 
     generateSmartRoute,
     RouteType,
-    Point,
+    ElbowPoint,
     IPoint 
 } from '../index';
 
@@ -33,8 +33,8 @@ function exampleStraightLine() {
 
 // 示例2: 生成智能折线路径
 function exampleElbowLine() {
-    const startPoint: Point = [50, 50];
-    const endPoint: Point = [250, 150];
+    const startPoint: ElbowPoint = [50, 50];
+    const endPoint: ElbowPoint = [250, 150];
     
     // 方法1: 使用主函数
     const elbowPath1 = generatePointToPointRoute(startPoint, endPoint, {
@@ -56,7 +56,7 @@ function exampleElbowLine() {
 function exampleWithWaypointUtil() {
     // 注意: 这里模拟 WaypointUtil 的 getPointsPath 方法
     // 实际使用时需要从 @hfdraw/graph 包导入
-    function getPointsPath(waypoints: Point[]): string {
+    function getPointsPath(waypoints: ElbowPoint[]): string {
         if (waypoints.length === 0) return '';
         
         let path = `M ${waypoints[0][0]} ${waypoints[0][1]}`;
@@ -87,9 +87,9 @@ function exampleDifferentPointFormats() {
     const start1: IPoint = { x: 10, y: 20 };
     const end1: IPoint = { x: 100, y: 80 };
     
-    // Point 格式 (数组)
-    const start2: Point = [10, 20];
-    const end2: Point = [100, 80];
+    // ElbowPoint 格式 (数组)
+    const start2: ElbowPoint = [10, 20];
+    const end2: ElbowPoint = [100, 80];
     
     // 两种格式都支持
     const path1 = generateStraightLine(start1, end1);
@@ -104,8 +104,8 @@ function exampleDifferentPointFormats() {
 
 // 示例5: 错误处理和回退机制
 function exampleErrorHandling() {
-    const startPoint: Point = [0, 0];
-    const endPoint: Point = [1000000, 1000000]; // 极端情况
+    const startPoint: ElbowPoint = [0, 0];
+    const endPoint: ElbowPoint = [1000000, 1000000]; // 极端情况
     
     try {
         // 尝试生成折线路径，如果失败会自动回退到直线

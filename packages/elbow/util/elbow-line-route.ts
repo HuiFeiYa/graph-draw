@@ -1,4 +1,4 @@
-import { AdjustOptions, Direction, ElbowLineRouteOptions, Point, RouteAdjustOptions } from "./common-type";
+import { AdjustOptions, Direction, ElbowLineRouteOptions, ElbowPoint, RouteAdjustOptions } from "./common-type";
 import { removeDuplicatePoints, simplifyOrthogonalPoints } from "./line-path";
 import { RectangleClient } from "./rectangle-client";
 import { PointGraph } from '../algorithms/data-structures/graph'
@@ -101,7 +101,7 @@ export const reduceRouteMargin = (sourceRectangle: RectangleClient, targetRectan
  * 句柄的方向（direction）指的是从句柄点出发时，下一个拐点相对于句柄点的方向
  * @returns 
  */
-export const getNextPoint = (point: Point, outerRectangle: RectangleClient, direction: Direction): Point => {
+export const getNextPoint = (point: ElbowPoint, outerRectangle: RectangleClient, direction: Direction): ElbowPoint => {
     switch (direction) {
         case Direction.top: {
             // 如果方向是顶部，则新的点位于当前点的 x 坐标，y 坐标为外接矩形的顶部边界
@@ -127,7 +127,7 @@ export const getGraphPoints = (options: ElbowLineRouteOptions) => {
     const { nextSourcePoint, nextTargetPoint, sourceOuterRectangle, targetOuterRectangle } = options;
     const x: number[] = [];
     const y: number[] = [];
-    let result: Point[] = [];
+    let result: ElbowPoint[] = [];
 
     [sourceOuterRectangle, targetOuterRectangle].forEach(rectangle => {
         x.push(rectangle.x, rectangle.x + rectangle.width / 2, rectangle.x + rectangle.width);
@@ -149,7 +149,7 @@ export const getGraphPoints = (options: ElbowLineRouteOptions) => {
     y.push((rectanglesY[1] + rectanglesY[2]) / 2, nextSourcePoint[1], nextTargetPoint[1]);
     for (let i = 0; i < x.length; i++) {
         for (let j = 0; j < y.length; j++) {
-            const point: Point = [x[i], y[j]];
+            const point: ElbowPoint = [x[i], y[j]];
             const isInSource = RectangleClient.isPointInRectangle(sourceOuterRectangle, point);
             const isInTarget = RectangleClient.isPointInRectangle(targetOuterRectangle, point);
             if (!isInSource && !isInTarget) {
@@ -166,7 +166,7 @@ export const getGraphPoints = (options: ElbowLineRouteOptions) => {
 };
 
 
-export const createGraph = (points: Point[]) => {
+export const createGraph = (points: ElbowPoint[]) => {
     const graph = new PointGraph();
     const Xs: number[] = [];
     const Ys: number[] = [];
@@ -179,20 +179,20 @@ export const createGraph = (points: Point[]) => {
     });
     Xs.sort((a, b) => a - b);
     Ys.sort((a, b) => a - b);
-    const inHotIndex = (p: Point): boolean => graph.has(p);
+    const inHotIndex = (p: ElbowPoint): boolean => graph.has(p);
     for (let i = 0; i < Xs.length; i++) {
         for (let j = 0; j < Ys.length; j++) {
-            const point: Point = [Xs[i], Ys[j]];
+            const point: ElbowPoint = [Xs[i], Ys[j]];
             if (!inHotIndex(point)) continue;
             if (i > 0) {
-                const otherPoint: Point = [Xs[i - 1], Ys[j]];
+                const otherPoint: ElbowPoint = [Xs[i - 1], Ys[j]];
                 if (inHotIndex(otherPoint)) {
                     graph.connect(otherPoint, point);
                     graph.connect(point, otherPoint);
                 }
             }
             if (j > 0) {
-                const otherPoint: Point = [Xs[i], Ys[j - 1]];
+                const otherPoint: ElbowPoint = [Xs[i], Ys[j - 1]];
                 if (inHotIndex(otherPoint)) {
                     graph.connect(otherPoint, point);
                     graph.connect(point, otherPoint);
@@ -203,10 +203,10 @@ export const createGraph = (points: Point[]) => {
     return graph;
 };
 
-const getAdjustOptions = (path: Point[], centerOfAxis: number, isHorizontal: boolean) => {
-    const parallelPaths: [Point, Point][] = [];
-    let start: null | Point = null;
-    let pointOfHit: null | Point = null;
+const getAdjustOptions = (path: ElbowPoint[], centerOfAxis: number, isHorizontal: boolean) => {
+    const parallelPaths: [ElbowPoint, ElbowPoint][] = [];
+    let start: null | ElbowPoint = null;
+    let pointOfHit: null | ElbowPoint = null;
     const axis = isHorizontal ? 0 : 1;
 
     for (let index = 0; index < path.length; index++) {
@@ -231,7 +231,7 @@ const getAdjustOptions = (path: Point[], centerOfAxis: number, isHorizontal: boo
     return { pointOfHit, parallelPaths };
 };
 
-const adjust = (route: Point[], options: AdjustOptions): null | Point[] => {
+const adjust = (route: ElbowPoint[], options: AdjustOptions): null | ElbowPoint[] => {
     const { parallelPaths, pointOfHit, sourceRectangle, targetRectangle } = options;
     let result = null;
     parallelPaths.forEach(parallelPath => {
@@ -251,7 +251,7 @@ const adjust = (route: Point[], options: AdjustOptions): null | Point[] => {
                 }
             });
             const newPath = [...route];
-            const missCorner = tempCorners.find((c, index) => !indexRangeInCorner.includes(index)) as Point;
+            const missCorner = tempCorners.find((c, index) => !indexRangeInCorner.includes(index)) as ElbowPoint;
             const removeLength = Math.abs(indexRangeInPath[0] - indexRangeInPath[indexRangeInPath.length - 1]) + 1;
             newPath.splice(indexRangeInPath[0] + 1, removeLength - 2, missCorner);
             const turnCount = simplifyOrthogonalPoints([...route]).length - 1;
@@ -269,7 +269,7 @@ const adjust = (route: Point[], options: AdjustOptions): null | Point[] => {
     return result;
 };
 
-export const routeAdjust = (path: Point[], options: RouteAdjustOptions) => {
+export const routeAdjust = (path: ElbowPoint[], options: RouteAdjustOptions) => {
     const { sourceRectangle, targetRectangle, centerX, centerY } = options;
 
     if (centerX !== undefined) {

@@ -1,10 +1,10 @@
-import { Bounds, EdgeShape, EventType, IPoint, ShapeType } from "@hfdraw/types"
+import { Bounds, EdgeShape, ElbowPoint, EventType, IPoint, ShapeType } from "@hfdraw/types"
 import { Point } from "../util/Point"
 import { GraphModel } from "./GraphModel"
 import { MovePointPosition } from "../types"
-import { generateSmartRoute, getKeyPoints, Point as ElbowPoint } from "@hfdraw/elbow"
+import { generateSmartRoute, getKeyPoints } from "@hfdraw/elbow"
 import { PlaitElement, PointOfRectangle } from "@hfdraw/elbow/util/common-type"
-import { waypointUtil } from "../util/edgeUtil/WaypointUtil"
+import { waypointUtil } from "@hfdraw/utils"
 
 export class EdgeMoveModel {
     movingShape?: EdgeShape // 正在移动的线的shape
