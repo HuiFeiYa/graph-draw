@@ -6,6 +6,7 @@ import { EdgeMoveType, EdgeShape, EventType, IPoint, MarkerColor, Shape, ShapeKe
 import { Marker } from "./Marker/Marker";
 import { generateSmartRoute } from "@hfdraw/elbow";
 import { cleanWaypoint, getBoundsCenterPoint, getEdgeGridNum, getGridWaypoints, int } from "../util/common";
+import { waypointUtil } from "@hfdraw/utils";
 export class EdgePointMoveModel {
 
   movingShape: EdgeShape|undefined = undefined;
@@ -179,7 +180,7 @@ export class EdgePointMoveModel {
     // 当前悬浮的元素
     const curShape = shape;
     this.hoverShape = curShape;
-    let waypoints: Point[] = [];
+    let waypoints: Point[] = edgeShape.waypoint;
     // 拖拽起点
     if (this.isSourcePoint) {
       const targetShape = this.graph.getShape(edgeShape.targetId);
@@ -188,27 +189,30 @@ export class EdgePointMoveModel {
       this.sourceShape = curShape;
       this.targetShape = targetShape;
       this.validConnect = curShape ? await this.validateConnectShape(curShape) : false;
+      const lastPoint = waypoints[waypoints.length - 1];
+
       if (curShape) {
         // 此方法使用于从 source 连接值 target，如果拖拽的是 source，则需要将计算的点反转下
-        waypoints = generateSmartRoute(curPoint, point, 10).map(([x, y]) => new Point(x, y))
-        // waypoints = waypointUtil.generateConnectPreviewWaypoint(
-        //   this.graph.shapeMap,
-        //   edgeShape.style,
-        //   targetShape,
-        //   curPoint,
-        //   curShape
-        // );
-        waypoints.reverse();
+        // waypoints = generateSmartRoute(curPoint, point, 10).map(([x, y]) => new Point(x, y))
+
+        waypoints = waypointUtil.generateConnectPreviewWaypoint(
+          this.graph.shapeMap,
+          edgeShape.style,
+          curShape,
+          new Point(lastPoint.x, lastPoint.y),
+          undefined,
+          curPoint,
+        );
       } else {
-        // waypoints = waypointUtil.generateConnectPreviewWaypoint(
-        //   this.graph.shapeMap,
-        //   edgeShape.style,
-        //   curShape,
-        //   point,
-        //   targetShape,
-        //   curPoint
-        // );
-        waypoints = generateSmartRoute(point, curPoint, 10).map(([x, y]) => new Point(x, y))
+        waypoints = waypointUtil.generateConnectPreviewWaypoint(
+          this.graph.shapeMap,
+          edgeShape.style,
+          undefined,
+          new Point(lastPoint.x, lastPoint.y),
+          curShape,
+          curPoint,
+        );
+        // waypoints = generateSmartRoute(point, curPoint, 10).map(([x, y]) => new Point(x, y))
       }
     } else {
       this.sourceShape = this.graph.getShape(edgeShape.sourceId);
@@ -217,7 +221,7 @@ export class EdgePointMoveModel {
       const point = new Point(bounds?.absX, bounds?.absY);
       const valid = curShape ? await this.validateConnectShape(curShape) : false;
       this.validConnect = valid;
-      waypoints = generateSmartRoute(curPoint, point, 10).map(([x, y]) => new Point(x, y))
+      // waypoints = generateSmartRoute(curPoint, point, 10).map(([x, y]) => new Point(x, y))
       // waypoints = waypointUtil.generateConnectPreviewWaypoint(
       //   this.graph.shapeMap,
       //   edgeShape.style,
@@ -230,10 +234,10 @@ export class EdgePointMoveModel {
     getGridWaypoints(waypoints, true);
     this.previewWaypoint = waypoints;
     // 未产生有效连接时
-    if (!this.sourceShape || !this.targetShape) {
-      this.removeMarker();
-      this.isValidTargetCache = {};
-    }
+    // if (!this.sourceShape || !this.targetShape) {
+    //   this.removeMarker();
+    //   this.isValidTargetCache = {};
+    // }
   }
   async onMouseMove(event:MouseEvent, shape?: Shape) {
 
@@ -663,10 +667,10 @@ export class EdgePointMoveModel {
         this.initPreviewState();
         return;
       } else {
-        if (this.graph.graphOption.changeRelationshipEnds && this.sourceShape?.id && this.targetShape?.id) {
+        if (this.graph.graphOption.changeRelationshipEnds && (this.sourceShape || this.targetShape)) {
           try {
           /** 需要先更新 shape 属性，后续再更新 waypoint，否则其中读取的 shape 的属性可能时错误的 */
-            await this.graph.graphOption.changeRelationshipEnds(this.movingShape, this.sourceShape, this.targetShape, points, this.moveType);
+            await this.graph.graphOption.changeRelationshipEnds(this.movingShape, points, this.moveType, this.sourceShape, this.targetShape);
           } catch (error:any) {
             console.error(error?.message);
           }

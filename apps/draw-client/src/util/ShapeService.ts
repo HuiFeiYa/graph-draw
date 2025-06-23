@@ -1,6 +1,6 @@
 import { httpClient } from './httpClient'
 import { API } from '../constants/api'
-import { ConnectShapeAndCreateDto, MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
+import { ChangeRelationshipEndsDto, ConnectShapeAndCreateDto, MoveShapeDto, SideBarDropDto } from '../types/shape.dto'
 import { Bounds, IBounds, Shape, StyleObject } from '@hfdraw/types'
 import { AxiosResponse } from 'axios';
 // @ts-nocheck
@@ -56,7 +56,9 @@ export class ShapeService {
     async getResizeMinimumBounds(projectId: string,  shapeId: string, vertexType: number): Promise<ResData<Bounds>> {
         return httpClient.post(API.SHAPE_MINIMUM_BOUNDS,{  shapeId, projectId, vertexType }).then((res:any) => res.data);
     }
-
+    async changeRelationshipEnds(dto: ChangeRelationshipEndsDto) {
+        await httpClient.post(API.RELATIONSHIP_CHANGERELATIONSHIPENDS, dto);
+      }
 
 }
 export const shapeService = new ShapeService();

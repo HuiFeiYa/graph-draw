@@ -1,6 +1,5 @@
 import { getKeyPoints } from "@hfdraw/elbow";
-import { Point } from "@hfdraw/elbow/util/common-type";
-import { ShapeKey, SubShapeType } from "@hfdraw/types";
+import { SubShapeType, ElbowPoint } from "@hfdraw/types";
 import { ShapeEntity } from "src/entities/shape.entity";
 import { MoveShapeDto } from "src/types/shape.dto";
 
@@ -62,11 +61,11 @@ export class MoveManager {
         }
         const { x: x1, y: y1, width: w1, height: h1} = sourceShape.bounds;
         const { x: x2, y: y2, width: w2, height: h2} = targetShape.bounds;
-        const sourcePoints: Point[] = [
+        const sourcePoints: ElbowPoint[] = [
             [x1, y1],
             [x1 + w1, y1 + h1]
         ]
-        const targetPoints: Point[] = [
+        const targetPoints: ElbowPoint[] = [
             [x2, y2],
             [x2 + w2, y2 + h2]
         ]

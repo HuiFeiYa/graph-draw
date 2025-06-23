@@ -2,7 +2,7 @@ import { Model } from "src/entities/model.entity";
 import { ModelKey } from "src/types/model.type";
 import { Point } from 'src/utils/Point';
 import { ShapeEntity } from "src/entities/shape.entity";
-import { Bounds, ShapeKey, StType, SubShapeType, VertexType } from "@hfdraw/types";
+import { Bounds, ShapeKey, ShapeType, StType, SubShapeType, VertexType } from "@hfdraw/types";
 import { shapeFactory } from "src/modules/models/ShapeFactory";
 import { connectEdgeLength } from "src/modules/shape/shapeConfig/commonShapeOption";
 import { cloneDeep } from "lodash";
@@ -121,6 +121,13 @@ export class ShapeUtil {
     if (shape.waypointChanged) {
       change.waypoint = shape.waypoint;
     }
+
+    if (shape.sourceIdChanged) {
+      change.sourceId = shape.sourceId;
+    }
+    if (shape.targetIdChanged) {
+      change.targetId = shape.targetId;
+    }
     return change;
   }
 
@@ -143,6 +150,51 @@ export class ShapeUtil {
     height += NAME_MARGIN;
     return height;
 
+  }
+
+  /**
+   * 获得端到线的map，（一个图形有哪些连线）
+   * @param shapeMap
+   * @param diagramId
+   * @returns
+   */
+  getEndToEdgeMap(shapeMap: Map<string, ShapeEntity>, diagramId: string) {
+    const endToEdgeMap = new Map<string, Set<ShapeEntity>>();
+    const edges = (shapeMap.get(diagramId).children || []).filter(child => child.shapeType === ShapeType.Edge);
+    edges.forEach(edge => {
+      if (edge.sourceId) {
+        let set = endToEdgeMap.get(edge.sourceId);
+        if (!set) {
+          set = new Set();
+          endToEdgeMap.set(edge.sourceId, set);
+        }
+        set.add(edge);
+
+      }
+      if (edge.targetId) {
+        let set = endToEdgeMap.get(edge.targetId);
+        if (!set) {
+          set = new Set();
+          endToEdgeMap.set(edge.targetId, set);
+        }
+        set.add(edge);
+
+      }
+    });
+
+    return endToEdgeMap;
+  }
+
+  getEndToEdge(shapeMap: Map<string, ShapeEntity>, projectId: string, shapeId: string) {
+    const result = new Set<ShapeEntity>();
+    const edges = [...shapeMap.values()].filter(child => child.shapeType === ShapeType.Edge);
+    edges.forEach(edge => {
+      if (edge.sourceId === shapeId || edge.targetId == shapeId) {
+        result.add(edge);
+      }
+
+    });
+    return result;
   }
 }
 export const shapeUtil = new ShapeUtil()

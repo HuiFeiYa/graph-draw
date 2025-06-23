@@ -14,6 +14,7 @@ import {
   BaseProjectDto,
   ShapeResizeDto,
   GetMinimumBoundsDto,
+  ChangeRelationshipEndsDto,
 } from 'src/types/shape.dto';
 import { transaction } from 'src/utils/transaction';
 
@@ -144,6 +145,14 @@ export class ShapeController {
       return new ResData(result);
     });
   }
-
+  @Post('changeRelationshipEnds')
+  async changeRelationshipEnds(@Body() dto: ChangeRelationshipEndsDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.changeRelationshipEnds(dto);
+      return new ResData(result);
+    });
+  }
   
 }

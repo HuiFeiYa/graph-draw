@@ -9,7 +9,7 @@
   "watchOptions": {
     "watchExclude": [
       "../apps/**/*",
-      "../packages/**/*",
+      "../packages/**/**/*.ts",
       "../node_modules/**/*",
       "node_modules/**/*"
     ],

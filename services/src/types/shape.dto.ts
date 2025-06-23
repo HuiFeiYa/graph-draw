@@ -1,4 +1,4 @@
-import { Bounds, Change, RetrospectOption, SiderbarItemKey, StType, StyleObject, VertexType } from "@hfdraw/types";
+import { Bounds, Change, EdgeMoveType, IPoint, RetrospectOption, SiderbarItemKey, StType, StyleObject, VertexType } from "@hfdraw/types";
 import { IsArray, IsBoolean, IsInt, IsNumber, IsObject, IsString } from "class-validator";
 import { Point } from "src/utils/Point";
 import { ModelKey } from "./model.type";
@@ -141,4 +141,13 @@ export class SideBarDropDto {
     @IsNumber()
     vertexType: VertexType
   
+  }
+
+
+  export class ChangeRelationshipEndsDto extends BaseProjectDto  {
+    waypoint: IPoint[]
+    shapeId: string
+    shapeSourceId?: string
+    shapeTargetId?: string
+    moveType?: EdgeMoveType
   }

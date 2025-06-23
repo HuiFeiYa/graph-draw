@@ -22,6 +22,7 @@ export const API = {
     projectDelete: 'project/delete',
     resizeShape: 'shape/resize',
     SHAPE_MINIMUM_BOUNDS: "shape/minimumBounds",
+    RELATIONSHIP_CHANGERELATIONSHIPENDS: "shape/changeRelationshipEnds",
 }
 
 export const ApiCode =  {

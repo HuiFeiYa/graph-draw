@@ -11,6 +11,9 @@ export interface IBounds {
   export interface IPoint {
     x:number
     y:number
+    toInt():IPoint
+    clone():IPoint
+    translate(dx:number, dy:number):void
   }
 
   export class Bounds implements IBounds {

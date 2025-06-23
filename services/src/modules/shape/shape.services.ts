@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   BaseProjectDto,
+  ChangeRelationshipEndsDto,
   ConnectShapeAndCreateDto,
   CreateMindMapRectDto,
   ExpandShapeDto,
@@ -34,6 +35,7 @@ import { clone, cloneDeep } from 'lodash';
 import { equalBounds } from 'src/utils/common';
 import { ResizeUtil } from 'src/utils/ResizeUtil';
 import { MinBoundsUtil } from 'src/utils/shape/MinBoundsUtil';
+import { waypointModel } from 'src/utils/WaypointModel';
 @Injectable()
 export class ShapeService  extends BaseService{
   private readonly stepService: StepService
@@ -323,7 +325,34 @@ export class ShapeService  extends BaseService{
     await this.updateShapeChanges([shape]);
     return [shape];
   }
+  async changeRelationshipEnds(dto: ChangeRelationshipEndsDto) {
+    const shapeMap = (await this.getShapeTree(dto.projectId, {})).shapeMap;
+    const edgeShape = shapeMap.get(dto.shapeId);
+    if (dto.shapeSourceId) {
+      edgeShape.sourceId = dto.shapeSourceId;
+      edgeShape.sourceIdChanged = true;
+    }
+    if (dto.shapeTargetId) {
+      edgeShape.targetId = dto.shapeTargetId;
+      edgeShape.targetIdChanged = true;
+    }
+    const toUpdateShapes = new Set<ShapeEntity>();
+    const affectedShapes = waypointModel.updateWaypoint(shapeMap, edgeShape, dto.waypoint);
+    affectedShapes.forEach(it => {
+      toUpdateShapes.add(it);
+    })
 
+    // 是有有其他线的两端是这条线edgeShape， 如果有的话要调整这些线
+    const affects3 = waypointModel.adjustEdgeRelatedEdges(shapeMap, dto.projectId, edgeShape.id);
+    affects3.forEach(it => {
+      toUpdateShapes.add(it);
+    })
+    if (toUpdateShapes.size > 0) {
+      await this.updateShapeChanges(toUpdateShapes);
+    }
+  }
+
+  
   async test() {
     // return this.currentStepService.findStep();
   }

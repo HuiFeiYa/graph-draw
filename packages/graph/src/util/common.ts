@@ -162,3 +162,4 @@ export function getBoundsCenterPoint(bounds:Bounds) {
   const y = bounds.absY + bounds.height / 2;
   return new Point(x, y);
 }
+

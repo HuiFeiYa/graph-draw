@@ -687,3 +687,15 @@ export const charWidthConfig:CharWidthConfig = {
       "~": 7009
     }
   }
+
+  export enum AreaType {
+    leftTop=1,
+    top=2,
+    rightTop=3,
+    left=4,
+    center=5,
+    right=6,
+    leftBottom=7,
+    bottom=8,
+    rightBottom=9
+  }

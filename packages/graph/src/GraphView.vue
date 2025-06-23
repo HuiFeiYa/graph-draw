@@ -22,6 +22,7 @@ const transform = ref({ x: 0, y: 0 });
 
 // 获取 DOM 元素
 const rootGroup = ref(null);
+const dom0 = ref<HTMLSpanElement|null>(null);
 const svgElement = ref<SVGSVGElement|null>(null);
 // 是否显示选中效果
 const showSelectionVertex = computed(() => {
@@ -123,6 +124,17 @@ function handleVertexMousedown(event: MouseEvent, index: VertexType) {
   }
 }
 
+function handleCaptureMouseEvent(event:MouseEvent) {
+  if ((event.detail as any).fromGraphView) return;
+
+  let custom = new CustomEvent(event.type, { detail: { fromGraphView: true }, bubbles: true });
+  (custom as any).shiftKey = event.shiftKey;
+  (custom as any).clientX = event.clientX;
+  (custom as any).clientY = event.clientY;
+
+  dom0.value?.dispatchEvent(custom);
+}
+
 onMounted(() => {
   if (!viewDom.value) return;
   props.graph.viewModel.setViewDom(viewDom.value);
@@ -133,7 +145,9 @@ onUnmounted(() => {
 
 </script>
 <template>
-  <div class="graph-view" ref="viewDom">
+  <div class="graph-view" ref="viewDom" 
+  @mouseup.capture="handleCaptureMouseEvent"
+  @mousedown.capture="handleCaptureMouseEvent">
     <!-- 
           展示层
           * 整个画布的事件监听
@@ -169,6 +183,7 @@ onUnmounted(() => {
         <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" :graph="graph" />
       </g>
     </svg>
+    <span ref="dom0"></span>
   </div>
 </template>
 <style lang="scss">

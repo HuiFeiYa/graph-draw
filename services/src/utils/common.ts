@@ -1,5 +1,6 @@
 import { Bounds } from "@hfdraw/types";
 import { Base36 } from "./Base36";
+import { Point } from "./Point";
 
 /**
  * 获取唯一的id，以时间为基准，
@@ -84,3 +85,41 @@ export function breakArray<T>(arr:T[], size = 300) {
 export function equalBounds(bounds1: Bounds, bounds2: Bounds) {
   return bounds1.x === bounds2.x && bounds1.y === bounds2.y && bounds1.width === bounds2.width && bounds1.height === bounds2.height && bounds1.absX === bounds2.absX && bounds1.absY === bounds2.absY;
 }
+
+
+/**
+ * 四舍五入转小数，默认保留两位小数
+ * @param num
+ * @returns
+ */
+export function float(num:number, precision = 2) {
+  return parseFloat(num.toFixed(precision));
+}
+
+/**
+ * 四舍五入转整数
+ * @param num
+ * @returns
+ */
+export function int(num:number|string) {
+  return Math.round(+num);
+}
+
+export function getBoundsCenterPoint(bounds:Bounds) {
+  const x = bounds.absX + bounds.width / 2;
+  const y = bounds.absY + bounds.height / 2;
+  return new Point(x, y);
+}
+
+export function getBoundsBorderCenterPoint(bounds:Bounds) {
+  let center = getBoundsCenterPoint(bounds);
+  return {
+    top: new Point(center.x, bounds.absY),
+    left: new Point(bounds.absX, center.y),
+    right: new Point(bounds.absX + bounds.width, center.y),
+    bottom: new Point(center.x, bounds.absY + bounds.height),
+
+  };
+
+}
+

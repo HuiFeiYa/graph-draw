@@ -109,8 +109,16 @@ export class GraphOption implements IGraphOption {
     const delta = event.deltaY < 0 ? 1.02 : 0.98;
     this.setScale(this.scale * delta);
   }
-
-  async changeRelationshipEnds(edgeShape: Shape, sourceShape: Shape, targetShape: Shape, waypoint: IPoint[], moveType?:EdgeMoveType) {
+  // 变更线上的关系
+  async changeRelationshipEnds(edgeShape: Shape, waypoint: IPoint[], moveType?:EdgeMoveType, sourceShape?: Shape, targetShape?: Shape) {
     console.log('changeRelationshipEnds', edgeShape, sourceShape, targetShape, waypoint);
+    shapeService.changeRelationshipEnds({
+      shapeId: edgeShape.id,
+      projectId: this.projectId,
+      waypoint,
+      moveType,
+      shapeSourceId: sourceShape?.id,
+      shapeTargetId: targetShape?.id,
+    })
   }
 }

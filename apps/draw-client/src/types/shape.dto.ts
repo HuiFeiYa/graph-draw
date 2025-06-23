@@ -1,4 +1,4 @@
-import { SiderbarItemKey, VertexType } from "@hfdraw/types";
+import { EdgeMoveType, IPoint, SiderbarItemKey, VertexType } from "@hfdraw/types";
 export interface SideBarDropDto {
     point: {x:number,y:number};
     projectId: string;
@@ -26,3 +26,11 @@ export interface SideBarDropDto {
   }
 
 
+  export interface ChangeRelationshipEndsDto {
+    projectId: string
+    waypoint: IPoint[]
+    shapeId: string
+    shapeSourceId?: string
+    shapeTargetId?: string
+    moveType?: EdgeMoveType
+  }

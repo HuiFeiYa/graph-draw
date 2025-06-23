@@ -37,7 +37,7 @@ export interface IGraphOption {
   zoomIn(): void;
   zoomOut(): void;
   handleWheel(event: WheelEvent): void;
-  changeRelationshipEnds?: (edgeShape: Shape, sourceShape: Shape, targetShape: Shape, waypoint: IPoint[], moveType?:EdgeMoveType) => Promise<void>
+  changeRelationshipEnds?: (edgeShape: Shape,  waypoint: IPoint[], moveType?:EdgeMoveType, sourceShape?: Shape, targetShape?: Shape) => Promise<void>
 }
 
 export enum MovePointPosition {
