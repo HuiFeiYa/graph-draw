@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "workspaces": [
-    "packages/*",
-    "services",
-    "apps/*"
-  ],
   "scripts": {
     "start": "pnpm run client & pnpm run server",
     "client": "pnpm --filter draw-client run start",
@@ -19,7 +14,14 @@
     "i:client": "pnpm --filter draw-client install",
     "i:server": "pnpm --filter services install",
     "i:graph": "pnpm --filter graph install",
-    "i": "pnpm run i:client & pnpm run i:server & pnpm run i:graph"
+    "i": "pnpm run i:client & pnpm run i:server & pnpm run i:graph",
+    "install:fast": "pnpm install --prefer-offline",
+    "add:workspace": "pnpm add --workspace",
+    "clean:cache": "pnpm store prune",
+    "link:packages": "pnpm install --link-workspace-packages",
+    "add:isolated": "node scripts/isolated-install.js add",
+    "install:isolated": "node scripts/isolated-install.js install",
+    "install:package": "pnpm install --no-frozen-lockfile --no-shared-workspace-lockfile"
   },
   "keywords": [],
   "author": "",

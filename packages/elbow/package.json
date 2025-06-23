@@ -1,23 +1,24 @@
 {
-    "name": "@hfdraw/elbow",
-    "version": "1.0.0",
-    "main": "./index.ts",
-    "exports": {
-        ".": {
-        "import": "./dist/esm/index.d.ts",
-        "require": "./dist/cjs/index.js"
-        },
-        "./package.json": "./package.json"
+  "name": "@hfdraw/elbow",
+  "version": "1.0.0",
+  "main": "./index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.d.ts",
+      "require": "./dist/cjs/index.js"
     },
-    "dependencies": {
-      "@hfdraw/utils": "workspace:^"
-    },
-    "scripts": {
-        "build:esm": "tsc -p tsconfig.esm.json",
-        "build:cjs": "tsc -p tsconfig.cjs.json",
-        "build": "npm run build:esm && npm run build:cjs"
-      },
-      "files": [
-        "dist"
-      ]
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "npm run build:esm && npm run build:cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@hfdraw/graph": "workspace:^",
+    "@hfdraw/types": "workspace:^"
+  }
 }

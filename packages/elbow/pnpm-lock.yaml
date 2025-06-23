@@ -1,0 +1,13 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true,
+  excludeLinksFromLockfile: false
+
+dependencies:
+  '@hfdraw/types':
+    specifier: workspace:^
+    version: link:../types
+  '@hfdraw/utils':
+    specifier: workspace:^
+    version: link:../utils
