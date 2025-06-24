@@ -217,18 +217,20 @@ export class ShapeService  extends BaseService{
     }});
     shape.waypoint = dto.waypoint;
     shape.waypointChanged = true;
-    if (Object.keys(dto.styleObject).length > 0) {
+    if (dto.styleObject && Object.keys(dto.styleObject).length > 0) {
       shape.style = {
         ...shape.style,
         ...dto.styleObject
       };
       shape.styleChanged = true;
     }
-    if (dto.sourceId) {
+    // 处理sourceId的变更，包括设置为null的情况
+    if (dto.hasOwnProperty('sourceId')) {
       shape.sourceId = dto.sourceId;
       shape.sourceIdChanged = true;
     }
-    if (dto.targetId) {
+    // 处理targetId的变更，包括设置为null的情况
+    if (dto.hasOwnProperty('targetId')) {
       shape.targetId = dto.targetId;
       shape.targetIdChanged = true;
     }

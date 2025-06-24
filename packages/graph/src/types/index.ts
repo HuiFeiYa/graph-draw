@@ -19,8 +19,8 @@ export interface IGraphOption {
     shapeId: string,
     waypoint: Point[],
     styleObject?: StyleObject,
-    sourceId?:string,
-    targetId?:string
+    sourceId?:string | null,
+    targetId?:string | null
   ): void;
   addMindMapRect(index: VertexType, shape: Shape): void;
   saveText(shape: Shape, text: string): Promise<void>;

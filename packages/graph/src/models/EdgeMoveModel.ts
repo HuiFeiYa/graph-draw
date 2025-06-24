@@ -1,256 +1,346 @@
-import { Bounds, EdgeShape, ElbowPoint, EventType, IPoint, Shape, ShapeType, StyleObject } from "@hfdraw/types"
-import { Point } from "../util/Point"
-import { GraphModel } from "./GraphModel"
-import { MovePointPosition } from "../types"
-import { generateSmartRoute, getKeyPoints, generateRectConnectRoute, getOptimalConnectionPoint } from "@hfdraw/elbow"
-import { PlaitElement, PointOfRectangle, RectConnectPoint } from "@hfdraw/elbow/util/common-type"
-import { waypointUtil } from "@hfdraw/utils"
+import {
+  Bounds,
+  EdgeShape,
+  ElbowPoint,
+  EventType,
+  IPoint,
+  Shape,
+  ShapeType,
+  StyleObject,
+} from "@hfdraw/types";
+import { Point } from "../util/Point";
+import { GraphModel } from "./GraphModel";
+import { MovePointPosition } from "../types";
+import {
+  generateSmartRoute,
+  getKeyPoints,
+  generateRectConnectRoute,
+  getOptimalConnectionPoint,
+} from "@hfdraw/elbow";
+import {
+  PlaitElement,
+  PointOfRectangle,
+  RectConnectPoint,
+} from "@hfdraw/elbow/util/common-type";
+import { waypointUtil } from "@hfdraw/utils";
 
 export class EdgeMoveModel {
-    movingShape?: EdgeShape // 正在移动的线的shape
-    startPoint: IPoint = new Point() // 移动起始时的鼠标的坐标
-    endPoint: IPoint = new Point() // 移动过程中鼠标的坐标
-    currentPoint: IPoint = new Point() // 移动过程中鼠标的坐标
-    edgeShape!: EdgeShape
-    dx = 0 // 移动的x距离
-    dy = 0 // 移动的y距离
-    waypoint!: [number, number][]
-    showPreview = false // 是否显示预览
-    previewPath = '' // 预览线的路径path的d属性
-    index: MovePointPosition = MovePointPosition.start
-    element!:PlaitElement
-    toUpdateEdgeShapeParams: {style?:StyleObject, sourceId?: string, targetId?: string} = {} // 要更新的边的样式
-    get isStart() {
-        return this.index === MovePointPosition.start;
-    }
-    constructor(public graph: GraphModel) {
-        this.initPreviewState();
-    }
-    // 当鼠标按下线段始末的控制点时触发
-    onEdgeStartOrEndPointMousedown(event: MouseEvent, edgeShape: EdgeShape, index: MovePointPosition) {
-        if (!edgeShape) return 
-        this.index = index;
-        this.edgeShape = edgeShape;
-        const waypoint = edgeShape.waypoint || [];
-        this.startPoint = waypoint[0];
-        this.endPoint = waypoint[waypoint.length - 1];
-        
-        // 初始预览路径使用原始起点和终点
-        const elbowPath2 = generateSmartRoute(this.startPoint, this.endPoint, 10);
-        this.previewPath = waypointUtil.getPointsPath(elbowPath2);
-        this.showPreview = true;
+  movingShape?: EdgeShape; // 正在移动的线的shape
+  startPoint: IPoint = new Point(); // 移动起始时的鼠标的坐标
+  endPoint: IPoint = new Point(); // 移动过程中鼠标的坐标
+  currentPoint: IPoint = new Point(); // 移动过程中鼠标的坐标
+  edgeShape!: EdgeShape;
+  dx = 0; // 移动的x距离
+  dy = 0; // 移动的y距离
+  waypoint!: [number, number][];
+  showPreview = false; // 是否显示预览
+  previewPath = ""; // 预览线的路径path的d属性
+  index: MovePointPosition = MovePointPosition.start;
+  element!: PlaitElement;
+  toUpdateEdgeShapeParams: {
+    style?: StyleObject;
+    sourceId?: string | null;
+    targetId?: string | null;
+  } = {}; // 要更新的边的样式
+  get isStart() {
+    return this.index === MovePointPosition.start;
+  }
+  constructor(public graph: GraphModel) {
+    this.initPreviewState();
+  }
+  // 当鼠标按下线段始末的控制点时触发
+  onEdgeStartOrEndPointMousedown(
+    event: MouseEvent,
+    edgeShape: EdgeShape,
+    index: MovePointPosition
+  ) {
+    if (!edgeShape) return;
+    this.index = index;
+    this.edgeShape = edgeShape;
+    const waypoint = edgeShape.waypoint || [];
+    this.startPoint = waypoint[0];
+    this.endPoint = waypoint[waypoint.length - 1];
 
-        const onMouseMove = this.onMouseMove.bind(this);
-        const onMouseUp = () => {
-            this.graph.emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-            this.graph.emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
-            window.removeEventListener('mouseup', onMouseUp); // 如果移动到了画布或窗口之外
+    // 初始预览路径使用原始起点和终点
+    const elbowPath2 = generateSmartRoute(this.startPoint, this.endPoint, 10);
+    this.previewPath = waypointUtil.getPointsPath(elbowPath2);
+    this.showPreview = true;
 
-            this.endMove();
+    const onMouseMove = this.onMouseMove.bind(this);
+    const onMouseUp = () => {
+      this.endMove();
+      this.graph.emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+      this.graph.emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
+      window.removeEventListener("mouseup", onMouseUp); // 如果移动到了画布或窗口之外
+    };
+    this.graph.emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+    this.graph.emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
+    window.addEventListener("mouseup", onMouseUp);
+  }
+
+  onMouseMove(event: MouseEvent, shape?: Shape) {
+    // console.log('onMouseMove edgeMoveModel:', shape);
+    const currentPoint =
+      this.graph.viewModel.translateClientPointToDiagramAbsPoint(
+        new Point(event.clientX, event.clientY)
+      );
+    const edgeShape = this.edgeShape;
+    if (!edgeShape) return;
+    this.currentPoint = currentPoint;
+    // 根据移动的端点类型生成预览路径
+    if (this.index === MovePointPosition.start) {
+      this.generatePreviewForStartPoint(shape);
+    } else if (this.index === MovePointPosition.end) {
+      this.generatePreviewForEndPoint(shape);
+    }
+  }
+  /**
+   * 生成起点移动时的预览路径
+   */
+  private generatePreviewForStartPoint(shape?: Shape) {
+    const sourceRect = this.getSourceRectConnectPoint(shape);
+    const targetRect = this.getTargetRectConnectPoint();
+    // console.log('sourceRect:', JSON.stringify(sourceRect), 'targetRect:', JSON.stringify(targetRect));
+    this.generatePreviewPath(sourceRect, targetRect);
+  }
+
+  /**
+   * 生成终点移动时的预览路径
+   */
+  private generatePreviewForEndPoint(shape?: Shape) {
+    const sourceRect = this.getSourceRectConnectPoint();
+    const targetRect = this.getTargetRectConnectPoint(shape);
+    this.generatePreviewPath(sourceRect, targetRect);
+  }
+
+  /**
+   * 获取源图形的矩形连接点信息
+   */
+  private getSourceRectConnectPoint(shape?: Shape): RectConnectPoint {
+    const edgeShape = this.edgeShape;
+    const isStart = this.isStart;
+    let sourceElement: Shape | undefined;
+    // 无图形时使用waypoint的第一个点作为中心点连接
+    let startPoint!: IPoint;
+    let connection: [number, number] = [0.5, 0.5];
+
+    const sourceId = edgeShape.sourceId;
+    if (isStart) {
+      sourceElement = shape;
+      startPoint = this.currentPoint;
+    } else {
+      sourceElement = this.graph.shapeMap.get(sourceId);
+      startPoint = edgeShape.waypoint?.[0];
+    }
+    let retBounds!: Bounds;
+    if (sourceElement?.bounds) {
+      // 根据当前鼠标位置或起点位置智能确定连接点
+      connection =
+        sourceElement.style.sourceConnection ||
+        getOptimalConnectionPoint(
+          startPoint.x,
+          startPoint.y,
+          sourceElement.bounds.x,
+          sourceElement.bounds.y,
+          sourceElement.bounds.width,
+          sourceElement.bounds.height
+        );
+      retBounds = sourceElement.bounds;
+    } else {
+      const fakeSize = 4;
+      retBounds = new Bounds(
+        startPoint.x - fakeSize / 2,
+        startPoint.y - fakeSize / 2,
+        fakeSize,
+        fakeSize,
+        startPoint.x - fakeSize / 2,
+        startPoint.y - fakeSize / 2
+      );
+    }
+    if (isStart) {
+        if (shape) {
+          this.toUpdateEdgeShapeParams = {
+            ...this.toUpdateEdgeShapeParams,
+            style: {
+              ...this.toUpdateEdgeShapeParams.style,
+              sourceConnection: connection,
+            },
+            sourceId: sourceElement?.id,
+          };
+        } else {
+          // 原来有连图形移除时清空关联
+          this.toUpdateEdgeShapeParams = {
+            ...this.toUpdateEdgeShapeParams,
+            style: {
+              ...this.toUpdateEdgeShapeParams.style,
+              sourceConnection: null,
+            },
+            sourceId: null,
+          };
+      }
+      console.log('this.toUpdateEdgeShapeParams:', JSON.stringify(this.toUpdateEdgeShapeParams));
+    }
+    return {
+      bounds: retBounds,
+      connection,
+    };
+  }
+
+  /**
+   * 获取目标图形的矩形连接点信息
+   */
+  private getTargetRectConnectPoint(shape?: Shape): RectConnectPoint {
+    const edgeShape = this.edgeShape;
+    const isStart = this.isStart;
+    const targetElement = isStart
+      ? this.graph.shapeMap.get(edgeShape.targetId)
+      : shape;
+    const endPoint = isStart
+      ? edgeShape.waypoint?.[edgeShape.waypoint.length - 1]
+      : this.currentPoint;
+
+    if (targetElement?.bounds) {
+      // 根据当前鼠标位置或起点位置智能确定连接点
+      const connection =
+        targetElement.style.targetConnection ||
+        getOptimalConnectionPoint(
+          endPoint.x,
+          endPoint.y,
+          targetElement.bounds.x,
+          targetElement.bounds.y,
+          targetElement.bounds.width,
+          targetElement.bounds.height
+        );
+      this.toUpdateEdgeShapeParams = {
+        ...this.toUpdateEdgeShapeParams,
+        style: {
+          ...this.toUpdateEdgeShapeParams.style,
+          targetConnection: connection,
+        },
+        targetId: targetElement.id,
+      };
+      return {
+        bounds: targetElement.bounds,
+        connection,
+      };
+    } else {
+      // 当终点移动且没有连接到图形时，需要清除目标连接关系
+      if (!isStart) {
+        this.toUpdateEdgeShapeParams = {
+          ...this.toUpdateEdgeShapeParams,
+          style: {
+            ...this.toUpdateEdgeShapeParams.style,
+            targetConnection: null,
+          },
+          targetId: null,
         };
-        this.graph.emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
-        this.graph.emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
-        window.addEventListener('mouseup', onMouseUp);
+      }
+      const fakeSize = 4;
+      return {
+        bounds: new Bounds(
+          endPoint.x - fakeSize / 2,
+          endPoint.y - fakeSize / 2,
+          fakeSize,
+          fakeSize,
+          endPoint.x - fakeSize / 2,
+          endPoint.y - fakeSize / 2
+        ),
+        connection: [0.5, 0.5],
+      };
     }
+  }
 
-    onMouseMove(event: MouseEvent, shape?: Shape) {
-        // console.log('onMouseMove edgeMoveModel:', shape);
-        const currentPoint = this.graph.viewModel.translateClientPointToDiagramAbsPoint(new Point(event.clientX, event.clientY));
-        const edgeShape = this.edgeShape;
-        if (!edgeShape) return;
-        this.currentPoint = currentPoint;
-        // 根据移动的端点类型生成预览路径
-        if (this.index === MovePointPosition.start) {
-            this.generatePreviewForStartPoint(shape);
-        } else if (this.index === MovePointPosition.end) {
-            this.generatePreviewForEndPoint(shape);
-        }
-    }
-    updateEdgeShapeStyle(style: StyleObject, sourceId?: string, targetId?: string) {
-        this.toUpdateEdgeShapeParams = {style, sourceId, targetId};
-    }
-    /**
-     * 生成起点移动时的预览路径
-     */
-    private generatePreviewForStartPoint(shape?: Shape) {
-        const sourceRect = this.getSourceRectConnectPoint(shape);
-        const targetRect = this.getTargetRectConnectPoint();
-        console.log('sourceRect:', JSON.stringify(sourceRect), 'targetRect:', JSON.stringify(targetRect));
-        this.generatePreviewPath(sourceRect, targetRect);
-    }
+  /**
+   * 使用RectConnectRoute生成预览路径
+   */
+  private generatePreviewPath(
+    sourceRect: RectConnectPoint,
+    targetRect: RectConnectPoint
+  ) {
+    try {
+      // console.log('sourceRect:', JSON.stringify(sourceRect), 'targetRect:', JSON.stringify(targetRect));
+      // 使用generateRectConnectRoute生成预览路径
+      const previewBounds = generateRectConnectRoute(sourceRect, targetRect, {
+        routeType: "elbow",
+        margin: 30,
+      });
 
-    /**
-     * 生成终点移动时的预览路径
-     */
-    private generatePreviewForEndPoint(shape?: Shape) {
-        const sourceRect = this.getSourceRectConnectPoint();
-        const targetRect = this.getTargetRectConnectPoint(shape);
-        this.generatePreviewPath(sourceRect, targetRect);
-    }
+      // 将Bounds数组转换为waypoint格式
+      const previewWaypoint: [number, number][] = previewBounds.map(
+        (bounds) => [bounds.absX, bounds.absY]
+      );
 
-    /**
-     * 获取源图形的矩形连接点信息
-     */
-    private getSourceRectConnectPoint(shape?: Shape): RectConnectPoint {
-        const edgeShape = this.edgeShape;
-        const sourceElement = shape || this.graph.shapeMap.get(edgeShape.sourceId);
-        // 无图形时使用waypoint的第一个点作为中心点连接
-        const startPoint = this.isStart ?  this.currentPoint : edgeShape.waypoint?.[0] ;
-        if (sourceElement?.bounds) {
-            // 根据当前鼠标位置或起点位置智能确定连接点
-            const connection = sourceElement.style.sourceConnection ||  getOptimalConnectionPoint(
-                startPoint.x,
-                startPoint.y,
-                sourceElement.bounds.x,
-                sourceElement.bounds.y,
-                sourceElement.bounds.width,
-                sourceElement.bounds.height
-            );
-            this.toUpdateEdgeShapeParams = {
-                style: {
-                    ...this.toUpdateEdgeShapeParams.style,
-                    sourceConnection: connection,
-                },
-                sourceId: sourceElement.id
-            }
-            return {
-                bounds: sourceElement.bounds,
-                connection
-            };
-        } else {
-            
-            const fakeSize = 4;
-            return {
-                bounds: new Bounds(
-                    startPoint.x - fakeSize / 2,
-                    startPoint.y - fakeSize / 2,
-                    fakeSize,
-                    fakeSize,
-                    startPoint.x - fakeSize / 2,
-                    startPoint.y - fakeSize / 2
-                ),
-                connection: [0.5, 0.5]
-            };
-        }
+      this.previewPath = waypointUtil.getPointsPath(previewWaypoint);
+      this.waypoint = previewWaypoint;
+      // console.log('previewWaypoint:', JSON.stringify(previewWaypoint));
+    } catch (error) {
+      console.warn(
+        "generateRectConnectRoute failed, falling back to simple route:",
+        error
+      );
+      // 回退到简单的点对点路径
+      this.generateFallbackPath(sourceRect, targetRect);
     }
+  }
 
-    /**
-     * 获取目标图形的矩形连接点信息
-     */
-    private getTargetRectConnectPoint(shape?: Shape): RectConnectPoint {
-        const edgeShape = this.edgeShape;
-        const targetElement = shape || this.graph.shapeMap.get(edgeShape.targetId);
-        const endPoint = this.isStart ?  edgeShape.waypoint?.[edgeShape.waypoint.length - 1] :this.currentPoint;
-        
-        if (targetElement?.bounds) {
-            // 根据当前鼠标位置或起点位置智能确定连接点
-            const connection = targetElement.style.targetConnection ||  getOptimalConnectionPoint(
-                endPoint.x,
-                endPoint.y,
-                targetElement.bounds.x,
-                targetElement.bounds.y,
-                targetElement.bounds.width,
-                targetElement.bounds.height
-            );
-            this.toUpdateEdgeShapeParams = {
-                style: {
-                    ...this.toUpdateEdgeShapeParams.style,
-                    targetConnection: connection,
-                },
-                targetId: targetElement.id
-            }
-            return {
-                bounds: targetElement.bounds,
-                connection
-            };
-        } else {
-            const fakeSize = 4;
-            return {
-                bounds: new Bounds(
-                    endPoint.x - fakeSize / 2,
-                    endPoint.y - fakeSize / 2,
-                    fakeSize,
-                    fakeSize,
-                    endPoint.x - fakeSize / 2,
-                    endPoint.y - fakeSize / 2
-                ),
-                connection: [0.5, 0.5]
-            };
-        }
-    }
+  /**
+   * 回退方案：生成简单的点对点路径
+   */
+  private generateFallbackPath(
+    sourceRect: RectConnectPoint,
+    targetRect: RectConnectPoint
+  ) {
+    const startPoint: [number, number] = [
+      sourceRect.bounds.absX +
+        sourceRect.bounds.width * sourceRect.connection[0],
+      sourceRect.bounds.absY +
+        sourceRect.bounds.height * sourceRect.connection[1],
+    ];
 
-    /**
-     * 使用RectConnectRoute生成预览路径
-     */
-    private generatePreviewPath(sourceRect: RectConnectPoint, targetRect: RectConnectPoint) {
-        try {
-            console.log('sourceRect:', JSON.stringify(sourceRect), 'targetRect:', JSON.stringify(targetRect));
-            // 使用generateRectConnectRoute生成预览路径
-            const previewBounds = generateRectConnectRoute(sourceRect, targetRect, {
-                routeType: 'elbow',
-                margin: 30
-            });
-            
-            // 将Bounds数组转换为waypoint格式
-            const previewWaypoint: [number, number][] = previewBounds.map(bounds => [
-                bounds.absX,
-                bounds.absY
-            ]);
-            
-            this.previewPath = waypointUtil.getPointsPath(previewWaypoint);
-            this.waypoint = previewWaypoint;
-            console.log('previewWaypoint:', JSON.stringify(previewWaypoint));
-        } catch (error) {
-            console.warn('generateRectConnectRoute failed, falling back to simple route:', error);
-            // 回退到简单的点对点路径
-            this.generateFallbackPath(sourceRect, targetRect);
-        }
-    }
+    const endPoint: [number, number] = [
+      targetRect.bounds.absX +
+        targetRect.bounds.width * targetRect.connection[0],
+      targetRect.bounds.absY +
+        targetRect.bounds.height * targetRect.connection[1],
+    ];
 
-    /**
-     * 回退方案：生成简单的点对点路径
-     */
-    private generateFallbackPath(sourceRect: RectConnectPoint, targetRect: RectConnectPoint) {
-        const startPoint: [number, number] = [
-            sourceRect.bounds.absX + sourceRect.bounds.width * sourceRect.connection[0],
-            sourceRect.bounds.absY + sourceRect.bounds.height * sourceRect.connection[1]
-        ];
-        
-        const endPoint: [number, number] = [
-            targetRect.bounds.absX + targetRect.bounds.width * targetRect.connection[0],
-            targetRect.bounds.absY + targetRect.bounds.height * targetRect.connection[1]
-        ];
-        
-        const previewWaypoint = generateSmartRoute(startPoint, endPoint, 10);
-        this.previewPath = waypointUtil.getPointsPath(previewWaypoint);
-        this.waypoint = previewWaypoint;
-    }
+    const previewWaypoint = generateSmartRoute(startPoint, endPoint, 10);
+    this.previewPath = waypointUtil.getPointsPath(previewWaypoint);
+    this.waypoint = previewWaypoint;
+  }
 
-    endMove() {
-        const { style, sourceId, targetId } = this.toUpdateEdgeShapeParams;
-        this.graph.graphOption.EdgePointEndMove(this.edgeShape.id, this.waypoint.map(arr => {
-            return new Point(arr[0],arr[1]);
-        }),style, sourceId, targetId);
-        this.initPreviewState();
-        
-    }
-    // 鼠标按下线段时触发,在 createEventHandler.ts 中触发事件
-    onEdgeMousedown(event: MouseEvent, shape: EdgeShape) {
-        if (!shape || shape.shapeType !== ShapeType.Edge) return;
-        this.startMoveEdge(event, shape);
-
-    }
-    startMoveEdge(event: MouseEvent, shape: EdgeShape) {
-
-        this.initPreviewState();
-    }
-    initPreviewState() {
-        this.showPreview = false;
-        this.startPoint = new Point(); // 移动起始时的鼠标的坐标
-        this.endPoint = new Point(); // 移动过程中鼠标的坐标
-        this.toUpdateEdgeShapeParams = {};
-        this.dx = 0;
-        this.dy = 0;
-        this.previewPath = '';
-    }
+  endMove() {
+    const { style, sourceId, targetId } = this.toUpdateEdgeShapeParams;
+    console.log(
+      "endMove toUpdateEdgeShapeParams:",
+      JSON.stringify(this.toUpdateEdgeShapeParams)
+    );
+    this.graph.graphOption.EdgePointEndMove(
+      this.edgeShape.id,
+      this.waypoint.map((arr) => {
+        return new Point(arr[0], arr[1]);
+      }),
+      style,
+      sourceId,
+      targetId
+    );
+    this.initPreviewState();
+  }
+  // 鼠标按下线段时触发,在 createEventHandler.ts 中触发事件
+  onEdgeMousedown(event: MouseEvent, shape: EdgeShape) {
+    if (!shape || shape.shapeType !== ShapeType.Edge) return;
+    this.startMoveEdge(event, shape);
+  }
+  startMoveEdge(event: MouseEvent, shape: EdgeShape) {
+    this.initPreviewState();
+  }
+  initPreviewState() {
+    this.showPreview = false;
+    this.startPoint = new Point(); // 移动起始时的鼠标的坐标
+    this.endPoint = new Point(); // 移动过程中鼠标的坐标
+    this.toUpdateEdgeShapeParams = {};
+    this.dx = 0;
+    this.dy = 0;
+    this.previewPath = "";
+  }
 }

@@ -9,10 +9,10 @@ export interface StyleObject {
     strokeDasharray?: string
     background?: string
     /** 连接线才有的属性 */
-    sourceConnection?: [number, number]
-    targetConnection?: [number, number]
-    sourceId?: string // 连接线的起点图形id
-    targetId?: string // 连接线的终点图形id
+    sourceConnection?: [number, number] | null
+    targetConnection?: [number, number] | null
+    sourceId?: string | null // 连接线的起点图形id
+    targetId?: string | null// 连接线的终点图形id
     /** 箭头样式 */
     arrowStyle?: {
         hasStart?: boolean
