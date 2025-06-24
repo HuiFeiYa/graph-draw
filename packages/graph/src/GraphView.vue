@@ -108,7 +108,7 @@ function handleWheel(event:WheelEvent) {
   props.graph.graphOption.handleWheel(event);
 }
 
-function handleVertexMousedown(event: MouseEvent, index: VertexType) {
+function handleVertexMousedown(event: MouseEvent, index: number) {
   const { graph } = props;
   if (graph.selectionModel.selection.length === 0) return;
   if (graph.selectionModel.selection.length > 1) {
@@ -117,7 +117,11 @@ function handleVertexMousedown(event: MouseEvent, index: VertexType) {
     const targetShape = graph.selectionModel.selection[0];
 
     if (targetShape.shapeType === ShapeType.Edge) {
-      graph.edgePointMoveModel.onEdgePointMouseDown(event, targetShape as unknown as EdgeShape, index);
+      const isEndPoint = index === 0 || index === targetShape.waypoint.length - 1;
+      // 如果是起点或者终点
+      if (isEndPoint) {
+        graph.edgeMoveModel.onEdgeStartOrEndPointMousedown(event, targetShape as unknown as EdgeShape, index === 0 ? 0 : 1);
+      }
     }  else {
       graph.resizeModel.startResize(event, graph.selectionModel.selection[0], index);
     }

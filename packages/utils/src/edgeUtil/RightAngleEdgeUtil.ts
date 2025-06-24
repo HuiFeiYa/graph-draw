@@ -394,6 +394,17 @@ export class RightAngleEdgeUtil {
       return [startPoint, targetPoint];
     }
   }
+
+  /**
+   * 获取两个独立点之间的直角连接线路径点
+   * @param startPoint 起始点
+   * @param endPoint 结束点
+   * @param startWithVertical 是否从垂直方向开始连接，默认为false（水平方向开始）
+   * @returns 连接路径点数组
+   */
+  getPointToPointWaypoint(startPoint: Point, endPoint: Point, startWithVertical = false): Point[] {
+    return getRightAngleWaypoint(startPoint, endPoint, startWithVertical);
+  }
 }
 
 export const rightAngleEdgeUtil = new RightAngleEdgeUtil();

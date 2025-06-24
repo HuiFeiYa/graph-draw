@@ -650,6 +650,7 @@ export class EdgePointMoveModel {
       path += (' L ' + int(p.x) + ' ' + int(p.y));
     }
     this.previewPath = path;
+    console.log('updatePreviewPath', path);
   }
   async endMove() {
     if (!this.movingShape) {

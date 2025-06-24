@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { Shape } from '@hfdraw/types';
+import { ElbowPoint, Shape } from '@hfdraw/types';
 import { PathBuilder } from '@hfdraw/elbow'
 import { computed, inject } from 'vue';
-import { Point } from '@hfdraw/elbow';
 import { createEventHandler } from '../util/createEventHandler';
 import { StrokeColor } from '../util/common';
 import { GraphModel } from '../models/GraphModel';
@@ -22,7 +21,7 @@ const computedData = computed(() => {
     size: 10,
     angle: 45
   });
-  const keyPoints: Point[] = props.shape.waypoint.map(item => {
+  const keyPoints: ElbowPoint[] = props.shape.waypoint.map(item => {
     return [item.x, item.y]
   })
   const arrowStyle = shape.style.arrowStyle

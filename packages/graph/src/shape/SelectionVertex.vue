@@ -14,7 +14,7 @@ const props = defineProps<{
 const graph = inject<GraphModel>('graph') as GraphModel;
 const emit = defineEmits<{
   (event: 'change'): void
-  (event: 'vertex-mousedown', evt: MouseEvent, index: VertexType): void
+  (event: 'vertex-mousedown', evt: MouseEvent, index: number): void
 }>();
 console.log('selection:', props.selection)
 const resizable = true;
@@ -95,10 +95,8 @@ function handleMouseDown(event: MouseEvent, index: VertexType) {
 
 }
 
-function handleCircleMouseDown(event: MouseEvent, index:VertexType) {
+function handleCircleMouseDown(event: MouseEvent, index:number) {
     event.stopPropagation();
-    // todo 是否需要迁移到外部组件？
-    graph.emitter.emit(EventType.EDGE_POINT_MOUSE_DOWN, event,shapeGroup.value.edgeShapes[0],index)
     emit('vertex-mousedown', event, index);
 }
 </script>

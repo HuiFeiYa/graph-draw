@@ -3,6 +3,7 @@ import { PlaitElement, ElbowPoint } from "./common-type";
 import { generateElbowLineRoute } from "./elbow-line-route";
 import { removeDuplicatePoints } from "./line-path";
 export * from './PathBuilder'
+export * from './rect-connect-route'
 
 export function getKeyPoints(rect1: ElbowPoint[], rect2: ElbowPoint[], element:PlaitElement) {
     const handleRefPair = getArrowLineHandleRefPair(rect1, rect2, element);
