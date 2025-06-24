@@ -121,6 +121,9 @@ function handleVertexMousedown(event: MouseEvent, index: number) {
       // 如果是起点或者终点
       if (isEndPoint) {
         graph.edgeMoveModel.onEdgeStartOrEndPointMousedown(event, targetShape as unknown as EdgeShape, index === 0 ? 0 : 1);
+      } else {
+        // 如果是中间点，走线段移动逻辑
+        graph.edgeMoveModel.onEdgeSegmentMousedown(event, targetShape as unknown as EdgeShape, index);
       }
     }  else {
       graph.resizeModel.startResize(event, graph.selectionModel.selection[0], index);

@@ -33,6 +33,12 @@ export class GraphOption implements IGraphOption {
     })
   }
 
+  async moveSegment(shapeId: string, waypoint: Point[]) {
+    await shapeService.moveSegment({
+      shapeId, waypoint, projectId: this.projectId
+    })
+  }
+
   showPopover(index:VertexType, shape: Shape) {
     const store = useUiStore();
     const { x, y, height, width } = shape.bounds;

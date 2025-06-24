@@ -334,6 +334,153 @@ export class EdgeMoveModel {
   startMoveEdge(event: MouseEvent, shape: EdgeShape) {
     this.initPreviewState();
   }
+
+  // 鼠标按下线段中间点时触发
+  onEdgeSegmentMousedown(event: MouseEvent, edgeShape: EdgeShape, segmentIndex: number) {
+    if (!edgeShape || edgeShape.shapeType !== ShapeType.Edge) return;
+    
+    this.edgeShape = edgeShape;
+    this.index = segmentIndex;
+    const waypoint = edgeShape.waypoint || [];
+    this.waypoint = waypoint.map(point => [point.x, point.y]);
+    
+    const startPoint = this.graph.viewModel.translateClientPointToDiagramAbsPoint(
+      new Point(event.clientX, event.clientY)
+    );
+    this.startPoint = startPoint;
+    this.currentPoint = startPoint;
+    
+    const onMouseMove = this.onSegmentMouseMove.bind(this);
+    const onMouseUp = () => {
+      this.endSegmentMove();
+      this.graph.emitter.off(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+      this.graph.emitter.off(EventType.SHAPE_MOUSE_UP, onMouseUp);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+    
+    this.graph.emitter.on(EventType.SHAPE_MOUSE_MOVE, onMouseMove);
+    this.graph.emitter.on(EventType.SHAPE_MOUSE_UP, onMouseUp);
+    window.addEventListener("mouseup", onMouseUp);
+  }
+
+  // 线段中间点移动过程中的鼠标移动处理
+  onSegmentMouseMove(event: MouseEvent) {
+    const currentPoint = this.graph.viewModel.translateClientPointToDiagramAbsPoint(
+      new Point(event.clientX, event.clientY)
+    );
+    
+    const dx = currentPoint.x - this.startPoint.x;
+    const dy = currentPoint.y - this.startPoint.y;
+    
+    const newWaypoint = [...this.waypoint];
+    const waypoints = this.edgeShape.waypoint;
+    
+    // 确定要移动的线段范围（当前点及其相邻的共线点）
+    const segmentPoints = this.getSegmentPoints(this.index, waypoints);
+    console.log('segmentPoints:', JSON.stringify(segmentPoints));
+    // 判断线段方向并相应地更新坐标
+    if (segmentPoints.length > 0) {
+      const isHorizontalSegment = this.isHorizontalSegment(segmentPoints, waypoints);
+      
+      segmentPoints.forEach(pointIndex => {
+        if (newWaypoint[pointIndex]) {
+          if (isHorizontalSegment) {
+            // 水平线段只改变y坐标
+            newWaypoint[pointIndex] = [
+              waypoints[pointIndex].x,
+              waypoints[pointIndex].y + dy
+            ];
+          } else {
+            // 垂直线段只改变x坐标
+            newWaypoint[pointIndex] = [
+              waypoints[pointIndex].x + dx,
+              waypoints[pointIndex].y
+            ];
+          }
+        }
+      });
+    }
+    
+    this.waypoint = newWaypoint;
+    this.previewPath = waypointUtil.getPointsPath(newWaypoint);
+    this.showPreview = true;
+  }
+  
+  // 获取当前点所在线段的所有共线点索引
+  private getSegmentPoints(index: number, waypoints: IPoint[]): number[] {
+    if (index <= 0 || index >= waypoints.length - 1) {
+      return []; // 起点和终点不处理
+    }
+    
+    const result: number[] = [];
+    const currentPoint = waypoints[index];
+    const prevPoint = waypoints[index - 1];
+    const nextPoint = waypoints[index + 1];
+    
+    // 判断当前线段的方向
+    const isHorizontal = prevPoint.y === currentPoint.y;
+    const isVertical = prevPoint.x === currentPoint.x;
+    
+    if (!isHorizontal && !isVertical) {
+      return [index]; // 如果不是水平或垂直线段，只移动当前点
+    }
+    
+    // 向前查找共线点
+    let startIndex = index;
+    while (startIndex > 0) {
+      const prev = waypoints[startIndex - 1];
+      const curr = waypoints[startIndex];
+      const sameDirection = isHorizontal ? (prev.y === curr.y) : (prev.x === curr.x);
+      if (sameDirection) {
+        startIndex--;
+      } else {
+        break;
+      }
+    }
+    
+    // 向后查找共线点
+    let endIndex = index;
+    while (endIndex < waypoints.length - 1) {
+      const curr = waypoints[endIndex];
+      const next = waypoints[endIndex + 1];
+      const sameDirection = isHorizontal ? (curr.y === next.y) : (curr.x === next.x);
+      if (sameDirection) {
+        endIndex++;
+      } else {
+        break;
+      }
+    }
+    
+    // 收集所有共线的中间点（不包括起点和终点）
+    for (let i = Math.max(1, startIndex); i <= Math.min(waypoints.length - 2, endIndex); i++) {
+      result.push(i);
+    }
+    
+    return result;
+  }
+  
+  // 判断线段是否为水平方向
+  private isHorizontalSegment(segmentPoints: number[], waypoints: IPoint[]): boolean {
+    if (segmentPoints.length === 0) return false;
+    
+    const firstIndex = segmentPoints[0];
+    if (firstIndex > 0) {
+      const prevPoint = waypoints[firstIndex - 1];
+      const currentPoint = waypoints[firstIndex];
+      return prevPoint.y === currentPoint.y;
+    }
+    
+    return false;
+  }
+
+  // 结束线段中间点移动
+  endSegmentMove() {
+    this.graph.graphOption.moveSegment(
+      this.edgeShape.id,
+      this.waypoint.map((arr) => new Point(arr[0], arr[1]))
+    );
+    this.initPreviewState();
+  }
   initPreviewState() {
     this.showPreview = false;
     this.startPoint = new Point(); // 移动起始时的鼠标的坐标

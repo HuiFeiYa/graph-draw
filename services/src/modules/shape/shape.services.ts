@@ -8,6 +8,7 @@ import {
   FetchAllShapeDto,
   GetMinimumBoundsDto,
   MoveEdgeDto,
+  MoveSegmentDto,
   MoveShapeDto,
   PointDto,
   SaveTextDto,
@@ -234,6 +235,16 @@ export class ShapeService  extends BaseService{
       shape.targetId = dto.targetId;
       shape.targetIdChanged = true;
     }
+    await this.updateShapeChanges([shape]);
+    return [shape];
+  }
+
+  async moveSegment(dto: MoveSegmentDto) {
+    const shape = await this.stepManager.shapeRep.findOne({where: {
+      id: dto.shapeId
+    }});
+    shape.waypoint = dto.waypoint;
+    shape.waypointChanged = true;
     await this.updateShapeChanges([shape]);
     return [shape];
   }

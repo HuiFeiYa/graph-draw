@@ -22,6 +22,7 @@ export interface IGraphOption {
     sourceId?:string | null,
     targetId?:string | null
   ): void;
+  moveSegment(shapeId: string, waypoint: Point[]): void;
   addMindMapRect(index: VertexType, shape: Shape): void;
   saveText(shape: Shape, text: string): Promise<void>;
   expandShape(shapeId: string, expand: boolean): Promise<void>;

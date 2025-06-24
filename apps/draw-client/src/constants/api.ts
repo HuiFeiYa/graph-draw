@@ -13,6 +13,7 @@ export const API = {
     stepStatus: 'step/stepStatus',
     connectShapeAndCreate: 'shape/connectShapeAndCreate',
     moveEdge: 'shape/moveEdge',
+    moveSegment: 'shape/moveSegment',
     updateShapeStyle: 'shape/updateShapeStyle',
     createMindMapRect: 'shape/createMindMapRect',
     saveText: 'shape/saveText',

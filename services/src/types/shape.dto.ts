@@ -81,6 +81,13 @@ export class SideBarDropDto {
     targetId?: string;
   }
 
+  export class MoveSegmentDto extends BaseProjectDto {
+    @IsString()
+    shapeId: string
+    @IsArray()
+    waypoint: Point[]
+  }
+
   export class UpdateStyleObj extends BaseProjectDto {
     styleObject: StyleObject
     @IsString()

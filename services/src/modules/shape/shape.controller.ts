@@ -7,6 +7,7 @@ import {
   SideBarDropDto,
   ConnectShapeAndCreateDto,
   MoveEdgeDto,
+  MoveSegmentDto,
   UpdateStyleObj,
   CreateMindMapRectDto,
   SaveTextDto,
@@ -86,6 +87,15 @@ export class ShapeController {
       projectId: dto.projectId,
     }, async (stepManager) => {
       const result = await stepManager.shapeService.moveEdge(dto);
+      return new ResData(result);
+    });
+  }
+  @Post('moveSegment')
+  async moveSegment(@Body() dto: MoveSegmentDto) {
+    return transaction({
+      projectId: dto.projectId,
+    }, async (stepManager) => {
+      const result = await stepManager.shapeService.moveSegment(dto);
       return new ResData(result);
     });
   }
