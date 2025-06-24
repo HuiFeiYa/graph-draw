@@ -18,7 +18,9 @@ export interface IGraphOption {
   EdgePointEndMove(
     shapeId: string,
     waypoint: Point[],
-    styleObject: StyleObject
+    styleObject?: StyleObject,
+    sourceId?:string,
+    targetId?:string
   ): void;
   addMindMapRect(index: VertexType, shape: Shape): void;
   saveText(shape: Shape, text: string): Promise<void>;

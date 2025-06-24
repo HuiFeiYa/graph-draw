@@ -146,7 +146,9 @@ export function getNearestPointBetweenPointAndEllipse(point: ElbowPoint, center:
 }
 
 export function rotate(x1: number, y1: number, x2: number, y2: number, angle: number) {
-    // 𝑎′𝑥=(𝑎𝑥−𝑐𝑥)cos𝜃−(𝑎𝑦−𝑐𝑦)sin𝜃+𝑐𝑥
+    // 𝑎′𝑥=(𝑎𝑥−𝑐𝑥)cos𝜃
+    // 
+    // −(𝑎𝑦−𝑐𝑦)sin𝜃+𝑐𝑥
     // 𝑎′𝑦=(𝑎𝑥−𝑐𝑥)sin𝜃+(𝑎𝑦−𝑐𝑦)cos𝜃+𝑐𝑦.
     // https://math.stackexchange.com/questions/2204520/how-do-i-rotate-a-line-segment-in-a-specific-point-on-the-line
     return [(x1 - x2) * Math.cos(angle) - (y1 - y2) * Math.sin(angle) + x2, (x1 - x2) * Math.sin(angle) + (y1 - y2) * Math.cos(angle) + y2];
@@ -458,4 +460,138 @@ export function getCrossingPointsBetweenEllipseAndSegment(
  */
 export function getPointBetween(x0: number, y0: number, x1: number, y1: number, d = 0.5) {
     return [x0 + (x1 - x0) * d, y0 + (y1 - y0) * d];
+}
+
+/**
+ * 根据给定坐标点自动确定矩形的最佳连接点
+ * @param pointX 目标点的X坐标
+ * @param pointY 目标点的Y坐标
+ * @param rectX 矩形的X坐标
+ * @param rectY 矩形的Y坐标
+ * @param rectWidth 矩形的宽度
+ * @param rectHeight 矩形的高度
+ * @param threshold 距离阈值，默认为20像素
+ * @returns 连接点坐标 [x, y]，范围为 [0,1]
+ */
+export function getOptimalConnectionPoint(
+    pointX: number,
+    pointY: number,
+    rectX: number,
+    rectY: number,
+    rectWidth: number,
+    rectHeight: number,
+    threshold: number = 20
+): [number, number] {
+    // 定义矩形边界上的关键连接点
+    const connectionPoints = [
+        // 上边：左上角、上边中点、右上角
+        { connection: [0, 0], x: rectX, y: rectY },
+        { connection: [0.5, 0], x: rectX + rectWidth / 2, y: rectY },
+        { connection: [1, 0], x: rectX + rectWidth, y: rectY },
+        
+        // 右边：右上角、右边中点、右下角
+        { connection: [1, 0], x: rectX + rectWidth, y: rectY },
+        { connection: [1, 0.5], x: rectX + rectWidth, y: rectY + rectHeight / 2 },
+        { connection: [1, 1], x: rectX + rectWidth, y: rectY + rectHeight },
+        
+        // 下边：右下角、下边中点、左下角
+        { connection: [1, 1], x: rectX + rectWidth, y: rectY + rectHeight },
+        { connection: [0.5, 1], x: rectX + rectWidth / 2, y: rectY + rectHeight },
+        { connection: [0, 1], x: rectX, y: rectY + rectHeight },
+        
+        // 左边：左下角、左边中点、左上角
+        { connection: [0, 1], x: rectX, y: rectY + rectHeight },
+        { connection: [0, 0.5], x: rectX, y: rectY + rectHeight / 2 },
+        { connection: [0, 0], x: rectX, y: rectY }
+    ];
+    
+    // 去重，避免角点重复
+    const uniquePoints = connectionPoints.filter((point, index, arr) => {
+        return index === arr.findIndex(p => 
+            p.connection[0] === point.connection[0] && 
+            p.connection[1] === point.connection[1]
+        );
+    });
+    
+    // 找到距离目标点最近的连接点
+    let minDistance = Infinity;
+    let bestConnection: [number, number] = [0.5, 0.5]; // 默认中心点
+    
+    for (const point of uniquePoints) {
+        const distance = distanceBetweenPointAndPoint(pointX, pointY, point.x, point.y);
+        if (distance < minDistance) {
+            minDistance = distance;
+            bestConnection = point.connection as [number, number];
+        }
+    }
+    
+    // 如果最近距离超过阈值，则使用智能边缘检测
+    if (minDistance > threshold) {
+        bestConnection = getSmartEdgeConnection(pointX, pointY, rectX, rectY, rectWidth, rectHeight);
+    }
+    
+    return bestConnection;
+}
+
+/**
+ * 智能边缘连接点检测
+ * 根据目标点相对于矩形的位置，选择最合适的边缘连接点
+ */
+function getSmartEdgeConnection(
+    pointX: number,
+    pointY: number,
+    rectX: number,
+    rectY: number,
+    rectWidth: number,
+    rectHeight: number
+): [number, number] {
+    const centerX = rectX + rectWidth / 2;
+    const centerY = rectY + rectHeight / 2;
+    
+    // 计算目标点相对于矩形中心的方向
+    const deltaX = pointX - centerX;
+    const deltaY = pointY - centerY;
+    
+    // 计算角度（以弧度为单位）
+    const angle = Math.atan2(deltaY, deltaX);
+    
+    // 将角度转换为度数并标准化到 [0, 360)
+    let degrees = (angle * 180 / Math.PI + 360) % 360;
+    
+    // 根据角度范围确定最佳连接边
+    if (degrees >= 315 || degrees < 45) {
+        // 右边
+        return [1, 0.5];
+    } else if (degrees >= 45 && degrees < 135) {
+        // 下边
+        return [0.5, 1];
+    } else if (degrees >= 135 && degrees < 225) {
+        // 左边
+        return [0, 0.5];
+    } else {
+        // 上边
+        return [0.5, 0];
+    }
+}
+
+/**
+ * 获取矩形指定连接点的实际坐标
+ * @param rectX 矩形X坐标
+ * @param rectY 矩形Y坐标
+ * @param rectWidth 矩形宽度
+ * @param rectHeight 矩形高度
+ * @param connection 连接点 [x, y]，范围 [0,1]
+ * @returns 实际坐标点 [x, y]
+ */
+export function getConnectionPointCoordinates(
+    rectX: number,
+    rectY: number,
+    rectWidth: number,
+    rectHeight: number,
+    connection: [number, number]
+): [number, number] {
+    return [
+        rectX + rectWidth * connection[0],
+        rectY + rectHeight * connection[1]
+    ];
 }

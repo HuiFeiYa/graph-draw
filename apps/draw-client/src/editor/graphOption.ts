@@ -27,9 +27,9 @@ export class GraphOption implements IGraphOption {
     })
   }
 
-  async EdgePointEndMove(shapeId: string, waypoint: Point[], styleObject: StyleObject) {
+  async EdgePointEndMove(shapeId: string, waypoint: Point[], styleObject?: StyleObject, sourceId?:string, targetId?:string) {
     await shapeService.moveEdge({
-      shapeId, waypoint, projectId: this.projectId, styleObject
+      shapeId, waypoint, projectId: this.projectId, styleObject, sourceId, targetId
     })
   }
 

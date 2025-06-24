@@ -73,7 +73,12 @@ export class SideBarDropDto {
     shapeId: string
     @IsArray()
     waypoint: Point[]
-    styleObject: StyleObject
+    styleObject?: StyleObject
+    // 线的起点和终点
+    @IsString()
+    sourceId?: string;
+    @IsString()
+    targetId?: string;
   }
 
   export class UpdateStyleObj extends BaseProjectDto {

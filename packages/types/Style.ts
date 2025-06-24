@@ -11,6 +11,9 @@ export interface StyleObject {
     /** 连接线才有的属性 */
     sourceConnection?: [number, number]
     targetConnection?: [number, number]
+    sourceId?: string // 连接线的起点图形id
+    targetId?: string // 连接线的终点图形id
+    /** 箭头样式 */
     arrowStyle?: {
         hasStart?: boolean
         hasEnd?: boolean

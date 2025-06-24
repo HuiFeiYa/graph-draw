@@ -117,7 +117,7 @@ function handleVertexMousedown(event: MouseEvent, index: number) {
     const targetShape = graph.selectionModel.selection[0];
 
     if (targetShape.shapeType === ShapeType.Edge) {
-      const isEndPoint = index === 0 || index === targetShape.waypoint.length - 1;
+      const isEndPoint = index === 0 || index === targetShape.waypoint.length;
       // 如果是起点或者终点
       if (isEndPoint) {
         graph.edgeMoveModel.onEdgeStartOrEndPointMousedown(event, targetShape as unknown as EdgeShape, index === 0 ? 0 : 1);

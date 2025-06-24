@@ -35,7 +35,7 @@ export class ShapeService {
         await httpClient.post(API.connectShapeAndCreate, dto);
     }
 
-    async moveEdge(params: {shapeId: string, waypoint: Point[], projectId: string,styleObject: StyleObject}) {
+    async moveEdge(params: {shapeId: string, waypoint: Point[], projectId: string,styleObject?: StyleObject, sourceId?:string, targetId?:string}) {
         await httpClient.post(API.moveEdge, params);
     }
     async updateShapeStyle(data: {styleObject: StyleObject, projectId: string, shapeId: string}) {
