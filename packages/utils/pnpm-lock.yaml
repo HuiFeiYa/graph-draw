@@ -5,12 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@hfdraw/graph':
-    specifier: workspace:^
-    version: link:../graph
   '@hfdraw/types':
     specifier: workspace:^
     version: link:../types
-  '@hfdraw/utils':
-    specifier: workspace:^
-    version: link:../utils

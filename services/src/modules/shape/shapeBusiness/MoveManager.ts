@@ -41,18 +41,18 @@ export class MoveManager {
         });
     }
 
-    static async updateEdgeShapes(shapeMap: Map<string, ShapeEntity>, dto: MoveShapeDto, updateShapeSet: Set<ShapeEntity>) {
+    static updateEdgeShapes(shapeMap: Map<string, ShapeEntity>, dto: MoveShapeDto, updateShapeSet: Set<ShapeEntity>) {
         const edges = [...shapeMap.values()].filter(shape => {
             return shape.subShapeType === SubShapeType.CommonEdge 
         });
-         edges.forEach(async (edge)=> {
+        for (const edge of edges) {
             if (dto.shapeIds.includes(edge.sourceId) || dto.shapeIds.includes(edge.targetId)) {
                 const sourceShape = shapeMap.get(edge.sourceId);
                 const targetShape = shapeMap.get(edge.targetId);
                 this.updateWaypoint(edge, sourceShape, targetShape)
                 updateShapeSet.add(edge);
             }
-        })
+        }
       
     }
     static updateWaypoint(edge:ShapeEntity, sourceShape: ShapeEntity, targetShape:ShapeEntity) {

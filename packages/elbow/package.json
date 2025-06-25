@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "@hfdraw/graph": "workspace:^",
-    "@hfdraw/types": "workspace:^"
+    "@hfdraw/types": "workspace:^",
+    "@hfdraw/utils": "workspace:^"
   }
 }

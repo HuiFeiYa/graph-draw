@@ -123,3 +123,36 @@ export function getBoundsBorderCenterPoint(bounds:Bounds) {
 
 }
 
+
+
+/**
+ * 格式化时间
+ * @param {string|number|Date} time - 时间参数，可以是时间戳、日期字符串或Date对象
+ * @param {string} format - 格式字符串，默认为'YYYY-MM-DD HH:mm:ss'
+ * @returns {string} 格式化后的时间字符串
+ */
+export const formatTime = (time: string | number | Date, format = 'YYYY-MM-DD HH:mm:ss'): string => {
+  if (!time) return '';
+  
+  const date = new Date(time);
+  if (isNaN(date.getTime())) return ''; // 无效日期检查
+  
+  const padZero = (num: number): string => num.toString().padStart(2, '0');
+  
+  const year = date.getFullYear();
+  const month = padZero(date.getMonth() + 1);
+  const day = padZero(date.getDate());
+  const hours = padZero(date.getHours());
+  const minutes = padZero(date.getMinutes());
+  const seconds = padZero(date.getSeconds());
+  
+  // 替换格式字符串中的占位符
+  return format
+    .replace('YYYY', year.toString())
+    .replace('YY', year.toString().slice(-2))
+    .replace('MM', month)
+    .replace('DD', day)
+    .replace('HH', hours)
+    .replace('mm', minutes)
+    .replace('ss', seconds);
+};

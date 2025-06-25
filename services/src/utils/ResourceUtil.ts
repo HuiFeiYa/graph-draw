@@ -1,10 +1,26 @@
 import { join, resolve } from "path";
+import { formatTime } from "./common";
+import { existsSync, mkdirSync } from "fs";
 const arv1 = process.argv[1];
 console.log('arv1:',arv1)
 console.log('resolve(arv1', resolve(arv1, '..'))
+
+
 class ResourceUtil {
   readonly rootDir = resolve(arv1, '..')
   readonly projectDbDir = join(this.rootDir, '../db')
+  readonly logsDir = join(this.rootDir, './logs')
+   // 使用 getter，每次访问时重新计算路径
+  get logFilePath() {
+    return join(this.logsDir, `node-service.${formatTime(Date.now(), 'YYYY-MM-DD')}.log`);
+  }
+  constructor() {
+    // 检查 logs 目录是否存在，不存在则创建
+    if (!existsSync(this.logsDir)) {
+      mkdirSync(this.logsDir, { recursive: true }); // recursive: true 确保父目录不存在时也能创建
+    }
+  }
+  
   getProjectDbName(projectId: string) {
     return 'project_' + projectId;
   }

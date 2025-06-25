@@ -53,7 +53,6 @@ export class ShapeController {
     });
   }
 
-
   @Post("resize")
   async resizeShape(@Body() resizeDto: ShapeResizeDto) {
     return transaction({ projectId: resizeDto.projectId }, async stepManager => {

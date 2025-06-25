@@ -90,6 +90,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
                 await stepManager.commitStep();
                 return { ret, stepManager };
             } catch (error) {
+                console.error('Transaction failed:', error);
                 throw new HttpException({
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
                     error: 'Transaction failed',
