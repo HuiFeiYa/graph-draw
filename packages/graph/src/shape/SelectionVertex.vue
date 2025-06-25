@@ -117,7 +117,8 @@ function handleCircleMouseDown(event: MouseEvent, index:number) {
         </g>
         <g v-if="isShowEdgeWaypoint">
             <circle style="cursor: move;pointer-events: all" 
-                :class="{'start-end-point': i === 0 || i === waypointsInline.length - 1, 'point': i !== 0 && i !== waypointsInline.length - 1}"
+                class="default-point"
+                :class="{'start-end-point': i === 0 || i === waypointsInline.length - 1, 'point': i > 1 && i < waypointsInline.length - 2}"
                 v-for="(item,i) in waypointsInline" :cx="item.x" :cy="item.y" r="4" 
                 @mousedown="handleCircleMouseDown($event, i)"
                 />
@@ -125,6 +126,10 @@ function handleCircleMouseDown(event: MouseEvent, index:number) {
     </g>
 </template>
 <style lang="scss" scoped>
+.default-point {
+    fill: transparent;
+    stroke-width: 0;
+}
 .start-end-point {
     fill: none;
     stroke-width:1px;

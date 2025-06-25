@@ -9,12 +9,12 @@
   "watchOptions": {
     "watchExclude": [
       "../apps/**/*",
-      "../packages/**/**/*.ts",
+      "../packages/**/*",
       "../node_modules/**/*",
       "node_modules/**/*"
     ],
     "include": [
-      "services/src/**/*.ts"
+      "src/**/*.ts"
     ]
   }
 }

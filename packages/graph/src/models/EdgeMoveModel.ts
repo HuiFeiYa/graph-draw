@@ -364,6 +364,7 @@ export class EdgeMoveModel {
   }
 
   // 线段中间点移动过程中的鼠标移动处理
+  // todo 变更位置计算
   onSegmentMouseMove(event: MouseEvent) {
     const currentPoint = this.graph.viewModel.translateClientPointToDiagramAbsPoint(
       new Point(event.clientX, event.clientY)
@@ -376,10 +377,10 @@ export class EdgeMoveModel {
     const waypoints = this.edgeShape.waypoint;
     
     // 确定要移动的线段范围（当前点及其相邻的共线点）
-    const segmentPoints = this.getSegmentPoints(this.index, waypoints);
+     const segmentPoints = this.getSegmentPoints(this.index, waypoints);
     console.log('segmentPoints:', JSON.stringify(segmentPoints));
     // 判断线段方向并相应地更新坐标
-    if (segmentPoints.length > 0) {
+    if (segmentPoints.length > 1) {
       const isHorizontalSegment = this.isHorizontalSegment(segmentPoints, waypoints);
       
       segmentPoints.forEach(pointIndex => {
@@ -406,71 +407,76 @@ export class EdgeMoveModel {
     this.showPreview = true;
   }
   
-  // 获取当前点所在线段的所有共线点索引
-  private getSegmentPoints(index: number, waypoints: IPoint[]): number[] {
-    if (index <= 0 || index >= waypoints.length - 1) {
-      return []; // 起点和终点不处理
+  // 获取当前线段的所有共线点索引
+  private getSegmentPoints(segmentIndex: number, waypoints: IPoint[]): number[] {
+    if (segmentIndex <= 0 || segmentIndex >= waypoints.length) {
+      return []; // 无效的线段索引
     }
     
     const result: number[] = [];
-    const currentPoint = waypoints[index];
-    const prevPoint = waypoints[index - 1];
-    const nextPoint = waypoints[index + 1];
+    // segmentIndex对应的是线段，线段的两个端点是waypoints[segmentIndex-1]和waypoints[segmentIndex]
+    const startPoint = waypoints[segmentIndex - 1];
+    const endPoint = waypoints[segmentIndex];
     
     // 判断当前线段的方向
-    const isHorizontal = prevPoint.y === currentPoint.y;
-    const isVertical = prevPoint.x === currentPoint.x;
+    const isHorizontal = startPoint.y === endPoint.y;
+    const isVertical = startPoint.x === endPoint.x;
     
     if (!isHorizontal && !isVertical) {
-      return [index]; // 如果不是水平或垂直线段，只移动当前点
+      // 如果不是水平或垂直线段，返回线段的两个端点（排除起点和终点）
+      const points = [];
+      if (segmentIndex - 1 > 0) points.push(segmentIndex - 1);
+      if (segmentIndex < waypoints.length - 1) points.push(segmentIndex);
+      return points;
     }
     
-    // 向前查找共线点
-    let startIndex = index;
-    while (startIndex > 0) {
-      const prev = waypoints[startIndex - 1];
-      const curr = waypoints[startIndex];
-      const sameDirection = isHorizontal ? (prev.y === curr.y) : (prev.x === curr.x);
+    // 向前查找共线的线段
+    let startSegmentIndex = segmentIndex;
+    while (startSegmentIndex > 1) {
+      const prevStart = waypoints[startSegmentIndex - 2];
+      const prevEnd = waypoints[startSegmentIndex - 1];
+      const sameDirection = isHorizontal ? (prevStart.y === prevEnd.y) : (prevStart.x === prevEnd.x);
       if (sameDirection) {
-        startIndex--;
+        startSegmentIndex--;
       } else {
         break;
       }
     }
     
-    // 向后查找共线点
-    let endIndex = index;
-    while (endIndex < waypoints.length - 1) {
-      const curr = waypoints[endIndex];
-      const next = waypoints[endIndex + 1];
-      const sameDirection = isHorizontal ? (curr.y === next.y) : (curr.x === next.x);
+    // 向后查找共线的线段
+    let endSegmentIndex = segmentIndex;
+    while (endSegmentIndex < waypoints.length - 1) {
+      const nextStart = waypoints[endSegmentIndex];
+      const nextEnd = waypoints[endSegmentIndex + 1];
+      const sameDirection = isHorizontal ? (nextStart.y === nextEnd.y) : (nextStart.x === nextEnd.x);
       if (sameDirection) {
-        endIndex++;
+        endSegmentIndex++;
       } else {
         break;
       }
     }
     
-    // 收集所有共线的中间点（不包括起点和终点）
-    for (let i = Math.max(1, startIndex); i <= Math.min(waypoints.length - 2, endIndex); i++) {
+    // 收集所有共线线段涉及的中间点（不包括起点和终点）
+    for (let i = Math.max(1, startSegmentIndex - 1); i <= Math.min(waypoints.length - 2, endSegmentIndex); i++) {
       result.push(i);
     }
-    
     return result;
   }
   
-  // 判断线段是否为水平方向
   private isHorizontalSegment(segmentPoints: number[], waypoints: IPoint[]): boolean {
     if (segmentPoints.length === 0) return false;
-    
-    const firstIndex = segmentPoints[0];
-    if (firstIndex > 0) {
-      const prevPoint = waypoints[firstIndex - 1];
-      const currentPoint = waypoints[firstIndex];
-      return prevPoint.y === currentPoint.y;
+  
+    // 获取第一个点的 y 坐标作为基准
+    const firstY = waypoints[segmentPoints[0]].y;
+  
+    // 遍历所有点，检查 y 坐标是否相同
+    for (const index of segmentPoints) {
+      if (waypoints[index].y !== firstY) {
+        return false;
+      }
     }
-    
-    return false;
+  
+    return true;
   }
 
   // 结束线段中间点移动
