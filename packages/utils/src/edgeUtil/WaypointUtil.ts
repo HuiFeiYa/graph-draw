@@ -20,28 +20,28 @@ export class WaypointUtil {
         return path;
     }
 
-    getPointsPath(waypoints: ElbowPoint[]) {
-        let path = "M" + waypoints[0] + " " + waypoints[0];
+
+    getPointsPath(waypoints: IPoint[]) {
+        let path = "M" + waypoints[0].x + " " + waypoints[0].y;
          // 遍历点数组，添加直线命令
          for (let i = 1; i < waypoints.length; i++) {
-            path += " L" + waypoints[i] + " " + waypoints[i];
+            path += " L" + waypoints[i].x + " " + waypoints[i].y;
         }
 
         return path;
     }
-
     /**
      * 合并连续的共线点，只保留起点和终点
      * 例如: [(x1,y), (x2,y), (x3,y)] -> [(x1,y), (x3,y)]
      * @param points 原始点数组
      * @returns 合并后的点数组
      */
-    mergeCollinearPoints(points: ElbowPoint[]): ElbowPoint[] {
+    mergeCollinearPoints(points: IPoint[]): IPoint[] {
         if (points.length <= 2) {
             return points;
         }
 
-        const result: ElbowPoint[] = [points[0]];
+        const result: IPoint[] = [points[0]];
         let i = 1;
 
         while (i < points.length) {
@@ -54,8 +54,8 @@ export class WaypointUtil {
                 const next = points[j];
                 
                 // 检查三点是否共线（水平或垂直）
-                const isHorizontal = prev[1] === current[1] && current[1] === next[1];
-                const isVertical = prev[0] === current[0] && current[0] === next[0];
+                const isHorizontal = prev.y === current.y && current.y === next.y;
+                const isVertical = prev.x === current.x && current.x === next.x;
                 
                 if (isHorizontal || isVertical) {
                     j++;

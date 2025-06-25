@@ -7,7 +7,7 @@
     "start": "pnpm run client & pnpm run server",
     "client": "pnpm --filter draw-client run start",
     "server": "pnpm --filter services run start:debug",
-    "b:all": "pnpm run b:elbow & pnpm run b:types",
+    "b:all": "pnpm run b:elbow & pnpm run b:types & pnpm run b:utils",
     "b:elbow": "pnpm --filter elbow  run build",
     "b:types": "pnpm --filter types  run build",
     "b:utils": "pnpm --filter utils run build",

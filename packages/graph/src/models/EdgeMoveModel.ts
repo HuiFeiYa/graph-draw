@@ -1,7 +1,6 @@
 import {
   Bounds,
   EdgeShape,
-  ElbowPoint,
   EventType,
   IPoint,
   Shape,
@@ -32,7 +31,7 @@ export class EdgeMoveModel {
   edgeShape!: EdgeShape;
   dx = 0; // 移动的x距离
   dy = 0; // 移动的y距离
-  waypoint!: [number, number][];
+  waypoint!: IPoint[];
   showPreview = false; // 是否显示预览
   previewPath = ""; // 预览线的路径path的d属性
   index: MovePointPosition = MovePointPosition.start;
@@ -265,48 +264,16 @@ export class EdgeMoveModel {
         margin: 30,
       });
 
-      // 将Bounds数组转换为waypoint格式
-      const previewWaypoint: [number, number][] = previewBounds.map(
-        (bounds) => [bounds.absX, bounds.absY]
-      );
 
-      this.previewPath = waypointUtil.getPointsPath(previewWaypoint);
-      this.waypoint = previewWaypoint;
+      this.previewPath = waypointUtil.getPointsPath(previewBounds);
+      this.waypoint = previewBounds;
       // console.log('previewWaypoint:', JSON.stringify(previewWaypoint));
     } catch (error) {
       console.warn(
-        "generateRectConnectRoute failed, falling back to simple route:",
+        "generateRectConnectRoute failed:",
         error
       );
-      // 回退到简单的点对点路径
-      this.generateFallbackPath(sourceRect, targetRect);
     }
-  }
-
-  /**
-   * 回退方案：生成简单的点对点路径
-   */
-  private generateFallbackPath(
-    sourceRect: RectConnectPoint,
-    targetRect: RectConnectPoint
-  ) {
-    const startPoint: [number, number] = [
-      sourceRect.bounds.absX +
-        sourceRect.bounds.width * sourceRect.connection[0],
-      sourceRect.bounds.absY +
-        sourceRect.bounds.height * sourceRect.connection[1],
-    ];
-
-    const endPoint: [number, number] = [
-      targetRect.bounds.absX +
-        targetRect.bounds.width * targetRect.connection[0],
-      targetRect.bounds.absY +
-        targetRect.bounds.height * targetRect.connection[1],
-    ];
-
-    const previewWaypoint = generateSmartRoute(startPoint, endPoint, 10);
-    this.previewPath = waypointUtil.getPointsPath(previewWaypoint);
-    this.waypoint = previewWaypoint;
   }
 
   endMove() {
@@ -317,9 +284,7 @@ export class EdgeMoveModel {
     );
     this.graph.graphOption.EdgePointEndMove(
       this.edgeShape.id,
-      this.waypoint.map((arr) => {
-        return new Point(arr[0], arr[1]);
-      }),
+      this.waypoint,
       style,
       sourceId,
       targetId
@@ -342,7 +307,7 @@ export class EdgeMoveModel {
     this.edgeShape = edgeShape;
     this.index = segmentIndex;
     const waypoint = edgeShape.waypoint || [];
-    this.waypoint = waypoint.map(point => [point.x, point.y]);
+    this.waypoint = waypoint;
     
     const startPoint = this.graph.viewModel.translateClientPointToDiagramAbsPoint(
       new Point(event.clientX, event.clientY)
@@ -364,39 +329,30 @@ export class EdgeMoveModel {
   }
 
   // 线段中间点移动过程中的鼠标移动处理
-  // todo 变更位置计算
   onSegmentMouseMove(event: MouseEvent) {
     const currentPoint = this.graph.viewModel.translateClientPointToDiagramAbsPoint(
       new Point(event.clientX, event.clientY)
     );
     
-    const dx = currentPoint.x - this.startPoint.x;
-    const dy = currentPoint.y - this.startPoint.y;
+    // 计算相对于上一次位置的偏移量
+    const dx = currentPoint.x - this.currentPoint.x;
+    const dy = currentPoint.y - this.currentPoint.y;
+    
+    // 更新当前位置
+    this.currentPoint = currentPoint;
     
     const newWaypoint = [...this.waypoint];
-    const waypoints = this.edgeShape.waypoint;
+    const segmentPoints = this.getSegmentPoints(this.index, this.waypoint);
     
-    // 确定要移动的线段范围（当前点及其相邻的共线点）
-     const segmentPoints = this.getSegmentPoints(this.index, waypoints);
-    console.log('segmentPoints:', JSON.stringify(segmentPoints));
-    // 判断线段方向并相应地更新坐标
     if (segmentPoints.length > 1) {
-      const isHorizontalSegment = this.isHorizontalSegment(segmentPoints, waypoints);
+      const isHorizontalSegment = this.isHorizontalSegment(segmentPoints, this.waypoint);
       
       segmentPoints.forEach(pointIndex => {
         if (newWaypoint[pointIndex]) {
           if (isHorizontalSegment) {
-            // 水平线段只改变y坐标
-            newWaypoint[pointIndex] = [
-              waypoints[pointIndex].x,
-              waypoints[pointIndex].y + dy
-            ];
+            newWaypoint[pointIndex].y += dy; // 使用相对偏移
           } else {
-            // 垂直线段只改变x坐标
-            newWaypoint[pointIndex] = [
-              waypoints[pointIndex].x + dx,
-              waypoints[pointIndex].y
-            ];
+            newWaypoint[pointIndex].x += dx; // 使用相对偏移
           }
         }
       });
@@ -483,7 +439,7 @@ export class EdgeMoveModel {
   endSegmentMove() {
     this.graph.graphOption.moveSegment(
       this.edgeShape.id,
-      this.waypoint.map((arr) => new Point(arr[0], arr[1]))
+      this.waypoint
     );
     this.initPreviewState();
   }

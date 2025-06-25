@@ -1,4 +1,4 @@
-import { IPoint } from "./common-type";
+import { IPoint } from "@hfdraw/types";
 
 export class Curve {
   // 可配置参数

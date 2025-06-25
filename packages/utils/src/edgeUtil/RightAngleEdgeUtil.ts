@@ -1,4 +1,4 @@
-import { IPoint, Shape, StyleObject } from "@hfdraw/types";
+import {  Point, Shape, StyleObject } from "@hfdraw/types";
 import {
   getAreaOfBounds,
   getB,
@@ -12,7 +12,6 @@ import {
   getRightAngleWaypoint,
   getVertexLineAB,
 } from "../common";
-import { Point } from "../Point";
 import { AreaType } from "../constant";
 import { Line } from "./Line";
 

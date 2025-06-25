@@ -1,6 +1,5 @@
-import { Bounds } from "@hfdraw/types";
+import { Bounds, Point } from "@hfdraw/types";
 import { float } from "../common";
-import { Point } from "../Point";
 
 type LineLimit = (p:Point)=>boolean
 type LineLmits = LineLimit[]

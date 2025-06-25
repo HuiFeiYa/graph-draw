@@ -1,5 +1,4 @@
-import { Bounds, IPoint } from "@hfdraw/types";
-import { Point } from "./Point";
+import { Bounds, IPoint, Point } from "@hfdraw/types";
 import { AreaType } from "./constant";
 import { Line } from "./edgeUtil/Line";
 

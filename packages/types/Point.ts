@@ -1,6 +1,10 @@
-import { cloneDeep } from "lodash";
-import { IPoint } from "@hfdraw/types";
-import { int } from "./common";
+import { cloneDeep } from 'lodash';
+import { IPoint } from "./Bounds";
+
+// 本地实现 int 函数，避免跨包导入
+function int(num: number | string) {
+  return Math.round(+num);
+}
 
 export class Point {
 

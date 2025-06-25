@@ -1,5 +1,5 @@
 import { ElbowPoint, RectConnectPoint } from './common-type';
-import { Bounds } from '@hfdraw/types';
+import { Bounds, IPoint, Point } from '@hfdraw/types';
 import { RectangleClient } from './rectangle-client';
 import { generateElbowLineRoute } from './elbow-line-route';
 import { removeDuplicatePoints } from './line-path';
@@ -16,13 +16,13 @@ export interface RectConnectRouteOptions {
  * @param sourceRect 源矩形连接点
  * @param targetRect 目标矩形连接点
  * @param options 配置选项
- * @returns Bounds[] 数组格式的路径点
+ * @returns IPoint[] 数组格式的路径点
  */
 export function generateRectConnectRoute(
     sourceRect: RectConnectPoint,
     targetRect: RectConnectPoint,
     options: RectConnectRouteOptions = {}
-): Bounds[] {
+): IPoint[] {
     const { 
         routeType = 'elbow', 
         margin = 30
@@ -39,20 +39,20 @@ export function generateRectConnectRoute(
  * 生成直线路径
  * @param sourceRect 源矩形连接点
  * @param targetRect 目标矩形连接点
- * @returns Bounds[] 数组格式的路径点
+ * @returns IPoint[] 数组格式的路径点
  */
 function generateStraightRectRoute(
     sourceRect: RectConnectPoint,
     targetRect: RectConnectPoint
-): Bounds[] {
+): IPoint[] {
     // 计算连接点的实际坐标
     const sourcePoint = getActualConnectionPoint(sourceRect);
     const targetPoint = getActualConnectionPoint(targetRect);
     
-    // 转换为 Bounds 数组格式
+    // 转换为 IPoint 数组格式
     return [
-        createPointBounds(sourcePoint),
-        createPointBounds(targetPoint)
+        new Point(sourcePoint[0], sourcePoint[1]),
+        new Point(targetPoint[0], targetPoint[1])
     ];
 }
 
@@ -61,13 +61,13 @@ function generateStraightRectRoute(
  * @param sourceRect 源矩形连接点
  * @param targetRect 目标矩形连接点
  * @param margin 边距
- * @returns Bounds[] 数组格式的路径点
+ * @returns IPoint[] 数组格式的路径点
  */
 function generateElbowRectRoute(
     sourceRect: RectConnectPoint,
     targetRect: RectConnectPoint,
     margin: number
-): Bounds[] {
+): IPoint[] {
     // 将 Bounds 转换为 ElbowPoint[] 格式
     const sourcePoints = boundsToElbowPoints(sourceRect.bounds);
     const targetPoints = boundsToElbowPoints(targetRect.bounds);
@@ -88,12 +88,12 @@ function generateElbowRectRoute(
         const params = getElbowLineRouteOptions(sourcePoints, targetPoints, element, handleRefPair);
         const route = generateElbowLineRoute(params);
         const keyPoints = removeDuplicatePoints(route);
-        
+        const points = keyPoints.map(([x,y]) =>new Point(x,y))
         // 合并连续的共线点
-        const optimizedPoints = waypointUtil.mergeCollinearPoints(keyPoints);
+        const optimizedPoints = waypointUtil.mergeCollinearPoints(points);
         
-        // 转换为 Bounds 数组格式
-        return optimizedPoints.map(point => createPointBounds(point));
+        // 转换为 IPoint 数组格式
+        return optimizedPoints;
     } catch (error) {
         // 如果肘形路径生成失败，回退到直线
         console.warn('Elbow route generation failed, falling back to straight line:', error);
@@ -139,34 +139,20 @@ function boundsToElbowPoints(bounds: Bounds): ElbowPoint[] {
     ];
 }
 
-/**
- * 创建一个表示点的 Bounds 对象
- * @param point 点坐标
- * @returns Bounds 对象
- */
-function createPointBounds(point: ElbowPoint): Bounds {
-    return new Bounds(
-        point[0], // x
-        point[1], // y
-        0, // width
-        0, // height
-        point[0], // absX
-        point[1]  // absY
-    );
-}
+
 
 /**
  * 简化版本：生成智能折线路径
  * @param sourceRect 源矩形连接点
  * @param targetRect 目标矩形连接点
  * @param margin 可选的边距设置
- * @returns Bounds[] 数组格式的路径点
+ * @returns IPoint[] 数组格式的路径点
  */
 export function generateSmartRectRoute(
     sourceRect: RectConnectPoint,
     targetRect: RectConnectPoint,
     margin?: number
-): Bounds[] {
+): IPoint[] {
     return generateRectConnectRoute(sourceRect, targetRect, { 
         routeType: 'elbow', 
         margin 
@@ -177,11 +163,11 @@ export function generateSmartRectRoute(
  * 简化版本：只生成直线路径
  * @param sourceRect 源矩形连接点
  * @param targetRect 目标矩形连接点
- * @returns Bounds[] 数组格式的路径点
+ * @returns IPoint[] 数组格式的路径点
  */
 export function generateStraightRectLine(
     sourceRect: RectConnectPoint,
     targetRect: RectConnectPoint
-): Bounds[] {
+): IPoint[] {
     return generateRectConnectRoute(sourceRect, targetRect, { routeType: 'straight' });
 }

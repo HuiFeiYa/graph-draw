@@ -56,19 +56,28 @@ export class MoveManager {
       
     }
     static updateWaypoint(edge:ShapeEntity, sourceShape: ShapeEntity, targetShape:ShapeEntity) {
-        if (!sourceShape || !targetShape) {
+        if (!sourceShape && !targetShape) {
             return null
         }
-        const { x: x1, y: y1, width: w1, height: h1} = sourceShape.bounds;
-        const { x: x2, y: y2, width: w2, height: h2} = targetShape.bounds;
-        const sourcePoints: ElbowPoint[] = [
-            [x1, y1],
-            [x1 + w1, y1 + h1]
-        ]
-        const targetPoints: ElbowPoint[] = [
-            [x2, y2],
-            [x2 + w2, y2 + h2]
-        ]
+        let sourcePoints: ElbowPoint[] = [
+            
+        ];
+        let targetPoints: ElbowPoint[] = [];
+        if (sourceShape) {
+            const { x: x1, y: y1, width: w1, height: h1} = sourceShape.bounds;
+            const sourcePoints: ElbowPoint[] = [
+                [x1, y1],
+                [x1 + w1, y1 + h1]
+            ]
+        }
+        if (targetShape) {
+            const { x: x2, y: y2, width: w2, height: h2} = targetShape.bounds;
+            const targetPoints: ElbowPoint[] = [
+                [x2, y2],
+                [x2 + w2, y2 + h2]
+            ]
+        }
+      
         const { style: { sourceConnection, targetConnection }} = edge;
         
         const keyPoints =  getKeyPoints(sourcePoints, targetPoints, { source: {connection:sourceConnection}, target: {connection: targetConnection}})

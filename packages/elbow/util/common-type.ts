@@ -36,10 +36,6 @@ export interface RectConnectPoint {
     bounds: Bounds // 描述点或者矩形的位置
     connection: PointOfRectangle; // 当矩形足够小时，或者 connection 为 [0.5, 0.5] 时，使用矩形的中心点作为连接点
 }
-export interface IPoint {
-    x:number
-    y:number
-  }
 
 export interface ArrowLineHandleRef {
     key: ArrowLineHandleKey;
