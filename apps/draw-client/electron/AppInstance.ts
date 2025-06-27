@@ -68,10 +68,20 @@ class AppInstance {
   constructor() {
     this.logger = new Logger();
   }
-
+  async start() {
+    await this.logger.info(`appInstance start`);
+    if (!isDevelopment) {
+      await this.startNodeServer();
+    }
+    await this.createMainWindow();
+    this.setupIPC();
+  }
   async startNodeServer() {
-    const nodeScript = resolve(__dirname, "../dist/nodeServer/main.js");
+    // 在打包后的环境中，nodeServer 目录位于应用根目录下
+    const appPath = app.getAppPath();
+    const nodeScript = resolve(appPath, "../nodeServer/main.js");
     await this.logger.info(`启动服务器脚本: ${nodeScript}`);
+    await this.logger.info(`应用路径: ${appPath}`);
 
     const subProcess = fork(
       nodeScript,

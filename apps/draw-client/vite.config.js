@@ -12,7 +12,7 @@ export default defineConfig({
       },
       preload: {
         input: './dist-a/preload/index.js',
-        outDir: '.',
+        outDir: 'dist-electron',
         esbuildPluginOptions: {
           target: 'es2020',
         },

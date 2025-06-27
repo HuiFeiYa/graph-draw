@@ -8,7 +8,8 @@
   "main": "dist-a/main.js",
   "scripts": {
     "build": "vite build",
-    "build:all": "pnpm run build-ts & vite build && pnpm run electron:build",
+    "build:all": "pnpm run build-ts & pnpm run build:server & vite build && pnpm run electron:build",
+    "build:server": "node scripts/build-server.js",
     "start": "vite dev ",
     "dev": "vite dev & electron --inspect=5858 .",
     "electron:build": "electron-builder",
@@ -17,36 +18,26 @@
   },
   "build": {
     "appId": "hfdraw01",
-    "productName": "会飞绘图",
+    "productName": "draw",
     "directories": {
       "output": "release/"
     },
+    "extraFiles": [
+      {
+        "from": "./nodeServer",
+        "to": "nodeServer"
+      }
+    ],
     "files": [
-      "dist/**/*",
       "dist-electron/*",
       "dist-a/*",
       "package.json",
-      "node_modules/**/*",
       "nodeServer/**/*"
     ],
     "win": {
       "artifactName": "${productName}-Win-${version}-${arch}.${ext}",
       "publisherName": "App by Troye",
       "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        },
         {
           "target": "portable",
           "arch": [
@@ -76,6 +67,7 @@
     "electron-builder": "^25.1.8",
     "electron-rebuild": "^3.2.9",
     "fs-extra": "^11.2.0",
+    "npm-run-all": "^4.1.5",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "vite": "^6.0.1",
