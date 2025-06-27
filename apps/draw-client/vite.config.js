@@ -4,6 +4,9 @@ import electron from 'vite-plugin-electron/simple';
 import { resolve } from 'path';
 console.log("resolve(__dirname, 'src')",resolve(__dirname, 'src'))
 export default defineConfig({
+  build: {
+    outDir: 'dist-app', // 明确指定不同于dist的目录
+  },
   plugins: [
     vue(),
     electron({

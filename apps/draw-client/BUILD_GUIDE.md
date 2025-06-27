@@ -35,6 +35,7 @@ pnpm run build:all
 2. `build:server`: 构建并打包 NestJS 服务
 3. `vite build`: 构建前端应用
 4. `electron:build`: 打包 Electron 应用
+5. "build-ts": "tsc",: 编译 electron 目录相关代码，vue.config.js打包时的入口文件
 
 ### 3. 服务端代码打包说明
 

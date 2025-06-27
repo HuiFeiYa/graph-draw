@@ -1,15 +1,13 @@
 import 'reflect-metadata';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './exceptionFilter/AllExceptionsFilter';
 import { createConnection, DataSourceOptions } from 'typeorm';
-import { LogLevel } from "@nestjs/common";
 import {
   READ_CONNECTION_NAME,
   WRITE_CONNECTION_NAME,
 } from './utils/transaction';
 import { SystemEntityList } from './entities';
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { LoggingInterceptor } from './interceptors/LoggingInterceptor';
 import { loggerUtils } from './utils/LoggerUtils';
 import { LogData } from './types/common';
@@ -45,7 +43,6 @@ export async function setupConnections() {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalInterceptors(new LoggingInterceptor());
-  const host = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter());
   process.on('unhandledRejection', function (err:any) {
     console.error('打印 unhandledRejection:', err);
