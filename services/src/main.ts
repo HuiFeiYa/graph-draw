@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './exceptionFilter/AllExceptionsFilter';
 import { createConnection, DataSourceOptions } from 'typeorm';
+import { resolve } from 'path';
 import {
   READ_CONNECTION_NAME,
   WRITE_CONNECTION_NAME,
@@ -15,14 +16,14 @@ import { LogData } from './types/common';
 // 必须定义在 main.ts 中否则会报错，未连接，todo 时机问题？
 export const writeDbConfig: DataSourceOptions = {
   type: 'better-sqlite3',
-  database: 'db/application.db',
+  database: resolve(process.cwd(), 'db/application.db'),
   entities: [...SystemEntityList],
   synchronize: true,
   name: WRITE_CONNECTION_NAME,
 };
 export const readDbConfig: DataSourceOptions = {
   type: 'better-sqlite3',
-  database: 'db/application.db',
+  database: resolve(process.cwd(), 'db/application.db'),
   entities: [...SystemEntityList],
   synchronize: true,
   name: READ_CONNECTION_NAME,

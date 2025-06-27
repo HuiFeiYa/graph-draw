@@ -34,10 +34,23 @@ module.exports = {
         const lazyImports = [
             "@nestjs/microservices",
             "@nestjs/microservices/microservices-module",
-            // "@nestjs/websockets/socket-module",
-            // "cache-manager",
-            // "class-validator",
-            // "class-transformer"
+            "@nestjs/websockets/socket-module",
+            "@nestjs/websockets",
+            "ioredis",
+            "amqplib",
+            "amqp-connection-manager",
+            "mqtt",
+            "nats",
+            "kafkajs",
+            "redis",
+            "@grpc/grpc-js",
+            "@grpc/proto-loader",
+            "cache-manager",
+            "class-validator",
+            "class-transformer",
+            "@nestjs/platform-socket.io",
+            "socket.io",
+            "ws"
         ];
         if (!lazyImports.includes(resource)) {
           return false;
@@ -47,7 +60,7 @@ module.exports = {
             paths: [process.cwd()],
           });
         } catch (err) {
-          console.log('---------', err);
+          console.log('忽略可选依赖:', resource);
           return true;
         }
         return false;

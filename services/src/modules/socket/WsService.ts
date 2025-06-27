@@ -28,6 +28,7 @@ export class WsService {
   }
 
   removeClient(wsC: WsClient) {
+    console.log('removeClient--------');
     const index = this.clients.indexOf(wsC);
     if (index !== -1) {
       this.clients.splice(index, 1);

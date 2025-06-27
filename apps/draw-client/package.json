@@ -15,7 +15,7 @@
     "electron:build": "electron-builder",
     "rebuild": "electron-rebuild -f -w better-sqlite3",
     "build-ts": "tsc",
-    "prebuild": "rimraf dist dist-app dist-electron"
+    "prebuild": "rimraf dist dist dist-electron"
   },
   "build": {
     "appId": "hfdraw01",

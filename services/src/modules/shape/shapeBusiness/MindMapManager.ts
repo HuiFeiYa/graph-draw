@@ -111,7 +111,7 @@ export class MindMapManager {
       toCreateShapeModelTree,
       RequireMapPosition.horizontal,
     );
-    const aboveTopHeight = this.getAboveTopHeight(newTree);
+    // const aboveTopHeight = this.getAboveTopHeight(newTree);
     newTree.calcExtent();
     newTree.calcPosition(
       newTree,
@@ -119,47 +119,47 @@ export class MindMapManager {
       toCreateShapeModelTree.cx,
       40,
     );
-    await treeForEachAsync([newTree], async (item) => {
-      const shape = shapeMap.get(item.shapeId);
-      const parentId = item.retrospectOption.parentNodeId;
-      const parent = parentId ? shapeMap.get(parentId) : null;
-      // 获取父节点的子节点数组
-      const parentChildren = parent ? parent.style.retrospectOption.relationTypes.map(item => item.shapeId) : [];
-      // 获取当前节点在父节点子节点中的索引
-      const index = parentChildren.indexOf(item.shapeId);
-      const children = item.children;
-      // 获取父节点的子节点数量
-      const n = parentChildren.length;
-      // 遍历父节点的子节点，计算除当前节点外其他节点的yOffset
-      if (children.length > 1 && parentChildren.length > 1) {
-        for (let i = 0; i < n; i++) {
-          if (i !== index) {
-            const otherShapeId = parentChildren[i];
-            const otherShape = shapeMap.get(otherShapeId);
-            let otherYOffset = 0;
-              const halfN = n / 2;
-              if (i < halfN) {
-                otherYOffset = -halfN * 40; // todo 需要根据子节点个数来调整
-              } else if (i >= halfN) {
-                otherYOffset = (n - Math.floor(halfN)) * 40;
-              }
-            // const otherParent = parentId ? shapeMap.get(parentId) : null;
-            // const otherDiffY = otherParent ? (otherParent.bounds.height - mindMapOption.bounds.height) / 2 : 0;
-            otherShape.bounds.absY += otherYOffset;
-            otherShape.boundsChanged = true;
-            this.updateChildPositionsOnParentYChange(otherShape,otherYOffset, shapeMap,updateShapes);
-            updateShapes.add(otherShape);
-          }
-        }
-      }
-      // 根据父节点的高度计算子节点的位置，需要和父节点高度的中点计算
-      const diffY = parent ? (parent.bounds.height - mindMapOption.bounds.height) / 2 : 0;
-      this.refreshShape(
-        { x: item.cy, y: item.cx + aboveTopHeight + diffY  },
-        shape,
-        sourceShape
-      );
-      updateShapes.add(shape);
+    await treeForEachAsync([newTree], async () => {
+      // const shape = shapeMap.get(item.shapeId);
+      // const parentId = item.retrospectOption.parentNodeId;
+      // const parent = parentId ? shapeMap.get(parentId) : null;
+      // // 获取父节点的子节点数组
+      // const parentChildren = parent ? parent.style.retrospectOption.relationTypes.map(item => item.shapeId) : [];
+      // // 获取当前节点在父节点子节点中的索引
+      // const index = parentChildren.indexOf(item.shapeId);
+      // const children = item.children;
+      // // 获取父节点的子节点数量
+      // const n = parentChildren.length;
+      // // 遍历父节点的子节点，计算除当前节点外其他节点的yOffset
+      // if (children.length > 1 && parentChildren.length > 1) {
+      //   for (let i = 0; i < n; i++) {
+      //     if (i !== index) {
+      //       const otherShapeId = parentChildren[i];
+      //       const otherShape = shapeMap.get(otherShapeId);
+      //       let otherYOffset = 0;
+      //         const halfN = n / 2;
+      //         if (i < halfN) {
+      //           otherYOffset = -halfN * 40; // todo 需要根据子节点个数来调整
+      //         } else if (i >= halfN) {
+      //           otherYOffset = (n - Math.floor(halfN)) * 40;
+      //         }
+      //       // const otherParent = parentId ? shapeMap.get(parentId) : null;
+      //       // const otherDiffY = otherParent ? (otherParent.bounds.height - mindMapOption.bounds.height) / 2 : 0;
+      //       otherShape.bounds.absY += otherYOffset;
+      //       otherShape.boundsChanged = true;
+      //       this.updateChildPositionsOnParentYChange(otherShape,otherYOffset, shapeMap,updateShapes);
+      //       updateShapes.add(otherShape);
+      //     }
+      //   }
+      // }
+      // // 根据父节点的高度计算子节点的位置，需要和父节点高度的中点计算
+      // const diffY = parent ? (parent.bounds.height - mindMapOption.bounds.height) / 2 : 0;
+      // this.refreshShape(
+      //   { x: item.cy, y: item.cx + aboveTopHeight + diffY  },
+      //   shape,
+      //   sourceShape
+      // );
+      // updateShapes.add(shape);
     });
     return updateShapes;
   }

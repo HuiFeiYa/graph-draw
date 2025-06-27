@@ -1,7 +1,7 @@
-import  {  resolve } from 'path';
 import { SystemEntityList } from 'src/entities';
 import { DataSource } from 'typeorm';
-const databasePath = resolve(__dirname, './db/hfdraw.db');
+import { resolve } from 'path';
+const databasePath = resolve(process.cwd(), 'db/hfdraw.db');
 console.log('__dirname:',__dirname)
 console.log('databasePath:',databasePath)
 export const MainDataSource = new DataSource({
