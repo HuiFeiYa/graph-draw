@@ -6,15 +6,95 @@ const dayjs = require("dayjs");
 const isDevelopment = process.env.NODE_ENV === 'development'
 const preloadFile = resolve(__dirname, './preload/index.js')
 console.log("preloadFile------:", preloadFile);
+
+class Logger {
+  private logPath: string;
+  private options: { flags: string; encoding: string };
+
+  constructor() {
+    const userDataPath = app.getPath("userData");
+    const logDir = resolve(userDataPath, "./logs");
+    
+    // 确保日志目录存在
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+
+    this.logPath = resolve(
+      logDir,
+      `hfdraw.${dayjs().format("YYYY-MM-DD_HH-mm-ss")}.log`
+    );
+
+    this.options = {
+      flags: "a", // append模式
+      encoding: "utf8", // utf8编码
+    };
+
+    console.log("日志文件路径:", this.logPath);
+  }
+
+  private async writeLog(content: string, type: 'info' | 'error' = 'info') {
+    const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+    const logContent = `[${timestamp}][${type.toUpperCase()}] ${content}\n`;
+
+    return new Promise<void>((resolve, reject) => {
+      fs.appendFile(this.logPath, logContent, this.options, (err) => {
+        if (err) {
+          console.error("写入日志失败:", err);
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  async info(content: string) {
+    await this.writeLog(content, 'info');
+  }
+
+  async error(error: Error | string) {
+    const errorContent = error instanceof Error
+      ? `${error.name}: ${error.message}\n${error.stack || ''}`
+      : error;
+    await this.writeLog(errorContent, 'error');
+  }
+}
+
 class AppInstance {
   mainWindow: any;
+  private logger: Logger;
 
-  async start() {
-    if (!isDevelopment) {
-      await this.startNodeServer();
-    }
-    await this.createMainWindow();
-    this.setupIPC();
+  constructor() {
+    this.logger = new Logger();
+  }
+
+  async startNodeServer() {
+    const nodeScript = resolve(__dirname, "../dist/nodeServer/main.js");
+    await this.logger.info(`启动服务器脚本: ${nodeScript}`);
+
+    const subProcess = fork(
+      nodeScript,
+      ["--prod", "--appPath", app.getAppPath()],
+      {
+        cwd: resolve(nodeScript, ".."),
+        stdio: "pipe",
+      }
+    );
+
+    subProcess.stdout?.on("data", async (data) => {
+      const message = data.toString();
+      console.log("subProcess:", message);
+      await this.logger.info(`服务输出: ${message}`);
+    });
+
+    subProcess.stderr?.on("data", async (data) => {
+      const error = data.toString();
+      console.error("node error:", error);
+      await this.logger.error(`服务错误: ${error}`);
+    });
+
+    await this.logger.info("等待服务就绪...");
   }
 
   async createMainWindow() {
@@ -63,72 +143,6 @@ class AppInstance {
     });
 
     console.log("setupIPC - IPC事件监听器注册完成");
-  }
-  async startNodeServer() {
-    const nodeScript = resolve(__dirname, isDevelopment ? "../public/nodeServer/main.js" : "../dist/nodeServer/main.js");
-    console.log("nodeScript:", nodeScript);
-    const subProcess = fork(
-      nodeScript,
-      ["--prod", "--appPath", app.getAppPath()],
-      {
-        cwd: resolve(nodeScript, ".."),
-        stdio: "pipe",
-      }
-    );
-    // C:\Users\admin\AppData\Roaming\draw-client
-    const { logPath } = this.createLogger();
-    console.log("-------------");
-    subProcess.stdout &&
-      subProcess.stdout.on("data", (str) => {
-        console.log("subProcess:", str.toString());
-        fs.appendFile(
-          logPath,
-          dayjs().format("YYYY-MM-DD HH:mm:ss") + " " + str.toString(),
-          { flag: "a" },
-          (err) => {
-            err && console.error(err);
-          }
-        );
-      });
-    subProcess.stderr &&
-      subProcess.stderr.on("data", (err) => {
-        console.error("node error:", err.toString());
-
-        fs.appendFile(
-          logPath,
-          dayjs().format("YYYY-MM-DD HH:mm:ss") +
-            " " +
-            err.name +
-            err.message +
-            (err.stack && err.stack.toString()),
-          { flag: "a" },
-          (err1) => {
-            err1 && console.error(err1);
-          }
-        );
-      });
-    console.log("await service ready");
-  }
-  createLogger() {
-    const userDataPath = app.getPath("userData");
-    const logDir = resolve(userDataPath, "./logs");
-    let options = {
-      flags: "a", // append模式
-      encoding: "utf8", // utf8编码
-    };
-    console.log("logDir:", logDir);
-    // 确保日志目录存在
-    if (!fs.existsSync(logDir)) {
-      fs.mkdirSync(logDir, { recursive: true });
-    }
-    const logPath = resolve(
-      logDir,
-      "hfdraw." + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".log"
-    );
-    console.log("logPath:", logPath);
-    return {
-      logPath,
-    };
   }
 }
 

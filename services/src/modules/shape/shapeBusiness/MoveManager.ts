@@ -129,7 +129,6 @@ export class MoveManager {
         };
 
         // 计算移动图形的新连接点
-        //  const newConnectionPoint = this.getActualConnectionPoint(movingRect);
 
         if (currentWaypoint.length >= 2) {
           // 如果已有waypoint，保持另一端不变，只更新移动端
@@ -145,6 +144,7 @@ export class MoveManager {
           if (isSource) {
             // 移动的是源图形，保持目标端不变
             const endPoint = currentWaypoint[currentWaypoint.length - 1];
+            // 目标图形基于线段的末端 fake 一个图形，作为一个点计算位置
             endRectConnectPoint = {
               bounds: new Bounds(
                 endPoint.x - fakeSize / 2,
