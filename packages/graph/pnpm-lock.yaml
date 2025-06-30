@@ -5,15 +5,26 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@hfdraw/elbow':
+    specifier: workspace:^
+    version: link:../elbow
   '@hfdraw/types':
     specifier: workspace:^
     version: link:../types
   '@hfdraw/utils':
     specifier: workspace:^
     version: link:../utils
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   vue:
     specifier: 3.5.13
     version: 3.5.13
+
+devDependencies:
+  '@types/lodash':
+    specifier: ^4.17.19
+    version: 4.17.19
 
 packages:
 
@@ -46,6 +57,10 @@ packages:
   /@jridgewell/sourcemap-codec@1.5.0:
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
     dev: false
+
+  /@types/lodash@4.17.19:
+    resolution: {integrity: sha512-NYqRyg/hIQrYPT9lbOeYc3kIRabJDn/k4qQHIXUpx88CBDww2fD15Sg5kbXlW86zm2XEW4g0QxkTI3/Kfkc7xQ==}
+    dev: true
 
   /@vue/compiler-core@3.5.13:
     resolution: {integrity: sha512-oOdAkwqUfW1WqpwSYJce06wvt6HljgY3fGeM9NcVA1HaYOij3mZG9Rkysn0OHuyUAGMbEbARIpsG+LPVlBJ5/Q==}
@@ -132,6 +147,10 @@ packages:
 
   /estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
+    dev: false
+
+  /lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
   /magic-string@0.30.17:

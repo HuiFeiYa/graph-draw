@@ -54,6 +54,7 @@
     "@hfdraw/graph": "workspace:^",
     "@hfdraw/types": "workspace:^",
     "@hfdraw/utils": "workspace:^",
+    "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "element-plus": "^2.9.0",
     "lodash": "^4.17.21",

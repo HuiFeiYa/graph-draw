@@ -125,6 +125,7 @@ class AppInstance {
 
     if (process.env.VITE_DEV_SERVER_URL) {
       this.mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
+      this.mainWindow.webContents.openDevTools();
     } else {
       const localPath = resolve(__dirname, '../dist/index.html');
       this.mainWindow.loadURL(`file://${localPath}`);

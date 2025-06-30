@@ -27,6 +27,7 @@ const computedData = computed(() => {
   const arrowStyle = shape.style.arrowStyle
   const drawOptions = { hasEndArrow: !!arrowStyle?.hasEnd, hasStartArrow: !!arrowStyle?.hasStart }
   const { pathData, endArrow, startArrow } = pathBuilder.draw(keyPoints, drawOptions)
+  // @ts-ignore
   const style = Object.assign({}, shape.style);
 
   return {

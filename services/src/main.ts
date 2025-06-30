@@ -12,7 +12,6 @@ import { SystemEntityList } from './entities';
 import { LoggingInterceptor } from './interceptors/LoggingInterceptor';
 import { loggerUtils } from './utils/LoggerUtils';
 import { LogData } from './types/common';
-
 // 必须定义在 main.ts 中否则会报错，未连接，todo 时机问题？
 export const writeDbConfig: DataSourceOptions = {
   type: 'better-sqlite3',
@@ -21,6 +20,7 @@ export const writeDbConfig: DataSourceOptions = {
   synchronize: true,
   name: WRITE_CONNECTION_NAME,
 };
+
 export const readDbConfig: DataSourceOptions = {
   type: 'better-sqlite3',
   database: resolve(process.cwd(), 'db/application.db'),
@@ -28,6 +28,9 @@ export const readDbConfig: DataSourceOptions = {
   synchronize: true,
   name: READ_CONNECTION_NAME,
 };
+console.log('writeDb path:', writeDbConfig.database) 
+console.log('readDb path:', readDbConfig.database)
+
 
 export async function setupConnections() {
   try {
