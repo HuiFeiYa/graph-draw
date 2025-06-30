@@ -1,23 +1,26 @@
 {
-    "name": "@hfdraw/utils",
-    "version": "1.0.0",
-    "main": "src/index.ts",
-    "exports": {
-      ".": {
+  "name": "@hfdraw/utils",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "exports": {
+    ".": {
       "import": "./dist/esm/index.d.ts",
       "require": "./dist/cjs/src/index.js"
-      },
-        "./package.json": "./package.json"
     },
-    "scripts": {
-      "build:esm": "tsc -p tsconfig.esm.json",
-      "build:cjs": "tsc -p tsconfig.cjs.json",
-      "build": "npm run build:esm && npm run build:cjs"
-    },
-    "files": [
-      "dist"
-    ],
-    "dependencies": {
-      "@hfdraw/types": "workspace:^"
-    }
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "npm run build:esm && npm run build:cjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@hfdraw/types": "workspace:^"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
+}
