@@ -3,12 +3,15 @@ import { formatTime } from "./common";
 import { existsSync, mkdirSync } from "fs";
 const arv1 = process.argv[1];
 console.log('arv1:',arv1)
+/**
+ * webpack：rootDir: /Users/huifei/Documents/playground/draw/hfdraw/services/dist
+ */
 console.log('rootDir:', resolve(arv1, '..'))
 
 
 class ResourceUtil {
   readonly rootDir = resolve(arv1, '..')
-  readonly projectDbDir = join(this.rootDir, '../../db')
+  readonly projectDbDir = join(this.rootDir, '../db')
   readonly logsDir = join(this.rootDir, './logs')
    // 使用 getter，每次访问时重新计算路径
   get logFilePath() {

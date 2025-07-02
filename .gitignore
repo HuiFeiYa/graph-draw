@@ -1,8 +1,10 @@
 node_modules/
 dist/
 apps/draw-client/dist-electron/
+apps/draw-client/dist-app/
 dist-a
 *.d.ts
 *.d.ts.map
 
 services/db
+nodeServer/*
