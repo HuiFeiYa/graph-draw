@@ -12,6 +12,16 @@ import { SystemEntityList } from './entities';
 import { LoggingInterceptor } from './interceptors/LoggingInterceptor';
 import { loggerUtils } from './utils/LoggerUtils';
 import { LogData } from './types/common';
+import *  as  sqlite3 from 'better-sqlite3'
+// 打印 Node.js 版本和 ABI 版本（关键！）
+console.log(`
+[Node 服务环境检查]
+Node.js 版本: ${process.version}
+NODE_MODULE_VERSION: ${process.versions.modules}  <-- 必须与 Electron 的 130 一致
+运行路径: ${__dirname}
+`);
+
+
 // 必须定义在 main.ts 中否则会报错，未连接，todo 时机问题？
 export const writeDbConfig: DataSourceOptions = {
   type: 'better-sqlite3',

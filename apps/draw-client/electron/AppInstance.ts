@@ -6,7 +6,8 @@ const dayjs = require("dayjs");
 const isDevelopment = process.env.NODE_ENV === 'development'
 const preloadFile = resolve(__dirname, './preload/index.js')
 console.log("preloadFile------:", preloadFile);
-
+console.log('Electron Node.js 版本:', process.versions.node);
+console.log('Electron 使用的 NODE_MODULE_VERSION:', process.versions.modules); // 关键！这个值必须和原生模块匹配
 class Logger {
   private logPath: string;
   private options: { flags: string; encoding: string };
@@ -14,7 +15,7 @@ class Logger {
   constructor() {
     const userDataPath = app.getPath("userData");
     const logDir = resolve(userDataPath, "./logs");
-    
+    console.log('logDir:',logDir)
     // 确保日志目录存在
     if (!fs.existsSync(logDir)) {
       fs.mkdirSync(logDir, { recursive: true });
@@ -24,7 +25,7 @@ class Logger {
       logDir,
       `hfdraw.${dayjs().format("YYYY-MM-DD_HH-mm-ss")}.log`
     );
-
+    console.log('logPath: ', this.logPath)
     this.options = {
       flags: "a", // append模式
       encoding: "utf8", // utf8编码
@@ -70,26 +71,41 @@ class AppInstance {
   }
   async start() {
     await this.logger.info(`appInstance start`);
-    if (!isDevelopment) {
+    console.log('isDevelopment:',isDevelopment)
+    // if (!isDevelopment) {
       await this.startNodeServer();
-    }
+    // }
     await this.createMainWindow();
     this.setupIPC();
   }
   async startNodeServer() {
     // 在打包后的环境中，nodeServer 目录位于应用根目录下
     const appPath = app.getAppPath();
-    const nodeScript = resolve(appPath, "../../nodeServer/src/main.js");
+    const nodeScript = resolve(appPath, "./nodeServer/dist/src/main.js");
     console.log('nodeScript:', nodeScript)
+    console.log('appPath:',appPath)
     await this.logger.info(`启动服务器脚本: ${nodeScript}`);
     await this.logger.info(`应用路径: ${appPath}`);
 
+    // const subProcess = fork(
+    //   nodeScript,
+    //   ["--prod", "--appPath", app.getAppPath()],
+    //   {
+    //     cwd: resolve(nodeScript, ".."),
+    //     stdio: "pipe",
+    //   }
+    // );
+
     const subProcess = fork(
       nodeScript,
-      ["--prod", "--appPath", app.getAppPath()],
       {
-        cwd: resolve(nodeScript, ".."),
-        stdio: "pipe",
+        cwd: resolve(appPath,'./nodeServer'),
+        env: {
+          ...process.env,
+          NODE_PATH: resolve(appPath,'./nodeServer/node_modules'),
+          ELECTRON_RUN_AS_NODE: '1'
+        },
+        stdio: ['inherit', 'inherit', 'inherit', 'ipc']
       }
     );
 

@@ -94,6 +94,8 @@ const  createNewProject = async() => {
     const params = {
     "name": "未命名项目" 
   }
+  console.log('openDevTools menu')
+      window.electron.openDevTools();
   const data = await modelService.createProject(params)
   console.log('创建项目结果:', data)
   if (data.code === 1000) {
