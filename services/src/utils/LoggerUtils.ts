@@ -16,11 +16,9 @@ class LoggerUtils {
   }
 
   private formatLog(data: LogData) {
-    return JSON.stringify({
-      timestamp: formatTime(new Date(), 'yyyy-MM-dd'),
-      level: data.level || 'INFO',
-      ...data,
-    });
+    const timestamp = formatTime(new Date(), 'YYYY-MM-DD HH:mm:ss');
+    const level = data.level?.toUpperCase() || 'INFO';
+    return `[${timestamp}] [${level}] ${data.message}${data.stack ? '\n' + data.stack : ''}`;
   }
 
   async logToFile(data: LogData) {
@@ -29,7 +27,7 @@ class LoggerUtils {
       
       await appendFile(
         resourceUtil.logFilePath,
-        this.formatLog(data) + ',\n'  // 换行+逗号适合JSON数组格式
+        this.formatLog(data) + '\n'
       );
     } catch (error) {
       console.error('LoggerUtils.logToFile failed:', error);

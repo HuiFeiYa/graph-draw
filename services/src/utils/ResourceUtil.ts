@@ -16,7 +16,7 @@ class ResourceUtil {
   readonly logsDir = join(this.rootDir, './logs')
    // 使用 getter，每次访问时重新计算路径
   get logFilePath() {
-    return join(this.logsDir, `node-service.${formatTime(Date.now(), 'YYYY-MM-DD')}.log`);
+    return join(this.logsDir, `hfdraw.${formatTime(Date.now(), 'YYYY-MM-DD_HH-mm-ss')}.log`);
   }
   constructor() {
     // 检查 logs 目录是否存在，不存在则创建

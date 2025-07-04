@@ -14,12 +14,11 @@ import { loggerUtils } from './utils/LoggerUtils';
 import { LogData } from './types/common';
 import *  as  sqlite3 from 'better-sqlite3'
 // 打印 Node.js 版本和 ABI 版本（关键！）
-console.log(`
-[Node 服务环境检查]
+const envInfo = `[Node 服务环境检查]
 Node.js 版本: ${process.version}
 NODE_MODULE_VERSION: ${process.versions.modules}  <-- 必须与 Electron 的 130 一致
-运行路径: ${__dirname}
-`);
+运行路径: ${__dirname}`;
+loggerUtils.logToFile(new LogData(envInfo, 'log'));
 
 
 // 必须定义在 main.ts 中否则会报错，未连接，todo 时机问题？
@@ -38,8 +37,9 @@ export const readDbConfig: DataSourceOptions = {
   synchronize: true,
   name: READ_CONNECTION_NAME,
 };
-console.log('writeDb path:', writeDbConfig.database) 
-console.log('readDb path:', readDbConfig.database)
+loggerUtils.logToFile(new LogData(`数据库配置信息:
+writeDb path: ${writeDbConfig.database}
+readDb path: ${readDbConfig.database}`, 'log'));
 
 
 export async function setupConnections() {
@@ -47,27 +47,29 @@ export async function setupConnections() {
     // 连接从数据库
     await createConnection(writeDbConfig);
     await createConnection(readDbConfig);
-    console.log('Connected to writeDbConfig database');
+    loggerUtils.logToFile(new LogData('数据库连接成功', 'log'));
   } catch (error) {
-    console.error('Error connecting to databases:', error);
+    loggerUtils.logToFile(new LogData(`数据库连接失败: ${error.message}`, 'error', error.stack));
     throw error;
   }
 }
 
 async function bootstrap() {
+  loggerUtils.logToFile(new LogData('服务启动中...', 'log'));
   const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
+  loggerUtils.logToFile(new LogData('全局拦截器和异常过滤器已配置', 'log'));
   process.on('unhandledRejection', function (err:any) {
-    console.error('打印 unhandledRejection:', err);
-    loggerUtils.logToFile(new LogData(err.message, 'error'));
+    loggerUtils.logToFile(new LogData(`未处理的 Promise 拒绝: ${err.message}`, 'error', err.stack));
   });
   process.on('uncaughtException', function (e) {
-    console.log('打印 uncaughtException', e);
-    loggerUtils.logToFile(new LogData(e.message + e.stack, 'error'));
+    loggerUtils.logToFile(new LogData(`未捕获的异常: ${e.message}`, 'error', e.stack));
   });
   setupConnections();
-  console.log('process.env.PORT:', process.env.PORT);
-  await app.listen(process.env.PORT ?? 8003);
+  loggerUtils.logToFile(new LogData(`配置的端口: ${process.env.PORT || 8003}`, 'log'));
+  const port = process.env.PORT ?? 8003;
+  await app.listen(port);
+  loggerUtils.logToFile(new LogData(`服务已启动，监听端口: ${port}`, 'log'));
 }
 bootstrap();

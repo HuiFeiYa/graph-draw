@@ -27,12 +27,13 @@ export class LoggingInterceptor implements NestInterceptor {
   }
 
   writeLog(log:RequestLog) {
+    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+    const logMessage = `[${timestamp}] [REQUEST] ${log.method} ${log.url} - ${log.useTime}ms\n    Body: ${JSON.stringify(log.body)}`;
     writeLogLock.acquire("Lock", () => {
-      return appendFile(resourceUtil.logFilePath, JSON.stringify(log) + ',\n');
+      return appendFile(resourceUtil.logFilePath, logMessage + '\n');
     }).catch(e => {
       console.error('writeLog', e);
     });
-
   }
 
 }

@@ -81,7 +81,7 @@ class AppInstance {
   async startNodeServer() {
     // 在打包后的环境中，nodeServer 目录位于应用根目录下
     const appPath = app.getAppPath();
-    const nodeScript = resolve(appPath, "./nodeServer/dist/src/main.js");
+    const nodeScript = isDevelopment ? resolve(appPath, "./nodeServer/dist/src/main.js") : resolve(appPath, "../../nodeServer/dist/src/main.js");
     console.log('nodeScript:', nodeScript)
     console.log('appPath:',appPath)
     await this.logger.info(`启动服务器脚本: ${nodeScript}`);
@@ -108,6 +108,17 @@ class AppInstance {
         stdio: ['inherit', 'inherit', 'inherit', 'ipc']
       }
     );
+    this.logger.info(`subProcess fork`);
+// 子进程启动失败（如路径错误、权限问题等）
+subProcess.on('error', (err) => {
+    console.error('子进程启动错误:', err);
+    this.logger.error(`子进程启动错误: ${err.message}`);
+});
+// 子进程退出
+subProcess.on('close', (code, signal) => {
+    console.log(`子进程退出，退出码: ${code}，信号: ${signal}`);
+    this.logger.info(`子进程退出，退出码: ${code}，信号: ${signal}`);
+});
 
     subProcess.stdout?.on("data", async (data) => {
       const message = data.toString();

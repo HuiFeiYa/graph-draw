@@ -12,12 +12,13 @@ export enum WsMessageType {
 
   export type ShapeMap = Map<string, ShapeEntity>
 
-  export class  LogData {
+  export class LogData {
     message: string;
     level?: LogLevel;
-    [key: string]: any;
-    constructor (message: string, level?: LogLevel) {
+    stack?: string;
+    constructor(message: string, level?: LogLevel, stack?: string) {
       this.message = message;
       this.level = level;
+      this.stack = stack;
     }
   }
