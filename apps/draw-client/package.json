@@ -8,14 +8,14 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "build": "vite build",
-    "build:all": "pnpm run prebuild & pnpm run build-t & vite build && pnpm run electron:build",
+    "build:all": "pnpm run prebuild & pnpm run build-ts & vite build && pnpm run electron:build",
     "build:server": "node scripts/build-server.js",
     "start": "vite dev ",
     "dev": "vite dev & electron --inspect=5858 .",
     "electron-rebuild": "electron-rebuild -f -w better-sqlite3",
     "electron:build": "electron-builder",
     "build-ts": "tsc",
-    "prebuild": "rimraf dist dist-app dist-electron dist-a"
+    "prebuild": "rimraf dist-app dist-electron "
   },
   "build": {
     "appId": "hfdraw01",
@@ -25,8 +25,9 @@
     },
 
     "files": [
-      "dist-electron/*",
-      "dist-app/*",
+      "dist-electron/**/*",
+      "dist-a/**/*",
+      "dist-app/**/*",
       "package.json"
     ],
     "win": {

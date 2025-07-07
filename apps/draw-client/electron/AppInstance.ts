@@ -194,6 +194,7 @@ class AppInstance {
   }
 
   async createMainWindow() {
+    await this.logger.info(`preloadFile: ${preloadFile}`);
     this.mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
@@ -208,14 +209,17 @@ class AppInstance {
       type: "normal"
     });
     Menu.setApplicationMenu(null);
-
+    console.log('process.env.VITE_DEV_SERVER_URL:',process.env.VITE_DEV_SERVER_URL);
+    await this.logger.info(`process.env.VITE_DEV_SERVER_URL: ${process.env.VITE_DEV_SERVER_URL}`);
     if (process.env.VITE_DEV_SERVER_URL) {
       this.mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
       // 注释掉自动打开 DevTools，避免显示内部错误
       // this.mainWindow.webContents.openDevTools();
     } else {
-      const localPath = resolve(__dirname, '../dist/index.html');
-      this.mainWindow.loadURL(`file://${localPath}`);
+      const localPath = resolve(__dirname, '../dist-app/index.html');
+      console.log('localPath:', localPath);  
+      await this.logger.info(`localPath: ${localPath}`);
+      await this.mainWindow.loadURL(localPath);
     }
   }
 
