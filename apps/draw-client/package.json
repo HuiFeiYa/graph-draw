@@ -5,7 +5,7 @@
   "description": "绘图工具使用 svg",
   "author": "Hui Fei",
   "type": "commonjs",
-  "main": "dist-a/main.js",
+  "main": "dist-electron/main.js",
   "scripts": {
     "build": "vite build",
     "build:all": "pnpm run prebuild & pnpm run build-t & vite build && pnpm run electron:build",
@@ -26,7 +26,6 @@
 
     "files": [
       "dist-electron/*",
-      "dist-a/*",
       "dist-app/*",
       "package.json"
     ],

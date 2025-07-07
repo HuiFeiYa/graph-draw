@@ -3,7 +3,7 @@
         "module": "CommonJS",
         "target": "ES2016",
         "sourceMap": false,
-        "outDir": "./dist-a",
+        "outDir": "./dist-electron",
         "rootDir": "./electron",
         "skipLibCheck": true,  // 跳过对库文件的类型检查
         "strictNullChecks": true,                // 启用严格的 null 检查

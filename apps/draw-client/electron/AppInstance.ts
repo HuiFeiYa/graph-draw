@@ -4,10 +4,14 @@ const fs = require("fs");
 const fork = require("child_process").fork;
 const dayjs = require("dayjs");
 const isDevelopment = process.env.NODE_ENV === 'development'
-const preloadFile = resolve(__dirname, './preload/index.js')
+// 根据环境确定 preload 文件路径
+const preloadFile = isDevelopment 
+  ? resolve(__dirname, './preload/index.js') // 开发环境：Vite 处理后的文件
+  : resolve(__dirname, './preload/index.js'); // 生产环境：编译后的文件
 console.log("preloadFile------:", preloadFile);
 console.log('Electron Node.js 版本:', process.versions.node);
 console.log('Electron 使用的 NODE_MODULE_VERSION:', process.versions.modules); // 关键！这个值必须和原生模块匹配
+
 class Logger {
   private logPath: string;
   private options: { flags: string; encoding: string };
@@ -65,74 +69,128 @@ class Logger {
 class AppInstance {
   mainWindow: any;
   private logger: Logger;
+  private nodeServerProcess: any = null; // 保存 node server 进程引用
 
   constructor() {
     this.logger = new Logger();
   }
+  
   async start() {
+    // 设置控制台编码，解决中文乱码问题
+    if (process.platform === 'win32') {
+      // 设置环境变量
+      process.env.LANG = 'zh_CN.UTF-8';
+      process.env.LC_ALL = 'zh_CN.UTF-8';
+      process.env.LC_CTYPE = 'zh_CN.UTF-8';
+      
+      // 强制设置控制台编码
+      try {
+        if (process.stdout && process.stdout.setEncoding) {
+          process.stdout.setEncoding('utf8');
+        }
+        if (process.stderr && process.stderr.setEncoding) {
+          process.stderr.setEncoding('utf8');
+        }
+      } catch (error) {
+        console.error('设置控制台编码失败:', error);
+      }
+      
+      // 设置控制台代码页（Windows 特定）
+      try {
+        const { execSync } = require('child_process');
+        execSync('chcp 65001', { stdio: 'ignore' });
+      } catch (error) {
+        console.error('设置控制台代码页失败:', error);
+      }
+    }
+    
     await this.logger.info(`appInstance start`);
     console.log('isDevelopment:',isDevelopment)
-    // if (!isDevelopment) {
-      await this.startNodeServer();
-    // }
+    // 移除自动启动 node server 的逻辑
+    // await this.startNodeServer();
     await this.createMainWindow();
     this.setupIPC();
   }
+  
   async startNodeServer() {
-    // 在打包后的环境中，nodeServer 目录位于应用根目录下
-    const appPath = app.getAppPath();
-    const nodeScript = isDevelopment ? resolve(appPath, "./nodeServer/dist/src/main.js") : resolve(appPath, "../../nodeServer/dist/src/main.js");
-    console.log('nodeScript:', nodeScript)
-    console.log('appPath:',appPath)
-    await this.logger.info(`启动服务器脚本: ${nodeScript}`);
-    await this.logger.info(`应用路径: ${appPath}`);
+    // 如果已经启动了 node server，直接返回
+    if (this.nodeServerProcess) {
+      console.log('Node server 已经启动');
+      return { success: true, message: 'Node server 已经启动' };
+    }
 
-    // const subProcess = fork(
-    //   nodeScript,
-    //   ["--prod", "--appPath", app.getAppPath()],
-    //   {
-    //     cwd: resolve(nodeScript, ".."),
-    //     stdio: "pipe",
-    //   }
-    // );
+    try {
+      // 在打包后的环境中，nodeServer 目录位于应用根目录下
+      const appPath = app.getAppPath();
+      const nodeScript = isDevelopment ? resolve(appPath, "./nodeServer/dist/src/main.js") : resolve(appPath, "../../nodeServer/dist/src/main.js");
+      console.log('nodeScript:', nodeScript)
+      console.log('appPath:',appPath)
+      await this.logger.info(`启动服务器脚本: ${nodeScript}`);
+      await this.logger.info(`应用路径: ${appPath}`);
 
-    const subProcess = fork(
-      nodeScript,
-      {
-        cwd: isDevelopment ? resolve(appPath,'./nodeServer') : resolve(appPath,'../../nodeServer'),
-        env: {
-          ...process.env,
-          NODE_PATH: isDevelopment? resolve(appPath,'./nodeServer/node_modules'): resolve(appPath,'../../nodeServer/node_modules'),
-          ELECTRON_RUN_AS_NODE: '1'
-        },
-        stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-      }
-    );
-    this.logger.info(`subProcess fork`);
-// 子进程启动失败（如路径错误、权限问题等）
-subProcess.on('error', (err) => {
-    console.error('子进程启动错误:', err);
-    this.logger.error(`子进程启动错误: ${err.message}`);
-});
-// 子进程退出
-subProcess.on('close', (code, signal) => {
-    console.log(`子进程退出，退出码: ${code}，信号: ${signal}`);
-    this.logger.info(`子进程退出，退出码: ${code}，信号: ${signal}`);
-});
+      const subProcess = fork(
+        nodeScript,
+        {
+          cwd: isDevelopment ? resolve(appPath,'./nodeServer') : resolve(appPath,'../../nodeServer'),
+          env: {
+            ...process.env,
+            NODE_PATH: isDevelopment? resolve(appPath,'./nodeServer/node_modules'): resolve(appPath,'../../nodeServer/node_modules'),
+            ELECTRON_RUN_AS_NODE: '1',
+            // 设置编码环境变量
+            LANG: 'zh_CN.UTF-8',
+            LC_ALL: 'zh_CN.UTF-8',
+            LC_CTYPE: 'zh_CN.UTF-8',
+            NODE_OPTIONS: '--max-old-space-size=4096'
+          },
+          stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+        }
+      );
+      
+      this.nodeServerProcess = subProcess; // 保存进程引用
+      await this.logger.info(`subProcess fork`);
 
-    subProcess.stdout?.on("data", async (data) => {
-      const message = data.toString();
-      console.log("subProcess:", message);
-      await this.logger.info(`服务输出: ${message}`);
-    });
+      // 子进程启动失败（如路径错误、权限问题等）
+      subProcess.on('error', (err) => {
+          console.error('子进程启动错误:', err);
+          this.logger.error(`子进程启动错误: ${err.message}`);
+          this.nodeServerProcess = null; // 清除进程引用
+      });
+      
+      // 子进程退出
+      subProcess.on('close', (code, signal) => {
+          console.log(`子进程退出，退出码: ${code}，信号: ${signal}`);
+          this.logger.info(`子进程退出，退出码: ${code}，信号: ${signal}`);
+          this.nodeServerProcess = null; // 清除进程引用
+      });
 
-    subProcess.stderr?.on("data", async (data) => {
-      const error = data.toString();
-      console.error("node error:", error);
-      await this.logger.error(`服务错误: ${error}`);
-    });
+      subProcess.stdout?.on("data", async (data) => {
+        const message = data.toString();
+        console.log("subProcess:", message);
+        await this.logger.info(`服务输出: ${message}`);
+      });
 
-    await this.logger.info("等待服务就绪...");
+      subProcess.stderr?.on("data", async (data) => {
+        const error = data.toString();
+        console.error("node error:", error);
+        await this.logger.error(`服务错误: ${error}`);
+      });
+
+      await this.logger.info("等待服务就绪...");
+      return { success: true, message: 'Node server 启动成功' };
+    } catch (error) {
+      await this.logger.error(`启动 Node server 失败: ${error.message}`);
+      return { success: false, message: `启动失败: ${error.message}` };
+    }
+  }
+
+  async stopNodeServer() {
+    if (this.nodeServerProcess) {
+      this.nodeServerProcess.kill();
+      this.nodeServerProcess = null;
+      await this.logger.info("Node server 已停止");
+      return { success: true, message: 'Node server 已停止' };
+    }
+    return { success: false, message: 'Node server 未运行' };
   }
 
   async createMainWindow() {
@@ -153,7 +211,8 @@ subProcess.on('close', (code, signal) => {
 
     if (process.env.VITE_DEV_SERVER_URL) {
       this.mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
-      this.mainWindow.webContents.openDevTools();
+      // 注释掉自动打开 DevTools，避免显示内部错误
+      // this.mainWindow.webContents.openDevTools();
     } else {
       const localPath = resolve(__dirname, '../dist/index.html');
       this.mainWindow.loadURL(`file://${localPath}`);
@@ -162,6 +221,27 @@ subProcess.on('close', (code, signal) => {
 
   setupIPC() {
     console.log("setupIPC - 开始注册IPC事件监听器");
+    
+    // 启动 node server 的 IPC 监听
+    ipcMain.handle('start-node-server', async () => {
+      console.log('收到启动 node server 请求');
+      const result = await this.startNodeServer();
+      return result;
+    });
+
+    // 停止 node server 的 IPC 监听
+    ipcMain.handle('stop-node-server', async () => {
+      console.log('收到停止 node server 请求');
+      const result = await this.stopNodeServer();
+      return result;
+    });
+
+    // 获取 node server 状态的 IPC 监听
+    ipcMain.handle('get-node-server-status', () => {
+      const isRunning = this.nodeServerProcess !== null;
+      return { isRunning };
+    });
+
     ipcMain.on('open-dev-tools', () => {
       console.log('收到open-dev-tools事件');
       if (this.mainWindow) {

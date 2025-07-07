@@ -1,6 +1,8 @@
 import { join, resolve } from "path";
 import { formatTime } from "./common";
 import { existsSync, mkdirSync } from "fs";
+import { loggerUtils } from "./LoggerUtils";
+import { LogData } from "src/types/common";
 const arv1 = process.argv[1];
 console.log('arv1:',arv1)
 /**
@@ -8,7 +10,7 @@ console.log('arv1:',arv1)
  */
 // 生产目录如此，开发环境后续保持一致
 console.log('rootDir:', resolve(arv1, '../../'))
-
+loggerUtils.logToFile(new LogData('rootDir:'+resolve(arv1, '../../'), 'log'));
 
 class ResourceUtil {
   readonly rootDir = resolve(arv1, '../../')

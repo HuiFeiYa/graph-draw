@@ -11,20 +11,10 @@ export default defineConfig({
     vue(),
     electron({
       main: {
-        entry: './dist-a/main.js',
-        // vite: {
-        //   build: {
-        //     outDir: 'dist-electron/main', // 主进程输出目录
-        //     rollupOptions: { /* 自定义配置 */ }
-        //   }
-        // }
+        entry: './electron/main.ts', // 直接指向 TypeScript 源文件
       },
       preload: {
-        input: './dist-a/preload/index.js',
-        outDir: 'dist-electron',
-        esbuildPluginOptions: {
-          target: 'es2020',
-        },
+        input: './electron/preload/index.ts', // 直接指向 TypeScript 源文件
       },
     }),
   ],

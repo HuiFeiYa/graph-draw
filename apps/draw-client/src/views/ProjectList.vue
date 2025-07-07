@@ -33,6 +33,16 @@
         </span>
         回收站
       </button>
+      <!-- 添加服务连接状态显示 -->
+      <div class="server-status">
+        <div class="status-indicator" :class="{ 'connected': serverStatus.isRunning, 'disconnected': !serverStatus.isRunning }">
+          <span class="status-dot"></span>
+          <span class="status-text">{{ serverStatus.isRunning ? '服务已连接' : '服务未连接' }}</span>
+        </div>
+        <button class="connect-btn" @click="toggleServerConnection" :disabled="serverStatus.loading">
+          {{ serverStatus.isRunning ? '断开服务' : '连接服务' }}
+        </button>
+      </div>
     </div>
     <div class="main-content">
       <h1>项目列表</h1>
@@ -76,6 +86,12 @@ const router = useRouter()
 const projects = ref()
 const projectStore = useProjectStore(); // 初始化 store
 
+// 服务状态
+const serverStatus = ref({
+  isRunning: false,
+  loading: false
+})
+
 const openProject = (projectId: number) => {
   // 根据项目类型跳转到对应页面
   const project = projects.value.find(p => p.projectId === projectId)
@@ -85,12 +101,14 @@ const openProject = (projectId: number) => {
     router.push({ path: '/layout/mindMap',query: { projectId } })
   }
 }
+
 const getProjects = async () => {
     projectService.getProjectList().then(res => {
       projects.value = res.data
     })
 }
-const  createNewProject = async() => {
+
+const createNewProject = async() => {
     const params = {
     "name": "未命名项目" 
   }
@@ -109,9 +127,51 @@ const  createNewProject = async() => {
   }
 }
 
+// 切换服务连接状态
+const toggleServerConnection = async () => {
+  serverStatus.value.loading = true
+  try {
+    if (serverStatus.value.isRunning) {
+      // 断开服务
+      const result = await window.electron.stopNodeServer()
+      if (result.success) {
+        serverStatus.value.isRunning = false
+        console.log('服务已断开')
+      } else {
+        console.error('断开服务失败:', result.message)
+      }
+    } else {
+      // 连接服务
+      const result = await window.electron.startNodeServer()
+      if (result.success) {
+        serverStatus.value.isRunning = true
+        console.log('服务已连接')
+      } else {
+        console.error('连接服务失败:', result.message)
+      }
+    }
+  } catch (error) {
+    console.error('操作服务时出错:', error)
+  } finally {
+    serverStatus.value.loading = false
+  }
+}
+
+// 获取服务状态
+const getServerStatus = async () => {
+  try {
+    const status = await window.electron.getNodeServerStatus()
+    serverStatus.value.isRunning = status.isRunning
+  } catch (error) {
+    console.error('获取服务状态失败:', error)
+  }
+}
+
 onMounted(() => {
     getProjects()
+    getServerStatus() // 获取初始服务状态
 })
+
 const deleteProject = async (projectId) => {
   if (confirm('确定要删除该项目吗？')) {
       const res = await projectService.deleteProject(projectId)
@@ -166,6 +226,57 @@ const deleteProject = async (projectId) => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* 服务状态样式 */
+.server-status {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #dc3545;
+}
+
+.status-indicator.connected .status-dot {
+  background: #28a745;
+}
+
+.status-text {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.connect-btn {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  background: #2196F3;
+  color: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.connect-btn:hover:not(:disabled) {
+  background: #0b7dda;
+}
+
+.connect-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 .main-content {
