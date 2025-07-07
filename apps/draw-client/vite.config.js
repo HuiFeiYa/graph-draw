@@ -12,6 +12,12 @@ export default defineConfig({
     electron({
       main: {
         entry: './dist-a/main.js',
+        // vite: {
+        //   build: {
+        //     outDir: 'dist-electron/main', // 主进程输出目录
+        //     rollupOptions: { /* 自定义配置 */ }
+        //   }
+        // }
       },
       preload: {
         input: './dist-a/preload/index.js',

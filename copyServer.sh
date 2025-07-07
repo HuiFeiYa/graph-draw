@@ -11,8 +11,8 @@ mkdir -p "$NODE_SERVER_DIR"
 
 # 复制 dist、package.json、pnpm-lock.yaml 到 nodeServer
 cp -r dist "$NODE_SERVER_DIR"
-# cp package.json "$NODE_SERVER_DIR"
-# cp pnpm-lock.yaml "$NODE_SERVER_DIR"
+cp package.json "$NODE_SERVER_DIR"
+cp pnpm-lock.yaml "$NODE_SERVER_DIR"
 
 # 进入 nodeServer 目录并安装生产依赖
 # cd "$NODE_SERVER_DIR" || exit 1

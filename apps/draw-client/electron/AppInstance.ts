@@ -99,10 +99,10 @@ class AppInstance {
     const subProcess = fork(
       nodeScript,
       {
-        cwd: resolve(appPath,'./nodeServer'),
+        cwd: isDevelopment ? resolve(appPath,'./nodeServer') : resolve(appPath,'../../nodeServer'),
         env: {
           ...process.env,
-          NODE_PATH: resolve(appPath,'./nodeServer/node_modules'),
+          NODE_PATH: isDevelopment? resolve(appPath,'./nodeServer/node_modules'): resolve(appPath,'../../nodeServer/node_modules'),
           ELECTRON_RUN_AS_NODE: '1'
         },
         stdio: ['inherit', 'inherit', 'inherit', 'ipc']

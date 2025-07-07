@@ -18,7 +18,7 @@ class LoggerUtils {
   private formatLog(data: LogData) {
     const timestamp = formatTime(new Date(), 'YYYY-MM-DD HH:mm:ss');
     const level = data.level?.toUpperCase() || 'INFO';
-    return `[${timestamp}] [${level}] ${data.message}${data.stack ? '\n' + data.stack : ''}`;
+    return `[${timestamp}] [${level}] ${data?.message}${data?.stack ? '\n' + data?.stack : ''}`;
   }
 
   async logToFile(data: LogData) {
