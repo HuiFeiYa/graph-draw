@@ -5,12 +5,14 @@ import { MainService } from './main.service';
 import { ApplicationProject } from 'src/entities/applicationProject.entity';
 import { loggerUtils } from 'src/utils/LoggerUtils';
 import { LogData } from 'src/types/common';
-
+import { resolve } from 'path';
+const database = resolve(process.cwd(), './db/application.db')
+loggerUtils.logToFile(new LogData(`mainModule database :${database}`, 'log'));
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'db/application.db',
+      database,
       entities: [ApplicationProject],
       synchronize: true,
     }),

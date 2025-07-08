@@ -13,28 +13,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       ? exception.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
     
-    // 构建详细的错误日志信息
-    const errorDetails = {
-      timestamp: new Date().toISOString(),
-      method: request.method,
-      url: request.url,
-      status: status,
-      message: exception.message,
-      stack: exception.stack,
-      body: request.body,
-      query: request.query,
-      params: request.params,
-      headers: request.headers,
-      ip: request.ip,
-      userAgent: request.get('User-Agent')
-    };
-    
-    // 记录详细错误信息到文件
-    loggerUtils.logToFile(new LogData(
-      `异常捕获 - ${request.method} ${request.url} (状态码: ${status}): ${exception.message}`,
-      'error',
-      JSON.stringify(errorDetails, null, 2)
-    ));
+    // 记录错误信息
+    const errorMessage = `异常捕获 - ${request.method} ${request.url} (状态码: ${status}): ${exception.message}`;
+    loggerUtils.logToFile(new LogData(errorMessage, 'error'));
     
     // 同时输出到控制台
     console.error(`[AllExceptionsFilter] Exception caught at ${request.url}:`, {

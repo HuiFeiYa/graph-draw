@@ -67,7 +67,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
     } catch (error:any) {
         const errorMsg = `获取数据库管理器失败: ${error.message}`;
         console.error('Failed to get manager:', error);
-        loggerUtils.logToFile(new LogData(errorMsg, 'error', error.stack));
+        loggerUtils.logToFile(new LogData(errorMsg, 'error'));
         throw new Error(`Failed to get database manager: ${error.message}`);
     }
     
@@ -97,7 +97,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
             projectManager = conn.manager;
         } catch (e) {
             conn.inUse = false;
-            loggerUtils.logToFile(new LogData(`项目数据库连接失败: ${databaseName} - ${e.message}`, 'error', e.stack));
+            loggerUtils.logToFile(new LogData(`项目数据库连接失败: ${databaseName} - ${e.message}`, 'error'));
             throw e;
         }
     }
@@ -124,7 +124,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
             } catch (error) {
                 const errorMsg = `事务执行失败: ${error.message}`;
                 console.error('Transaction failed:', error);
-                loggerUtils.logToFile(new LogData(errorMsg, 'error', error.stack));
+                loggerUtils.logToFile(new LogData(errorMsg, 'error'));
                 throw new HttpException({
                     status: HttpStatus.INTERNAL_SERVER_ERROR,
                     error: 'Transaction failed',

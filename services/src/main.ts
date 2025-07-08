@@ -74,7 +74,7 @@ export async function setupConnections() {
     
     loggerUtils.logToFile(new LogData('所有数据库连接建立完成', 'log'));
   } catch (error) {
-    loggerUtils.logToFile(new LogData(`数据库连接失败: ${error.message}`, 'error', error.stack));
+    loggerUtils.logToFile(new LogData(`数据库连接失败: ${error.message}`, 'error'));
     throw error;
   }
 }
@@ -82,79 +82,50 @@ export async function setupConnections() {
 async function bootstrap() {
   try {
     loggerUtils.logToFile(new LogData('=== 服务启动开始 ===', 'log'));
-    
+    await setupConnections();
     loggerUtils.logToFile(new LogData('正在创建 NestJS 应用实例...', 'log'));
-    
-    // 添加更详细的错误处理
-    let app;
-    try {
-      app = await NestFactory.create(AppModule, { 
-        cors: true,
-        logger: ['error', 'warn', 'log'] // 启用 NestJS 内置日志
-      });
-      loggerUtils.logToFile(new LogData('NestJS 应用实例创建成功', 'log'));
-    } catch (createError) {
-      loggerUtils.logToFile(new LogData(`NestJS 应用实例创建失败: ${createError.message}`, 'error', createError.stack));
-      throw createError;
-    }
+    const app = await NestFactory.create(AppModule, { 
+      cors: true,
+      logger: ['error', 'warn', 'log'] // 启用 NestJS 内置日志
+    });
+    loggerUtils.logToFile(new LogData('NestJS 应用实例创建成功', 'log'));
     
     loggerUtils.logToFile(new LogData('正在配置全局拦截器...', 'log'));
-    try {
-      app.useGlobalInterceptors(new LoggingInterceptor());
-      loggerUtils.logToFile(new LogData('全局拦截器配置完成', 'log'));
-    } catch (interceptorError) {
-      loggerUtils.logToFile(new LogData(`全局拦截器配置失败: ${interceptorError.message}`, 'error', interceptorError.stack));
-      throw interceptorError;
-    }
+    app.useGlobalInterceptors(new LoggingInterceptor());
+    loggerUtils.logToFile(new LogData('全局拦截器配置完成', 'log'));
     
     loggerUtils.logToFile(new LogData('正在配置全局异常过滤器...', 'log'));
-    try {
-      app.useGlobalFilters(new AllExceptionsFilter());
-      loggerUtils.logToFile(new LogData('全局异常过滤器配置完成', 'log'));
-    } catch (filterError) {
-      loggerUtils.logToFile(new LogData(`全局异常过滤器配置失败: ${filterError.message}`, 'error', filterError.stack));
-      throw filterError;
-    }
+    app.useGlobalFilters(new AllExceptionsFilter());
+    loggerUtils.logToFile(new LogData('全局异常过滤器配置完成', 'log'));
     
     loggerUtils.logToFile(new LogData('正在配置进程异常处理...', 'log'));
     process.on('unhandledRejection', function (err:any) {
-      loggerUtils.logToFile(new LogData(`未处理的 Promise 拒绝: ${err.message}`, 'error', err.stack));
+      loggerUtils.logToFile(new LogData(`未处理的 Promise 拒绝: ${err.message}`, 'error'));
     });
     process.on('uncaughtException', function (e) {
-      loggerUtils.logToFile(new LogData(`未捕获的异常: ${e.message}`, 'error', e.stack));
+      loggerUtils.logToFile(new LogData(`未捕获的异常: ${e.message}`, 'error'));
     });
     loggerUtils.logToFile(new LogData('进程异常处理配置完成', 'log'));
     
     loggerUtils.logToFile(new LogData('正在建立数据库连接...', 'log'));
-    try {
-      await setupConnections();
-      loggerUtils.logToFile(new LogData('数据库连接建立完成', 'log'));
-    } catch (dbError) {
-      loggerUtils.logToFile(new LogData(`数据库连接失败: ${dbError.message}`, 'error', dbError.stack));
-      throw dbError;
-    }
+    loggerUtils.logToFile(new LogData('数据库连接建立完成', 'log'));
     
     const port = process.env.PORT ?? 8003;
     loggerUtils.logToFile(new LogData(`配置的端口: ${port}`, 'log'));
     
     loggerUtils.logToFile(new LogData('正在启动 HTTP 服务器...', 'log'));
-    try {
-      await app.listen(port);
-      loggerUtils.logToFile(new LogData(`=== 服务启动成功，监听端口: ${port} ===`, 'log'));
-    } catch (listenError) {
-      loggerUtils.logToFile(new LogData(`HTTP 服务器启动失败: ${listenError.message}`, 'error', listenError.stack));
-      throw listenError;
-    }
+    await app.listen(port);
+    loggerUtils.logToFile(new LogData(`=== 服务启动成功，监听端口: ${port} ===`, 'log'));
     
   } catch (error) {
-    loggerUtils.logToFile(new LogData(`服务启动失败: ${error.message}`, 'error', error.stack));
+    loggerUtils.logToFile(new LogData(`服务启动失败: ${error.message}`, 'error'));
     throw error;
   }
 }
 
 // 添加启动过程的错误处理
 bootstrap().catch(error => {
-  loggerUtils.logToFile(new LogData(`Bootstrap 过程失败: ${error.message}`, 'error', error.stack));
+  loggerUtils.logToFile(new LogData(`Bootstrap 过程失败: ${error.message}`, 'error'));
   console.error('Bootstrap 过程失败:', error);
   process.exit(1);
 });
