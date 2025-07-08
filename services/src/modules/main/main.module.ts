@@ -3,7 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MainController } from './main.controller';
 import { MainService } from './main.service';
 import { ApplicationProject } from 'src/entities/applicationProject.entity';
-import { CurrentStep } from 'src/entities/currentStep.entity';
+import { loggerUtils } from 'src/utils/LoggerUtils';
+import { LogData } from 'src/types/common';
 
 @Module({
   imports: [
@@ -19,4 +20,9 @@ import { CurrentStep } from 'src/entities/currentStep.entity';
   providers: [MainService],
   exports: [MainService]
 })
-export class MainModule {}
+export class MainModule {
+  constructor() {
+    // 记录模块初始化
+    loggerUtils.logToFile(new LogData('MainModule 已初始化', 'log'));
+  }
+}

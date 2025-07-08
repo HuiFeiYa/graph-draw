@@ -20,6 +20,7 @@
   "build": {
     "appId": "hfdraw01",
     "productName": "draw",
+    "cleanBeforeBuild": false,
     "directories": {
       "output": "release/"
     },

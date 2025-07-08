@@ -4,7 +4,8 @@ import { ProjectModule } from './modules/project/project.module';
 import { ShapeModule } from './modules/shape/shape.module';
 import { StepModule } from './modules/step/stepModule';
 import { CurrentStepModule } from './modules/currentStep/currentStepModule';
-
+import { loggerUtils } from './utils/LoggerUtils';
+import { LogData } from './types/common';
 
 @Module({
   imports: [
@@ -15,4 +16,9 @@ import { CurrentStepModule } from './modules/currentStep/currentStepModule';
     CurrentStepModule
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    // 记录应用模块初始化
+    loggerUtils.logToFile(new LogData('AppModule 已初始化，所有子模块已加载', 'log'));
+  }
+}

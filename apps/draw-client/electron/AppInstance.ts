@@ -113,10 +113,26 @@ class AppInstance {
   }
   
   async startNodeServer() {
-    // 如果已经启动了 node server，直接返回
+    // 如果已经启动了 node server，先杀掉再重启
     if (this.nodeServerProcess) {
-      console.log('Node server 已经启动');
-      return { success: true, message: 'Node server 已经启动' };
+      console.log('检测到已有 Node server 进程，准备重启...');
+      await this.logger.info('检测到已有 Node server 进程，准备重启...');
+      try {
+        this.nodeServerProcess.kill();
+        await this.logger.info('已发送 kill 信号给 Node server 进程，等待退出...');
+        // 等待进程退出
+        await new Promise<void>((resolve) => {
+          this.nodeServerProcess.once('close', (code, signal) => {
+            console.log(`旧 Node server 进程已退出，退出码: ${code}，信号: ${signal}`);
+            this.logger.info(`旧 Node server 进程已退出，退出码: ${code}，信号: ${signal}`);
+            resolve();
+          });
+        });
+      } catch (e) {
+        console.error('杀死旧 Node server 进程时出错:', e);
+        await this.logger.error(`杀死旧 Node server 进程时出错: ${e.message}`);
+      }
+      this.nodeServerProcess = null;
     }
 
     try {
@@ -131,7 +147,7 @@ class AppInstance {
       const subProcess = fork(
         nodeScript,
         {
-          cwd: isDevelopment ? resolve(appPath,'./nodeServer') : resolve(appPath,'../../nodeServer'),
+          cwd: isDevelopment ? resolve(appPath,'./nodeServer/dist/src') : resolve(appPath,'../../nodeServer'),
           env: {
             ...process.env,
             NODE_PATH: isDevelopment? resolve(appPath,'./nodeServer/node_modules'): resolve(appPath,'../../nodeServer/node_modules'),
@@ -176,7 +192,7 @@ class AppInstance {
       });
 
       await this.logger.info("等待服务就绪...");
-      return { success: true, message: 'Node server 启动成功' };
+      return { success: false, message: 'Node server 启动成功' };
     } catch (error) {
       await this.logger.error(`启动 Node server 失败: ${error.message}`);
       return { success: false, message: `启动失败: ${error.message}` };
@@ -188,7 +204,7 @@ class AppInstance {
       this.nodeServerProcess.kill();
       this.nodeServerProcess = null;
       await this.logger.info("Node server 已停止");
-      return { success: true, message: 'Node server 已停止' };
+      return { success: false, message: 'Node server 已停止' };
     }
     return { success: false, message: 'Node server 未运行' };
   }
