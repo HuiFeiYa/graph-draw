@@ -107,7 +107,7 @@ class AppInstance {
     await this.logger.info(`appInstance start`);
     console.log('isDevelopment:',isDevelopment)
     // 移除自动启动 node server 的逻辑
-    // await this.startNodeServer();
+    await this.startNodeServer();
     await this.createMainWindow();
     this.setupIPC();
   }
@@ -138,7 +138,7 @@ class AppInstance {
     try {
       // 在打包后的环境中，nodeServer 目录位于应用根目录下
       const appPath = app.getAppPath();
-      const nodeScript = isDevelopment ? resolve(appPath, "./nodeServer/dist/src/main.js") : resolve(appPath, "../../nodeServer/dist/src/main.js");
+      const nodeScript = isDevelopment ? resolve(appPath, "./nodeServer/dist/main.js") : resolve(appPath, "../../nodeServer/src/main.js");
       console.log('nodeScript:', nodeScript)
       console.log('appPath:',appPath)
       await this.logger.info(`启动服务器脚本: ${nodeScript}`);
