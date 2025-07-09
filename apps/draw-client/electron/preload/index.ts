@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld('electron', {
   // Node server 相关接口
   startNodeServer: () => ipcRenderer.invoke('start-node-server'),
   stopNodeServer: () => ipcRenderer.invoke('stop-node-server'),
-  getNodeServerStatus: () => ipcRenderer.invoke('get-node-server-status')
+  getNodeServerStatus: () => ipcRenderer.invoke('get-node-server-status'),
+  closeProject: () => ipcRenderer.invoke('close-project')
 });

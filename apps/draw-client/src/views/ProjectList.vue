@@ -1,7 +1,14 @@
 <template>
+  <el-dialog v-model="dialogVisible" title="新建项目">
+    <el-input v-model="projectName" placeholder="请输入项目名称" />
+    <template #footer>
+      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button type="primary" @click="handleCreate">创建</el-button>
+    </template>
+  </el-dialog>
   <div class="project-list-container">
     <div class="sidebar">
-      <button class="sidebar-btn" @click="createNewProject">
+      <button class="sidebar-btn" @click="openDialog">
         <span class="btn-icon">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8 1V15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -80,6 +87,7 @@ import { projectService } from '../util/ProjectService'
 import { modelService } from '../util/ModelService'
 import { socketService } from '../socket/SocketService'
 import { useProjectStore } from '../stores/project' 
+import { ElDialog, ElInput, ElButton } from 'element-plus'
 const router = useRouter()
 
 // 模拟项目数据，实际应从API获取
@@ -164,6 +172,27 @@ const getServerStatus = async () => {
     serverStatus.value.isRunning = status.isRunning
   } catch (error) {
     console.error('获取服务状态失败:', error)
+  }
+}
+
+const dialogVisible = ref(false)
+const projectName = ref('')
+const openDialog = () => {
+  dialogVisible.value = true
+  projectName.value = ''
+}
+const handleCreate = async () => {
+  if (!projectName.value) return
+  dialogVisible.value = false
+  const params = { name: projectName.value }
+  const data = await modelService.createProject(params)
+  if (data.code === 1000) {
+    const projectId = data.data.projectId
+    projectStore.setCurrentProjectId(projectId)
+    projectStore.setCurrentProjectName(projectName.value)
+    socketService.sendJSON({ type: 'subscribeProject', projectId })
+    getProjects()
+    router.push({ path: '/layout/flow', query: { projectId } })
   }
 }
 

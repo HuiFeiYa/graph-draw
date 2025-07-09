@@ -1,27 +1,11 @@
-import { globalShortcut, BrowserWindow, dialog, ipcMain } from "electron";
+import { globalShortcut, BrowserWindow, dialog, ipcMain, app } from "electron";
 const { AppInstance } = require("./AppInstance");
 class ElectronInstance {
   appInstance: any
   start() {
-    this.initShortcut();
     this.bindListener();
   }
-  initShortcut() {
-    // 注册全局快捷键
-    const ret = globalShortcut.register("CommandOrControl+Shift+I", () => {
-      // 获取当前活动的窗口
-      const focusedWindow = BrowserWindow.getFocusedWindow();
-      if (focusedWindow) {
-        focusedWindow.webContents.openDevTools();
-      } else {
-        console.log("没有找到活动窗口");
-      }
-    });
-
-    if (!ret) {
-      console.log("该快捷键已被占用");
-    }
-  }
+ 
   bindListener() {
     this.createAppInstance();
     this.setupIpcHandlers();
@@ -47,6 +31,9 @@ class ElectronInstance {
       }
 
       return result.filePaths;
+    });
+    ipcMain.handle('close-project', () => {
+      app.quit();
     });
   }
   onReady() {

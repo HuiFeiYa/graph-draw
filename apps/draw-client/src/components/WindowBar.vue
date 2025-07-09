@@ -1,17 +1,25 @@
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useProjectStore } from '../store/project'
+const projectStore = useProjectStore()
+const projectName = computed(() => projectStore.currentProjectName)
+const closeProject = () => {
+  const electron = (window as any).electron
+  if (electron && electron.closeProject) {
+    electron.closeProject()
+  }
+}
+</script>
 <template>
     <div class="v-window-bar">
         <div class="g-m-t-4 g-m-l-4 g-ai-c">
             <img style="width: 20px;height: 20px;" src="/statics/header/design.svg" />
             <span class="_bar-title"> HfDraw </span>
         </div>
-        <span class="_text _rls g-one-line">
-            未命名项目1
-        </span>
+        <span v-if="projectName.value" class="_text _rls g-one-line">{{ projectName.value }}</span>
+        <span v-if="projectName.value" class="close-icon" @click="closeProject">×</span>
     </div>
 </template>
-<script lang="ts" setup>
-
-</script>
 <style lang="scss">
 @use '@/assets/css/theme.scss' as *;
 
@@ -99,5 +107,16 @@
             }
         }
     }
+}
+.close-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  -webkit-app-region: no-drag;
 }
 </style>
