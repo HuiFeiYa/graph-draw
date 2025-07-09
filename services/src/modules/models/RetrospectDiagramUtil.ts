@@ -1,0 +1,156 @@
+// import { OperationKey } from "./shapeConfig/OperationConfig";
+import { RetrospectOption, ShapeKey } from "@hfdraw/types";
+export enum RequireMapPosition {
+  vertical = "vertical", // 纵向
+  horizontal = "horizontal" // 横向
+}
+
+// TODO 兼容横向纵向
+const nodeSize = 12;
+export const defaultStyleOption = {
+  verticalGap: 80, // 控制脑图垂直间距
+  horizontalGap: 140 // 控制脑图水平间距
+};
+
+export type ToCreateShapeModelTreeType = {
+  shapeId: string,
+  width: number,
+  height: number,
+  cx: number,
+  cy: number,
+  retrospectOption: RetrospectOption,
+  children: ToCreateShapeModelTreeType[]
+  modelName?:string
+};
+// 纵向
+export class RetrospectTreeNode {
+  cx: number
+  cy: number
+  offset: number
+  shapeId: string
+  children: Array<RetrospectTreeNode> = []
+  retrospectOption: RetrospectOption
+  width: number
+  height: number
+  requireMapPosition: RequireMapPosition
+  modelName?: string
+  styleOption:{
+    verticalGap:number
+    horizontalGap:number
+  }
+  constructor({ cx, cy, children, retrospectOption, width, height, shapeId, modelName }: ToCreateShapeModelTreeType, requireMapPosition: RequireMapPosition, styleOption = defaultStyleOption) {
+    this.cx = cx;
+    this.cy = cy;
+    this.offset = 0;
+    this.retrospectOption = retrospectOption;
+    this.width = width;
+    this.height = height;
+    this.shapeId = shapeId;
+    this.requireMapPosition = requireMapPosition;
+    this.modelName = modelName;
+    this.children = children?.map((child: any) => new RetrospectTreeNode(child, requireMapPosition, styleOption)) || [];
+    this.styleOption = styleOption;
+  }
+
+  isLeaf(): boolean {
+    return this.children.length === 0;
+  }
+
+  /**
+   * 计算所占宽度
+   * @return {*}
+   * @memberof RetrospectTreeNode
+   */
+  calcExtent() {
+    const len = this.children.length;
+    const extents: any[] = [];
+    // 存储子节点占位
+    this.children.forEach((child: RetrospectTreeNode) => {
+      extents.push(child.calcExtent());
+    });
+    const rightMost: any[] = [];
+    let offset = 0;
+    // 根据占位计算偏移量
+    extents.forEach((ext, index: number) => {
+      offset = 0;
+      for (let j = 0; j < Math.min(ext.length, rightMost.length); j++) {
+        //  纵向的话  horizontalGap+width
+        // 横向的话 取verticalGap
+        let number = 0;
+        if (this.requireMapPosition === RequireMapPosition.horizontal) {
+          number = this.styleOption.verticalGap;
+        } else {
+          number = this.styleOption.horizontalGap + this.width;
+        }
+        offset = Math.max(offset, rightMost[j] - ext[j][0] + number);
+      }
+      for (let j = 0; j < ext.length; j++)
+      { if (j < rightMost.length) {
+        rightMost[j] = offset + ext[j][1];
+      } else {
+        rightMost.push(offset + ext[j][1]);
+      } }
+      this.children[index].offset = offset;
+    });
+
+    let state = 0;
+    let i0 = 0;
+
+    this.children.forEach((child, index: number) => {
+      if (state === 0) {
+        state = child.isLeaf() ? 3 : 1;
+      } else if (state === 1) {
+        if (child.isLeaf()) {
+          state = 2;
+          i0 = index - 1; // 叶子节点之后找到非叶子节点, 存储结果
+        }
+      } else if (state === 2) {
+        if (!child.isLeaf()) {
+          state = 1;
+          const dofs = (child.offset - this.children[i0].offset) / (index - i0);
+          offset = this.children[i0].offset;
+          for (let j = i0 + 1; j < index; j++) {
+            this.children[j].offset = offset += dofs;
+          }
+        }
+      } else {
+        if (!child.isLeaf()) state = 1;
+      }
+    });
+    this.children.forEach((child) => {
+      child.offset -= 0.5 * offset;
+    });
+    const rtn = [[-0.5 * nodeSize, 0.5 * nodeSize]];
+    let left = 0;
+    let right = len - 1;
+    let i = 0;
+    while (left <= right) {
+      while (left <= right && i >= extents[left].length) ++left;
+      while (left <= right && i >= extents[right].length) --right;
+      if (left > right) break;
+      let x0 = extents[left][i][0] + this.children[left].offset;
+      let x1 = extents[right][i][1] + this.children[right].offset;
+      rtn.push([x0, x1]);
+      i++;
+    }
+
+    return rtn;
+  }
+  calcPosition(node: any, cx: number, cy: number, height = 80) {
+    // TODO 兼容横向纵向
+    let number = 0;
+    // 横向的话  number 应该是水平间隔horizontalGap+宽度
+    // 纵向的话 number应该是高度加垂直间隔verticalGap
+    if (node.requireMapPosition === RequireMapPosition.horizontal) {
+      number = this.styleOption.horizontalGap + node.width;
+    } else {
+      number = this.styleOption.verticalGap + height; // 高度80固定后续可能修改
+    }
+    const children = node?.children || [];
+    children.forEach((child: any) => {
+      this.calcPosition(child, cx + (child.offset || 0), cy + number + nodeSize);
+    });
+    node.cx = cx;
+    node.cy = cy;
+  }
+}

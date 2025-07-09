@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useProjectStore } from '../store/project'
+import { useProjectStore } from '../stores/project'
 const projectStore = useProjectStore()
 const projectName = computed(() => projectStore.currentProjectName)
 const closeProject = () => {
@@ -16,8 +16,8 @@ const closeProject = () => {
             <img style="width: 20px;height: 20px;" src="/statics/header/design.svg" />
             <span class="_bar-title"> HfDraw </span>
         </div>
-        <span v-if="projectName.value" class="_text _rls g-one-line">{{ projectName.value }}</span>
-        <span v-if="projectName.value" class="close-icon" @click="closeProject">×</span>
+        <span v-if="projectName" class="_text _rls g-one-line">{{ projectName }}</span>
+        <span v-if="projectName" class="close-icon" @click="closeProject">×</span>
     </div>
 </template>
 <style lang="scss">

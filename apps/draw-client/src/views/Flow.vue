@@ -30,6 +30,10 @@ import { socketService } from "../socket/SocketService";
 const projectStore = useProjectStore();
 const route = useRoute();
 const projectId = route.query.projectId as string;
+
+if (route.query.projectName) {
+  projectStore.setCurrentProjectName(route.query.projectName)
+}
 console.log('projectId: ', projectId)
 const graphOption = new GraphOption(projectId);
 

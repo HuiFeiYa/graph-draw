@@ -61,7 +61,7 @@
               <p class="project-type">{{ project.type === 'flowchart' ? '流程图' : '思维导图' }}</p>
             </div>
             <div class="project-actions">
-              <button class="open-btn" @click="openProject(project.projectId)">打开项目</button>
+              <button class="open-btn" @click="openProject(project)">打开项目</button>
               <button class="delete-btn" @click="deleteProject(project.projectId)">删除项目</button>
             </div>
           </div>
@@ -88,6 +88,7 @@ import { modelService } from '../util/ModelService'
 import { socketService } from '../socket/SocketService'
 import { useProjectStore } from '../stores/project' 
 import { ElDialog, ElInput, ElButton } from 'element-plus'
+
 const router = useRouter()
 
 // 模拟项目数据，实际应从API获取
@@ -100,13 +101,15 @@ const serverStatus = ref({
   loading: false
 })
 
-const openProject = (projectId: number) => {
+const openProject = (p:any) => {
+  const projectId = p.projectId
+  const projectName = p.name
   // 根据项目类型跳转到对应页面
   const project = projects.value.find(p => p.projectId === projectId)
   if (project) {
-    router.push({ path: '/layout/flow', query: { projectId } })
+    router.push({ path: '/layout/flow', query: { projectId, projectName } })
   } else {
-    router.push({ path: '/layout/mindMap',query: { projectId } })
+    router.push({ path: '/layout/mindMap',query: { projectId, projectName } })
   }
 }
 
@@ -118,7 +121,7 @@ const getProjects = async () => {
 
 const createNewProject = async() => {
     const params = {
-    "name": "未命名项目" 
+    "name": projectName.value
   }
   console.log('openDevTools menu')
       window.electron.openDevTools();
@@ -130,7 +133,7 @@ const createNewProject = async() => {
     projectStore.setCurrentProjectId(projectId);
     socketService.sendJSON({ type: 'subscribeProject', projectId });
     getProjects()
-    router.push({ path: '/layout/flow', query: { projectId } })
+    router.push({ path: '/layout/flow', query: { projectId, projectName: projectName.value } })
 
   }
 }
