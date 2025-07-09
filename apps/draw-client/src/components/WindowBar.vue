@@ -1,25 +1,80 @@
-<script lang="ts" setup>
-import { computed } from 'vue'
+<script setup lang="ts">
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useProjectStore } from '../stores/project'
+import { useRoute } from 'vue-router'
+
 const projectStore = useProjectStore()
-const projectName = computed(() => projectStore.currentProjectName)
-const closeProject = () => {
+const route = useRoute()
+
+const projectName = computed(() => {
+  // 只有在 /flow 路由下才显示项目名称
+  if (route.path.includes('/flow')) {
+    return projectStore.currentProjectName
+  }
+  return ''
+})
+
+const winSize = ref<'max' | 'mid'>('mid')
+
+function setWindowSize(size: 'max' | 'mid' | 'min') {
   const electron = (window as any).electron
-  if (electron && electron.closeProject) {
-    electron.closeProject()
+  if (!electron) return
+  if (size === 'min') {
+    electron.minimize && electron.minimize()
+  } else if (size === 'max') {
+    electron.maximize && electron.maximize()
+    winSize.value = 'max'
+  } else if (size === 'mid') {
+    electron.unmaximize && electron.unmaximize()
+    winSize.value = 'mid'
   }
 }
+
+function handleClickClose() {
+  const electron = (window as any).electron
+  if (electron && electron.closeWindow) {
+    electron.closeWindow()
+  }
+}
+
+
 </script>
+
 <template>
-    <div class="v-window-bar">
-        <div class="g-m-t-4 g-m-l-4 g-ai-c">
-            <img style="width: 20px;height: 20px;" src="/statics/header/design.svg" />
-            <span class="_bar-title"> HfDraw </span>
-        </div>
-        <span v-if="projectName" class="_text _rls g-one-line">{{ projectName }}</span>
-        <span v-if="projectName" class="close-icon" @click="closeProject">×</span>
+  <div class="v-window-bar">
+    <div>
+      <div class="g-m-t-4 g-m-l-4 g-ai-c">
+        <img style="width: 20px;height: 20px;" src="/statics/header/design.svg" />
+        <span class="_bar-title"> HfDraw </span>
+      </div>
+      <span v-if="projectName" class="_text _rls g-one-line">{{ projectName }}</span>
     </div>
+    <div class="_window-right-btns">
+      <div
+        class="_window-btn _min-btn"
+        @click="setWindowSize('min')"
+      >
+        <img src="/statics/header/wminimize.svg" />
+      </div>
+      <div
+        class="_window-btn _max-btn"
+        @click="setWindowSize(winSize === 'max' ? 'mid' : 'max')"
+      >
+        <img
+          ref="maxImg"
+          :src="winSize === 'max' ? '/statics/header/winmid.svg' : '/statics/header/winmax.svg'"
+        />
+      </div>
+      <div
+        class="_window-btn _close-btn"
+        @click="handleClickClose"
+      >
+        <img src="/statics/header/wclose.svg" />
+      </div>
+    </div>
+  </div>
 </template>
+
 <style lang="scss">
 @use '@/assets/css/theme.scss' as *;
 
@@ -33,6 +88,8 @@ const closeProject = () => {
     position: relative;
     height: 28px;
     overflow: hidden;
+    display: flex;
+    justify-content: space-between;
     ._text {
         position: absolute;
         left: 50%;

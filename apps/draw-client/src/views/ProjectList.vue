@@ -40,16 +40,7 @@
         </span>
         回收站
       </button>
-      <!-- 添加服务连接状态显示 -->
-      <div class="server-status">
-        <div class="status-indicator" :class="{ 'connected': serverStatus.isRunning, 'disconnected': !serverStatus.isRunning }">
-          <span class="status-dot"></span>
-          <span class="status-text">{{ serverStatus.isRunning ? '服务已连接' : '服务未连接' }}</span>
-        </div>
-        <button class="connect-btn" @click="toggleServerConnection" :disabled="serverStatus.loading">
-          {{ serverStatus.isRunning ? '断开服务' : '连接服务' }}
-        </button>
-      </div>
+    
     </div>
     <div class="main-content">
       <h1>项目列表</h1>
@@ -73,7 +64,7 @@
             <path d="M2 12L12 17L22 12" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <p>暂无项目，快去创建一个吧！</p>
-          <button class="create-btn" @click="createNewProject">创建项目</button>
+          <button class="create-btn" @click="openDialog">创建项目</button>
         </div>
       </div>
     </div>
@@ -95,11 +86,6 @@ const router = useRouter()
 const projects = ref()
 const projectStore = useProjectStore(); // 初始化 store
 
-// 服务状态
-const serverStatus = ref({
-  isRunning: false,
-  loading: false
-})
 
 const openProject = (p:any) => {
   const projectId = p.projectId
@@ -138,45 +124,7 @@ const createNewProject = async() => {
   }
 }
 
-// 切换服务连接状态
-const toggleServerConnection = async () => {
-  serverStatus.value.loading = true
-  try {
-    if (serverStatus.value.isRunning) {
-      // 断开服务
-      const result = await window.electron.stopNodeServer()
-      if (result.success) {
-        serverStatus.value.isRunning = false
-        console.log('服务已断开')
-      } else {
-        console.error('断开服务失败:', result.message)
-      }
-    } else {
-      // 连接服务
-      const result = await window.electron.startNodeServer()
-      if (result.success) {
-        serverStatus.value.isRunning = true
-        console.log('服务已连接')
-      } else {
-        console.error('连接服务失败:', result.message)
-      }
-    }
-  } catch (error) {
-    console.error('操作服务时出错:', error)
-  } finally {
-    serverStatus.value.loading = false
-  }
-}
 
-// 获取服务状态
-const getServerStatus = async () => {
-  try {
-    const status = await window.electron.getNodeServerStatus()
-    serverStatus.value.isRunning = status.isRunning
-  } catch (error) {
-    console.error('获取服务状态失败:', error)
-  }
-}
 
 const dialogVisible = ref(false)
 const projectName = ref('')
@@ -201,7 +149,6 @@ const handleCreate = async () => {
 
 onMounted(() => {
     getProjects()
-    getServerStatus() // 获取初始服务状态
 })
 
 const deleteProject = async (projectId) => {

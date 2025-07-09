@@ -5,9 +5,9 @@ console.log('Preload script loaded successfully');
 contextBridge.exposeInMainWorld('electron', {
   openFileDialog: () => ipcRenderer.invoke('open-file-dialog'),
   openDevTools: () => ipcRenderer.send('open-dev-tools'),
-  // Node server 相关接口
-  startNodeServer: () => ipcRenderer.invoke('start-node-server'),
-  stopNodeServer: () => ipcRenderer.invoke('stop-node-server'),
-  getNodeServerStatus: () => ipcRenderer.invoke('get-node-server-status'),
-  closeProject: () => ipcRenderer.invoke('close-project')
+  closeProject: () => ipcRenderer.invoke('close-project'),
+  minimize: () => ipcRenderer.invoke('window-minimize'),
+  maximize: () => ipcRenderer.invoke('window-maximize'),
+  unmaximize: () => ipcRenderer.invoke('window-unmaximize'),
+  closeWindow: () => ipcRenderer.invoke('window-close')
 });

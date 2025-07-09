@@ -22,15 +22,6 @@ class ResourceUtil {
   }
 
   constructor() {
-    // 记录初始化信息
-    const initInfo = `ResourceUtil 初始化:
-    rootDir: ${this.rootDir}
-    projectDbDir: ${this.projectDbDir}
-    logsDir: ${this.logsDir}
-    logFilePath: ${this.logFilePath}
-    arv1: ${arv1}
-    argv: ${process.argv.toString()}`;
-    
 
     // 检查 logs 目录是否存在，不存在则创建
     if (!existsSync(this.logsDir)) {

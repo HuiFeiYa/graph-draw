@@ -2,8 +2,8 @@ const { resolve } = require("path");
 const { app, Menu, BrowserWindow, ipcMain } = require("electron");
 const fs = require("fs");
 const fork = require("child_process").fork;
-const dayjs = require("dayjs");
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isDevelopment = process.env.NODE_ENV !== 'production'
+console.log('process.env.NODE_ENV:',process.env.NODE_ENV)
 // 根据环境确定 preload 文件路径
 const preloadFile = isDevelopment 
   ? resolve(__dirname, './preload/index.js') // 开发环境：Vite 处理后的文件
@@ -24,6 +24,11 @@ class AppInstance {
   }
   
   async start() {
+    // 关闭窗口时，会再次执行，此时环境变量是 undefined 则不在执行后续代码
+    if (!process.env.NODE_ENV) {
+      app.quit();
+      return 
+    }
     // 设置控制台编码，解决中文乱码问题
     if (process.platform === 'win32') {
       // 设置环境变量
@@ -162,8 +167,10 @@ class AppInstance {
   async createMainWindow() {
     await this.logger.info(`preloadFile: ${preloadFile}`);
     this.mainWindow = new BrowserWindow({
-      width: 800,
-      height: 600,
+      width: 1400,
+      height: 800, 
+      minHeight: 600,
+      minWidth: 975,
       frame: false,
       webPreferences: {
         preload: preloadFile,
@@ -179,8 +186,7 @@ class AppInstance {
     await this.logger.info(`process.env.VITE_DEV_SERVER_URL: ${process.env.VITE_DEV_SERVER_URL}`);
     if (process.env.VITE_DEV_SERVER_URL) {
       this.mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
-      // 注释掉自动打开 DevTools，避免显示内部错误
-      // this.mainWindow.webContents.openDevTools();
+      this.mainWindow.webContents.openDevTools();
     } else {
       const localPath = resolve(__dirname, '../dist-app/index.html');
       console.log('localPath:', localPath);  
@@ -192,25 +198,6 @@ class AppInstance {
   setupIPC() {
     console.log("setupIPC - 开始注册IPC事件监听器");
     
-    // 启动 node server 的 IPC 监听
-    ipcMain.handle('start-node-server', async () => {
-      console.log('收到启动 node server 请求');
-      const result = await this.startNodeServer();
-      return result;
-    });
-
-    // 停止 node server 的 IPC 监听
-    ipcMain.handle('stop-node-server', async () => {
-      console.log('收到停止 node server 请求');
-      const result = await this.stopNodeServer();
-      return result;
-    });
-
-    // 获取 node server 状态的 IPC 监听
-    ipcMain.handle('get-node-server-status', () => {
-      const isRunning = this.nodeServerProcess !== null;
-      return { isRunning };
-    });
 
     ipcMain.on('open-dev-tools', () => {
       console.log('收到open-dev-tools事件');
@@ -231,8 +218,39 @@ class AppInstance {
         return result.filePaths[0]; // 返回选择的文件路径，可按需调整返回值
     });
 
+    ipcMain.handle('window-minimize', () => {
+      if (this.mainWindow) this.mainWindow.minimize();
+    });
+    ipcMain.handle('window-maximize', () => {
+      if (this.mainWindow) this.mainWindow.maximize();
+    });
+    ipcMain.handle('window-unmaximize', () => {
+      if (this.mainWindow) this.mainWindow.unmaximize();
+    });
+    ipcMain.handle('window-close', async () => {
+      console.log('开始关闭窗口，检查 mainWindow 状态');
+      if (this.mainWindow) {
+        console.log('执行 mainWindow.close()');
+        this.mainWindow.close();
+        // 额外检查：是否有残留子进程
+        console.log('Node server 进程状态:', this.nodeServerProcess ? '存在' : '已销毁');
+        // 如果有，手动杀死
+        if (this.nodeServerProcess) {
+          this.nodeServerProcess.kill();
+          console.log('已尝试杀死 Node server 进程');
+        }
+      }
+      console.log('窗口关闭逻辑执行完毕');
+    });
+
     console.log("setupIPC - IPC事件监听器注册完成");
   }
 }
-
+process.on('uncaughtException', (err) => {
+  console.error('主进程未捕获异常:', err);
+  // 可选：记录日志到文件
+  // fs.writeFileSync('crash.log', err.stack);
+  // 强制退出，避免异常重启
+  app.quit();
+});
 module.exports = AppInstance;

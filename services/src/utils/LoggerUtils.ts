@@ -12,12 +12,31 @@ class LoggerUtils {
   private logFilePath: string | null = null;
 
   constructor() {
+    /**
+     * 开发环境：
+     *  rootDir: D:\sourcecode\draw\hfdraw\services\dist
+        projectDbDir: D:\sourcecode\draw\hfdraw\services\db
+        logsDir: D:\sourcecode\draw\hfdraw\services\dist\logs
+        logFilePath: D:\sourcecode\draw\hfdraw\services\dist\logs\hfdraw.2025-07-09_15-05-03.log
+        arv1: D:\sourcecode\draw\hfdraw\services\dist\src\main
+        argv: C:\Users\admin\AppData\Local\Volta\tools\image\node\20.18.0\node.exe,D:\sourcecode\draw\hfdraw\services\dist\src\main,--development
+     */
+    /**
+     * 生产环境：
+     * rootDir: D:\sourcecode\draw\hfdraw\apps\draw-client\release\win-unpacked\nodeServer
+      projectDbDir: D:\sourcecode\draw\hfdraw\apps\draw-client\release\win-unpacked\nodeServer\db
+      logsDir: D:\sourcecode\draw\hfdraw\apps\draw-client\release\win-unpacked\nodeServer\logs
+      logFilePath: D:\sourcecode\draw\hfdraw\apps\draw-client\release\win-unpacked\nodeServer\logs\hfdraw.2025-07-09_15-00-30.log
+      arv1: D:\sourcecode\draw\hfdraw\apps\draw-client\release\win-unpacked\nodeServer\dist\main.js
+     */
     const initInfo = `ResourceUtil 初始化:
     rootDir: ${resourceUtil.rootDir}
     projectDbDir: ${resourceUtil.projectDbDir}
     logsDir: ${resourceUtil.logsDir}
     logFilePath: ${resourceUtil.logFilePath}
-    arv1: ${arv1}`;
+    arv1: ${arv1}
+    argv: ${process.argv.toString()}`;
+;
     this.logToFile(new LogData(initInfo, 'log'));
   }
 
