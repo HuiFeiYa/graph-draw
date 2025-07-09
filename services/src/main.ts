@@ -12,10 +12,7 @@ import { SystemEntityList } from './entities';
 import { LoggingInterceptor } from './interceptors/LoggingInterceptor';
 import { loggerUtils } from './utils/LoggerUtils';
 import { LogData } from './types/common';
-import { resourceUtil } from './utils/ResourceUtil';
 
-// 初始化 LoggerUtils
-loggerUtils.initialize(resourceUtil.logsDir, resourceUtil.logFilePath);
 
 // 打印 Node.js 版本和 ABI 版本（关键！）
 const envInfo = `[Node 服务环境检查]

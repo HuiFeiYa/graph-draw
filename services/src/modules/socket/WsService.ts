@@ -4,6 +4,8 @@ import { IncomingMessage } from 'node:http';
 import { WsClient } from 'src/modules/socket/WsClient';
 import { WsMessageType } from 'src/types/common';
 import { Step, StepMessageData } from '@hfdraw/types';
+import { loggerUtils } from '../../utils/LoggerUtils';
+
 export class WsService {
   private wsServer: Server;
   private clients: WsClient[] = [];
@@ -11,7 +13,7 @@ export class WsService {
   id=''
 
   constructor() {
-    console.log('init wsService')
+    loggerUtils.logToFile({ message: 'init wsService' });
     this.id = Math.random().toString(36).substr(2, 9);
     this.init();
   }
@@ -28,7 +30,7 @@ export class WsService {
   }
 
   removeClient(wsC: WsClient) {
-    console.log('removeClient--------');
+    loggerUtils.logToFile({ message: 'removeClient--------' });
     const index = this.clients.indexOf(wsC);
     if (index !== -1) {
       this.clients.splice(index, 1);

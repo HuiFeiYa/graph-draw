@@ -22,7 +22,7 @@ export class LoggingInterceptor implements NestInterceptor {
       'log'
     ));
     
-    console.log('NODE REQUEST:', log.url, log.body);
+    loggerUtils.logToFile({ message: `NODE REQUEST: ${log.url} ${JSON.stringify(log.body)}` });
     
     return next.handle()
       .pipe(
@@ -35,7 +35,7 @@ export class LoggingInterceptor implements NestInterceptor {
             'log'
           ));
           
-          console.log('NODE RESPONSE:', log.url, log.body, 'useTime = ' + log.useTime);
+          loggerUtils.logToFile({ message: `NODE RESPONSE: ${log.url} ${JSON.stringify(log.body)} useTime = ${log.useTime}` });
           this.writeLog(log); // 实际调用写入日志
         }),
         catchError((error) => {

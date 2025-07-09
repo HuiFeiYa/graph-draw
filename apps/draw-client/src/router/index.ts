@@ -17,11 +17,6 @@ const routes = [
         component: () => import('../views/ProjectList.vue')
       },
       {
-        path: 'create-project',
-        name: 'CreateProject',
-        component: () => import('../views/CreateProject.vue'),
-      },
-      {
         path: 'flow',
         name: 'flow',
         component: () => import('../views/Flow.vue'),

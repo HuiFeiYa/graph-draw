@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build --webpack --webpackPath=./webpack.config.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "nest start -- --development",
     "start:dev": "nest start --watch",
     "start:debug": "nest start  --debug 9230 --watch",
     "start:prod": "node dist/main",

@@ -1,8 +1,9 @@
 import { Bounds } from "src/types/Bounds";
+import { loggerUtils } from './LoggerUtils';
 
 export class BoundsTransformer {
     from(nums:number[]):Bounds {
-      console.log('from', nums);
+      loggerUtils.logToFile({ message: `from: ${JSON.stringify(nums)}` });
       if (!nums) return null;
   
       if (Array.isArray(nums)) {
@@ -14,7 +15,7 @@ export class BoundsTransformer {
   
     }
     to(bounds:Bounds):number[] {
-      console.log('to', bounds);
+      loggerUtils.logToFile({ message: `to: ${JSON.stringify(bounds)}` });
       if (!bounds) return null;
       if (Array.isArray(bounds)) {
         return bounds as any as number[];

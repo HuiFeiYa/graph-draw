@@ -61,7 +61,7 @@ export async function transaction<T>(tranOption: TranOption, run: (stepManager: 
     
     let manager: EntityManager;
     try {
-        console.log('Getting manager for connection:', conName);
+        loggerUtils.logToFile({ message: `Getting manager for connection: ${conName}` });
         manager = getManager(conName);
         loggerUtils.logToFile(new LogData(`成功获取数据库管理器: ${conName}`, 'log'));
     } catch (error:any) {

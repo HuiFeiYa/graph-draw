@@ -8,6 +8,9 @@ import { join } from "path";
 import { ResException } from "./http/ResException";
 import { ApiCode } from "./http/ApiCode";
 import { ProjectEntityList } from "src/entities";
+import { loggerUtils } from './LoggerUtils';
+
+
 export type ExtConnection = Connection & {inUse?:boolean}
 /**
  * 项目数据库连接管理器
@@ -148,13 +151,13 @@ export class ProjectConnectionManager {
     // console.log('createProjectConnection');
     const config = dbConfig as any;
     // const dataBaseName = this.dataBaseName;
-    let connectionName = isRead ? dataBaseName + '_read_' + getUid() : dataBaseName + '_write';
+    const  connectionName = isRead ? dataBaseName + '_read_' + getUid() : dataBaseName + '_write';
     // console.log(connectionName);
     if (!autoCreateDb) {
     // 必须校验当前项目db文件已存在，否则会自动创建空的db文件
     const dbPath = join(resourceUtil.projectDbDir, `${dataBaseName}.db`);
-    console.log("resourceUtil.projectDbDir:",resourceUtil.projectDbDir)
-    console.log('dbPath:',dbPath);
+    loggerUtils.logToFile({ message: `resourceUtil.projectDbDir: ${resourceUtil.projectDbDir}` })
+    loggerUtils.logToFile({ message: `dbPath: ${dbPath}` })
       const existFile = existsSync(dbPath);
       if (!existFile) {
         throw new ResException(ApiCode.NO_TIP_ERROR, "项目不存在");
@@ -190,7 +193,7 @@ export class ProjectConnectionManager {
    */
   async closeAllConnection() {
     await this.writeConnection?.close();
-    for (let conn of this.readConnections) {
+    for (const conn of this.readConnections) {
       await conn.close();
     }
     await this.noTransactionConnection?.close();
@@ -210,7 +213,7 @@ export class PCMM {
     return this.pcmMap.get(dataBaseName);
   }
   getPcmByProjectId(projectId:string) {
-    const dataBaseName = resourceUtil.getProjectDbName(projectId);
+    const dataBaseName = resourceUtil.getProjectDbPath(projectId);
     return this.pcmMap.get(dataBaseName);
   }
   addPcm(dataBaseName:string) {
@@ -236,7 +239,7 @@ export class PCMM {
 
   }
   getWriteConnByProjectId(projectId:string, autoConnect = false, autoCreateDb = false) {
-    const dataBaseName = resourceUtil.getProjectDbName(projectId);
+    const dataBaseName = resourceUtil.getProjectDbPath(projectId);
 
     this.addPcm(dataBaseName);
     const pcm = this.getPcm(dataBaseName);
@@ -249,7 +252,7 @@ export class PCMM {
     return pcm.getNoTransactionConnection(autoConnect);
   }
   getNoTransactionConnectionByProjectId(projectId:string, autoConnect = false) {
-    const dataBaseName = resourceUtil.getProjectDbName(projectId);
+    const dataBaseName = resourceUtil.getProjectDbPath(projectId);
 
     this.addPcm(dataBaseName);
     const pcm = this.getPcm(dataBaseName);
@@ -266,7 +269,7 @@ export class PCMM {
   }
 
   async closePcmByProjectId(projectId:string) {
-    const dataBaseName = resourceUtil.getProjectDbName(projectId);
+    const dataBaseName = resourceUtil.getProjectDbPath(projectId);
 
     const pcm = this.getPcm(dataBaseName);
     if (!pcm) {

@@ -1,4 +1,6 @@
 import { WsService } from 'src/modules/socket/WsService';
+import { loggerUtils } from '../../utils/LoggerUtils';
+
 const messageCallbacks = {
   subscribeProject(client:WsClient, data:{projectId:string, projectIds:string[]}) {
     if (data.projectId) client.subscribeProjectIds.add(data.projectId);
@@ -19,7 +21,7 @@ export class WsClient {
       onMessage(messageEvent: MessageEvent) {
         // console.log(messageEvent);
         const data = JSON.parse(messageEvent.data);
-        console.log('received message', data);
+        loggerUtils.logToFile({ message: `received message: ${JSON.stringify(data)}` });
         const callback = messageCallbacks[data.type];
         if (!callback) {
           console.error('message type not found');
@@ -28,7 +30,7 @@ export class WsClient {
         }
       }
       onClose(closeEvent: CloseEvent) {
-        console.log('websocket onClose');
+        loggerUtils.logToFile({ message: 'websocket onClose' });
         this.socketService.removeClient(this);
     
       }
@@ -37,7 +39,7 @@ export class WsClient {
         this.websocket.send(JSON.stringify(obj));
       }
       onError(e: Event) {
-        console.log('websocket error');
+        loggerUtils.logToFile({ message: 'websocket error' });
         this.socketService.removeClient(this);
       }
       sendStr(str: string) {

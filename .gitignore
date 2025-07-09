@@ -8,3 +8,4 @@ dist-a
 
 services/db
 nodeServer/*
+apps/draw-client/release/*
