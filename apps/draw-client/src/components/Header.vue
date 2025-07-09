@@ -27,6 +27,13 @@
         />
       </div>
     </div>
+    <el-dialog v-model="exportDialogVisible" title="导出模板" width="300px" center  >
+      <el-input v-model="templateName" placeholder="请输入模板名称" />
+      <template #footer>
+        <el-button @click="exportDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleExportTemplate">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script setup lang="ts">
@@ -43,32 +50,43 @@ import { useUiStore } from '../stores/ui';
 import { emitter } from '../util/Emitter';
 import { BusEvent } from '../constants/config';
 import { useProjectStore } from '../stores/project';
+import { ElDialog, ElInput, ElButton, ElMessage } from 'element-plus'
+import { modelService } from '../util/ModelService';
+
 const projectStore = useProjectStore();
 const router = useRouter();
 let activeTab = ref('Project');
 let selectButtonValue = ref('');
 const uiStore = useUiStore();
-
-declare global {
-  interface Window {
-    electron: {
-      openFileDialog: () => Promise<string>;
-      openDevTools: () => void;
-    }
-  }
-}
+const exportDialogVisible = ref(false)
+const templateName = ref('')
 const activeHeaderMenu = computed(() => {
   return headerMenus.find(it => it.enName === activeTab.value);
 });
-// console.log('activeHeaderMenu:', activeHeaderMenu)
-
 function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
 }
 async function handleDropdownItemClick(item) {
   console.log('item:', item)
+  if (item.value === 'exportTemplate') {
+    exportDialogVisible.value = true
+    templateName.value = ''
+    return
+  }
   emitter.emit(BusEvent.DROPDOWN_ITEM_CLICK, item)
+}
+async function handleExportTemplate() {
+  if (!templateName.value) {
+    ElMessage.warning('请输入模板名称')
+    return
+  }
+  await modelService.exportTemplate({
+    projectId: projectStore.projectId,
+    name: templateName.value
+  })
+  ElMessage.success('导出模板成功')
+  exportDialogVisible.value = false
 }
 async function handleClick(child: { selectStatus: any; value: string; disabled: boolean}) {
   if (child.disabled) return;
@@ -130,12 +148,10 @@ function freshStepStatus(projectId?: string) {
     stepStatusReactive.fresh(projectStore.projectId)
   }
 }
-
 watch(() => projectStore.projectId, (newVal) => {
   console.log('projectId:',newVal)
   freshStepStatus(newVal)
 })
-
 onMounted(()=> {
   freshStepStatus()
 })

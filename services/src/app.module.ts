@@ -6,6 +6,7 @@ import { StepModule } from './modules/step/stepModule';
 import { CurrentStepModule } from './modules/currentStep/currentStepModule';
 import { loggerUtils } from './utils/LoggerUtils';
 import { LogData } from './types/common';
+import { ProjectTemplateModule } from './modules/projectTemplate/projectTemplate.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { LogData } from './types/common';
     ProjectModule,
     ShapeModule,
     StepModule,
-    CurrentStepModule
+    CurrentStepModule,
+    ProjectTemplateModule
   ],
 })
 export class AppModule {

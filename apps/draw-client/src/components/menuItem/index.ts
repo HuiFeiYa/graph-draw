@@ -144,62 +144,68 @@ const File = [
 
     },
     icon: "statics/header/topiconexport.svg",
-    // type: "dropdown",
+    type: "dropdown",
+    list: [
+      {
+        label: "导出模板",
+        value: "exportTemplate",
+      }
+    ]
   },
-  {
-    label: "起点",
-    value: 'long-arrow-left',
-    icon: "statics/header/long-arrow-left.svg",
-    selectStatus: true, // 是否需要选中状态
-    type: 'dropdown',
-    disabled: true,
-    get list() {
-      return [
-        {
-          label: "实心",
-          value: HeaderDropdownEnum.leftSolidArrow,
-          icon: "statics/header/long-arrow-left.svg",
-        },
-        {
-          label: "空心",
-          value: HeaderDropdownEnum.lefthollowArrow,
-          icon: "statics/header/long-arrow-left-hollow.svg",
-        },
-        {
-          label: "横线",
-          value: HeaderDropdownEnum.leftLine,
-          icon: "statics/header/long-line.svg",
-        },
-      ]
-    }
-  },
-  {
-    label: "终点",
-    value: 'long-arrow',
-    icon: "statics/header/long-arrow.svg",
-    selectStatus: true, // 是否需要选中状态
-    type: 'dropdown',
-    disabled: true,
-    get list() {
-      return [
-        {
-          label: "实心",
-          value: HeaderDropdownEnum.rightSolidArrow,
-          icon: "statics/header/long-arrow.svg",
-        },
-        {
-          label: "空心",
-          value: HeaderDropdownEnum.righthollowArrow,
-          icon: "statics/header/long-arrow-hollow.svg",
-        },
-        {
-          label: "横线",
-          value: HeaderDropdownEnum.rightLine,
-          icon: "statics/header/long-line.svg",
-        },
-      ]
-    }
-  },
+  // {
+  //   label: "起点",
+  //   value: 'long-arrow-left',
+  //   icon: "statics/header/long-arrow-left.svg",
+  //   selectStatus: true, // 是否需要选中状态
+  //   type: 'dropdown',
+  //   disabled: true,
+  //   get list() {
+  //     return [
+  //       {
+  //         label: "实心",
+  //         value: HeaderDropdownEnum.leftSolidArrow,
+  //         icon: "statics/header/long-arrow-left.svg",
+  //       },
+  //       {
+  //         label: "空心",
+  //         value: HeaderDropdownEnum.lefthollowArrow,
+  //         icon: "statics/header/long-arrow-left-hollow.svg",
+  //       },
+  //       {
+  //         label: "横线",
+  //         value: HeaderDropdownEnum.leftLine,
+  //         icon: "statics/header/long-line.svg",
+  //       },
+  //     ]
+  //   }
+  // },
+  // {
+  //   label: "终点",
+  //   value: 'long-arrow',
+  //   icon: "statics/header/long-arrow.svg",
+  //   selectStatus: true, // 是否需要选中状态
+  //   type: 'dropdown',
+  //   disabled: true,
+  //   get list() {
+  //     return [
+  //       {
+  //         label: "实心",
+  //         value: HeaderDropdownEnum.rightSolidArrow,
+  //         icon: "statics/header/long-arrow.svg",
+  //       },
+  //       {
+  //         label: "空心",
+  //         value: HeaderDropdownEnum.righthollowArrow,
+  //         icon: "statics/header/long-arrow-hollow.svg",
+  //       },
+  //       {
+  //         label: "横线",
+  //         value: HeaderDropdownEnum.rightLine,
+  //         icon: "statics/header/long-line.svg",
+  //       },
+  //     ]
+  //   }
+  // },
   // {
   //   label: "选择",
   //   value: 'select',

@@ -10,6 +10,9 @@ import { WsService, wsService } from "src/modules/socket/WsService"
 import { ProjectService } from "src/modules/project/project.services"
 import { CurrentStepService } from "src/modules/currentStep/currentStepService"
 import { ApplicationProject } from "src/entities/applicationProject.entity"
+import { SnapshotShape } from '../entities/snapshotShape.entity';
+import { ProjectTemplate } from '../entities/projectTemplate.entity';
+import { ProjectTemplateService } from "src/modules/projectTemplate/projectTemplate.service"
 
 export type ExtConnection = Connection & {inUse?:boolean}
 export class StepManager {
@@ -38,9 +41,14 @@ export class StepManager {
     return this.projectManager.getRepository(ApplicationProject);
   }
   private _shapeService: ShapeService
+  private _projectTemplateService: ProjectTemplateService
   get shapeService(): ShapeService {
     return this._shapeService || (this._shapeService = new ShapeService(this));
 
+  }
+  /** 模板相关服务 */
+  get projectTemplateService() {
+    return this._projectTemplateService || (this._projectTemplateService = new ProjectTemplateService(this));
   }
 
   private _stepService: StepService
@@ -59,6 +67,14 @@ export class StepManager {
   private _currentStepService: CurrentStepService
   get currentStepService():CurrentStepService {
     return this._currentStepService || (this._currentStepService = new CurrentStepService(this));
+  }
+
+  get snapshotShapeRep() {
+    return this.manager.getRepository(SnapshotShape);
+  }
+
+  get projectTemplateRep() {
+    return this.manager.getRepository(ProjectTemplate);
   }
 
 
