@@ -100,8 +100,8 @@ export class GraphModel {
     this.emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
     // 数据来源于 createEventHandler 绑定的图形操作
     this.emitter.on(EventType.SHAPE_CLICK, this.shapeClick.bind(this));
-    // this.emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
-    // this.emitter.on(EventType.SHAPE_MOUSE_LEAVE, this.hoverModel.clearHoverShape.bind(this.hoverModel))
+    this.emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
+    this.emitter.on(EventType.SHAPE_MOUSE_LEAVE, this.hoverModel.clearHoverShape.bind(this.hoverModel))
     this.emitter.on(EventType.SHAPE_CLEAR, this.clear.bind(this))
     this.emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
     // this.emitter.on(EventType.EDGE_POINT_MOUSE_DOWN, this.edgeMoveModel.onEdgeStartOrEndPointMousedown.bind(this.edgeMoveModel));

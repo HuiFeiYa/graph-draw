@@ -1,5 +1,4 @@
 import { SiderbarItemKey, StType } from '@hfdraw/types'
-import { SiderBarItem } from '../types/common';
 export const HeaderHeight = 38;
 export const SideBarWidth = 200;
 export const popoverGap = 20;
@@ -84,7 +83,7 @@ export interface SidebarKeyItem {
 }
 export const sideBarList: SidebarKeyItem[] = [
   {
-    sidebarKey: StType['SysML::Blocks::Block'],
+    sidebarKey: StType['SysML::Start'],
     showData: {
       name: "开始/结束",
       icon: "statics/siderBar/startend.png",
@@ -103,34 +102,8 @@ export const sideBarList: SidebarKeyItem[] = [
       name: "直线",
       icon: "statics/siderBar/line.png",
     },
-  },
-  {
-    sidebarKey: StType["SysML::Decide"],
-    showData: {
-      name: "判定",
-      icon: "statics/siderBar/decide.png",
-    },
-  },
+  }
 ];
-
-export const popoverList: SiderBarItem[] = [
-  {
-    modelId: "SysML::Blocks::Block",
-    showData: {
-      icon: "statics/siderBar/rect.png",
-      siderBarkey: SiderbarItemKey.Block,
-      name: ''
-    },
-  },
-  {
-    modelId: "SysML::Decide",
-    showData: {
-      name: "判定",
-      icon: "statics/siderBar/decide.png",
-      siderBarkey: SiderbarItemKey.Decide,
-    },
-  },
-]
 
 /**
  * socket 连接状态

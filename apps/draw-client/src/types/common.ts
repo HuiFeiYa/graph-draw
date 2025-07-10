@@ -14,10 +14,7 @@ export interface ShowData {
     icon: string;
     siderBarkey: SiderbarItemKey
 }
-export interface SiderBarItem {
-    modelId: string;
-    showData: ShowData
-}
+
 
 
 /**

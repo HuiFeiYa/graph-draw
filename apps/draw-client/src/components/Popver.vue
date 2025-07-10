@@ -3,8 +3,8 @@ import { ref, reactive, computed, watch } from 'vue';
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
 import { shapeService } from '../util/ShapeService';
 import { useProjectStore } from '../stores/project';
-import { SiderBarItem } from '../types/common';
 import { useUiStore } from '../stores/ui';
+import { SidebarKeyItem } from '../constants/config';
 const projectStore = useProjectStore();
 const uiStore = useUiStore();
 const props = defineProps<PopoverListItem>()
@@ -13,12 +13,12 @@ const columns = computed(()=> {
     return props.type === PopoverListItemType.horizontal ?  `repeat(${props.list.length}, 1fr)` : '1fr'
 })
 
-async function  handleCreate(item:SiderBarItem) {
+async function  handleCreate(item:SidebarKeyItem) {
     await shapeService.connectShapeAndCreate({
         projectId: projectStore.projectId,
         sourceShapeId: props.shape.id,
         index: props.index,
-        modelId: item.modelId,
+        modelId: item.sidebarKey,
         sourceConnection: [1,0.5],
         targetConnection: [0, 0.5]
     });

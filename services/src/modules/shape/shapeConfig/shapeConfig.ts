@@ -12,6 +12,14 @@ export const modelKeyConfig: Record<string, ConfigItem> = {
     ...edgeOption,
     shapeKey: ShapeKey.Association,
   },
+  [StType["SysML::Start"]]: {
+    ...blockOption,
+    style: {
+      ...blockOption.style,
+      borderRadius:10
+    },
+    shapeKey: ShapeKey.Block
+  },
   [StType["SysML::Line"]]: {
     ...edgeOption,
     shapeKey: ShapeKey.StraightLine,

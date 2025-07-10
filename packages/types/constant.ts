@@ -74,6 +74,7 @@ export enum StType {
   "SysML::Association" = "SysML::Association",
   "SysML::MindMap" = "SysML::MindMap",
   "SysML::Line" = "SysML::Line",
+  "SysML::Start" = "SysML::Start",
 }
 
 

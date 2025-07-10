@@ -181,7 +181,7 @@ onUnmounted(() => {
          <!-- 图形拉伸控制点 -->
         <selection-vertex v-if="showSelectionVertex" :selection="graph.selectionModel.selection" @vertex-mousedown="handleVertexMousedown"/>
         <!-- 悬浮箭头 -->
-        <!-- <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" /> -->
+        <hover-arrow v-if="showHoverArrow" :shape="graph.hoverModel.hoverShape as Shape" @arrowHover="handleArrowHover" />
         <!-- 图形移动预览 -->
         <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
         <!-- 线移动预览 -->

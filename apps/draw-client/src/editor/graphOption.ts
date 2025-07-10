@@ -2,9 +2,9 @@ import { GraphModel } from "@hfdraw/graph";
 import { MoveModel } from "@hfdraw/graph/src/models/MoveModel";
 import { IGraphOption } from "@hfdraw/graph/src/types";
 import { shapeService } from "../util/ShapeService";
-import { EdgeMoveType, IBounds, IPoint, Shape, StyleObject, VertexType } from "@hfdraw/types";
+import { EdgeMoveType, IBounds, IPoint, Shape, StType, StyleObject, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
-import { SideBarWidth, popoverGap, popoverList, popoverWidth } from "../constants/config";
+import { SideBarWidth, popoverGap, popoverWidth, sideBarList } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
 import { Point } from "@hfdraw/graph/src/util/Point";
 
@@ -43,6 +43,7 @@ export class GraphOption implements IGraphOption {
     const store = useUiStore();
     const { x, y, height, width } = shape.bounds;
     const isHorizontal = [VertexType.top, VertexType.bottom].includes(index)
+    const popoverList = sideBarList.filter(it => it.sidebarKey !== StType["SysML::Line"])
     let item:PopoverListItem = {
       type: isHorizontal ? PopoverListItemType.horizontal : PopoverListItemType.vertical,
       x: x + SideBarWidth,
