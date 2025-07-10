@@ -11,7 +11,6 @@ import { LabelEditorModel } from "./LabelEditorModel";
 import { ResizeModel } from "./ResizeModel";
 import { Emitter } from "../util/Emitter";
 import { MarkerModel } from "./Marker/MarkerModel";
-import { EdgePointMoveModel } from "./EdgePointMoveModel";
 
 export class GraphModel {
   /**
@@ -72,10 +71,6 @@ export class GraphModel {
    */
     markerModel:MarkerModel = reactive(new MarkerModel(this))
     
-      /**
- * 线的控制点移动模型
- */
-  edgePointMoveModel:EdgePointMoveModel = reactive(new EdgePointMoveModel(this))
 
   /**
    * 图形样式

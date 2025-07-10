@@ -47,6 +47,22 @@ const symbolBoundsSvgPath = computed(() => {
     return '';
   }
 });
+
+  console.log("typeChild.value.edges:",typeChild.value.edges)
+const edgePaths = computed(() => {
+  // 返回每条线的 path 字符串
+  return typeChild.value.edges.map(edge => {
+    if (edge.waypoint && edge.waypoint.length > 1) {
+      const c = new PathBuilder();
+      c.MoveTo(edge.waypoint[0].x, edge.waypoint[0].y);
+      for (let i = 1; i < edge.waypoint.length; i++) {
+        c.LineTo(edge.waypoint[i].x, edge.waypoint[i].y);
+      }
+      return c.getPath();
+    }
+    return '';
+  });
+});
 </script>
 <template>
   <!-- 移动图形预览 -->
@@ -54,6 +70,14 @@ const symbolBoundsSvgPath = computed(() => {
     <path
       v-if="typeChild.symbols.length>0"
       :d="symbolBoundsSvgPath"
+      fill="none"
+      stroke-width="2"
+      stroke="rgba(21,71, 146,0.5)"
+    />
+    <path
+      v-for="(d, idx) in edgePaths"
+      :key="idx"
+      :d="d"
       fill="none"
       stroke-width="2"
       stroke="rgba(21,71, 146,0.5)"

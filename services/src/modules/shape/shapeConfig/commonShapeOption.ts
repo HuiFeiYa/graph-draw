@@ -24,7 +24,7 @@ export const blockOption:Partial<ShapeOption> = {
       ...baseShapeOption.style,
       background: '#fff',
       strokeColor: "#ad9d85",
-      strokeWidth: 1
+      strokeWidth: 2
     },
     bounds: { absX: 0, absY: 0, width: 100, height: 40, x: 0, y: 0 },
     nameBounds: { absX: 10, absY: 10, width: 80, height: 30, x: 10, y: 5 },
@@ -40,7 +40,7 @@ export const blockOption:Partial<ShapeOption> = {
     style: {
       ...baseShapeOption.style,
       strokeColor: 'rgb(0,0,0)',
-      strokeWidth: 1,
+      strokeWidth: 2,
       arrowStyle: {
         hasEnd: true,
         hasStart: false,

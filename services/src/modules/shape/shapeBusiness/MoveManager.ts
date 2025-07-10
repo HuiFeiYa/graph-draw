@@ -1,5 +1,5 @@
 import { generateRectConnectRoute, getKeyPoints } from '@hfdraw/elbow';
-import { SubShapeType, ElbowPoint, Bounds, Point } from '@hfdraw/types';
+import { SubShapeType, ElbowPoint, Bounds, Point, ShapeType } from '@hfdraw/types';
 import { ShapeEntity } from 'src/entities/shape.entity';
 import { MoveShapeDto } from 'src/types/shape.dto';
 
@@ -26,19 +26,30 @@ export class MoveManager {
         console.warn(`Shape with id ${shapeId} has no bounds property`);
         return;
       }
-      shape.bounds.x += dto.dx;
-      shape.bounds.y += dto.dy;
-      shape.bounds.absX += dto.dx;
-      shape.bounds.absY += dto.dy;
-      shape.boundsChanged = true;
-      const newBounds = shape.bounds;
-      if (shape.nameBounds) {
-        shape.nameBounds = {
-          absX: newBounds.absX + shape.nameBounds.x,
-          absY: newBounds.absY + shape.nameBounds.y,
-          ...shape.nameBounds,
-        };
-        shape.nameBoundsChanged = true;
+      if (shape.shapeType === ShapeType.Edge) {
+        shape.waypoint = shape.waypoint.map((point) => {
+          return {
+            x: point.x + dto.dx,
+            y: point.y + dto.dy,
+          };
+        });
+        shape.waypointChanged = true;
+      } else {
+
+        shape.bounds.x += dto.dx;
+        shape.bounds.y += dto.dy;
+        shape.bounds.absX += dto.dx;
+        shape.bounds.absY += dto.dy;
+        shape.boundsChanged = true;
+        const newBounds = shape.bounds;
+        if (shape.nameBounds) {
+          shape.nameBounds = {
+            absX: newBounds.absX + shape.nameBounds.x,
+            absY: newBounds.absY + shape.nameBounds.y,
+            ...shape.nameBounds,
+          };
+          shape.nameBoundsChanged = true;
+        }
       }
       updateShapeSet.add(shape);
     });
