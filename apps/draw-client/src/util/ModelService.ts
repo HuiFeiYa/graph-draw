@@ -21,6 +21,10 @@ export class ModelService {
         const res = await httpClient.post<{data:any}>(API.exportTemplate, params)
         return res.data
     }
+    async getTemplateList() {
+        const res = await httpClient.get<{data:any}>(API.templateList)
+        return res.data
+    }
 }
 
 export const modelService = new ModelService();

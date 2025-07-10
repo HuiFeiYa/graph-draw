@@ -8,7 +8,7 @@
   </el-dialog>
   <div class="project-list-container">
     <div class="sidebar">
-      <button class="sidebar-btn" @click="openDialog">
+      <button class="sidebar-btn" :class="{active: activeTab==='project'}" @click="openDialog">
         <span class="btn-icon">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8 1V15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -16,23 +16,15 @@
         </span>
         新建
       </button>
-      <button class="sidebar-btn">
-        <span class="btn-icon">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 9L8 3L14 9M8 4V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        从模板新建
-      </button>
-      <button class="sidebar-btn">
+      <button class="sidebar-btn" :class="{active: activeTab==='template'}" @click="onTemplateTab">
         <span class="btn-icon">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 15L8 12L13 15V3C13 2.46957 12.7893 1.96086 12.4142 1.58579C12.0391 1.21071 11.5304 1 11 1H5C4.46957 1 3.96086 1.21071 3.58579 1.58579C3.21071 1.96086 3 2.46957 3 3V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        我的收藏
+        我的模板
       </button>
-      <button class="sidebar-btn">
+      <button class="sidebar-btn" :class="{active: activeTab==='recycle'}" @click="onRecycleTab">
         <span class="btn-icon">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2 4H14M5 4V3C5 2.46957 5.21071 1.96086 5.58579 1.58579C5.96086 1.21071 6.46957 1 7 1H9C9.53043 1 10.0391 1.21071 10.4142 1.58579C10.7893 1.96086 11 2.46957 11 3V4M13 4V13C13 13.5304 12.7893 14.0391 12.4142 14.4142C12.0391 14.7893 11.5304 15 11 15H5C4.46957 15 3.96086 14.7893 3.58579 14.4142C3.21071 14.0391 3 13.5304 3 13V4H13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -40,33 +32,54 @@
         </span>
         回收站
       </button>
-    
     </div>
     <div class="main-content">
-      <h1>项目列表</h1>
-      <div class="project-grid">
-        <template v-if="projects?.length">
-          <div v-for="project in projects" :key="project.id" class="project-card">
-            <div class="project-info">
-              <h3>{{ project.name }}</h3>
-              <p class="project-type">{{ project.type === 'flowchart' ? '流程图' : '思维导图' }}</p>
+      <template v-if="activeTab==='project'">
+        <h1>项目列表</h1>
+        <div class="project-grid">
+          <template v-if="projects?.length">
+            <div v-for="project in projects" :key="project.id" class="project-card">
+              <div class="project-info">
+                <h3>{{ project.name }}</h3>
+                <p class="project-type">{{ project.type === 'flowchart' ? '流程图' : '思维导图' }}</p>
+              </div>
+              <div class="project-actions">
+                <button class="open-btn" @click="openProject(project)">打开项目</button>
+                <button class="delete-btn" @click="deleteProject(project.projectId)">删除项目</button>
+              </div>
             </div>
-            <div class="project-actions">
-              <button class="open-btn" @click="openProject(project)">打开项目</button>
-              <button class="delete-btn" @click="deleteProject(project.projectId)">删除项目</button>
+          </template>
+          <div v-else class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p>暂无项目，快去创建一个吧！</p>
+            <button class="create-btn" @click="openDialog">创建项目</button>
+          </div>
+        </div>
+      </template>
+      <template v-else-if="activeTab==='template'" >
+        <h1>项目模板</h1>
+        <div class="template-list">
+          <div v-for="tpl in templateList" :key="tpl.id" class="template-card">
+            <div class="template-info">
+              <h3>{{ tpl.name }}</h3>
+              <p v-if="tpl.description">{{ tpl.description }}</p>
+              <p class="template-date">创建时间：{{ formatDate(tpl.createdAt) }}</p>
+              <p class="template-date">ID：{{ tpl.id }}</p>
             </div>
           </div>
-        </template>
-        <div v-else class="empty-state">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 17L12 22L22 17" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 12L12 17L22 12" stroke="#A0AEC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p>暂无项目，快去创建一个吧！</p>
-          <button class="create-btn" @click="openDialog">创建项目</button>
+          <div v-if="!templateList.length" class="empty-state">暂无模板</div>
         </div>
-      </div>
+      </template>
+      <template v-else-if="activeTab==='recycle'">
+        <h1>回收站</h1>
+      </template>
+      <template v-else>
+        <h1>敬请期待</h1>
+      </template>
     </div>
   </div>
 </template>
@@ -80,17 +93,21 @@ import { socketService } from '../socket/SocketService'
 import { useProjectStore } from '../stores/project' 
 import { ElDialog, ElInput, ElButton } from 'element-plus'
 
+function formatDate(dateStr) {
+  if (!dateStr) return ''
+  const d = new Date(dateStr)
+  return d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+}
+
 const router = useRouter()
-
-// 模拟项目数据，实际应从API获取
-const projects = ref()
-const projectStore = useProjectStore(); // 初始化 store
-
+const activeTab = ref('project')
+const projects = ref([])
+const templateList = ref([])
+const projectStore = useProjectStore();
 
 const openProject = (p:any) => {
   const projectId = p.projectId
   const projectName = p.name
-  // 根据项目类型跳转到对应页面
   const project = projects.value.find(p => p.projectId === projectId)
   if (project) {
     router.push({ path: '/layout/flow', query: { projectId, projectName } })
@@ -105,32 +122,25 @@ const getProjects = async () => {
     })
 }
 
-const createNewProject = async() => {
-    const params = {
-    "name": projectName.value
-  }
-  console.log('openDevTools menu')
-      window.electron.openDevTools();
-  const data = await modelService.createProject(params)
-  console.log('创建项目结果:', data)
-  if (data.code === 1000) {
-    // projectStore.addProject(data.data.projectId); // 将 projectId 添加到 store
-    const projectId = data.data.projectId;
-    projectStore.setCurrentProjectId(projectId);
-    socketService.sendJSON({ type: 'subscribeProject', projectId });
-    getProjects()
-    router.push({ path: '/layout/flow', query: { projectId, projectName: projectName.value } })
-
-  }
+const getTemplateList = async () => {
+  const res = await modelService.getTemplateList() || [];
+  templateList.value = res.data
 }
 
-
+const onTemplateTab = () => {
+  activeTab.value = 'template'
+  getTemplateList()
+}
 
 const dialogVisible = ref(false)
 const projectName = ref('')
 const openDialog = () => {
   dialogVisible.value = true
   projectName.value = ''
+  activeTab.value = 'project'
+}
+const onRecycleTab = () => {
+  activeTab.value = 'recycle'
 }
 const handleCreate = async () => {
   if (!projectName.value) return
@@ -155,8 +165,6 @@ const deleteProject = async (projectId) => {
   if (confirm('确定要删除该项目吗？')) {
       const res = await projectService.deleteProject(projectId)
         getProjects()
-    
-   
   }
 }
 </script>
@@ -196,6 +204,12 @@ const deleteProject = async (projectId) => {
 .sidebar-btn:hover {
   background: #f0f2f5;
   color: #2196F3;
+}
+
+.sidebar-btn.active {
+  background: #2196F3;
+  color: white;
+  font-weight: bold;
 }
 
 .btn-icon {
@@ -408,5 +422,40 @@ const deleteProject = async (projectId) => {
 
 .delete-btn:hover {
   background: #c82333;
+}
+
+.template-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.template-card {
+  background: #f0f2f5;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.template-info h3 {
+  margin: 0 0 0.25rem;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.template-info p {
+  color: #666;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.template-date {
+  color: #999;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
 }
 </style>

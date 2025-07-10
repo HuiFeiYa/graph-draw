@@ -25,6 +25,7 @@ export const API = {
     SHAPE_MINIMUM_BOUNDS: "shape/minimumBounds",
     RELATIONSHIP_CHANGERELATIONSHIPENDS: "shape/changeRelationshipEnds",
     exportTemplate: 'template/exportTemplate',
+    templateList: 'template/list',
 }
 
 export const ApiCode =  {

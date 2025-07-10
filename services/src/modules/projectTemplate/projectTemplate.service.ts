@@ -26,4 +26,8 @@ export class ProjectTemplateService {
     const savedTemplate = await this.stepManager.projectTemplateRep.save(template);
     return savedTemplate;
   }
+
+  async findAllTemplates() {
+    return this.stepManager.projectTemplateRep.find({ order: { createdAt: 'DESC' } });
+  }
 } 
