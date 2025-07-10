@@ -66,6 +66,9 @@ const graphData = reactive<{
 });
 window.graphData = graphData;
 const events = {
+  [BusEvent.MOUSE_DOWN_OUT]: (event: MouseEvent) => {
+    graphData.graph.mouseDownOut(event)
+  },
   [BusEvent.INSERT_SHAPE]: (change: Change) => {
     if (change.newValue) {
       const shape = change.newValue as Shape;

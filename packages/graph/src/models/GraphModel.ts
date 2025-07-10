@@ -1,4 +1,4 @@
-import { Shape, EdgeShape, EventType, Bounds, StyleObject, IPoint, ShapeKey } from "@hfdraw/types";
+import { Shape, EdgeShape, EventType, Bounds, StyleObject, IPoint, ShapeKey, ShapeType } from "@hfdraw/types";
 import { ViewModel } from "./ViewModel";
 import { MoveModel } from "./MoveModel";
 import { SelectionModel } from "./SelectionModel";
@@ -94,16 +94,15 @@ export class GraphModel {
     this.initEvents();
   }
   initEvents() {
-    // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.mouseStateModel.onMouseDown.bind(this.mouseStateModel));
 
     // 开始监听移动事件
     this.emitter.on(EventType.SHAPE_MOUSE_DOWN, this.moveModel.startMove.bind(this.moveModel));
+    this.emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
     // 数据来源于 createEventHandler 绑定的图形操作
     this.emitter.on(EventType.SHAPE_CLICK, this.shapeClick.bind(this));
-    this.emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
-    this.emitter.on(EventType.SHAPE_MOUSE_LEAVE, this.hoverModel.clearHoverShape.bind(this.hoverModel))
+    // this.emitter.on(EventType.SHAPE_MOUSE_OVER, this.hoverModel.onShapeHover.bind(this.hoverModel))
+    this.emitter.on(EventType.MOUSE_DOWN_OUT, this.mouseDownOut.bind(this))
     this.emitter.on(EventType.SHAPE_CLEAR, this.clear.bind(this))
-    this.emitter.on(EventType.SHAPE_MOUSE_DOWN, this.edgeMoveModel.onEdgeMousedown.bind(this.edgeMoveModel));
     // this.emitter.on(EventType.EDGE_POINT_MOUSE_DOWN, this.edgeMoveModel.onEdgeStartOrEndPointMousedown.bind(this.edgeMoveModel));
     // this.emitter.on(EventType.SHAPE_DBL_CLICK, this.labelEditorModel.onShapeNameLabelClick.bind(this.labelEditorModel));
     // emitter.on(EventType.SHAPE_MOUSE_DOWN, this.multipleSelectModel.startSelect.bind(this.multipleSelectModel));
@@ -113,12 +112,18 @@ export class GraphModel {
 
     this.emitter.on(EventType.SHAPE_MOUSE_UP, this.onMouseUp.bind(this));
   }
+  mouseDownOut(event: MouseEvent) {
+    this.hoverModel.clearHoverShape();
+  }
   shapeClick(event: any, shape: Shape) {
     this.selectionModel.onShapeClick(event, shape);
     this.hoverModel.clearHoverShape();
     if (shape.shapeKey === ShapeKey.MindMapShape) {
       this.mindMapModel.setSelectShape(shape) ;
     } 
+    if (shape.shapeType !== ShapeType.Edge) {
+      this.hoverModel.setHoverShape(shape);
+    }
   }
   onMouseUp() {
     /**

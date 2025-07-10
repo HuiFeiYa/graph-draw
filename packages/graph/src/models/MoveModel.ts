@@ -24,7 +24,7 @@ export class MoveModel {
     limitRange: MoveRange = { dxMin: 0, dyMin: 0, dxMax: 0, dyMax: 0 }
     constructor(public graph: GraphModel) {
     }
-    startMove(event: MouseEvent,  mouseDownShape?: Shape) {
+    startMove(event: MouseEvent,  mouseDownShape: Shape) {
         if (mouseDownShape) {
             this.startPoint.x = event.clientX;
             this.startPoint.y = event.clientY;

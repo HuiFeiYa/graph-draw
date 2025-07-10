@@ -4,7 +4,8 @@ import { PopoverListItem, PopoverListItemType } from '../types/ui'
 import { shapeService } from '../util/ShapeService';
 import { useProjectStore } from '../stores/project';
 import { useUiStore } from '../stores/ui';
-import { SidebarKeyItem } from '../constants/config';
+import { BusEvent, SidebarKeyItem } from '../constants/config';
+import { emitter } from '../util/Emitter';
 const projectStore = useProjectStore();
 const uiStore = useUiStore();
 const props = defineProps<PopoverListItem>()
@@ -26,6 +27,8 @@ async function  handleCreate(item:SidebarKeyItem) {
 }
 async function clear() {
     uiStore.clearPopoverList()
+    // 通知 flow 页面，调用 graph 的 mouseDownOut 方法，清除鼠标悬浮状态
+    emitter.emit(BusEvent.MOUSE_DOWN_OUT, window.event, undefined);
 }
 </script>
 <template>

@@ -30,6 +30,7 @@ export enum EventType {
   SHAPE_DRAG_DROP = "SHAPE_DRAG_DROP",
   SHAPE_DRAG_OVER = "SHAPE_DRAG_OVER",
   SELECTION_CHANGE = "SELECTION_CHANGE",
+  MOUSE_DOWN_OUT = "MOUSE_DOWN_OUT",
 }
 
 export enum VertexType {

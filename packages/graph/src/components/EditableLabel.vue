@@ -137,7 +137,7 @@ defineExpose({
   height: 100%;
   white-space: pre-wrap; /* 保持换行和空格 */
   word-wrap: break-word; /* 长单词自动换行 */
-  
+  justify-content: center;
   &:focus-visible {
     outline: none;
   }
