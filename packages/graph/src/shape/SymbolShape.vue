@@ -11,6 +11,8 @@
     style="cursor: pointer;"
      v-on="eventHandler"
       @dblclick="handleStartEdit"
+      @mouseover="isHovered = true"
+  @mouseleave="isHovered = false"
   >
   <defs>
     <pattern id="blueDiagonalLines" patternUnits="userSpaceOnUse" width="8" height="8">
@@ -18,20 +20,19 @@
     </pattern>
   </defs>
 
-    <rect
-      :x="shape.bounds.absX"
-      :y="shape.bounds.absY"
-      :width="shape.bounds.width"
-      :height="shape.bounds.height "
-      stroke="rgba(21,71, 146,0.5)"
-      :stroke-width="style.strokeWidth"
-      fill="#fff"
-      :rx="style.borderRadius||0"
-      :ry="style.borderRadius||0"
-      :stroke-dasharray="style.strokeDasharray || ''"
-      
-    >
-  </rect>
+<rect
+  :x="shape.bounds.absX"
+  :y="shape.bounds.absY"
+  :width="shape.bounds.width"
+  :height="shape.bounds.height"
+  stroke="rgba(21,71, 146,0.5)"
+  :stroke-width="style.strokeWidth"
+  :fill="highlight ? 'rgba(21, 71, 146, 0.08)' : '#fff'"
+  :rx="style.borderRadius||0"
+  :ry="style.borderRadius||0"
+  :stroke-dasharray="style.strokeDasharray || ''"
+  
+/>
   
   <EditableLabel
     ref="editableLabelRef"
@@ -57,7 +58,11 @@ const props = defineProps<{
 const graph = inject<GraphModel>('graph') as GraphModel;
 const eventHandler = createEventHandler(graph, props);
 const editableLabelRef = ref<InstanceType<typeof EditableLabel>>();
+const isHovered = ref(false);
 
+const highlight = computed(() => {
+  return isHovered.value && graph.edgeMoveModel.showPreview
+});
 const handleStartEdit = () => {
   editableLabelRef.value?.startEdit();
 };

@@ -118,7 +118,9 @@ function handleVertexMousedown(event: MouseEvent, index: number) {
     const targetShape = graph.selectionModel.selection[0];
 
     if (targetShape.shapeType === ShapeType.Edge) {
-      const isEndPoint = index === 0 || index === targetShape.waypoint.length;
+      // 解决开始移动终点无效，因为控制点会比 waypoint 个数多一个，但当
+      // 刚拖拽一个线的时候和 waypoint 个数一样
+      const isEndPoint = index === 0 || index === targetShape.waypoint.length || (targetShape.waypoint.length === 2 && index === 1);
       // 如果是起点或者终点
       if (isEndPoint) {
         graph.edgeMoveModel.onEdgeStartOrEndPointMousedown(event, targetShape as unknown as EdgeShape, index === 0 ? 0 : 1);
