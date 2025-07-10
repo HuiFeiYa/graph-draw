@@ -4,9 +4,10 @@ import { IGraphOption } from "@hfdraw/graph/src/types";
 import { shapeService } from "../util/ShapeService";
 import { EdgeMoveType, IBounds, IPoint, Shape, StType, StyleObject, VertexType } from "@hfdraw/types";
 import { useUiStore } from "../stores/ui";
-import { SideBarWidth, popoverGap, popoverWidth, sideBarList } from "../constants/config";
+import { BusEvent, SideBarWidth, popoverGap, popoverWidth, sideBarList } from "../constants/config";
 import { PopoverListItem, PopoverListItemType } from '../types/ui'
 import { Point } from "@hfdraw/graph/src/util/Point";
+import { emitter } from "../util/Emitter";
 
 export class GraphOption implements IGraphOption {
   // 在构造函数中获取 store 实例
@@ -127,5 +128,13 @@ export class GraphOption implements IGraphOption {
       shapeSourceId: sourceShape?.id,
       shapeTargetId: targetShape?.id,
     })
+  }
+  handleMousedownOut(event: MouseEvent) {
+    emitter.emit(BusEvent.CLEAR_HOVER_SHAPE, event);
+  }
+
+  setPopoverDirection(direction: string) {
+    const store = useUiStore();
+    store.setPopoverDirection(direction);
   }
 }

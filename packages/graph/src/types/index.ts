@@ -31,6 +31,7 @@ export interface IGraphOption {
    */
   onShapeResized?: (
     shape: Shape,
+    
     vertexType: VertexType,
     newBounds: IBounds
   ) => Promise<any>;
@@ -41,6 +42,8 @@ export interface IGraphOption {
   zoomOut(): void;
   handleWheel(event: WheelEvent): void;
   changeRelationshipEnds?: (edgeShape: Shape,  waypoint: IPoint[], moveType?:EdgeMoveType, sourceShape?: Shape, targetShape?: Shape) => Promise<void>
+  handleMousedownOut:(event: MouseEvent) => void;
+  setPopoverDirection:(direction: string) => void;
 }
 
 export enum MovePointPosition {

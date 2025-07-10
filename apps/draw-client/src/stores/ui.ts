@@ -6,15 +6,21 @@ interface UiState {
     popoverList: PopoverListItem[];
     dropPosition: { x: number; y: number };
     dropOffsetCount: number;
+    popoverDirection: string; // 新增
 }
 
 export const useUiStore = defineStore('ui', {
   state: ():UiState  => ({
     popoverList: [],
     dropPosition: { x: 100, y: 100 },
-    dropOffsetCount: 0
+    dropOffsetCount: 0,
+    popoverDirection: '' // 新增
   }),
+
   actions: {
+    setPopoverDirection(direction: string) {
+      this.popoverDirection = direction;
+    },
     setPopoverList(list:PopoverListItem[]) {
         this.popoverList = list;
     },

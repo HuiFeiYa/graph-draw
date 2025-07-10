@@ -43,6 +43,7 @@ function handleClickOut() {
 function handleMousedownOut(event:MouseEvent) {
  props.graph.emitter.emit(EventType.MOUSE_DOWN_OUT, window.event, undefined);
   handleMousedown(event);
+  props.graph.graphOption.handleMousedownOut(event);
 }
 function handleMouseupOut(event:MouseEvent) {
  props.graph.emitter.emit(EventType.SHAPE_MOUSE_UP, window.event, undefined);

@@ -37,6 +37,7 @@ import { equalBounds } from 'src/utils/common';
 import { ResizeUtil } from 'src/utils/ResizeUtil';
 import { MinBoundsUtil } from 'src/utils/shape/MinBoundsUtil';
 import { waypointModel } from 'src/utils/WaypointModel';
+import { generateRectConnectRoute } from '@hfdraw/elbow';
 @Injectable()
 export class ShapeService  extends BaseService{
   private readonly stepService: StepService
@@ -262,6 +263,49 @@ export class ShapeService  extends BaseService{
     await this.updateShapeChanges(updateShapes);
     return Array.from(updateShapes);
   }
+  async updateEdgeWaypointsForShapeHeightChange(shape, oldHeight, newHeight) {
+    const dy = newHeight - oldHeight;
+    // 查找所有与 shape 相连的 edge
+    const edges = await this.stepManager.shapeRep.find({
+      where: [
+        { sourceId: shape.id },
+        { targetId: shape.id }
+      ]
+    });
+    const updatedEdges = [];
+    for (const edge of edges) {
+      let isSource = edge.sourceId === shape.id;
+      let connection = isSource ? edge.style?.sourceConnection : edge.style?.targetConnection;
+      if (!connection || !edge.waypoint || edge.waypoint.length === 0) continue;
+      const idx = isSource ? 0 : edge.waypoint.length - 1;
+
+      if (connection[1] === 1) {
+        // 底部连接，y整体平移
+        edge.waypoint[idx].y += dy;
+        edge.waypointChanged = true;
+        updatedEdges.push(edge);
+      } else if (connection[0] === 0 || connection[0] === 1) {
+        // 获取最新的 source/target shape 和 connection
+        const sourceShape = isSource ? shape : await this.stepManager.shapeRep.findOne({ where: { id: edge.sourceId } });
+        const targetShape = !isSource ? shape : await this.stepManager.shapeRep.findOne({ where: { id: edge.targetId } });
+        const sourceRect =  {
+          bounds: sourceShape.bounds,
+          connection: edge.style?.sourceConnection
+        }
+        const targetRect = {
+          bounds: targetShape.bounds,
+          connection: edge.style?.targetConnection
+        }
+
+        // 生成新的折线路径
+        const newWaypoint = generateRectConnectRoute(sourceRect, targetRect, { routeType: 'elbow' });
+        edge.waypoint = newWaypoint;
+        updatedEdges.push(edge);
+      }
+    }
+    return updatedEdges;
+  }
+
   async saveText(dto:SaveTextDto) {
     const { shapeId, text, projectId } = dto;
     const PADDING = 5;
@@ -271,14 +315,18 @@ export class ShapeService  extends BaseService{
     const h = getTextSize(text,  shape.style.fontSize,shape.nameBounds.width).height;
     const ceilH = Math.ceil(h);
     const height = ceilH + PADDING * 2
+    const oldHeight = shape.bounds.height;
     // 当文案输入导致内容超出，则变更高度
+    let edgesToUpdate = [];
     if (height > shape.bounds.height) {
       shape.bounds.height =  height;
       shape.nameBounds.height = ceilH;
       shape.boundsChanged = true;
       shape.nameBoundsChanged = true;
+      // 高度变化时，自动调整相关连线
+      edgesToUpdate = await this.updateEdgeWaypointsForShapeHeightChange(shape, oldHeight, height);
     }
-    await this.updateShapeChanges([shape])
+    await this.updateShapeChanges([shape, ...edgesToUpdate]);
   }
   async expandShape(dto:ExpandShapeDto) {
     const { shapeId, projectId, expand } = dto;
