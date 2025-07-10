@@ -16,6 +16,14 @@ export class ProjectTemplateController {
     });
   }
 
+  @Post('applyTemplate')
+  async applyTemplate(@Body() dto: { projectId: string; templateId: number }) {
+    return transaction({ projectId: dto.projectId }, async (stepManager) => {
+      const res = await stepManager.projectTemplateService.applyTemplateToProject(dto.projectId, dto.templateId);
+      return new ResData(res);
+    });
+  }
+
   @Get('list')
   async getTemplateList(@Body() dto: { projectId?: string }) {
     return transaction({ projectId: dto.projectId }, async (stepManager) => {

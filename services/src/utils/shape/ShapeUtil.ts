@@ -128,6 +128,9 @@ export class ShapeUtil {
     if (shape.targetIdChanged) {
       change.targetId = shape.targetId;
     }
+    if (shape.isDeleteChanged) {
+      change.isDelete = shape.isDelete;
+    }
     return change;
   }
 

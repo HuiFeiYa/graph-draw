@@ -10,6 +10,23 @@
       @zoom-out="handleZoomOut" 
       @scale-change="handleScaleChange"
     />
+    <!-- 模板卡片底部弹出 -->
+    <transition name="slide-up">
+      <div v-if="showTemplateBar" class="template-bar">
+        <div class="template-bar-header">
+          <span>选择模板应用到当前项目</span>
+          <span class="close-btn" @click="closeTemplateBar">×</span>
+        </div>
+        <div class="template-bar-list">
+          <div v-for="tpl in templateList" :key="tpl.id" class="template-bar-card" @click="handleApplyTemplate(tpl.id)">
+            <h3>{{ tpl.name }}</h3>
+            <p v-if="tpl.description">{{ tpl.description }}</p>
+            <p class="template-date">创建时间：{{ tpl.createdAt }}</p>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <button class="open-template-bar-btn" @click="openTemplateBar">应用模板</button>
   </div>
 </template>
 
@@ -27,9 +44,10 @@ import { HeaderDropdownEnum, StrokeColor } from "../types/enum";
 import { useProjectStore } from '../stores/project';
 import { useRoute } from 'vue-router';
 import { socketService } from "../socket/SocketService";
+import { modelService } from '../util/ModelService';
 const projectStore = useProjectStore();
 const route = useRoute();
-const projectId = route.query.projectId as string;
+const projectId = String(route.query.projectId || '');
 
 if (route.query.projectName) {
   projectStore.setCurrentProjectName(route.query.projectName)
@@ -160,6 +178,24 @@ function handleScaleChange(scale: number) {
 // 监听事件
 useEvents(events)
 
+const showTemplateBar = ref(false)
+const templateList = ref<any[]>([])
+function openTemplateBar() {
+  showTemplateBar.value = true
+  fetchTemplates()
+}
+function closeTemplateBar() {
+  showTemplateBar.value = false
+}
+async function fetchTemplates() {
+  templateList.value = (await modelService.getTemplateList())?.data || []
+}
+async function handleApplyTemplate(templateId: number) {
+  await modelService.applyTemplate({ projectId, templateId })
+  closeTemplateBar()
+  await fretchData()
+}
+
 onMounted(()=> {
   
   console.log('projectId----: ', projectId,route.query);
@@ -170,3 +206,76 @@ onMounted(()=> {
   fretchData()
 })
 </script>
+<style scoped>
+.template-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.12);
+  padding: 16px 32px 24px 32px;
+  z-index: 1000;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.template-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.close-btn {
+  font-size: 22px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+.close-btn:hover {
+  color: #2196F3;
+}
+.template-bar-list {
+  display: flex;
+  gap: 16px;
+}
+.template-bar-card {
+  background: #f7f8fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 16px 24px;
+  min-width: 220px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.template-bar-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 24px rgba(33,150,243,0.18);
+}
+.open-template-bar-btn {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 1001;
+  background: #2196F3;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 28px;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(33,150,243,0.12);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.open-template-bar-btn:hover {
+  background: #1769aa;
+}
+.slide-up-enter-active, .slide-up-leave-active {
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.slide-up-enter-from, .slide-up-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+</style>

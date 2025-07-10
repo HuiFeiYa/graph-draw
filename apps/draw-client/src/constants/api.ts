@@ -26,6 +26,7 @@ export const API = {
     RELATIONSHIP_CHANGERELATIONSHIPENDS: "shape/changeRelationshipEnds",
     exportTemplate: 'template/exportTemplate',
     templateList: 'template/list',
+    applyTemplate: 'template/applyTemplate',
 }
 
 export const ApiCode =  {

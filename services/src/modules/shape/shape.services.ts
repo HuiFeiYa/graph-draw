@@ -139,33 +139,6 @@ export class ShapeService  extends BaseService{
     const minBoundsUtil = new MinBoundsUtil(shapeMap);
     return minBoundsUtil.getMinBounds(shapeMap.get(minimumBounds.shapeId), minimumBounds.vertexType);
   }
-    /**
-     * 更新重要的方法
-   * 更新所有变化的属性到数据库里
-   * @param affectedShapes
-   * 不需要手动去生成 changes 了，只需要调用对应的 updateShapeChanges ，
-   * 传入对应的  affectedShapes，并在上面标记了 ShapeUtil.ts 97-116 就会自动生成 changes
-   * @returns
-   */
-    async updateShapeChanges(affectedShapes: ShapeEntity[] | Set<ShapeEntity>) {
-      if (affectedShapes instanceof Set) {
-        affectedShapes = Array.from(affectedShapes);
-      }
-      if (affectedShapes.length === 0) return;
-  
-      // const boundsChangedShapes = affectedShapes.filter(it => it.boundsChanged);
-  
-      const ids_ = affectedShapes.map(it => it.id_);
-      const changes = affectedShapes.map(it => {
-  
-        const change: Partial<ShapeEntity> = shapeUtil.pickChange(it);
-  
-        return change;
-      });
-  
-      await this.updateEntities(ShapeEntity, ids_, changes);
-  
-    }
 
 
   async connectShapeAndCreate(dto: ConnectShapeAndCreateDto) {
@@ -371,7 +344,50 @@ export class ShapeService  extends BaseService{
       await this.updateShapeChanges(toUpdateShapes);
     }
   }
-
+    /**
+     * 更新重要的方法
+   * 更新所有变化的属性到数据库里
+   * @param affectedShapes
+   * 不需要手动去生成 changes 了，只需要调用对应的 updateShapeChanges ，
+   * 传入对应的  affectedShapes，并在上面标记了 ShapeUtil.ts 97-116 就会自动生成 changes
+   * @returns
+   */
+    async updateShapeChanges(affectedShapes: ShapeEntity[] | Set<ShapeEntity>) {
+      if (affectedShapes instanceof Set) {
+        affectedShapes = Array.from(affectedShapes);
+      }
+      if (affectedShapes.length === 0) return;
+  
+      // const boundsChangedShapes = affectedShapes.filter(it => it.boundsChanged);
+  
+      const ids_ = affectedShapes.map(it => it.id_);
+      const changes = affectedShapes.map(it => {
+  
+        const change: Partial<ShapeEntity> = shapeUtil.pickChange(it);
+  
+        return change;
+      });
+  
+      await this.updateEntities(ShapeEntity, ids_, changes);
+  
+    }
+  /**
+   * 批量添加 ShapeEntity，并自动记录 changes
+   */
+  async addShapeChanges(affectedShapes: ShapeEntity[] | Set<ShapeEntity>): Promise<ShapeEntity[]> {
+    if (affectedShapes instanceof Set) {
+      affectedShapes = Array.from(affectedShapes);
+    }
+    if (!affectedShapes || affectedShapes.length === 0) return [];
+    // 生成 changes
+    const shapesToAdd = affectedShapes.map(it => {
+      // 这里可以 pickChange 或直接返回对象本身，视业务需求
+      // 通常新增时直接用原对象
+      return it;
+    });
+    // 批量插入
+    return this.addEntities(ShapeEntity, shapesToAdd);
+  }
   
   async test() {
     // return this.currentStepService.findStep();
