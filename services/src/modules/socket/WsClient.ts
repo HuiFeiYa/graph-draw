@@ -30,7 +30,7 @@ export class WsClient {
         }
       }
       onClose(closeEvent: CloseEvent) {
-        loggerUtils.logToFile({ message: 'websocket onClose' });
+        // loggerUtils.logToFile({ message: 'websocket onClose' });
         this.socketService.removeClient(this);
     
       }

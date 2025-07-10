@@ -1,6 +1,5 @@
 import { generateRectConnectRoute, getKeyPoints } from '@hfdraw/elbow';
-import { SubShapeType, ElbowPoint, Bounds } from '@hfdraw/types';
-import { waypointUtil } from '@hfdraw/utils';
+import { SubShapeType, ElbowPoint, Bounds, Point } from '@hfdraw/types';
 import { ShapeEntity } from 'src/entities/shape.entity';
 import { MoveShapeDto } from 'src/types/shape.dto';
 
@@ -102,9 +101,9 @@ export class MoveManager {
           target: { connection: targetConnection },
         });
 
-        edge.waypoint = keyPoints.map((point) => ({
-          x: point[0],
-          y: point[1],
+        edge.waypoint = keyPoints.map((point: Point) => ({
+          x: point.x,
+          y: point.y,
         }));
       } else if (sourceShape || targetShape) {
         // 单端连线：移动图形时保持另一端位置不变

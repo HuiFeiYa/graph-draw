@@ -37,43 +37,21 @@ export class WaypointUtil {
      * @returns 合并后的点数组
      */
     mergeCollinearPoints(points: IPoint[]): IPoint[] {
-        if (points.length <= 2) {
-            return points;
-        }
-
+        if (points.length <= 2) return points;
         const result: IPoint[] = [points[0]];
-        let i = 1;
-
-        while (i < points.length) {
-            const current = points[i];
-            const prev = result[result.length - 1];
-            
-            // 查找连续的共线点
-            let j = i + 1;
-            while (j < points.length) {
-                const next = points[j];
-                
-                // 检查三点是否共线（水平或垂直）
-                const isHorizontal = prev.y === current.y && current.y === next.y;
-                const isVertical = prev.x === current.x && current.x === next.x;
-                
-                if (isHorizontal || isVertical) {
-                    j++;
-                } else {
-                    break;
-                }
+        for (let i = 1; i < points.length - 1; i++) {
+            const prev = points[i - 1];
+            const curr = points[i];
+            const next = points[i + 1];
+            // 如果三点共线（水平或垂直），则跳过当前点
+            const isHorizontal = prev.y === curr.y && curr.y === next.y;
+            const isVertical = prev.x === curr.x && curr.x === next.x;
+            if (isHorizontal || isVertical) {
+                continue;
             }
-            
-            // 如果找到了连续的共线点，只添加最后一个点
-            if (j > i + 1) {
-                result.push(points[j - 1]);
-                i = j;
-            } else {
-                result.push(current);
-                i++;
-            }
+            result.push(curr);
         }
-
+        result.push(points[points.length - 1]);
         return result;
     }
 
