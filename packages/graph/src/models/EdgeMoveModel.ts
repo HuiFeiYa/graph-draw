@@ -122,7 +122,10 @@ export class EdgeMoveModel {
     // 无图形时使用waypoint的第一个点作为中心点连接
     let startPoint!: IPoint;
     let connection: [number, number] = [0.5, 0.5];
-
+    if (!edgeShape) {
+      throw new Error('edgeShape is not set');
+    }
+    const { sourceConnection } = edgeShape.style;
     const sourceId = edgeShape.sourceId;
     if (isStart) {
       sourceElement = shape;
@@ -133,17 +136,7 @@ export class EdgeMoveModel {
     }
     let retBounds!: Bounds;
     if (sourceElement?.bounds) {
-      // 根据当前鼠标位置或起点位置智能确定连接点
-      connection =
-        sourceElement.style.sourceConnection ||
-        getOptimalConnectionPoint(
-          startPoint.x,
-          startPoint.y,
-          sourceElement.bounds.x,
-          sourceElement.bounds.y,
-          sourceElement.bounds.width,
-          sourceElement.bounds.height
-        );
+      // 根据当前鼠标位置或起点位置智能确定连接点      
       retBounds = sourceElement.bounds;
     } else {
       const fakeSize = 4;
@@ -158,6 +151,14 @@ export class EdgeMoveModel {
     }
     if (isStart) {
         if (shape) {
+          connection =  getOptimalConnectionPoint(
+            startPoint.x,
+            startPoint.y,
+            shape.bounds.x,
+            shape.bounds.y,
+            shape.bounds.width,
+            shape.bounds.height
+          );
           this.toUpdateEdgeShapeParams = {
             ...this.toUpdateEdgeShapeParams,
             style: {
@@ -178,6 +179,10 @@ export class EdgeMoveModel {
           };
       }
       console.log('this.toUpdateEdgeShapeParams:', JSON.stringify(this.toUpdateEdgeShapeParams));
+    } else {
+      if (sourceConnection) {
+        connection = sourceConnection;
+      }
     }
     return {
       bounds: retBounds,
@@ -256,7 +261,6 @@ export class EdgeMoveModel {
     sourceRect: RectConnectPoint,
     targetRect: RectConnectPoint
   ) {
-    try {
       // console.log('sourceRect:', JSON.stringify(sourceRect), 'targetRect:', JSON.stringify(targetRect));
       // 使用generateRectConnectRoute生成预览路径
       const previewBounds = generateRectConnectRoute(sourceRect, targetRect, {
@@ -267,13 +271,7 @@ export class EdgeMoveModel {
 
       this.previewPath = waypointUtil.getPointsPath(previewBounds);
       this.waypoint = previewBounds;
-      // console.log('previewWaypoint:', JSON.stringify(previewWaypoint));
-    } catch (error) {
-      console.warn(
-        "generateRectConnectRoute failed:",
-        error
-      );
-    }
+   
   }
 
   endMove() {

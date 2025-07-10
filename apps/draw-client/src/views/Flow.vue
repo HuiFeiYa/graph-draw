@@ -64,6 +64,7 @@ const graphData = reactive<{
   symbols: [],
   graph: new GraphModel(graphOption)
 });
+window.graphData = graphData;
 const events = {
   [BusEvent.INSERT_SHAPE]: (change: Change) => {
     if (change.newValue) {
@@ -82,7 +83,8 @@ const events = {
     const i = graphData.graph.symbols.findIndex(s => s.id_ === change.objectId);
     if (i !== -1) {
       // graphData.graph.symbols.splice(i, 1, shape)
-      Object.assign(graphData.graph.symbols[i],{...newValue})
+      const shape = Object.assign(graphData.graph.symbols[i],{...newValue})
+      graphData.graph.updateShape(shape)
     }
   },
   [BusEvent.CLEAR_STATUS]: async (change: Change) => {

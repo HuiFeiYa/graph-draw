@@ -162,6 +162,18 @@ export const getGraphPoints = (options: ElbowLineRouteOptions) => {
         const isInTarget = RectangleClient.isPointInRectangle(targetOuterRectangle, point);
         return !isInSource && !isInTarget;
     });
+    
+    // 确保起点和终点始终在图中，即使它们在矩形内部
+    const isSourceInResult = result.some(point => point[0] === nextSourcePoint[0] && point[1] === nextSourcePoint[1]);
+    const isTargetInResult = result.some(point => point[0] === nextTargetPoint[0] && point[1] === nextTargetPoint[1]);
+    
+    if (!isSourceInResult) {
+        result.push(nextSourcePoint);
+    }
+    if (!isTargetInResult) {
+        result.push(nextTargetPoint);
+    }
+    
     return result;
 };
 

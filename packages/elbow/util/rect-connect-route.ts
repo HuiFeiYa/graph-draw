@@ -82,23 +82,15 @@ function generateElbowRectRoute(
         }
     };
 
-    try {
-        // 使用现有的肘形路径算法
-        const handleRefPair = getArrowLineHandleRefPair(sourcePoints, targetPoints, element);
-        const params = getElbowLineRouteOptions(sourcePoints, targetPoints, element, handleRefPair);
-        const route = generateElbowLineRoute(params);
-        const keyPoints = removeDuplicatePoints(route);
-        const points = keyPoints.map(([x,y]) =>new Point(x,y))
-        // 合并连续的共线点
-        const optimizedPoints = waypointUtil.mergeCollinearPoints(points);
-        
-        // 转换为 IPoint 数组格式
-        return optimizedPoints;
-    } catch (error) {
-        // 如果肘形路径生成失败，回退到直线
-        console.warn('Elbow route generation failed, falling back to straight line:', error);
-        return generateStraightRectRoute(sourceRect, targetRect);
-    }
+    // 使用现有的肘形路径算法
+    const handleRefPair = getArrowLineHandleRefPair(sourcePoints, targetPoints, element);
+    const params = getElbowLineRouteOptions(sourcePoints, targetPoints, element, handleRefPair);
+    const route = generateElbowLineRoute(params);
+    // 合并连续的共线点
+    const optimizedPoints = waypointUtil.mergeCollinearPoints(route.map(([x,y]) => new Point(x,y)));
+    console.log('optimizedPoints', optimizedPoints);
+    // 转换为 IPoint 数组格式
+    return optimizedPoints;
 }
 
 /**

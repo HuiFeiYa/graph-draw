@@ -72,8 +72,6 @@ export class MoveManager {
     if (!sourceShape && !targetShape) {
       return null;
     }
-
-    try {
       const {
         style: { sourceConnection, targetConnection },
       } = edge;
@@ -186,20 +184,7 @@ export class MoveManager {
       }
 
       edge.waypointChanged = true;
-    } catch (error) {
-      console.error('Error updating waypoint:', error);
-      // 发生错误时使用简单的默认路径
-      const shape = sourceShape || targetShape;
-      if (shape) {
-        const centerX = shape.bounds.x + shape.bounds.width / 2;
-        const centerY = shape.bounds.y + shape.bounds.height / 2;
-        edge.waypoint = [
-          { x: centerX, y: centerY },
-          { x: centerX + 100, y: centerY },
-        ];
-        edge.waypointChanged = true;
-      }
-    }
+    
   }
 
   /**
