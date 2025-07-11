@@ -150,3 +150,11 @@ export enum VerHor{
   vertical="vertical",
   horizontal="horizontal"
 }
+
+
+export enum ApiCode {
+  /**
+   * 操作成功
+   */
+  SUCCESS = 1000
+}

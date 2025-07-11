@@ -1,4 +1,4 @@
-import { ApiCode } from "../../../../services/src/utils/http/ApiCode";
+import { ApiCode } from "@hfdraw/types";
 
 export function generateRandomNumber(length = 5) {
     // 生成一个 0 到 99999 之间的随机整数
@@ -15,7 +15,7 @@ export function generateRandomNumber(length = 5) {
    * @param format 格式化字符串，如 'yyyy-MM-dd HH:mm:ss'
    * @returns 格式化后的日期字符串
    */
-  export function formatDate(date: Date | number, format: string): string {
+  export function formatDate(date: Date | number, format: string = 'yyyy-MM-dd HH:mm'): string {
     const d = new Date(date);
     const year = d.getFullYear();
     const month = (d.getMonth() + 1).toString().padStart(2, '0'); // 月份从0开始，需要加1并 补零 
@@ -28,6 +28,7 @@ export function generateRandomNumber(length = 5) {
                  .replace('MM', month)
                  .replace('dd', day)
                  .replace('HH', hours)
+                 .replace('mm', minutes)
   }
 
 

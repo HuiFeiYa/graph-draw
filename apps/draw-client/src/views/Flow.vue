@@ -21,12 +21,15 @@
           <div v-for="tpl in templateList" :key="tpl.id" class="template-bar-card" @click="handleApplyTemplate(tpl.id)">
             <h3>{{ tpl.name }}</h3>
             <p v-if="tpl.description">{{ tpl.description }}</p>
-            <p class="template-date">创建时间：{{ tpl.createdAt }}</p>
+            <p class="template-date">创建时间：{{ formatDate(tpl.createdAt) }}</p>
           </div>
         </div>
       </div>
     </transition>
-    <button class="open-template-bar-btn" @click="openTemplateBar">应用模板</button>
+    <div class="floating-template-btn" @click="openTemplateBar">
+      <img src="/statics/popover/apply-template.svg" class="template-icon" />
+      <span class="template-label">模板</span>
+    </div>
   </div>
 </template>
 
@@ -45,9 +48,11 @@ import { useProjectStore } from '../stores/project';
 import { useRoute } from 'vue-router';
 import { socketService } from "../socket/SocketService";
 import { modelService } from '../util/ModelService';
+import { formatDate } from "../util/common";
 const projectStore = useProjectStore();
 const route = useRoute();
 const projectId = String(route.query.projectId || '');
+
 
 if (route.query.projectName) {
   projectStore.setCurrentProjectName(route.query.projectName)
@@ -282,5 +287,38 @@ onMounted(()=> {
 .slide-up-enter-from, .slide-up-leave-to {
   transform: translateY(100%);
   opacity: 0;
+}
+.floating-template-btn {
+  position: fixed;
+  top: 40%;
+  right: 32px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 12px 10px 8px 10px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, background 0.2s;
+  border: 1px solid #f0f0f0;
+}
+.floating-template-btn:hover {
+  background: #f5f8ff;
+  box-shadow: 0 4px 16px rgba(64,158,255,0.12);
+}
+.template-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 4px;
+  display: block;
+}
+.template-label {
+  font-size: 14px;
+  color: #409EFF;
+  font-weight: 500;
+  letter-spacing: 1px;
+  user-select: none;
 }
 </style>
