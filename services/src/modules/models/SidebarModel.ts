@@ -34,12 +34,12 @@ export class SidebarModel {
         if (project) {
             if (shape.shapeType === ShapeType.Edge) {
                 shape.style = {
-                    ...shapeOption.style,
+                    ...shape.style,
                     strokeColor: project.commonConfig?.style.strokeColor || 'rgba(21,71, 146,0.5)',
                 }
             } else {
                 shape.style = {
-                    ...shapeOption.style,
+                    ...shape.style,
                     ...(project.commonConfig?.style||{})
                 }
             }
