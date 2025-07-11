@@ -144,3 +144,33 @@ export enum BusEvent {
   MOUSE_DOWN_OUT="MOUSE_DOWN_OUT",
   CLEAR_HOVER_SHAPE="CLEAR_HOVER_SHAPE"
 }
+/**
+ * 风格列表
+ */
+export const styleList = [
+  {
+    icon: 'statics/siderBar/default.svg',
+    bgColor: '#ffffff',
+    borderColor: 'rgba(21,71, 146,0.5)',
+  },
+  {
+    icon: 'statics/siderBar/white.svg',
+    bgColor: '#ffffee',
+    borderColor: '#000000',
+  },
+  {
+    icon: 'statics/siderBar/gray.svg',
+    bgColor: '#d6d6d6',
+    borderColor: '#000000',
+  },
+  {
+    icon: 'statics/siderBar/green.svg',
+    bgColor: '#cbeddb',
+    borderColor: '#127731',
+  },
+  {
+    icon: 'statics/siderBar/orange.svg',
+    bgColor: '#f4b49d',
+    borderColor: '#c65132',
+  },
+]

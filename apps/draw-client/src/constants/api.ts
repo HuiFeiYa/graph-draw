@@ -27,6 +27,7 @@ export const API = {
     exportTemplate: 'template/exportTemplate',
     templateList: 'template/list',
     applyTemplate: 'template/applyTemplate',
+    batchUpdateShapeStyle: 'shape/batchUpdateShapeStyle',
 }
 
 export const ApiCode =  {

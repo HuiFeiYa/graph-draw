@@ -23,7 +23,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ShapeEntity } from 'src/entities/shape.entity';
 import { EntityTarget, FindManyOptions, In, Repository } from 'typeorm';
 import { ShapeMap, WsMessageType } from 'src/types/common';
-import { Bounds, Change, ChangeType, StType, StepType, StyleObject, SubShapeType, VertexType } from '@hfdraw/types';
+import { Bounds, Change, ChangeType, ShapeType, StType, StepType, StyleObject, SubShapeType, VertexType } from '@hfdraw/types';
 import { StepService } from '../step/stepService';
 import { BaseService } from '../common/BaseService';
 import { shapeUtil } from 'src/utils/shape/ShapeUtil';
@@ -435,6 +435,26 @@ export class ShapeService  extends BaseService{
     });
     // 批量插入
     return this.addEntities(ShapeEntity, shapesToAdd);
+  }
+  async batchUpdateShapeStyle(dto: { projectId: string, styleObject: any }) {
+    const shapes = await this.stepManager.shapeRep.find({
+      where: {
+        projectId: dto.projectId
+      }
+    });
+    for (const shape of shapes) {
+      if (shape.shapeType === ShapeType.Edge) {
+        shape.style.strokeColor = dto.styleObject.strokeColor;
+      } else {
+        shape.style = {
+          ...shape.style,
+          ...dto.styleObject
+        };
+      }
+      shape.styleChanged = true;
+    }
+    await this.updateShapeChanges(shapes);
+    return shapes;
   }
   
   async test() {

@@ -63,5 +63,8 @@ export class ShapeService {
         await httpClient.post(API.RELATIONSHIP_CHANGERELATIONSHIPENDS, dto);
       }
 
+    async batchUpdateShapeStyle(data: { projectId: string, shapeIds: string[], styleObject: StyleObject }) {
+        await httpClient.post(API.batchUpdateShapeStyle, data)
+    }
 }
 export const shapeService = new ShapeService();

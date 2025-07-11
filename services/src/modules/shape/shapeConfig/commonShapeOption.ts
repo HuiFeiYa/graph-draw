@@ -23,7 +23,7 @@ export const blockOption:Partial<ShapeOption> = {
     style: {
       ...baseShapeOption.style,
       background: '#fff',
-      strokeColor: "#ad9d85",
+      strokeColor: "rgba(21,71, 146,0.5)",
       strokeWidth: 2
     },
     bounds: { absX: 0, absY: 0, width: 100, height: 40, x: 0, y: 0 },
@@ -39,7 +39,7 @@ export const blockOption:Partial<ShapeOption> = {
   
     style: {
       ...baseShapeOption.style,
-      strokeColor: 'rgb(0,0,0)',
+      strokeColor: 'rgba(21,71, 146,0.5)',
       strokeWidth: 2,
       arrowStyle: {
         hasEnd: true,
