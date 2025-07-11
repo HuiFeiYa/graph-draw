@@ -1,6 +1,7 @@
 import {
   Shape,
   ShapeKey,
+  ShapeType,
   SiderbarItemKey,
   StType,
   StyleObject,
@@ -12,11 +13,12 @@ import { shapeFactory } from './ShapeFactory';
 import { shapeUtil } from 'src/utils/shape/ShapeUtil';
 import { ShapeEntity } from 'src/entities/shape.entity';
 import { merge } from 'lodash';
-
+import { StepManager } from 'src/utils/StepManager';
 export class ConnectModel {
   createdShapes: Set<ShapeEntity> = new Set();
 
   constructor(
+    public stepManager: StepManager,
     public projectId: string,
     public stType: StType,
     public waypoint: PointDto[],
@@ -31,12 +33,25 @@ export class ConnectModel {
   }
   async createShape() {
     const { projectId, stType } = this;
-    // const stType = siderbarItemKeyToStTypeMap[this.edgeKey];
     const shapeOption = shapeFactory.getModelShapeOption(stType);
     const shape = ShapeEntity.fromOption(
       { ...shapeOption, style: { ...shapeOption.style, ...this.style } },
       projectId,
     );
+    const project = await this.stepManager.projectRep.findOne({where: {projectId}});
+    if (project) {  
+      if (shape.shapeType === ShapeType.Edge) {
+        shape.style = {
+            ...shapeOption.style,
+            strokeColor: project.commonConfig?.style.strokeColor || 'rgba(21,71, 146,0.5)',
+        }
+      } else {
+          shape.style = {
+              ...shapeOption.style,
+              ...(project.commonConfig?.style||{})
+          }
+      }
+    }
     shapeUtil.initEdgeShape(
       this.sourceShape,
       this.targetShape,

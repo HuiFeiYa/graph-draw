@@ -72,7 +72,7 @@ const edgePaths = computed(() => {
       :d="symbolBoundsSvgPath"
       fill="none"
       stroke-width="2"
-      stroke="rgba(21,71, 146,0.5)"
+      :stroke="typeChild.symbols[0].style.strokeColor"
     />
     <path
       v-for="(d, idx) in edgePaths"
@@ -80,7 +80,7 @@ const edgePaths = computed(() => {
       :d="d"
       fill="none"
       stroke-width="2"
-      stroke="rgba(21,71, 146,0.5)"
+      :stroke="typeChild.edges[0].style.strokeColor"
     />
 </g>
 </template>

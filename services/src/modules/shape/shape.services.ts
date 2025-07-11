@@ -29,7 +29,6 @@ import { BaseService } from '../common/BaseService';
 import { shapeUtil } from 'src/utils/shape/ShapeUtil';
 import { ConnectModel } from '../models/ConnectModel';
 import { MoveManager } from './shapeBusiness/MoveManager';
-import { MindMapManager } from './shapeBusiness/MindMapManager';
 import {  getTextSize } from '@hfdraw/utils';
 import { StepManager } from 'src/utils/StepManager';
 import { clone, cloneDeep } from 'lodash';
@@ -53,7 +52,7 @@ export class ShapeService  extends BaseService{
         point: dto.point,
         stType: dto.stType
       };
-      const sideBar = new SidebarModel(options);
+      const sideBar = new SidebarModel(this.stepManager, options);
       await sideBar.run();
      const res = await this.addEntities(ShapeEntity, [...sideBar.createdShapes]);
       return res
@@ -160,7 +159,7 @@ export class ShapeService  extends BaseService{
       stType,
       point: shapePoint
     }
-    const sideBar = new SidebarModel(options);
+    const sideBar = new SidebarModel(this.stepManager, options);
     await sideBar.run();
     const targetShape = [...sideBar.createdShapes][0]
     /** 创建线 */
@@ -168,7 +167,7 @@ export class ShapeService  extends BaseService{
       sourceConnection,
       targetConnection
     }
-    const connectModel = new ConnectModel(projectId, StType['SysML::Association'], [sourcePoint,targetPoint],shape,targetShape, styleObj);
+    const connectModel = new ConnectModel(this.stepManager, projectId, StType['SysML::Association'], [sourcePoint,targetPoint],shape,targetShape, styleObj);
     await connectModel.connectShape()
     const toCreateShapes = [...sideBar.createdShapes, ...connectModel.createdShapes];
     const res = await this.addEntities(ShapeEntity, toCreateShapes)
@@ -240,28 +239,28 @@ export class ShapeService  extends BaseService{
   }
  
   async createMindMapRect(dto:CreateMindMapRectDto) {
-    const { projectId, shapeId} = dto;
-    const { shapeMap } = await this.getShapeTree(projectId);
-    const sourceShape = shapeMap.get(shapeId);
-    const createShape = await MindMapManager.createShape(dto, shapeMap)
-    await this.addEntities(ShapeEntity, [createShape]);
-    shapeMap.set(createShape.id, createShape);
-    MindMapManager.addRetrospectOption(sourceShape, createShape.id);
-    const affectedShapes = new Set<ShapeEntity>([sourceShape]);
-    const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
-    if (updateShapes.size > 0) {
-      updateShapes.forEach(shape => affectedShapes.add(shape));
-    }
-    await this.updateShapeChanges(affectedShapes);
-    return Array.from(affectedShapes);
+  //   const { projectId, shapeId} = dto;
+  //   const { shapeMap } = await this.getShapeTree(projectId);
+  //   const sourceShape = shapeMap.get(shapeId);
+  //   const createShape = await MindMapManager.createShape(dto, shapeMap)
+  //   await this.addEntities(ShapeEntity, [createShape]);
+  //   shapeMap.set(createShape.id, createShape);
+  //   MindMapManager.addRetrospectOption(sourceShape, createShape.id);
+  //   const affectedShapes = new Set<ShapeEntity>([sourceShape]);
+  //   const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
+  //   if (updateShapes.size > 0) {
+  //     updateShapes.forEach(shape => affectedShapes.add(shape));
+  //   }
+  //   await this.updateShapeChanges(affectedShapes);
+  //   return Array.from(affectedShapes);
   }
   async updateMindMapRectChildrenPosition(dto: {shapeId: string; projectId:string}) {
-    const {projectId, shapeId} = dto;
-    const { shapeMap } = await this.getShapeTree(projectId);
-    const sourceShape = shapeMap.get(shapeId);
-    const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
-    await this.updateShapeChanges(updateShapes);
-    return Array.from(updateShapes);
+    // const {projectId, shapeId} = dto;
+    // const { shapeMap } = await this.getShapeTree(projectId);
+    // const sourceShape = shapeMap.get(shapeId);
+    // const updateShapes = await MindMapManager.calcTreePosition(sourceShape, shapeMap)
+    // await this.updateShapeChanges(updateShapes);
+    // return Array.from(updateShapes);
   }
   async updateEdgeWaypointsForShapeHeightChange(shape, oldHeight, newHeight) {
     const dy = newHeight - oldHeight;
@@ -454,6 +453,11 @@ export class ShapeService  extends BaseService{
       shape.styleChanged = true;
     }
     await this.updateShapeChanges(shapes);
+    const project = await this.stepManager.projectRep.findOne({where: {projectId: dto.projectId}});
+    if (project) {
+      project.commonConfig.style = dto.styleObject;
+      await this.stepManager.projectRep.save(project);
+    }
     return shapes;
   }
   

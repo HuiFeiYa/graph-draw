@@ -3,7 +3,6 @@ import { ElbowPoint, Shape } from '@hfdraw/types';
 import { PathBuilder } from '@hfdraw/elbow'
 import { computed, inject } from 'vue';
 import { createEventHandler } from '../util/createEventHandler';
-import { StrokeColor } from '../util/common';
 import { GraphModel } from '../models/GraphModel';
 const props = defineProps<{
   shape: Shape
@@ -41,9 +40,9 @@ const computedData = computed(() => {
 <template>
 
   <g style="cursor: pointer;">
-    <path :d="computedData.startArrow" :stroke="StrokeColor" :stroke-width="computedData.style.strokeWidth"
+    <path :d="computedData.startArrow" :stroke="computedData.style.strokeColor" :stroke-width="computedData.style.strokeWidth"
       :fill="computedData.style.arrowStyle?.fillStart || 'none'" />
-    <path :d="computedData.endArrow" :stroke="StrokeColor" :stroke-width="computedData.style.strokeWidth"
+    <path :d="computedData.endArrow" :stroke="computedData.style.strokeColor" :stroke-width="computedData.style.strokeWidth"
       :fill="computedData.style.arrowStyle?.fillEnd || 'none'" />
     <path :d="computedData.pathData" :stroke="computedData.style.strokeColor" :stroke-width="computedData.style.strokeWidth"
       fill="none" />

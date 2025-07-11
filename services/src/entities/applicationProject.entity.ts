@@ -1,5 +1,11 @@
+import { CommonConfig } from '@hfdraw/types';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
+export const defaluCommonConfig = {
+  style: {
+    strokeColor: 'rgba(21,71, 146,0.5)',
+    bgColor: '#ffffff'
+  }
+}
 @Entity({ name: 'application_projects' }) // 指定表名
 export class ApplicationProject {
   @PrimaryGeneratedColumn()
@@ -30,4 +36,10 @@ export class ApplicationProject {
 
   })
   dbClose?:boolean // 标记数据库关闭
+  @Column({
+    type: "simple-json",
+    nullable: false,
+    default: JSON.stringify(defaluCommonConfig)
+  })
+  commonConfig: CommonConfig;
 }

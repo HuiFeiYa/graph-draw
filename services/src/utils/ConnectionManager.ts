@@ -168,16 +168,8 @@ export class ProjectConnectionManager {
       ...config,
 
       name: connectionName,
-
-      // type: config.type as 'mysql',
-      // host: config.host,
-      // port: config.port,
-      // username: config.username,
-      // password: config.password,
-      // multipleStatements: true,
       entities: [...ProjectEntityList],
       database: `./db/${dataBaseName}.db`
-      // database
     });
     // await connection.connect();
     // if (synchronize) {

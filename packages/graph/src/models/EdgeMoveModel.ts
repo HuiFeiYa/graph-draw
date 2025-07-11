@@ -24,7 +24,6 @@ import {
 import { waypointUtil } from "@hfdraw/utils";
 
 export class EdgeMoveModel {
-  movingShape?: EdgeShape; // 正在移动的线的shape
   startPoint: IPoint = new Point(); // 移动起始时的鼠标的坐标
   endPoint: IPoint = new Point(); // 移动过程中鼠标的坐标
   currentPoint: IPoint = new Point(); // 移动过程中鼠标的坐标

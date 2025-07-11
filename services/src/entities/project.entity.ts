@@ -1,4 +1,7 @@
+import { CommonConfig } from '@hfdraw/types';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+
+
 
 @Entity({ name: 'projects' }) // 指定表名
 export class Project {
@@ -24,4 +27,5 @@ export class Project {
     nullable: false
   })
   updatedAt: Date;
+
 }

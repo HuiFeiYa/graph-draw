@@ -188,7 +188,7 @@ onUnmounted(() => {
         <!-- 图形移动预览 -->
         <shape-move-preview v-if="graph.moveModel.showMovingPreview"  :shapes="graph.moveModel.movingShapes" :dx="graph.moveModel.previewDx" :dy="graph.moveModel.previewDy" />
         <!-- 线移动预览 -->
-        <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :preview-path="graph.edgeMoveModel.previewPath" />
+        <edge-move-preview v-if="graph.edgeMoveModel.showPreview" :stroke-color="graph.edgeMoveModel.edgeShape?.style.strokeColor || 'rgba(21,71, 146,0.5)'" :preview-path="graph.edgeMoveModel.previewPath" />
         <!-- 快速添加图形辅助箭头 -->
         <mind-map-quick-add v-if="graph.mindMapModel.selectShape" :shape="graph.mindMapModel.selectShape" :graph="graph" />
       </g>

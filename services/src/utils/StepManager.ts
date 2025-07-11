@@ -13,6 +13,7 @@ import { ApplicationProject } from "src/entities/applicationProject.entity"
 import { SnapshotShape } from '../entities/snapshotShape.entity';
 import { ProjectTemplate } from '../entities/projectTemplate.entity';
 import { ProjectTemplateService } from "src/modules/projectTemplate/projectTemplate.service"
+import { Project } from "src/entities/project.entity"
 
 export type ExtConnection = Connection & {inUse?:boolean}
 export class StepManager {
@@ -38,8 +39,9 @@ export class StepManager {
   }
 
   get projectRep() {
-    return this.projectManager.getRepository(ApplicationProject);
+    return this.manager.getRepository(ApplicationProject);
   }
+ 
   private _shapeService: ShapeService
   private _projectTemplateService: ProjectTemplateService
   get shapeService(): ShapeService {

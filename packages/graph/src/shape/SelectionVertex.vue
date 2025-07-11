@@ -2,11 +2,10 @@
 import { EdgeShape, EventType, IPoint, Shape, ShapeType } from '@hfdraw/types';
 import { computed, inject } from 'vue';
 import { isEqual } from 'lodash';
-// import { emitter } from '../util/Emitter';
 import { VertexType } from '../util/common';
-import { MovePointPosition } from '../types';
 import { GraphModel } from '../models/GraphModel';
 import { Point } from '../util/Point';
+import { getInvertColor, getLighterColor } from '@hfdraw/utils';
 const props = defineProps<{
     selection: Shape[]
 }>();
@@ -99,6 +98,24 @@ function handleCircleMouseDown(event: MouseEvent, index:number) {
     event.stopPropagation();
     emit('vertex-mousedown', event, index);
 }
+function getCircleStyle(index: number) {
+    const {edgeShapes, commonShapes} = shapeGroup.value;
+    const style = commonShapes[0]?.style || edgeShapes[0]?.style;
+    if (index === 0 || index === waypointsInline.value.length - 1) {
+        return {
+            fill: 'none',
+            strokeWidth: '2px',
+            stroke: getInvertColor(style.background || 'rgba(21,71, 146,0.5)')
+        }
+    } else if (index > 1 && index < waypointsInline.value.length - 2) {
+        return {
+            fill: getInvertColor(style.background || 'rgba(21,71, 146,0.5)'),
+            strokeWidth: 0,
+        }
+    }
+    return {}
+}
+
 </script>
 <template>
     <g style="pointer-events:all">
@@ -118,7 +135,7 @@ function handleCircleMouseDown(event: MouseEvent, index:number) {
         <g v-if="isShowEdgeWaypoint">
             <circle style="cursor: move;pointer-events: all" 
                 class="default-point"
-                :class="{'start-end-point': i === 0 || i === waypointsInline.length - 1, 'point': i > 1 && i < waypointsInline.length - 2}"
+                :style="getCircleStyle(i)"
                 v-for="(item,i) in waypointsInline" :cx="item.x" :cy="item.y" r="4" 
                 @mousedown="handleCircleMouseDown($event, i)"
                 />
@@ -130,14 +147,14 @@ function handleCircleMouseDown(event: MouseEvent, index:number) {
     fill: transparent;
     stroke-width: 0;
 }
-.start-end-point {
-    fill: none;
-    stroke-width:1px;
-    stroke: blue;
-}
-.point {
-    fill: #9b9bdd;
-    stroke-width: 0;
-}
+// .start-end-point {
+//     fill: none;
+//     stroke-width:1px;
+//     stroke: blue;
+// }
+// .point {
+//     fill: #9b9bdd;
+//     stroke-width: 0;
+// }
 
 </style>

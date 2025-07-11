@@ -2,7 +2,7 @@
     <g >
       <path
         :d="previewPath"
-        stroke="rgba(21,71, 146,0.5)"
+        :stroke="strokeColor"
         stroke-dasharray="10 8"
         fill="none"
         stroke-width="2"
@@ -14,6 +14,7 @@
   <script lang="ts" setup>
   defineProps<{
     previewPath: string
+    strokeColor: string
   }>();
   
   </script>

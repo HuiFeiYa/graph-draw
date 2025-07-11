@@ -27,7 +27,7 @@
   :height="shape.bounds.height"
   :stroke="style.strokeColor"
   :stroke-width="style.strokeWidth"
-  :fill="highlight ? 'rgba(21, 71, 146, 0.08)' : style.background"
+  :fill="highlight ?  getLighterColor(style.background) : style.background"
   :rx="style.borderRadius||0"
   :ry="style.borderRadius||0"
   :stroke-dasharray="style.strokeDasharray || ''"
@@ -60,10 +60,12 @@ import { createEventHandler } from '../util/createEventHandler';
 import { GraphModel } from '../models/GraphModel';
 import EditableLabel from '../components/EditableLabel.vue';
 import EdgeParticle from './EdgeParticle.vue';
+import { getLighterColor } from '@hfdraw/utils';
 
 const props = defineProps<{
   shape: Shape
 }>();
+
 
 const graph = inject<GraphModel>('graph') as GraphModel;
 const eventHandler = createEventHandler(graph, props);

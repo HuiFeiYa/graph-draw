@@ -9,7 +9,6 @@ import { SnapshotShape } from './snapshotShape.entity';
 // 系统级实体列表 - 用于主数据库
 export const SystemEntityList = [ 
     ApplicationProject,
-    Project,
     ShapeEntity,
     StepEntity,
     CurrentStep,
@@ -21,7 +20,7 @@ export const SystemEntityList = [
 export const ProjectEntityList = [
     ShapeEntity,
     StepEntity,
-    CurrentStep,
+    CurrentStep
 ];
 
 export * from './projectTemplate.entity';
