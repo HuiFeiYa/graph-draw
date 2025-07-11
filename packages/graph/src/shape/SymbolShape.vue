@@ -11,8 +11,8 @@
     style="cursor: pointer;"
      v-on="eventHandler"
       @dblclick="handleStartEdit"
-      @mouseover="isHovered = true"
-  @mouseleave="isHovered = false"
+      @mouseover="handleMouseOver"
+  @mouseleave="handleMouseLeave"
   >
   <defs>
     <pattern id="blueDiagonalLines" patternUnits="userSpaceOnUse" width="8" height="8">
@@ -42,14 +42,24 @@
     :font-size="14"
     @end-edit="handleEndEdit"
   />
+
+    <!-- 选中时渲染粒子动画 -->
+    <template v-if="graph.selectionModel.selectedShapes.includes(props.shape)">
+      <EdgeParticle
+        v-for="edge in outgoingEdges"
+        :key="edge.id"
+        :waypoint="edge.waypoint"
+      />
+    </template>
 </g>
 </template>
 <script lang="ts" setup>
-import { Shape } from '@hfdraw/types';
+import { Shape, ShapeType } from '@hfdraw/types';
 import { computed, inject, ref } from 'vue';
 import { createEventHandler } from '../util/createEventHandler';
 import { GraphModel } from '../models/GraphModel';
 import EditableLabel from '../components/EditableLabel.vue';
+import EdgeParticle from './EdgeParticle.vue';
 
 const props = defineProps<{
   shape: Shape
@@ -63,6 +73,13 @@ const isHovered = ref(false);
 const highlight = computed(() => {
   return isHovered.value && graph.edgeMoveModel.showPreview
 });
+const handleMouseOver = () => {
+  console.log('handleMouseOver');
+  isHovered.value = true;
+};
+const handleMouseLeave = () => {
+  isHovered.value = false;
+};
 const handleStartEdit = () => {
   editableLabelRef.value?.startEdit();
 };
@@ -74,6 +91,14 @@ const handleEndEdit = (newText: string) => {
 const style = computed(() => {
   const shape = props.shape;
   return Object.assign({}, shape.style);
+});
+
+// 选中时查找所有满足条件的 edge
+const outgoingEdges = computed(() => {
+  const edges = graph.symbols.filter(s => s.shapeType === ShapeType.Edge);
+  return edges.filter(edge =>
+    edge.sourceId === props.shape.id && !!edge.targetId && edge.waypoint && edge.waypoint.length > 1
+  );
 });
 </script>
 <style lang="scss">

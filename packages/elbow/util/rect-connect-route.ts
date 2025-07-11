@@ -88,7 +88,7 @@ function generateElbowRectRoute(
     const route = generateElbowLineRoute(params);
     // 合并连续的共线点
     const optimizedPoints = waypointUtil.mergeCollinearPoints(route.map(([x,y]) => new Point(x,y)));
-    console.log('optimizedPoints', optimizedPoints);
+    // console.log('optimizedPoints', optimizedPoints);
     // 转换为 IPoint 数组格式
     return optimizedPoints;
 }

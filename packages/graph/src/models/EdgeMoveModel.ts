@@ -178,7 +178,7 @@ export class EdgeMoveModel {
             sourceId: null,
           };
       }
-      console.log('this.toUpdateEdgeShapeParams:', JSON.stringify(this.toUpdateEdgeShapeParams));
+      // console.log('this.toUpdateEdgeShapeParams:', JSON.stringify(this.toUpdateEdgeShapeParams));
     } else {
       if (sourceConnection) {
         connection = sourceConnection;
