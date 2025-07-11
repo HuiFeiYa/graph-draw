@@ -11,7 +11,7 @@ const emit = defineEmits<{
 <template>
     <div class="v-header-dropdown g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled }">
         
-            <el-dropdown>
+            <el-dropdown trigger="click" :hide-on-click="false">
                 <span style="font-size: 12px;">
                     <img style="width: 16px" :src="data.icon" />
                     <span class="_span g-m-l-4">{{ data.label }}</span>
@@ -44,5 +44,6 @@ const emit = defineEmits<{
         &:hover {
             background: #eee;
         }
+        min-width: 80px;
     }
 </style>

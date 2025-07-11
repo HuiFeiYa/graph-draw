@@ -33,51 +33,51 @@ export const Common: HeadItem[] = [
       return false;
     },
   },
-  {
-    label: "保存项目",
-    notShowLabel: true,
-    value: "saveProject",
-    icon: "statics/header/topiconsave.svg",
-    get disabled() {
-      return false;
-    }
-  },
-  {
-    label: "另存为",
-    notShowLabel: true,
-    value: 'saveAsProject',
-    get disabled() {
-      return false;
-    },
-    icon: "statics/header/savaAs.svg",
-    get hide() {
-      return false;
-    }
-  },
-  {
-    label: "保存至本地文件",
-    notShowLabel: true,
-    value: "saveToMd3",
-    icon: "statics/header/topiconsavetomd3.svg",
-    get disabled() {
-      return false;
-    },
-    get hide() {
-     return false
-    }
-  },
-  {
-    label: "创建项目",
-    notShowLabel: true,
-    value: "createProject",
-    icon: "statics/header/topiconnew.svg"
-  },
-  {
-    label: "打开项目",
-    notShowLabel: true,
-    value: "openProject",
-    icon: "statics/header/topiconopen.svg"
-  },
+  // {
+  //   label: "保存项目",
+  //   notShowLabel: true,
+  //   value: "saveProject",
+  //   icon: "statics/header/topiconsave.svg",
+  //   get disabled() {
+  //     return false;
+  //   }
+  // },
+  // {
+  //   label: "另存为",
+  //   notShowLabel: true,
+  //   value: 'saveAsProject',
+  //   get disabled() {
+  //     return false;
+  //   },
+  //   icon: "statics/header/savaAs.svg",
+  //   get hide() {
+  //     return false;
+  //   }
+  // },
+  // {
+  //   label: "保存至本地文件",
+  //   notShowLabel: true,
+  //   value: "saveToMd3",
+  //   icon: "statics/header/topiconsavetomd3.svg",
+  //   get disabled() {
+  //     return false;
+  //   },
+  //   get hide() {
+  //    return false
+  //   }
+  // },
+  // {
+  //   label: "创建项目",
+  //   notShowLabel: true,
+  //   value: "createProject",
+  //   icon: "statics/header/topiconnew.svg"
+  // },
+  // {
+  //   label: "打开项目",
+  //   notShowLabel: true,
+  //   value: "openProject",
+  //   icon: "statics/header/topiconopen.svg"
+  // },
   {
     label: "撤销",
     notShowLabel: true,
@@ -96,37 +96,37 @@ export const Common: HeadItem[] = [
       return !stepStatusReactive.hasNextStep;
     }
   },
-  {
-    label: '刷新',
-    value: 'toolRefresh',
-    notShowLabel: true,
-    get disabled() {
-      return false;
-    },
-    icon: 'statics/header/toolbarfresh.svg',
-  },
-  {
-    label: "开发者工具",
-    notShowLabel: true,
-    value: "openDevTools",
-    icon: "statics/header/toolbarfresh.svg",
-    get disabled() {
-      return false;
-    }
-  },
+  // {
+  //   label: '刷新',
+  //   value: 'toolRefresh',
+  //   notShowLabel: true,
+  //   get disabled() {
+  //     return false;
+  //   },
+  //   icon: 'statics/header/toolbarfresh.svg',
+  // },
+  // {
+  //   label: "开发者工具",
+  //   notShowLabel: true,
+  //   value: "openDevTools",
+  //   icon: "statics/header/toolbarfresh.svg",
+  //   get disabled() {
+  //     return false;
+  //   }
+  // },
 ]
 
 // 项目特有的菜单
 const File = [
-  {
-    label: "关闭",
-    value: "closeProject",
-    icon: "statics/header/topiconclose.svg",
-    // type: 'dropdown-arrow',
-    get disabled() {
-      return false;
-    }
-  },
+  // {
+  //   label: "关闭",
+  //   value: "closeProject",
+  //   icon: "statics/header/topiconclose.svg",
+  //   // type: 'dropdown-arrow',
+  //   get disabled() {
+  //     return false;
+  //   }
+  // },
   {
     label: "清空",
     value: "clear",
@@ -147,7 +147,7 @@ const File = [
     type: "dropdown",
     list: [
       {
-        label: "导出模板",
+        label: "导出为模板",
         value: "exportTemplate",
       }
     ]
