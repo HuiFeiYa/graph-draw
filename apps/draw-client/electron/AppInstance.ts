@@ -2,33 +2,36 @@ const { resolve } = require("path");
 const { app, Menu, BrowserWindow, ipcMain } = require("electron");
 const fs = require("fs");
 const fork = require("child_process").fork;
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const isDevelopment = process.env.NODE_ENV === 'development'
 console.log('process.env.NODE_ENV:',process.env.NODE_ENV)
 // 根据环境确定 preload 文件路径
 const preloadFile = isDevelopment 
   ? resolve(__dirname, './preload/index.js') // 开发环境：Vite 处理后的文件
   : resolve(__dirname, './preload/index.js'); // 生产环境：编译后的文件
-console.log("preloadFile------:", preloadFile);
-console.log('Electron Node.js 版本:', process.versions.node);
-console.log('Electron 使用的 NODE_MODULE_VERSION:', process.versions.modules); // 关键！这个值必须和原生模块匹配
 
-import { Logger } from './Logger';
 
+const Logger = require('./Logger');
+const logger = new Logger()
+logger.info("preloadFile------:" + preloadFile);
+logger.info('Electron Node.js 版本:'+ process.versions.node);
+logger.info('Electron 使用的 NODE_MODULE_VERSION:'+ process.versions.modules); // 关键！这个值必须和原生模块匹配
 class AppInstance {
   mainWindow: any;
-  private logger: Logger;
+  private logger;
   private nodeServerProcess: any = null; // 保存 node server 进程引用
 
   constructor() {
-    this.logger = new Logger();
+    this.logger = logger;
   }
   
   async start() {
+    logger.info("process.env.NODE_ENV------:" + process.env.NODE_ENV);
     // 关闭窗口时，会再次执行，此时环境变量是 undefined 则不在执行后续代码
-    if (!process.env.NODE_ENV) {
-      app.quit();
-      return 
-    }
+    // 生产环境是 undefined, 需要处理
+    // if (!process.env.NODE_ENV) {
+    //   app.quit();
+    //   return 
+    // }
     // 设置控制台编码，解决中文乱码问题
     if (process.platform === 'win32') {
       // 设置环境变量

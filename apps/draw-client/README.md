@@ -5,7 +5,8 @@
 
 apps\draw-client\src\constants\config.ts
 
-
+### 表头配置
+apps\draw-client\src\components\menuItem\index.ts
 ## 线
 
 ### 预览线计算

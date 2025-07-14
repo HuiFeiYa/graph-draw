@@ -5,11 +5,12 @@ import * as dayjs from 'dayjs';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-export class Logger {
+module.exports = class Logger {
   private logPath: string | undefined = undefined;
   private options: { flags: string; encoding: BufferEncoding } | undefined = undefined;
 
   constructor() {
+    this.writeLog("Logger constructor isDevelopment:"+isDevelopment);
     if (!isDevelopment) {
       const userDataPath = app.getPath("userData");
       const logDir = resolve(userDataPath, "./logs");

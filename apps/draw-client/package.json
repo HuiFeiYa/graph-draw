@@ -19,6 +19,7 @@
     "build": "node build-with-resources.js"
   },
   "build": {
+    "asar": false,
     "appId": "hfdraw01",
     "productName": "draw",
     "directories": {

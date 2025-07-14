@@ -105,15 +105,6 @@ export const Common: HeadItem[] = [
   //   },
   //   icon: 'statics/header/toolbarfresh.svg',
   // },
-  // {
-  //   label: "开发者工具",
-  //   notShowLabel: true,
-  //   value: "openDevTools",
-  //   icon: "statics/header/toolbarfresh.svg",
-  //   get disabled() {
-  //     return false;
-  //   }
-  // },
 ]
 
 // 项目特有的菜单
@@ -144,14 +135,24 @@ const File = [
 
     },
     icon: "statics/header/topiconexport.svg",
-    type: "dropdown",
-    list: [
-      {
-        label: "导出为模板",
-        value: "exportTemplate",
+      type: "dropdown",
+      list: [
+        {
+          label: "导出为模板",
+          value: "exportTemplate",
+        }
+      ],
+      
+    },
+    {
+      label: "调试",
+      notShowLabel: false,
+      value: "openDevTools",
+      icon: "statics/header/debug.svg",
+      get disabled() {
+        return false;
       }
-    ]
-  },
+    },
   // {
   //   label: "起点",
   //   value: 'long-arrow-left',

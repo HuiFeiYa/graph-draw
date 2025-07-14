@@ -61,8 +61,14 @@ function handleClickClose() {
         @click="setWindowSize(winSize === 'max' ? 'mid' : 'max')"
       >
         <img
+          v-show="winSize === 'max'"
           ref="maxImg"
-          :src="winSize === 'max' ? '/statics/header/winmid.svg' : '/statics/header/winmax.svg'"
+          src="/statics/header/winmid.svg"
+        />
+        <img
+          v-show="winSize === 'mid'"
+          ref="maxImg"
+          src="/statics/header/winmax.svg"
         />
       </div>
       <div
