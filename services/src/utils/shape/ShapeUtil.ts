@@ -60,8 +60,9 @@ export class ShapeUtil {
     const sourcePoint = new Point() // 线的起点
     const targetPoint = new Point() // 线的终点
     const shapeOption = shapeFactory.getModelShapeOption(targetShapeStType);
-    const { x: xS, y: yS, width: widthS, height: heightS } = sourceShapeBounds; // source shape
-    const { x: xT, y: yT, width: widthT, height: heightT } = shapeOption.bounds // target shape
+    // fix: resize 和 move 以后再次快速创建图形时位置不对
+    const { absX: xS, absY: yS, width: widthS, height: heightS } = sourceShapeBounds; // source shape
+    const { absX: xT, absY: yT, width: widthT, height: heightT } = shapeOption.bounds // target shape
 
     switch (index) {
       case VertexType.top: {

@@ -37,6 +37,7 @@ import { ResizeUtil } from 'src/utils/ResizeUtil';
 import { MinBoundsUtil } from 'src/utils/shape/MinBoundsUtil';
 import { waypointModel } from 'src/utils/WaypointModel';
 import { generateRectConnectRoute } from '@hfdraw/elbow';
+import { EdgeWaypointUtil } from 'src/utils/EdgeWaypointUtil';
 @Injectable()
 export class ShapeService  extends BaseService{
   private readonly stepService: StepService
@@ -71,6 +72,13 @@ export class ShapeService  extends BaseService{
     const updateShapeSet = new Set<ShapeEntity>();
     MoveManager.updateShapes(shapeMap, dto, updateShapeSet);
     MoveManager.updateEdgeShapes(shapeMap, dto, updateShapeSet);
+    // 新增：自动调整所有相关联的边线
+    for (const shape of updateShapeSet) {
+      if (shape.shapeType !== ShapeType.Edge) {
+        const updatedEdges = await EdgeWaypointUtil.updateConnectedEdgesForShape(shape, this.stepManager, shapeMap);
+        updatedEdges.forEach(edge => updateShapeSet.add(edge));
+      }
+    }
     if (updateShapeSet.size > 0) {
       const res = await this.updateShapeChanges(updateShapeSet);
       return res;
@@ -116,11 +124,6 @@ export class ShapeService  extends BaseService{
       shape.nameBoundsChanged = true;
     }
     let affectedShapes = new Set<ShapeEntity>();
-    // const dx = newBounds.absX - oldBounds.absX; // 新的x坐标比旧的x坐标大多少
-    // const dy = newBounds.absY - oldBounds.absY;
-    // const dHeight = newBounds.height - oldBounds.height;
-    // const dWidth = newBounds.width - oldBounds.width;
-    // const dCenter = newBounds.absX + newBounds.width / 2 - (oldBounds.absX + oldBounds.width / 2);
     if (!equalBounds(oldBounds, newBounds)) {
       affectedShapes.add(shape);
       shape.boundsChanged = true;
@@ -130,6 +133,13 @@ export class ShapeService  extends BaseService{
     resizeUtil.affectedShapes.forEach(it => {
       affectedShapes.add(it);
     });
+
+    // 重新生成与该图形相关的折线
+    const updatedEdges = await this.updateConnectedEdgesForResize(shape, oldBounds, newBounds);
+    updatedEdges.forEach(edge => {
+      affectedShapes.add(edge);
+    });
+
     await this.updateShapeChanges(affectedShapes);
     return Array.from(affectedShapes);
   }
@@ -262,6 +272,11 @@ export class ShapeService  extends BaseService{
     // await this.updateShapeChanges(updateShapes);
     // return Array.from(updateShapes);
   }
+  async updateConnectedEdgesForResize(shape: ShapeEntity, oldBounds: any, newBounds: any): Promise<ShapeEntity[]> {
+    // 使用公共的边线更新逻辑
+    return await EdgeWaypointUtil.updateConnectedEdgesForShape(shape, this.stepManager);
+  }
+
   async updateEdgeWaypointsForShapeHeightChange(shape, oldHeight, newHeight) {
     const dy = newHeight - oldHeight;
     // 查找所有与 shape 相连的 edge

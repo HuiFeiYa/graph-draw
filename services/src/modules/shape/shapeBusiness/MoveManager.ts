@@ -2,6 +2,7 @@ import { generateRectConnectRoute, getKeyPoints } from '@hfdraw/elbow';
 import { SubShapeType, ElbowPoint, Bounds, Point, ShapeType } from '@hfdraw/types';
 import { ShapeEntity } from 'src/entities/shape.entity';
 import { MoveShapeDto } from 'src/types/shape.dto';
+import { EdgeWaypointUtil } from 'src/utils/EdgeWaypointUtil';
 
 export class MoveManager {
   /**
@@ -77,8 +78,8 @@ export class MoveManager {
   }
   static updateWaypoint(
     edge: ShapeEntity,
-    sourceShape: ShapeEntity,
-    targetShape: ShapeEntity,
+    sourceShape: ShapeEntity | undefined,
+    targetShape: ShapeEntity | undefined,
   ) {
     if (!sourceShape && !targetShape) {
       return null;
@@ -137,7 +138,6 @@ export class MoveManager {
         };
 
         // 计算移动图形的新连接点
-
         if (currentWaypoint.length >= 2) {
           // 如果已有waypoint，保持另一端不变，只更新移动端
           let startRectConnectPoint: {
