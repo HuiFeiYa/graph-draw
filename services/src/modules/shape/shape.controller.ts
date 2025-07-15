@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ResData } from 'src/utils/http/ResData';
+import { In } from 'typeorm';
 import {
   FetchAllShapeDto,
   UpdateShapeBoundsDto,
@@ -164,10 +165,9 @@ export class ShapeController {
     });
   }
   @Post('batchUpdateShapeStyle')
-  async batchUpdateShapeStyle(@Body() dto: { projectId: string, shapeIds: string[], styleObject: any }) {
+  async batchUpdateShapeStyle(@Body() dto: { projectId: string; shapeIds: string[]; newStyle: any }) {
     return transaction({ projectId: dto.projectId }, async (stepManager) => {
-      const result = await stepManager.shapeService.batchUpdateShapeStyle(dto);
-      return new ResData(result);
+      return await stepManager.shapeService.batchUpdateShapeStyle(dto.projectId, dto.shapeIds, dto.newStyle);
     });
   }
   

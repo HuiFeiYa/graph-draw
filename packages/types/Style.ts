@@ -31,6 +31,9 @@ export interface StyleObject {
     paddingRight?: number
     rightAngle?: boolean
     edgeDirection?:VerHor
+    bold?: boolean
+    italic?: boolean
+    underline?: boolean
 }
 
 export interface RetrospectRelationType {

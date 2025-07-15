@@ -18,13 +18,19 @@
         :key="child.value" :class="{ _select: child.type == 'select', _item: child.type !== 'splitLine' }">
         <m-header-split-line v-if="child.type == 'splitLine'" />
         <!-- 展示按钮，对应 menuItem/index.ts  File 这一层的配置项 -->
-        <m-header-button v-if="!child.type" :selectButtonValue="selectButtonValue" :data="child" @click="handleClick(child)" />
+        <m-header-button v-if="!child.type"  :data="child" @click="handleClick(child)" />
         <!-- 下拉  -->
         <m-header-dropdown
           v-else-if="child.type == 'dropdown'"
           :data="child"
           @item-click="handleDropdownItemClick"
         />
+        <m-header-button
+          v-else-if="child.type === 'toggle'"
+          :data="child"
+          :selected="getSelect(child)"
+          @click="handleClick(child)"
+/>
       </div>
     </div>
     <el-dialog v-model="exportDialogVisible" title="导出模板" width="300px" center  >
@@ -56,7 +62,6 @@ import { modelService } from '../util/ModelService';
 const projectStore = useProjectStore();
 const router = useRouter();
 let activeTab = ref('Project');
-let selectButtonValue = ref('');
 const uiStore = useUiStore();
 const exportDialogVisible = ref(false)
 const templateName = ref('')
@@ -67,7 +72,7 @@ function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
 }
-async function handleDropdownItemClick(item) {
+async function handleDropdownItemClick(item: { value: string }) {
   console.log('item:', item)
   if (item.value === 'exportTemplate') {
     exportDialogVisible.value = true
@@ -90,11 +95,6 @@ async function handleExportTemplate() {
 }
 async function handleClick(child: { selectStatus: any; value: string; disabled: boolean}) {
   if (child.disabled) return;
-  if (child.selectStatus) {
-    selectButtonValue.value = child.value
-  } else {
-    selectButtonValue.value = ''
-  }
   switch(child.value) {
     case 'openDevTools': {
       console.log('openDevTools menu')
@@ -136,6 +136,19 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
       }
       break;
     }
+    case 'bold': {
+      const selectedShapeIds = (window?.graphData?.graph?.selectionModel?.selectedShapes || []).map((it:any) => it.id);
+      // 假设你有 projectId、shapeIds、newStyle
+      await shapeService.batchUpdateShapeStyle({
+        projectId: projectStore.projectId,
+        shapeIds: selectedShapeIds,
+        styleObject: {
+          bold: true
+        }
+      });
+      // 可选：刷新视图或提示
+      break;
+    }
   }
   clear()
 }
@@ -147,6 +160,14 @@ function freshStepStatus(projectId?: string) {
   if (projectStore.projectId || projectId) {
     stepStatusReactive.fresh(projectStore.projectId)
   }
+}
+
+function getSelect(child: { value: string }) {
+  const firstSelectedShape = window?.graphData?.graph?.selectionModel?.selectedShapes[0];
+  if (firstSelectedShape) {
+    return !!firstSelectedShape.style.bold;
+  }
+  return false;
 }
 watch(() => projectStore.projectId, (newVal) => {
   console.log('projectId:',newVal)

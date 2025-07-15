@@ -1,5 +1,6 @@
 <template>
-  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex" :class="{ disabled: data.disabled}">
+  <div v-show="!data.hide" class="v-header-btn g-pointer g-pd-4 g-flex"  
+  :class="{ disabled: data.disabled, active: selected }">
     <el-tooltip
       :show-after="500"
       placement="bottom"
@@ -31,11 +32,8 @@ const props = defineProps<{
     type?: string
     keyboard?: string
   },
-  selectButtonValue?: string
+  selected?: boolean
 }>();
-const isSelected = computed(()=> {
-  return props.selectButtonValue === props.data.value;
-})
 </script>
 <style lang="scss" scoped>
 .v-header-btn {
@@ -59,5 +57,12 @@ const isSelected = computed(()=> {
   color: #c1c5cb !important;
   cursor: not-allowed !important;
 }
-
+.v-header-btn.active {
+    background: #d0eaff;
+    color: #1976d2;
+  }
+.v-header-btn.disabled .icon_box {
+  filter: grayscale(85%) brightness(1.2) !important;
+  opacity: 0.4;
+}
 </style>

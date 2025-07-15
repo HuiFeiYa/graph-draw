@@ -55,7 +55,7 @@ const projectId = String(route.query.projectId || '');
 
 
 if (route.query.projectName) {
-  projectStore.setCurrentProjectName(route.query.projectName)
+  projectStore.setCurrentProjectName(route.query.projectName as string)
 }
 console.log('projectId: ', projectId)
 const graphOption = new GraphOption(projectId);

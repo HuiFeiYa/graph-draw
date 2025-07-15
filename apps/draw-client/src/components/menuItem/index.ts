@@ -154,24 +154,30 @@ const File = [
       label: "加粗",
       value: "bold",
       icon: "statics/subHeader/bold.svg",
+      type: "toggle", // 新增
       get disabled() {
-        return false;
+        const selectedShapeLength = window?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
       }
     },
     {
       label: "倾斜",
       value: "italic",
       icon: "statics/subHeader/italic.svg",
+      type: "toggle", // 新增
       get disabled() {
-        return false;
+        const selectedShapeLength = window?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
       }
     },
     {
       label: "下划线",
       value: "underline",
       icon: "statics/subHeader/underline.svg",
+      type: "toggle", // 新增
       get disabled() {
-        return false;
+        const selectedShapeLength = window?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
       }
     },
     {

@@ -450,30 +450,16 @@ export class ShapeService  extends BaseService{
     // 批量插入
     return this.addEntities(ShapeEntity, shapesToAdd);
   }
-  async batchUpdateShapeStyle(dto: { projectId: string, styleObject: any }) {
+  async batchUpdateShapeStyle(projectId: string, shapeIds: string[], newStyle: any) {
     const shapes = await this.stepManager.shapeRep.find({
-      where: {
-        projectId: dto.projectId
-      }
+      where: { projectId, id: In(shapeIds) }
     });
     for (const shape of shapes) {
-      if (shape.shapeType === ShapeType.Edge) {
-        shape.style.strokeColor = dto.styleObject.strokeColor;
-      } else {
-        shape.style = {
-          ...shape.style,
-          ...dto.styleObject
-        };
-      }
+      shape.style = { ...shape.style, ...newStyle };
       shape.styleChanged = true;
     }
     await this.updateShapeChanges(shapes);
-    const project = await this.stepManager.projectRep.findOne({where: {projectId: dto.projectId}});
-    if (project) {
-      project.commonConfig.style = dto.styleObject;
-      await this.stepManager.projectRep.save(project);
-    }
-    return shapes;
+    return { success: true, updated: shapes.length };
   }
   
   async test() {

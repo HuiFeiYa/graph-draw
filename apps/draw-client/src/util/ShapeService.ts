@@ -66,5 +66,6 @@ export class ShapeService {
     async batchUpdateShapeStyle(data: { projectId: string, shapeIds: string[], styleObject: StyleObject }) {
         await httpClient.post(API.batchUpdateShapeStyle, data)
     }
+    
 }
 export const shapeService = new ShapeService();
