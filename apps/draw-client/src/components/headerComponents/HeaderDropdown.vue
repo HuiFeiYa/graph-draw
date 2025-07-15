@@ -5,7 +5,7 @@ defineProps<{
     data: HeaderDropdownData,
 }>()
 const emit = defineEmits<{
-    itemClick: (item: HeaderButtonData) => any
+    itemClick: (item: any, value: any) => any
 }>()
 </script>
 <template>
@@ -20,7 +20,7 @@ const emit = defineEmits<{
                 <template #dropdown>
                     <div v-for="item in data.list" class="dropdown-item" 
                     style="width: 60px; display: flex; justify-content: center;align-items: center;height: 30px;" 
-                    @click="emit('itemClick', item)">
+                    @click="emit('itemClick', item, data.value)">
                         <img v-if="item.icon" style="width: 16px" :src="item.icon" />
                         <span >{{ item.label }}</span>
                     </div>

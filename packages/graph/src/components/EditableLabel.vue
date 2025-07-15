@@ -36,6 +36,8 @@ interface Props {
   italic?: boolean;
   underline?: boolean;
   fontColor?: string;
+  lineHeight?: number;
+  textAlign?: 'left' | 'center' | 'right';
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -124,7 +126,7 @@ const labelStyle = computed(() => ({
   display: 'flex',
   alignItems: 'center',
   color: props.fontColor,
-  lineHeight: 1.5
+  lineHeight: props.lineHeight ? props.lineHeight + 'px' : undefined
 }));
 
 // 暴露方法供父组件调用

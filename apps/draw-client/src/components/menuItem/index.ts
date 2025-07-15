@@ -17,7 +17,7 @@ export class HeaderButtonData implements MenuItem {
 export class HeaderDropdownData extends HeaderButtonData {
   declare type: 'dropdown'
   command!: (menu: MenuItem) => void
-  list!: any[]
+  list!: {label: string, value: any, icon?: string}[]
   maxWidth?: number
 }
 
@@ -187,6 +187,62 @@ const File = [
       value: "fontColor",
       icon: "statics/subHeader/fontColor.svg",
       type: "fontColor",
+      get disabled() {
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
+      }
+    },
+    {
+      label: "行高",
+      value: "lineHeight",
+      icon: "statics/subHeader/lineHeight.svg",
+      type: "dropdown",
+      list: [
+        {
+          label: "1.0",
+          value: 1.0,
+        },
+        {
+          label: "1.25",
+          value: 1.25,
+        },
+        {
+          label: "1.5",
+          value: 1.5,
+        },
+        {
+          label: "2.0",
+          value: 2.0,
+        },
+        {
+          label: "2.5",
+          value: 2.5,
+        }
+      ],
+      get disabled() {
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
+      }
+    },
+    {
+      label: "对齐",
+      value: "textAlign",
+      icon: "statics/subHeader/textAlign.svg",
+      type: "dropdown",
+      list: [
+        {
+          label: "左对齐",
+          value: "left",
+        },
+        {
+          label: "居中",
+          value: "center",
+        },
+        {
+          label: "右对齐",
+          value: "right",
+        },
+      ],
       get disabled() {
         const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
         return !selectedShapeLength || selectedShapeLength === 0;

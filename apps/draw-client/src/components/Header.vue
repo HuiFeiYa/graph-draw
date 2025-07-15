@@ -84,9 +84,27 @@ function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
 }
-async function handleDropdownItemClick(item: { value: string }) {
-  console.log('item:', item)
-  if (item.value === 'exportTemplate') {
+async function handleDropdownItemClick(item: { value: any }, key: string) {
+  // 判断 lineHeight/textAlign 枚举
+  if (key === 'lineHeight' ) {
+    const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(s => s.id);
+    if (!shapeIds.length) return;
+    let styleObject = {
+      lineHeight: item.value
+    };
+   
+    await shapeService.batchUpdateShapeStyle({
+      projectId: projectStore.projectId,
+      shapeIds,
+      styleObject
+    });
+    // 本地同步 style
+    shapeIds.forEach(id => {
+      const shape = uiStore.graphData.graph.symbols.find(s => s.id === id);
+      if (shape) Object.assign(shape.style, styleObject);
+    });
+    return;
+  } else if (item.value === 'exportTemplate') {
     exportDialogVisible.value = true
     templateName.value = ''
     return

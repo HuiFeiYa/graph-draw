@@ -44,6 +44,8 @@
     :italic="style.italic"
     :underline="style.underline"
     :font-color="style.fontColor"
+    :line-height="style.lineHeight"
+    :text-align="style.textAlign"
     @end-edit="handleEndEdit"
   />
 
