@@ -2,10 +2,10 @@
   <div style="display: flex; flex-direction: column; height: 100%">
     <div style="display: flex; flex: 1">
       <Siderbar />
-      <GraphView v-bind="graphData" style="flex: 1"></GraphView>
+      <GraphView v-bind="uiStore.graphData" style="flex: 1"></GraphView>
     </div>
     <Footer 
-      :scale="graphData.graph.graphOption.scale" 
+      :scale="uiStore.graphData.graph.graphOption.scale" 
       @zoom-in="handleZoomIn" 
       @zoom-out="handleZoomOut" 
       @scale-change="handleScaleChange"
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { GraphView, GraphModel } from "@hfdraw/graph";
 import { Change, Shape, StyleObject, SubShapeType } from "@hfdraw/types";
 import Siderbar from "../editor/components/SiderBar.vue";
@@ -49,60 +49,52 @@ import { useRoute } from 'vue-router';
 import { socketService } from "../socket/SocketService";
 import { modelService } from '../util/ModelService';
 import { formatDate } from "../util/common";
+import { useUiStore } from '../stores/ui';
+
+const uiStore = useUiStore();
 const projectStore = useProjectStore();
 const route = useRoute();
 const projectId = String(route.query.projectId || '');
-
 
 if (route.query.projectName) {
   projectStore.setCurrentProjectName(route.query.projectName as string)
 }
 console.log('projectId: ', projectId)
 const graphOption = new GraphOption(projectId);
+const graph = new GraphModel(graphOption);
+uiStore.setGraphData(graph);
 
-const graphData = reactive<{
-  edges: Shape[],
-  symbols: Shape[],
-  graph: GraphModel 
-}>({
-  edges:[],
-  symbols: [],
-  graph: new GraphModel(graphOption)
-});
-window.graphData = graphData;
+
 const events = {
   [BusEvent.MOUSE_DOWN_OUT]: (event: MouseEvent) => {
-    graphData.graph.mouseDownOut(event)
+    uiStore.graphData.graph.mouseDownOut(event)
   },
   [BusEvent.INSERT_SHAPE]: (change: Change) => {
     if (change.newValue) {
       const shape = change.newValue as Shape;
-      graphData.graph.symbols.push(shape)
-      graphData.graph.addShape(shape)
+      uiStore.graphData.graph.symbols.push(shape)
+      uiStore.graphData.graph.addShape(shape)
     }
-
   },
   [BusEvent.DELETE_SHAPE]: (change: Change) => {
-    graphData.graph.symbols = graphData.graph.symbols.filter(s => s.id_ !== change.objectId)
+    uiStore.graphData.graph.symbols = uiStore.graphData.graph.symbols.filter(s => s.id_ !== change.objectId)
   },
   [BusEvent.UPDATE_SHAPE]: async (change: Change) => {
-    // console.log('update:', change)
     const newValue = change.newValue 
-    const i = graphData.graph.symbols.findIndex(s => s.id_ === change.objectId);
+    const i = uiStore.graphData.graph.symbols.findIndex(s => s.id_ === change.objectId);
     if (i !== -1) {
-      // graphData.graph.symbols.splice(i, 1, shape)
-      const shape = Object.assign(graphData.graph.symbols[i],{...newValue})
-      graphData.graph.updateShape(shape)
+      const shape = Object.assign(uiStore.graphData.graph.symbols[i],{...newValue})
+      uiStore.graphData.graph.updateShape(shape)
     }
   },
   [BusEvent.CLEAR_STATUS]: async (change: Change) => {
-    graphData.graph.clear();
+    uiStore.graphData.graph.clear();
   },
   [BusEvent.REFRESH]: async ()=> {
     await fretchData()
   },
   [BusEvent.DROPDOWN_ITEM_CLICK]: async (item: {value: HeaderDropdownEnum}) => {
-    const edgeShape = graphData.graph.selectionModel.selectedShapes.find(s => s.subShapeType === SubShapeType.CommonEdge);
+    const edgeShape = uiStore.graphData.graph.selectionModel.selectedShapes.find(s => s.subShapeType === SubShapeType.CommonEdge);
     if (!edgeShape) return 
     const newStyleObj: StyleObject = {
 
@@ -163,26 +155,25 @@ const events = {
 };
 async function fretchData() {
   await shapeService.getAllShapes(projectStore.projectId).then(data => {
-    // console.log('data: ', data)
     if (data) {
-      graphData.graph.symbols = data;
+      uiStore.graphData.graph.symbols = data;
       data.forEach(shape => {
-        graphData.graph.addShape(shape)
+        uiStore.graphData.graph.addShape(shape)
       })
     }
   })
 }
 // 缩放控制函数
 function handleZoomIn() {
-  graphData.graph.graphOption.zoomIn();
+  uiStore.graphData.graph.graphOption.zoomIn();
 }
 
 function handleZoomOut() {
-  graphData.graph.graphOption.zoomOut();
+  uiStore.graphData.graph.graphOption.zoomOut();
 }
 
 function handleScaleChange(scale: number) {
-  graphData.graph.graphOption.setScale(scale);
+  uiStore.graphData.graph.graphOption.setScale(scale);
 }
 
 // 监听事件
@@ -207,7 +198,6 @@ async function handleApplyTemplate(templateId: number) {
 }
 
 onMounted(()=> {
-  
   console.log('projectId----: ', projectId,route.query);
   if (projectId) {
     projectStore.setCurrentProjectId(projectId);

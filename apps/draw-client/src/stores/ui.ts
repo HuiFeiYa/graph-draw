@@ -1,12 +1,18 @@
 // src/stores/uiStore.ts
 import { defineStore } from 'pinia';
 import { PopoverListItem } from '../types/ui';
+import { GraphModel } from '@hfdraw/graph';
+import { Shape } from '@hfdraw/types';
+import { GraphOption } from '../editor/graphOption';
 
 interface UiState {
     popoverList: PopoverListItem[];
     dropPosition: { x: number; y: number };
     dropOffsetCount: number;
     popoverDirection: string; // 新增
+    graphData: {
+      graph: GraphModel;
+    };
 }
 
 export const useUiStore = defineStore('ui', {
@@ -14,7 +20,10 @@ export const useUiStore = defineStore('ui', {
     popoverList: [],
     dropPosition: { x: 100, y: 100 },
     dropOffsetCount: 0,
-    popoverDirection: '' // 新增
+    popoverDirection: '', // 新增
+    graphData: {
+      graph: new GraphModel(new GraphOption(''))
+    }
   }),
 
   actions: {
@@ -48,6 +57,9 @@ export const useUiStore = defineStore('ui', {
     resetDropPosition() {
       this.dropPosition = { x: 100, y: 100 };
       this.dropOffsetCount = 0;
+    },
+    setGraphData(graph: GraphModel) {
+      this.graphData.graph = graph;
     }
   }
 });

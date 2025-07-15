@@ -5,8 +5,6 @@ import { ResData, VertexType } from "../util/common";
 import { Point } from "../util/Point";
 
 export interface GraphProps {
-  edges: Shape[];
-  symbols: Shape[];
   graph: GraphModel;
 }
 

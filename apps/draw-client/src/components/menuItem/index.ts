@@ -1,6 +1,8 @@
+import { useUiStore } from "../../stores/ui";
 import { HeadItem, MenuItem } from "../../types/common";
 import { HeaderDropdownEnum } from "../../types/enum";
 import { stepStatusReactive } from "../../util/StepStatus";
+const uiStore = useUiStore();
 export class HeaderButtonData implements MenuItem {
   value!: string
   icon!: string
@@ -156,7 +158,7 @@ const File = [
       icon: "statics/subHeader/bold.svg",
       type: "toggle", // 新增
       get disabled() {
-        const selectedShapeLength = window?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
         return !selectedShapeLength || selectedShapeLength === 0;
       }
     },
@@ -166,7 +168,7 @@ const File = [
       icon: "statics/subHeader/italic.svg",
       type: "toggle", // 新增
       get disabled() {
-        const selectedShapeLength = window?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
         return !selectedShapeLength || selectedShapeLength === 0;
       }
     },
@@ -176,7 +178,7 @@ const File = [
       icon: "statics/subHeader/underline.svg",
       type: "toggle", // 新增
       get disabled() {
-        const selectedShapeLength = window?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
         return !selectedShapeLength || selectedShapeLength === 0;
       }
     },

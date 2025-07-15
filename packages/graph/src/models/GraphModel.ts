@@ -72,13 +72,6 @@ export class GraphModel {
     markerModel:MarkerModel = reactive(new MarkerModel(this))
     
 
-  /**
-   * 图形样式
-   */
-  /**
-   * 
-   */
-  edges: EdgeShape[] = [];
 
   symbols: Shape[] = [];
 

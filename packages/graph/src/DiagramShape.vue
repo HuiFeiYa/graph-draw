@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { shapeCompManager } from './shape/index'
 import { GraphProps } from './types';
-import { Shape, ShapeKey, SubShapeType } from '@hfdraw/types';
+import { Shape, ShapeKey, ShapeType, SubShapeType } from '@hfdraw/types';
 const props = defineProps<GraphProps>();
   const symbols = computed(() => {
   // console.log('props: ',props)
@@ -10,7 +10,7 @@ const props = defineProps<GraphProps>();
 })
 
 const edges = computed(() => {
-  const ret: Shape[] = props.graph.edges.filter(childShape => shapeCompManager.get(childShape.subShapeType));
+  const ret: Shape[] = props.graph.symbols.filter(childShape => childShape.shapeType === ShapeType.Edge).filter(childShape => shapeCompManager.get(childShape.subShapeType));
   props.graph.symbols.forEach(symbol => {
     if (symbol.shapeKey === ShapeKey.MindMapShape) {
       const newSymbol = { ...symbol, subShapeType: SubShapeType.MindMapLine };
