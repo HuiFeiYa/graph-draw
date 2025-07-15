@@ -27,7 +27,7 @@
   :height="shape.bounds.height"
   :stroke="style.strokeColor"
   :stroke-width="style.strokeWidth"
-  :fill="highlight ?  getLighterColor(style.background) : style.background"
+  :fill="highlight ?  getLighterColor(style.background || '') : style.background || ''"
   :rx="style.borderRadius||0"
   :ry="style.borderRadius||0"
   :stroke-dasharray="style.strokeDasharray || ''"
@@ -43,6 +43,7 @@
     :bold="style.bold"
     :italic="style.italic"
     :underline="style.underline"
+    :font-color="style.fontColor"
     @end-edit="handleEndEdit"
   />
 
