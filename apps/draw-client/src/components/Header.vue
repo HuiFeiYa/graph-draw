@@ -22,6 +22,7 @@
         <!-- 下拉  -->
         <m-header-dropdown
           v-else-if="child.type == 'dropdown'"
+          :disabled="child.disabled"
           :data="child"
           @item-click="handleDropdownItemClick"
         />
@@ -37,7 +38,7 @@
           <el-color-picker
             size="small"
             :disabled="child.disabled"
-            :model-value="getSelect(child.value)"
+            :model-value="getSelect(child.value, '#000')"
             @change="handleFontColorChange"
             show-alpha
           />
@@ -228,13 +229,13 @@ function freshStepStatus(projectId?: string) {
   }
 }
 
-function getSelect( value: string) {
+function getSelect( value: string, defaultValue: boolean | string | number = false) {
   const firstSelectedShape = uiStore.graphData?.graph?.selectionModel?.selectedShapes[0];
   if (firstSelectedShape) {
     const key = value  as keyof StyleObject;
     return firstSelectedShape.style[key];
   }
-  return false;
+  return defaultValue;
 }
 watch(() => projectStore.projectId, (newVal) => {
   console.log('projectId:',newVal)

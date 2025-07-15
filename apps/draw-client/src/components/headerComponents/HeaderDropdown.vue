@@ -3,15 +3,16 @@ import { ref, reactive, computed, watch } from 'vue';
 import { HeaderDropdownData, HeaderButtonData } from '../menuItem';
 defineProps<{
     data: HeaderDropdownData,
+    disabled?: boolean
 }>()
 const emit = defineEmits<{
     itemClick: (item: any, value: any) => any
 }>()
 </script>
 <template>
-    <div class="v-header-dropdown g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled }">
+    <div class="v-header-dropdown g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled }" >
         
-            <el-dropdown trigger="click" :hide-on-click="false" placement="bottom-start">
+            <el-dropdown trigger="click" :hide-on-click="false" placement="bottom-start" :disabled="disabled">
                 <span style="font-size: 12px;">
                     <img style="width: 16px" :src="data.icon" />
                     <span class="_span g-m-l-4">{{ data.label }}</span>
