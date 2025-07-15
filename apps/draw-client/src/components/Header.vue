@@ -28,7 +28,7 @@
         <m-header-button
           v-else-if="child.type === 'toggle'"
           :data="child"
-          :selected="getSelect(child)"
+          :selected="getSelect(child.value)"
           @click="handleClick(child)"
 />
       </div>
@@ -58,6 +58,7 @@ import { BusEvent } from '../constants/config';
 import { useProjectStore } from '../stores/project';
 import { ElDialog, ElInput, ElButton, ElMessage } from 'element-plus'
 import { modelService } from '../util/ModelService';
+import { StyleObject } from '@hfdraw/types';
 
 const projectStore = useProjectStore();
 const router = useRouter();
@@ -112,6 +113,7 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
     case 'clear': {
       await shapeService.clear(projectStore.projectId)
       emitter.emit(BusEvent.REFRESH)
+      clear()
       break;
     }
     case 'saveProject': {
@@ -137,20 +139,46 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
       break;
     }
     case 'bold': {
-      const selectedShapeIds = (window?.graphData?.graph?.selectionModel?.selectedShapes || []).map((it:any) => it.id);
+      const selectedShapes = uiStore.graphData.graph.selectionModel.selectedShapes;
+      const currentStyle = selectedShapes[0].style;
+      const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(it => it.id);
       // 假设你有 projectId、shapeIds、newStyle
       await shapeService.batchUpdateShapeStyle({
         projectId: projectStore.projectId,
-        shapeIds: selectedShapeIds,
+        shapeIds,
         styleObject: {
-          bold: true
+          bold: !currentStyle.bold
         }
       });
-      // 可选：刷新视图或提示
       break;
     }
+     case 'italic': {
+      const selectedShapes = uiStore.graphData.graph.selectionModel.selectedShapes;
+      const currentStyle = selectedShapes[0].style;
+      const shapeIds = selectedShapes.map(it => it.id);
+      await shapeService.batchUpdateShapeStyle({
+        projectId: projectStore.projectId,
+        shapeIds,
+        styleObject: {
+          italic: !currentStyle.italic
+        }
+      });
+      break;
+     }
+     case 'underline': {
+      const selectedShapes = uiStore.graphData.graph.selectionModel.selectedShapes;
+      const currentStyle = selectedShapes[0].style;
+      const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(it => it.id);
+      await shapeService.batchUpdateShapeStyle({
+        projectId: projectStore.projectId,
+        shapeIds,
+        styleObject: {
+          underline: !currentStyle.underline
+        }
+      });
+      break;
+     }
   }
-  clear()
 }
 function clear() {
   uiStore.clearPopoverList();
@@ -162,10 +190,11 @@ function freshStepStatus(projectId?: string) {
   }
 }
 
-function getSelect(child: { value: string }) {
-  const firstSelectedShape = window?.graphData?.graph?.selectionModel?.selectedShapes[0];
+function getSelect( value: string) {
+  const firstSelectedShape = uiStore.graphData?.graph?.selectionModel?.selectedShapes[0];
   if (firstSelectedShape) {
-    return !!firstSelectedShape.style.bold;
+    const key = value  as keyof StyleObject;
+    return !!firstSelectedShape.style[key];
   }
   return false;
 }

@@ -58,8 +58,8 @@ const props = defineProps<{
   cursor: not-allowed !important;
 }
 .v-header-btn.active {
-    background: #d0eaff;
-    color: #1976d2;
+    background: rgba(33,41,48,0.1);
+    color: #212930;
   }
 .v-header-btn.disabled .icon_box {
   filter: grayscale(85%) brightness(1.2) !important;

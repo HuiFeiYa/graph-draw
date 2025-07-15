@@ -165,9 +165,10 @@ export class ShapeController {
     });
   }
   @Post('batchUpdateShapeStyle')
-  async batchUpdateShapeStyle(@Body() dto: { projectId: string; shapeIds: string[]; newStyle: any }) {
+  async batchUpdateShapeStyle(@Body() dto: { projectId: string; shapeIds: string[]; styleObject: any }) {
     return transaction({ projectId: dto.projectId }, async (stepManager) => {
-      return await stepManager.shapeService.batchUpdateShapeStyle(dto.projectId, dto.shapeIds, dto.newStyle);
+      const result = await stepManager.shapeService.batchUpdateShapeStyle(dto.projectId, dto.shapeIds, dto.styleObject);
+      return new ResData(result);
     });
   }
   

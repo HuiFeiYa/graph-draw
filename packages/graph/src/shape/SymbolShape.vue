@@ -40,6 +40,9 @@
     :name-bounds="shape.nameBounds"
     :label="shape.modelName || ''"
     :font-size="14"
+    :bold="style.bold"
+    :italic="style.italic"
+    :underline="style.underline"
     @end-edit="handleEndEdit"
   />
 

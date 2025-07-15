@@ -9,20 +9,7 @@
     <div 
       ref="labelRef"
       class="v-editable-label" 
-      :style="{
-        width: nameBounds.width + 'px',
-        height: nameBounds.height + 'px', 
-        left: nameBounds.x + 'px',
-        top: nameBounds.y + 'px',
-        fontSize: fontSize + 'px',
-        fontFamily: 'inherit',
-        pointerEvents: 'all',
-        padding: '0',
-        margin: '0',
-        display: 'flex',
-        alignItems: 'center',
-        lineHeight: 1.5
-      }" 
+      :style="labelStyle" 
       @blur="endEdit"
       @keydown.enter="handleEnterKey"
     >
@@ -33,7 +20,7 @@
 
 <script lang="ts" setup>
 import { IBounds } from '@hfdraw/types';
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, computed } from 'vue';
 
 interface Props {
   bounds: IBounds;
@@ -45,6 +32,9 @@ interface Props {
   };
   label: string;
   fontSize?: number;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -116,6 +106,24 @@ const endEdit = () => {
     emit('textChange', newText);
   }
 };
+
+const labelStyle = computed(() => ({
+  fontWeight: props.bold ? 'bold' : 'normal',
+  fontStyle: props.italic ? 'italic' : 'normal',
+  textDecoration: props.underline ? 'underline' : 'none',
+  fontSize: props.fontSize ? props.fontSize + 'px' : undefined,
+  width: props.nameBounds.width + 'px',
+  height: props.nameBounds.height + 'px', 
+  left: props.nameBounds.x + 'px',
+  top: props.nameBounds.y + 'px',
+  fontFamily: 'inherit',
+  pointerEvents: 'all',
+  padding: '0',
+  margin: '0',
+  display: 'flex',
+  alignItems: 'center',
+  lineHeight: 1.5
+}));
 
 // 暴露方法供父组件调用
 defineExpose({
