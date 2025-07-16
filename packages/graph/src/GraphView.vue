@@ -2,6 +2,7 @@
 import { provide, onMounted, ref, onUnmounted, computed, watch } from "vue";
 import Grid from './components/grid.vue'
 import DiagramShape from "./DiagramShape.vue";
+import Watermark from './components/Watermark.vue';
 import { GraphProps } from "./types";
 import { EdgeShape, EventType, Shape, ShapeType, VertexType } from "@hfdraw/types";
 import SelectionVertex from './shape/SelectionVertex.vue';
@@ -9,12 +10,11 @@ import HoverArrow from './shape/HoverArrow.vue';
 import MindMapQuickAdd from './shape/MindMapQuickAdd.vue';
 import ShapeMovePreview from "./shape/ShapeMovePreview.vue";
 import EdgeMovePreview from './shape/EdgeMovePreview.vue'
-import LabelEditor from './shape/LabelEditor.vue'
 import ShapeResizePreview from './shape/ShapeResizePreview.vue';
 const props = defineProps<GraphProps>();
 provide("graphProps", props);
 provide('graph', props.graph);
-const viewDom = ref(null);
+const viewDom = ref<HTMLDivElement | null>(null);
 // 拖拽状态
 const isDragging = ref(false);
 const startPos = ref({ x: 0, y: 0 });
@@ -26,9 +26,8 @@ const dom0 = ref<HTMLSpanElement|null>(null);
 const svgElement = ref<SVGSVGElement|null>(null);
 
 // 画布大小计算
-const canvasSize = computed(() => {
-  return props.graph.viewModel.getCanvasSize();
-});
+const canvasSize = computed(() => props.graph.viewModel.getCanvasSize());
+const watermarkConfig = computed(() => props.graph.viewModel.watermarkConfig);
 
 // 是否显示选中效果
 const showSelectionVertex = computed(() => {
@@ -170,11 +169,9 @@ onUnmounted(() => {
           * 整个画布的事件监听
         -->
     <svg version="1.1" ref="svgElement" xmlns="http://www.w3.org/2000/svg" transform-origin="0 0"
-      :style="{
-        width: canvasSize.width + 'px',
-        height: canvasSize.height + 'px',
-        backgroundColor: 'white'
-      }" 
+      :width="canvasSize.width"
+      :height="canvasSize.height"
+      style="background: white;position: absolute;top: 12px;left: 12px"
       @click="handleClickOut"
       @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop"
@@ -184,6 +181,12 @@ onUnmounted(() => {
       :transform="`matrix(${props.graph.graphOption.scale}, 0, 0, ${props.graph.graphOption.scale}, ${transform.x}, ${transform.y})`">
         <DiagramShape v-bind="props" />
       </g>
+      <Watermark
+        v-if="watermarkConfig && watermarkConfig.showWatermark"
+        :config="watermarkConfig"
+        :width="canvasSize.width"
+        :height="canvasSize.height"
+      />
     </svg>
     <!-- 交互层 -->
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" transform-origin="0 0"
@@ -219,9 +222,9 @@ onUnmounted(() => {
 <style lang="scss">
 .graph-view {
   position: relative;
-  padding: 12px;
+  overflow: auto;
+  width: 100%;
   height: 100%;
-  overflow: auto; /* 默认启用滚动 */
 }
 
 svg {

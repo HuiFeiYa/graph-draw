@@ -34,7 +34,7 @@ export class GraphModel {
   /**
    * 视图模型
    */
-  viewModel = reactive(new ViewModel());
+  viewModel = reactive(new ViewModel(this));
 
   /**
    * 元素移动模型
@@ -43,33 +43,33 @@ export class GraphModel {
   /**
    * 选中元素模型
    */
-  selectionModel: any = reactive(new SelectionModel(this));
+  selectionModel = reactive(new SelectionModel(this));
 
   /**
   * 线移动模型(线的线段移动)
   */
-  edgeMoveModel: any = reactive(new EdgeMoveModel(this))
+  edgeMoveModel = reactive(new EdgeMoveModel(this))
   /**
    * 选入元素显示箭头
    */
-  hoverModel: any = reactive(new HoverModel(this))
+  hoverModel = reactive(new HoverModel(this))
   /**
    * 脑图模型
    */
-  mindMapModel: any = reactive(new MindMapModel(this))
+  mindMapModel = reactive(new MindMapModel(this))
   /**
    * 标签编辑器模型
    */
-  labelEditorModel: any = reactive(new LabelEditorModel(this))
+  labelEditorModel = reactive(new LabelEditorModel(this))
   /**
    * 图形缩放模型
    */
-  resizeModel: any = reactive(new ResizeModel(this))
+  resizeModel = reactive(new ResizeModel(this))
 
     /**
    * 图形标记（高亮效果）
    */
-    markerModel: any = reactive(new MarkerModel(this))
+    markerModel = reactive(new MarkerModel(this))
     
 
 
@@ -113,6 +113,10 @@ export class GraphModel {
    */
   setCanvasSize(width: number, height: number) {
     this.viewModel.setCanvasSize(width, height);
+  }
+
+  setWatermarkConfig(watermarkConfig: { watermarkText: string, showWatermark: boolean }) {
+    this.viewModel.setWatermarkConfig(watermarkConfig);
   }
 
   /**

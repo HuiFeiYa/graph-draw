@@ -1,5 +1,6 @@
 import {  Bounds, IPoint } from "@hfdraw/types"
 import { Point } from "../util/Point"
+import { GraphModel } from "./GraphModel"
 
 /**
  * 整体的视图的模型
@@ -8,11 +9,15 @@ import { Point } from "../util/Point"
 export class ViewModel {
 
     viewDom:HTMLDivElement|undefined
-    bounds= new Bounds(0, 0, 1100, 900)
+    bounds= new Bounds(0, 0, 1800, 1650)
     
     // 画布大小配置，最小500px
-    canvasWidth = 1100
-    canvasHeight = 900
+    canvasWidth = 1800
+    canvasHeight = 1650
+    watermarkConfig = {
+      watermarkText: 'HfDraw@会飞',
+      showWatermark: true,
+    }
     minCanvasSize = 500
     
     // 默认滚动设置
@@ -21,7 +26,8 @@ export class ViewModel {
     scrollY = 0
 
     background = 'white'
-
+    constructor(public graph: GraphModel) {
+    }
     setViewDom(dom:HTMLDivElement) {
       this.viewDom = dom;
     }
@@ -37,6 +43,9 @@ export class ViewModel {
       this.bounds = new Bounds(0, 0, this.canvasWidth, this.canvasHeight);
     }
 
+    setWatermarkConfig(watermarkConfig: { watermarkText: string, showWatermark: boolean }) {
+      this.watermarkConfig = watermarkConfig;
+    }
     /**
      * 获取画布大小
      */

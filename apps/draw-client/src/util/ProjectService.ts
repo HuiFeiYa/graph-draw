@@ -22,6 +22,14 @@ export class ProjectService {
         const res = await httpClient.post<{data: any}>(API.projectOpen, { filePath });
         return res.data;
     }
+    async getCommonConfig(projectId: string) {
+        const res = await httpClient.get<{data: any}>(API.projectCommonConfig, { projectId });
+        return res.data;
+    }
+    async updateCommonConfig(projectId: string, commonConfig: any) {    
+        const res = await httpClient.post<{data: any}>(API.projectCommonConfig, { projectId, commonConfig });
+        return res.data;
+    }
 }
 
 export const projectService = new ProjectService();

@@ -54,6 +54,7 @@ import { modelService } from '../util/ModelService';
 import { formatDate } from "../util/common";
 import { useUiStore } from '../stores/ui';
 import { ALL_HEADER, SIDEBAR } from "../constants/ui";
+import { projectService } from "../util/ProjectService";
 
 const uiStore = useUiStore();
 const projectStore = useProjectStore();
@@ -78,6 +79,16 @@ const handleResize = () => {
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
+
+  projectService.getCommonConfig(projectId).then(res => {
+    const data = res.data;
+    projectStore.setCommonConfig(data)
+    uiStore.graphData.graph.setWatermarkConfig({
+      watermarkText: data.watermarkText,
+      showWatermark: data.showWatermark
+    })
+    uiStore.graphData.graph.setCanvasSize(data.canvasWidth, data.canvasHeight)
+  })
 });
 
 // 移除监听器
@@ -114,7 +125,7 @@ const events = {
     await fretchData()
   },
   [BusEvent.DROPDOWN_ITEM_CLICK]: async (item: {value: HeaderDropdownEnum}) => {
-    const edgeShape = uiStore.graphData.graph.selectionModel.selectedShapes.find(s => s.subShapeType === SubShapeType.CommonEdge);
+    const edgeShape = uiStore.graphData.graph.selectionModel.selectedShapes.find((s: { subShapeType: SubShapeType; }) => s.subShapeType === SubShapeType.CommonEdge);
     if (!edgeShape) return 
     const newStyleObj: StyleObject = {
 

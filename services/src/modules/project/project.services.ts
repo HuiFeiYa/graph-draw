@@ -7,7 +7,6 @@ import { getUid } from 'src/utils/common';
 import { pcmm } from 'src/utils/ConnectionManager';
 import * as fs from 'fs/promises';
 import { resolve } from 'path';
-import { Project } from 'src/entities/project.entity';
 
 import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -22,7 +21,6 @@ export class ProjectService {
     return this.stepManager.manager;
   }
   private _projectMainRep: Repository<ApplicationProject>;
-  private _projectRep: Repository<Project>
 
   /**
    * 系统数据库的
@@ -33,15 +31,7 @@ export class ProjectService {
       (this._projectMainRep = this.manager.getRepository(ApplicationProject))
     );
   }
-/**
-   * 项目数据库的
-   */
-  get projectRep() {
-    return (
-      this._projectRep ||
-      (this._projectRep = this.manager.getRepository(Project))
-    );
-  }
+
   async createProject(dto) {
     const p = new ApplicationProject();
     p.projectId = getUid();
@@ -151,7 +141,7 @@ export class ProjectService {
   async updateCommonConfig(projectId: string, commonConfig: any) {
     const project = await this.projectMainRep.findOneBy({ projectId });
     if (!project) throw new Error('Project not found');
-    project.commonConfig = commonConfig;
+    project.commonConfig = { ...project.commonConfig, ...commonConfig };
     await this.projectMainRep.save(project);
     return project.commonConfig;
   }

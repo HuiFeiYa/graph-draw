@@ -25,7 +25,6 @@
           <el-input
             v-model="localWatermarkText"
             :maxlength="15"
-            :disabled="true"
             placeholder="不超过15个字"
             @input="handleWatermarkInput"
           />
@@ -48,8 +47,8 @@ const props = defineProps({
   width: { type: Number, default: 1100 },
   height: { type: Number, default: 900 },
 
-  showWatermark: { type: Boolean, default: false },
-  watermarkText: { type: String, default: 'ProcessOn@会飞' }
+  showWatermark: { type: Boolean, default: true },
+  watermarkText: { type: String, default: 'HfDraw@会飞' }
 });
 const emit = defineEmits(['update:visible', 'confirm', 'cancel']);
 
@@ -80,8 +79,8 @@ function handleConfirm() {
   emit('confirm', {
     width: localWidth.value,
     height: localHeight.value,
-    showWatermark: localShowWatermark.value,
-    watermarkText: localWatermarkText.value
+    isShowWatermark: localShowWatermark.value,
+    text: localWatermarkText.value
   });
   emit('update:visible', false);
 }

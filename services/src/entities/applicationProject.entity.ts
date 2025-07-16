@@ -5,9 +5,9 @@ export const defaluCommonConfig = {
     strokeColor: 'rgba(21,71, 146,0.5)',
     bgColor: '#ffffff'
   },
-  canvasWidth: 1100,
-  canvasHeight: 900,
-  watermarkText: 'ProcessOn@会飞',
+  canvasWidth: 1800,
+  canvasHeight: 1650,
+  watermarkText: 'HfDraw@会飞',
   showWatermark: true
 }
 @Entity({ name: 'application_projects' }) // 指定表名

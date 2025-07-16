@@ -29,7 +29,7 @@
         <m-header-button
           v-else-if="child.type === 'toggle'"
           :data="child"
-          :selected="getSelect(child.value)"
+          :selected="!!getSelect(child.value)"
           @click="handleClick(child)"
         />
         <!-- 字体颜色 -->
@@ -186,7 +186,6 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
       const selectedShapes = uiStore.graphData.graph.selectionModel.selectedShapes;
       const currentStyle = selectedShapes[0].style;
       const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(it => it.id);
-      // 假设你有 projectId、shapeIds、newStyle
       await shapeService.batchUpdateShapeStyle({
         projectId: projectStore.projectId,
         shapeIds,
@@ -267,8 +266,8 @@ onMounted(()=> {
 // 页面配置表单数据
 const pageConfigVisible = ref(false); // 修复未定义
 
-const showWatermark = ref(false);
-const watermarkText = ref('ProcessOn@会飞');
+const showWatermark = computed(() => uiStore.graphData.graph.viewModel.watermarkConfig.showWatermark);
+const watermarkText = computed(() => uiStore.graphData.graph.viewModel.watermarkConfig.watermarkText);
 
 const pageWidth = computed(() => uiStore.graphData.graph.getCanvasSize().width);
 const pageHeight = computed(() => uiStore.graphData.graph.getCanvasSize().height);
@@ -278,20 +277,20 @@ function handlePageConfigConfirm({ width, height, isShowWatermark, text }: { wid
     return;
   }
   uiStore.graphData.graph.setCanvasSize(width, height);
-  // 这里可将 showWatermark/watermarkText 存入 store 或 graphModel
-  showWatermark.value = isShowWatermark;
-  watermarkText.value = text;
+  uiStore.graphData.graph.setWatermarkConfig({
+    watermarkText: text,
+    showWatermark: isShowWatermark
+  })
+  projectService.updateCommonConfig(projectStore.projectId, {
+    canvasWidth: width,
+    canvasHeight: height,
+    showWatermark: isShowWatermark,
+    watermarkText: text
+  })
   ElMessage.success('页面设置已应用');
 }
 
-function handleWatermarkInput(val: string) {
-  if (val.length > 15) {
-    watermarkText.value = val.slice(0, 15);
-    ElMessage.warning('水印内容最多15字');
-  } else {
-    watermarkText.value = val;
-  }
-}
+
 </script>
 <style lang="scss">
 @use '@/assets/css/theme' as *;

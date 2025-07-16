@@ -4,11 +4,13 @@ export const useProjectStore = defineStore('project', {
   state: ():({
     projectId: string,
     projects: any[],
-    currentProjectName: string
+    currentProjectName: string,
+    commonConfig: any
   }) => ({
     projects: [],
     projectId: '',
-    currentProjectName: ''
+    currentProjectName: '',
+    commonConfig: {}
   }),
   actions: {
     addProject(project: object) {
@@ -19,6 +21,9 @@ export const useProjectStore = defineStore('project', {
     },
     setCurrentProjectName(name: string) {
       this.currentProjectName = name
+    },
+    setCommonConfig(commonConfig: any) {
+      this.commonConfig = commonConfig
     }
   },
 });
