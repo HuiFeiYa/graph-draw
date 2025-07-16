@@ -35,6 +35,7 @@ interface Props {
   bold?: boolean;
   italic?: boolean;
   underline?: boolean;
+  fontColor?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -122,6 +123,7 @@ const labelStyle = computed(() => ({
   margin: '0',
   display: 'flex',
   alignItems: 'center',
+  color: props.fontColor,
   lineHeight: 1.5
 }));
 

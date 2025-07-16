@@ -183,6 +183,16 @@ const File = [
       }
     },
     {
+      label: "字体颜色",  
+      value: "fontColor",
+      icon: "statics/subHeader/fontColor.svg",
+      type: "fontColor",
+      get disabled() {
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
+      }
+    },
+    {
       value: "splitLine",
       icon: "",
       label: "",

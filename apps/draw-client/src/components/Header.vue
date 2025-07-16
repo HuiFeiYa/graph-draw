@@ -30,7 +30,18 @@
           :data="child"
           :selected="getSelect(child.value)"
           @click="handleClick(child)"
-/>
+        />
+        <!-- 字体颜色 -->
+        <div v-else-if="child.type === 'fontColor'" style="display: flex;align-items: center;">
+          <img :style="[child.disabled ? {opacity: 0.5, cursor: 'not-allowed'} : {}]" :src="child.icon" alt="" style="width: 18px;height: 18px;">
+          <el-color-picker
+            size="small"
+            :disabled="child.disabled"
+            :model-value="getSelect(child.value)"
+            @change="handleFontColorChange"
+            show-alpha
+          />
+        </div>
       </div>
     </div>
     <el-dialog v-model="exportDialogVisible" title="导出模板" width="300px" center  >
@@ -180,6 +191,15 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
      }
   }
 }
+async function handleFontColorChange(color: string) {
+  const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(s => s.id);
+  if (!shapeIds.length) return;
+  await shapeService.batchUpdateShapeStyle({
+    projectId: projectStore.projectId,
+    shapeIds,
+    styleObject: { fontColor: color }
+  });
+}
 function clear() {
   uiStore.clearPopoverList();
   emitter.emit(BusEvent.CLEAR_STATUS)
@@ -194,7 +214,7 @@ function getSelect( value: string) {
   const firstSelectedShape = uiStore.graphData?.graph?.selectionModel?.selectedShapes[0];
   if (firstSelectedShape) {
     const key = value  as keyof StyleObject;
-    return !!firstSelectedShape.style[key];
+    return firstSelectedShape.style[key];
   }
   return false;
 }
