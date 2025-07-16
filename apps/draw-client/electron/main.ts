@@ -4,6 +4,8 @@ const AppInstance = require('./AppInstance');
 const electronInstance = new AppInstance();
 const Logger = require('./Logger');
 const logger = new Logger();
+const { exec } = require('child_process');
+exec('chcp 65001', (err) => { err && console.log('chcp error: ' + err); });
 logger.info(`main start------`)
 app.whenReady().then(() => {
   logger.info(`whenReady`)
