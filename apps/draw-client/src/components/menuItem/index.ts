@@ -145,6 +145,42 @@ const File = [
       
     },
     {
+      value: "splitLine",
+      icon: "",
+      label: "",
+      type: "splitLine"
+    },
+    {
+      label: "加粗",
+      value: "bold",
+      icon: "statics/subHeader/bold.svg",
+      get disabled() {
+        return false;
+      }
+    },
+    {
+      label: "倾斜",
+      value: "italic",
+      icon: "statics/subHeader/italic.svg",
+      get disabled() {
+        return false;
+      }
+    },
+    {
+      label: "下划线",
+      value: "underline",
+      icon: "statics/subHeader/underline.svg",
+      get disabled() {
+        return false;
+      }
+    },
+    {
+      value: "splitLine",
+      icon: "",
+      label: "",
+      type: "splitLine"
+    },
+    {
       label: "调试",
       notShowLabel: false,
       value: "openDevTools",
