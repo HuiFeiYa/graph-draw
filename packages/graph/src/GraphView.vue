@@ -24,6 +24,12 @@ const transform = ref({ x: 0, y: 0 });
 const rootGroup = ref(null);
 const dom0 = ref<HTMLSpanElement|null>(null);
 const svgElement = ref<SVGSVGElement|null>(null);
+
+// 画布大小计算
+const canvasSize = computed(() => {
+  return props.graph.viewModel.getCanvasSize();
+});
+
 // 是否显示选中效果
 const showSelectionVertex = computed(() => {
   const { selectionModel } = props.graph;
@@ -158,16 +164,22 @@ onUnmounted(() => {
   <div class="graph-view" ref="viewDom" 
   @mouseup.capture="handleCaptureMouseEvent"
   @mousedown.capture="handleCaptureMouseEvent">
+
     <!-- 
           展示层
           * 整个画布的事件监听
         -->
     <svg version="1.1" ref="svgElement" xmlns="http://www.w3.org/2000/svg" transform-origin="0 0"
-      style="min-width: 100%; min-height: 100%;background-color: white;" @click="handleClickOut"
+      :style="{
+        width: canvasSize.width + 'px',
+        height: canvasSize.height + 'px',
+        backgroundColor: 'white'
+      }" 
+      @click="handleClickOut"
       @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop"
-        @wheel="handleWheel">
-      <Grid />
+        >
+      <Grid :width="canvasSize.width" :height="canvasSize.height" />
       <g ref="rootGroup"
       :transform="`matrix(${props.graph.graphOption.scale}, 0, 0, ${props.graph.graphOption.scale}, ${transform.x}, ${transform.y})`">
         <DiagramShape v-bind="props" />
@@ -175,7 +187,15 @@ onUnmounted(() => {
     </svg>
     <!-- 交互层 -->
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" transform-origin="0 0"
-      style="min-width: 100%; min-height: 100%;position: absolute; top: 12px; left: 12px; pointer-events: none;shape-rendering: geometricPrecision;"
+      :style="{
+        width: canvasSize.width + 'px',
+        height: canvasSize.height + 'px',
+        position: 'absolute',
+        top: '12px',
+        left: '12px',
+        pointerEvents: 'none',
+        shapeRendering: 'geometricPrecision'
+      }"
       @click="handleClickOut" @mousedown="handleMousedownOut" @mouseup="handleMouseupOut" @mousemove="handleMousemove"
       @dragover="handleDragOver" @drop.stop="handleDrop">
       <g :transform="`matrix(${props.graph.graphOption.scale}, 0, 0, ${props.graph.graphOption.scale}, ${transform.x}, ${transform.y})`">
@@ -201,6 +221,7 @@ onUnmounted(() => {
   position: relative;
   padding: 12px;
   height: 100%;
+  overflow: auto; /* 默认启用滚动 */
 }
 
 svg {

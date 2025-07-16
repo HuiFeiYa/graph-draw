@@ -43,33 +43,33 @@ export class GraphModel {
   /**
    * 选中元素模型
    */
-  selectionModel: SelectionModel = reactive(new SelectionModel(this));
+  selectionModel: any = reactive(new SelectionModel(this));
 
   /**
   * 线移动模型(线的线段移动)
   */
-  edgeMoveModel: EdgeMoveModel = reactive(new EdgeMoveModel(this))
+  edgeMoveModel: any = reactive(new EdgeMoveModel(this))
   /**
    * 选入元素显示箭头
    */
-  hoverModel: HoverModel = reactive(new HoverModel(this))
+  hoverModel: any = reactive(new HoverModel(this))
   /**
    * 脑图模型
    */
-  mindMapModel: MindMapModel = reactive(new MindMapModel(this))
+  mindMapModel: any = reactive(new MindMapModel(this))
   /**
    * 标签编辑器模型
    */
-  labelEditorModel: LabelEditorModel = reactive(new LabelEditorModel(this))
+  labelEditorModel: any = reactive(new LabelEditorModel(this))
   /**
    * 图形缩放模型
    */
-  resizeModel: ResizeModel = reactive(new ResizeModel(this))
+  resizeModel: any = reactive(new ResizeModel(this))
 
     /**
    * 图形标记（高亮效果）
    */
-    markerModel:MarkerModel = reactive(new MarkerModel(this))
+    markerModel: any = reactive(new MarkerModel(this))
     
 
 
@@ -105,6 +105,37 @@ export class GraphModel {
 
     this.emitter.on(EventType.SHAPE_MOUSE_UP, this.onMouseUp.bind(this));
   }
+
+  /**
+   * 设置画布大小
+   * @param width 宽度，最小500px
+   * @param height 高度，最小500px
+   */
+  setCanvasSize(width: number, height: number) {
+    this.viewModel.setCanvasSize(width, height);
+  }
+
+  /**
+   * 获取画布大小
+   */
+  getCanvasSize() {
+    return this.viewModel.getCanvasSize();
+  }
+
+  /**
+   * 设置滚动位置
+   */
+  setScrollPosition(x: number, y: number) {
+    this.viewModel.setScrollPosition(x, y);
+  }
+
+  /**
+   * 获取当前滚动位置
+   */
+  getScrollPosition() {
+    return this.viewModel.getScrollPosition();
+  }
+
   mouseDownOut(event: MouseEvent) {
     this.hoverModel.clearHoverShape();
   }

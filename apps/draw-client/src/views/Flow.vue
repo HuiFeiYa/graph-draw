@@ -2,7 +2,10 @@
   <div style="display: flex; flex-direction: column; height: 100%">
     <div style="display: flex; flex: 1">
       <Siderbar />
-      <GraphView v-bind="uiStore.graphData" style="flex: 1"></GraphView>
+      <GraphView v-bind="uiStore.graphData" :style="{
+        width: graphContainerWidth + 'px',
+        height: graphContainerHeight + 'px',
+      }"></GraphView>
     </div>
     <Footer 
       :scale="uiStore.graphData.graph.graphOption.scale" 
@@ -34,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { GraphView, GraphModel } from "@hfdraw/graph";
 import { Change, Shape, StyleObject, SubShapeType } from "@hfdraw/types";
 import Siderbar from "../editor/components/SiderBar.vue";
@@ -50,12 +53,14 @@ import { socketService } from "../socket/SocketService";
 import { modelService } from '../util/ModelService';
 import { formatDate } from "../util/common";
 import { useUiStore } from '../stores/ui';
+import { ALL_HEADER, SIDEBAR } from "../constants/ui";
 
 const uiStore = useUiStore();
 const projectStore = useProjectStore();
 const route = useRoute();
 const projectId = String(route.query.projectId || '');
-
+const graphContainerWidth = ref(window.innerWidth - SIDEBAR);
+const graphContainerHeight = ref(window.innerHeight - ALL_HEADER);
 if (route.query.projectName) {
   projectStore.setCurrentProjectName(route.query.projectName as string)
 }
@@ -64,6 +69,21 @@ const graphOption = new GraphOption(projectId);
 const graph = new GraphModel(graphOption);
 uiStore.setGraphData(graph);
 
+
+// 定义具名函数
+const handleResize = () => {
+  graphContainerWidth.value = window.innerWidth - SIDEBAR;
+  graphContainerHeight.value = window.innerHeight - ALL_HEADER;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+// 移除监听器
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+});
 
 const events = {
   [BusEvent.MOUSE_DOWN_OUT]: (event: MouseEvent) => {

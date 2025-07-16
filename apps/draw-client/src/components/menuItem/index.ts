@@ -255,6 +255,12 @@ const File = [
       type: "splitLine"
     },
     {
+      label: "页面配置",
+      value: "pageConfig",
+      icon: "statics/header/pageConfig.svg",
+      type: "pageConfig",
+    },
+    {
       label: "调试",
       notShowLabel: false,
       value: "openDevTools",
