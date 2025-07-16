@@ -87,7 +87,7 @@ function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
 }
 async function handleDropdownItemClick(item: { value: any }, key: string) {
   // 判断 lineHeight/textAlign 枚举
-  if (key === 'lineHeight' ) {
+  if (key === 'lineHeight'  ) {
     const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(s => s.id);
     if (!shapeIds.length) return;
     let styleObject = {
@@ -99,13 +99,18 @@ async function handleDropdownItemClick(item: { value: any }, key: string) {
       shapeIds,
       styleObject
     });
-    // 本地同步 style
-    shapeIds.forEach(id => {
-      const shape = uiStore.graphData.graph.symbols.find(s => s.id === id);
-      if (shape) Object.assign(shape.style, styleObject);
+  } else if (key === 'textAlign' ) {
+    const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(s => s.id);
+    if (!shapeIds.length) return;
+    let styleObject = {
+      textAlign: item.value
+    };
+    await shapeService.batchUpdateShapeStyle({
+      projectId: projectStore.projectId,
+      shapeIds,
+      styleObject
     });
-    return;
-  } else if (item.value === 'exportTemplate') {
+  }  else if (item.value === 'exportTemplate') {
     exportDialogVisible.value = true
     templateName.value = ''
     return

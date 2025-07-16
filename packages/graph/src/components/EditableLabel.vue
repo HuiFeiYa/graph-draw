@@ -126,7 +126,8 @@ const labelStyle = computed(() => ({
   display: 'flex',
   alignItems: 'center',
   color: props.fontColor,
-  lineHeight: props.lineHeight ? props.lineHeight  : undefined
+  lineHeight: props.lineHeight ? props.lineHeight  : undefined,
+  textAlign: props.textAlign ? props.textAlign : undefined
 }));
 
 // 暴露方法供父组件调用

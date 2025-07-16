@@ -225,7 +225,7 @@ const File = [
       }
     },
     {
-      label: "对齐",
+      label: "文本对齐",
       value: "textAlign",
       icon: "statics/subHeader/textAlign.svg",
       type: "dropdown",
