@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ResData } from 'src/utils/http/ResData';
 import { transaction } from 'src/utils/transaction';
 
@@ -55,6 +55,20 @@ export class ProjectController {
     return transaction({}, async st => {
       const projects = await st.projectService.getProjectList();
       return new ResData(projects);
+    });
+  }
+  @Get('commonConfig')
+  async getCommonConfig(@Query('projectId') projectId: string) {
+    return transaction({}, async st => {
+      const config = await st.projectService.getCommonConfig(projectId);
+      return new ResData(config);
+    });
+  }
+  @Post('commonConfig')
+  async updateCommonConfig(@Body() dto: { projectId: string, commonConfig: any }) {
+    return transaction({}, async st => {
+      const config = await st.projectService.updateCommonConfig(dto.projectId, dto.commonConfig);
+      return new ResData(config);
     });
   }
 }

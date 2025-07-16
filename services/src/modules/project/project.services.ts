@@ -142,4 +142,17 @@ export class ProjectService {
       throw new ResException(ApiCode.ERROR, 'zip格式错误');
     }
   }
+
+  async getCommonConfig(projectId: string) {
+    const project = await this.projectMainRep.findOneBy({ projectId });
+    if (!project) throw new Error('Project not found');
+    return project.commonConfig;
+  }
+  async updateCommonConfig(projectId: string, commonConfig: any) {
+    const project = await this.projectMainRep.findOneBy({ projectId });
+    if (!project) throw new Error('Project not found');
+    project.commonConfig = commonConfig;
+    await this.projectMainRep.save(project);
+    return project.commonConfig;
+  }
 }

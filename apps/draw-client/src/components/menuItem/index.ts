@@ -257,8 +257,7 @@ const File = [
     {
       label: "页面配置",
       value: "pageConfig",
-      icon: "statics/header/pageConfig.svg",
-      type: "pageConfig",
+      icon: "statics/subHeader/pageConfig.svg",
     },
     {
       label: "调试",

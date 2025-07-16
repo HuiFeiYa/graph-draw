@@ -52,6 +52,14 @@
         <el-button type="primary" @click="handleExportTemplate">确定</el-button>
       </template>
     </el-dialog>
+    <m-pageConfig-drawer
+      v-model:visible="pageConfigVisible"
+      :width="pageWidth"
+      :height="pageHeight"
+      :showWatermark="showWatermark"
+      :watermarkText="watermarkText"
+      @confirm="handlePageConfigConfirm"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -61,6 +69,7 @@ import { headerMenus } from './menuItem/index'
 import MHeaderSplitLine from './headerComponents/HeaderSplitLine.vue';
 import MHeaderButton from './headerComponents/HeaderButton.vue';
 import MHeaderDropdown from './headerComponents/HeaderDropdown.vue'
+import MPageConfigDrawer from './headerComponents/PageConfigDrawer.vue';
 import { shapeService } from '../util/ShapeService';
 import { projectService } from '../util/ProjectService';
 import { stepStatusReactive } from '../util/StepStatus';
@@ -213,6 +222,11 @@ async function handleClick(child: { selectStatus: any; value: string; disabled: 
       });
       break;
      }
+    case 'pageConfig': {
+      // 打开页面配置弹框
+      pageConfigVisible.value = true;
+      return;
+    }
   }
 }
 async function handleFontColorChange(color: string) {
@@ -249,6 +263,35 @@ watch(() => projectStore.projectId, (newVal) => {
 onMounted(()=> {
   freshStepStatus()
 })
+
+// 页面配置表单数据
+const pageConfigVisible = ref(false); // 修复未定义
+
+const showWatermark = ref(false);
+const watermarkText = ref('ProcessOn@会飞');
+
+const pageWidth = computed(() => uiStore.graphData.graph.getCanvasSize().width);
+const pageHeight = computed(() => uiStore.graphData.graph.getCanvasSize().height);
+function handlePageConfigConfirm({ width, height, isShowWatermark, text }: { width: number, height: number, isShowWatermark: boolean, text: string }) {
+  if (width < 500 || width > 10000 || height < 500 || height > 10000) {
+    ElMessage.error('宽高范围为500~10000px');
+    return;
+  }
+  uiStore.graphData.graph.setCanvasSize(width, height);
+  // 这里可将 showWatermark/watermarkText 存入 store 或 graphModel
+  showWatermark.value = isShowWatermark;
+  watermarkText.value = text;
+  ElMessage.success('页面设置已应用');
+}
+
+function handleWatermarkInput(val: string) {
+  if (val.length > 15) {
+    watermarkText.value = val.slice(0, 15);
+    ElMessage.warning('水印内容最多15字');
+  } else {
+    watermarkText.value = val;
+  }
+}
 </script>
 <style lang="scss">
 @use '@/assets/css/theme' as *;
