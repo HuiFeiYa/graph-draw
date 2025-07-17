@@ -13,7 +13,7 @@ const props = defineProps<GraphProps>();
   <g @click.stop @mousedown.stop @mouseup.stop @mousemove.stop @dragenter.stop @dragleave.stop @dragover.stop>
     <g>
       <component v-for="childShape in symbols" :key="childShape.id"
-        :is="shapeCompManager.get(childShape.subShapeType)" :shape="childShape" :graph="graph"></component>
+        :is="shapeCompManager.get(childShape.subShapeType)" :shape="childShape" :graph="graph" :data-z-index="childShape.zIndex"></component>
     </g>
   </g>
 </template>

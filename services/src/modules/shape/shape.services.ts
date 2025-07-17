@@ -458,6 +458,11 @@ export class ShapeService  extends BaseService{
       shape.style = { ...shape.style, ...newStyle };
       shape.styleChanged = true;
     }
+    const project = await this.stepManager.projectRep.findOne({ where: { projectId } });
+    if (project) {
+      project.commonConfig.style = { ...project.commonConfig.style, ...newStyle };
+      await this.stepManager.projectRep.save(project);
+    }
     await this.updateShapeChanges(shapes);
     return { success: true, updated: shapes.length };
   }

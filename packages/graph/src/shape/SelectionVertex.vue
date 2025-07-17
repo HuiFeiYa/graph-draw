@@ -6,6 +6,7 @@ import { VertexType } from '../util/common';
 import { GraphModel } from '../models/GraphModel';
 import { Point } from '../util/Point';
 import { getInvertColor, getLighterColor } from '@hfdraw/utils';
+import { pathBuilder } from '../util/PathBuilder';
 const props = defineProps<{
     selection: Shape[]
 }>();
@@ -80,12 +81,22 @@ const waypointsInline = computed((oldValue: IPoint[] | undefined)=> {
     return newWaypoints;
 })
 
-const waypointsNotInline = computed((oldValue: IPoint[] | undefined)=> {
-    const newWaypoints = edgeShapeWaypoint.value.slice(1,-1)
-    if (oldValue && isEqual(oldValue, newWaypoints)) {
-        return oldValue;
+const edgePath = computed(()=> {
+    const waypoints = edgeShapeWaypoint.value;
+    pathBuilder.clear();
+    pathBuilder.MoveTo(waypoints[0].x, waypoints[0].y);
+    for(let i = 1; i < waypoints.length; i++) {
+        pathBuilder.LineTo(waypoints[i].x, waypoints[i].y);
     }
-    return newWaypoints;
+    return pathBuilder.getPath();
+})
+
+// 计算 edge 的虚线连接点
+const edgePolylinePoints = computed(() => {
+    if (!isShowEdgeWaypoint.value || waypointsInline.value.length < 2) {
+        return '';
+    }
+    return waypointsInline.value.map(point => `${point.x},${point.y}`).join(' ');
 })
 
 function handleMouseDown(event: MouseEvent, index: VertexType) {
@@ -105,11 +116,11 @@ function getCircleStyle(index: number) {
         return {
             fill: 'none',
             strokeWidth: '2px',
-            stroke: getInvertColor(style.background || 'rgba(21,71, 146,0.5)')
+            stroke: 'rgb(0,102,204)'
         }
     } else if (index > 1 && index < waypointsInline.value.length - 2) {
         return {
-            fill: getInvertColor(style.background || 'rgba(21,71, 146,0.5)'),
+            fill: 'rgb(0,102,204,0.63)',
             strokeWidth: 0,
         }
     }
@@ -120,17 +131,31 @@ function getCircleStyle(index: number) {
 <template>
     <g style="pointer-events:all">
         <!-- 偏移 padding 的距离 -->
+        <!-- 为 commonShapes 绘制蓝色虚线矩形边框 -->
         <g v-for="shape in shapeGroup.commonShapes" :key="shape.id" >
+            <!-- 蓝色虚线矩形边框 -->
+            <rect 
+                :x="shape.bounds.absX - 3"
+                :y="shape.bounds.absY - 3"
+                :width="shape.bounds.width + 6"
+                :height="shape.bounds.height + 6"
+                fill="none"
+                stroke="rgb(0,102,204,0.63)"
+                stroke-width="1"
+                stroke-dasharray="5,5"
+                style="pointer-events: none;"
+            />
+            
             <!-- 移动一半 rect 的宽高的距离 -->
-            <rect :x="shape.bounds.absX - 6" :y="shape.bounds.absY - 6" width="6" height="6" fill="#000"
+            <rect :x="shape.bounds.absX - 6" :y="shape.bounds.absY - 6" width="6" height="6" fill="rgb(0,102,204,0.63)"
                 :style="{ cursor: resizable ? 'nw-resize' : '' }" @mousedown="handleMouseDown($event, 1)" />
             <rect :x="shape.bounds.absX + shape.bounds.width" :y="shape.bounds.absY - 6" width="6" height="6"
-                fill="#000" :style="{ cursor: resizable ? 'ne-resize' : '' }" @mousedown="handleMouseDown($event, 2)" />
+                fill="rgb(0,102,204,0.63)" :style="{ cursor: resizable ? 'ne-resize' : '' }" @mousedown="handleMouseDown($event, 2)" />
             <rect :x="shape.bounds.absX + shape.bounds.width" :y="shape.bounds.absY + shape.bounds.height" width="6"
-                height="6" fill="#000" :style="{ cursor: resizable ? 'se-resize' : '' }"
+                height="6" fill="rgb(0,102,204,0.63)" :style="{ cursor: resizable ? 'se-resize' : '' }"
                 @mousedown="handleMouseDown($event, 3)" />
             <rect :x="shape.bounds.absX - 6" :y="shape.bounds.absY + shape.bounds.height" width="6" height="6"
-                fill="#000" :style="{ cursor: resizable ? 'sw-resize' : '' }" @mousedown="handleMouseDown($event, 4)" />
+                fill="rgb(0,102,204,0.63)" :style="{ cursor: resizable ? 'sw-resize' : '' }" @mousedown="handleMouseDown($event, 4)" />
         </g>
         <g v-if="isShowEdgeWaypoint">
             <circle style="cursor: move;pointer-events: all" 
@@ -139,6 +164,7 @@ function getCircleStyle(index: number) {
                 v-for="(item,i) in waypointsInline" :cx="item.x" :cy="item.y" r="4" 
                 @mousedown="handleCircleMouseDown($event, i)"
                 />
+            <path :d="edgePath" fill="none" stroke="rgb(0,102,204, 0.63)" stroke-width="1"  stroke-dasharray="5,5"/>
         </g>
     </g>
 </template>
