@@ -255,6 +255,40 @@ const File = [
       type: "splitLine"
     },
     {
+      label: "图层",
+      value: "layer",
+      icon: "statics/subHeader/layer.svg",
+      type: "dropdown",
+      list: [
+        {
+          label: "上移一层",  
+          value: "moveUp",
+        },
+        {
+          label: "下移一层",
+          value: "moveDown",
+        },
+        {
+          label: "置顶",
+          value: "toTop",
+        },
+        {
+          label: "置底",
+          value: "toBottom",
+        },
+      ],
+      get disabled() {
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
+      }
+    },
+    {
+      value: "splitLine",
+      icon: "",
+      label: "",
+      type: "splitLine"
+    },
+    {
       label: "页面配置",
       value: "pageConfig",
       icon: "statics/subHeader/pageConfig.svg",

@@ -55,7 +55,7 @@ export class ShapeService  extends BaseService{
       };
       const sideBar = new SidebarModel(this.stepManager, options);
       await sideBar.run();
-     const res = await this.addEntities(ShapeEntity, [...sideBar.createdShapes]);
+      const res = await this.addEntities(ShapeEntity, [...sideBar.createdShapes]);
       return res
   }
   async getDiagramAllShape(dto: FetchAllShapeDto) {
@@ -464,5 +464,75 @@ export class ShapeService  extends BaseService{
   
   async test() {
     // return this.currentStepService.findStep();
+  }
+
+  async moveZIndexUp(dto: { projectId: string; shapeId: string }) {
+    const { shapeMap, shapes } = await this.getShapeTree(dto.projectId);
+    const shape = shapeMap.get(dto.shapeId);
+    if (!shape) throw new Error('未找到指定图形');
+    // 找到比当前 zIndex 小且最近的 shape
+    let minDiff = Infinity;
+    let targetShape: ShapeEntity | null = null;
+    for (const s of shapes) {
+      if (s.id !== shape.id && s.zIndex > shape.zIndex && (s.zIndex - shape.zIndex) < minDiff) {
+        minDiff = s.zIndex - shape.zIndex;
+        targetShape = s;
+      }
+    }
+    if (targetShape) {
+      const temp = shape.zIndex;
+      shape.zIndex = targetShape.zIndex;
+      targetShape.zIndex = temp;
+      shape.zIndexChanged = true;
+      targetShape.zIndexChanged = true;
+      await this.updateShapeChanges([shape, targetShape]);
+    }
+    return shape;
+  }
+
+  async moveZIndexDown(dto: { projectId: string; shapeId: string }) {
+    const { shapeMap, shapes } = await this.getShapeTree(dto.projectId);
+    const shape = shapeMap.get(dto.shapeId);
+    if (!shape) throw new Error('未找到指定图形');
+    // 找到比当前 zIndex 大且最近的 shape
+    let minDiff = Infinity;
+    let targetShape: ShapeEntity | null = null;
+    for (const s of shapes) {
+      if (s.id !== shape.id && s.zIndex < shape.zIndex && (shape.zIndex - s.zIndex) < minDiff) {
+        minDiff = shape.zIndex - s.zIndex;
+        targetShape = s;
+      }
+    }
+    if (targetShape) {
+      const temp = shape.zIndex;
+      shape.zIndex = targetShape.zIndex;
+      targetShape.zIndex = temp;
+      shape.zIndexChanged = true;
+      targetShape.zIndexChanged = true;
+      await this.updateShapeChanges([shape, targetShape]);
+    }
+    return shape;
+  }
+
+  async moveZIndexToTop(dto: { projectId: string; shapeId: string }) {
+    const { shapeMap, shapes } = await this.getShapeTree(dto.projectId);
+    const shape = shapeMap.get(dto.shapeId);
+    if (!shape) throw new Error('未找到指定图形');
+    const maxZIndex = Math.max(...shapes.map(s => s.zIndex));
+    shape.zIndex = maxZIndex + 1;
+    shape.zIndexChanged = true;
+    await this.updateShapeChanges([shape]);
+    return shape;
+  }
+
+  async moveZIndexToBottom(dto: { projectId: string; shapeId: string }) {
+    const { shapeMap, shapes } = await this.getShapeTree(dto.projectId);
+    const shape = shapeMap.get(dto.shapeId);
+    if (!shape) throw new Error('未找到指定图形');
+    const minZIndex = Math.min(...shapes.map(s => s.zIndex));
+    shape.zIndex = minZIndex - 1;
+    shape.zIndexChanged = true;
+    await this.updateShapeChanges([shape]);
+    return shape;
   }
 }

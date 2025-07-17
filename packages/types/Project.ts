@@ -7,4 +7,6 @@ export type CommonConfig = {
     canvasHeight: number;
     watermarkText: string;
     showWatermark: boolean;
+    maxZIndex: number;
+    minZIndex: number;
 }

@@ -17,6 +17,7 @@ import {
   ShapeResizeDto,
   GetMinimumBoundsDto,
   ChangeRelationshipEndsDto,
+  ShapeZIndexDto,
 } from 'src/types/shape.dto';
 import { transaction } from 'src/utils/transaction';
 
@@ -171,5 +172,35 @@ export class ShapeController {
       return new ResData(result);
     });
   }
-  
+    @Post('zIndex/moveUp')
+  async moveUp(@Body() dto: ShapeZIndexDto) {
+    return transaction({ projectId: dto.projectId }, async (stepManager) => {
+      const result = await stepManager.shapeService.moveZIndexUp(dto);
+      return new ResData(result);
+    });
+  }
+
+  @Post('zIndex/moveDown')
+  async moveDown(@Body() dto: ShapeZIndexDto) {
+    return transaction({ projectId: dto.projectId }, async (stepManager) => {
+      const result = await stepManager.shapeService.moveZIndexDown(dto);
+      return new ResData(result);
+    });
+  }
+
+  @Post('zIndex/toTop')
+  async toTop(@Body() dto: ShapeZIndexDto) {
+    return transaction({ projectId: dto.projectId }, async (stepManager) => {
+      const result = await stepManager.shapeService.moveZIndexToTop(dto);
+      return new ResData(result);
+    });
+  }
+
+  @Post('zIndex/toBottom')
+  async toBottom(@Body() dto: ShapeZIndexDto) {
+    return transaction({ projectId: dto.projectId }, async (stepManager) => {
+      const result = await stepManager.shapeService.moveZIndexToBottom(dto);
+      return new ResData(result);
+    });
+  }
 }

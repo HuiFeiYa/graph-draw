@@ -29,6 +29,11 @@ export const API = {
     applyTemplate: 'template/applyTemplate',
     batchUpdateShapeStyle: 'shape/batchUpdateShapeStyle',
     projectCommonConfig: 'project/commonConfig',
+    // zIndex 相关接口
+    moveZIndexUp: 'shape/zIndex/moveUp',
+    moveZIndexDown: 'shape/zIndex/moveDown',
+    moveZIndexToTop: 'shape/zIndex/toTop',
+    moveZIndexToBottom: 'shape/zIndex/toBottom',
 }
 
 export const ApiCode =  {

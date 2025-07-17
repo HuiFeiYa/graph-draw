@@ -52,7 +52,11 @@ export class ShapeEntity {
     comment: '图形二级类型，决定了对应的渲染组件',
   })
   subShapeType: SubShapeType;
-
+  @Column({
+    type: Number,
+    comment: '图形层级',
+  })
+  zIndex: number;
   @Column({
     type: 'simple-json',
     nullable: true,
@@ -130,6 +134,7 @@ export class ShapeEntity {
   waypointChanged: boolean
   sourceIdChanged: boolean
   targetIdChanged:boolean
+  zIndexChanged: boolean
   static fromOption(
     shapeOption: Partial<ShapeOption>,
     projectId: string,

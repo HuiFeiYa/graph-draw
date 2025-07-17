@@ -102,6 +102,9 @@ export class ShapeUtil {
   }
   pickChange(shape: ShapeEntity) {
     const change: Partial<ShapeEntity> = {};
+    if (shape.zIndexChanged) {
+      change.zIndex = shape.zIndex;
+    }
     if (shape.boundsChanged) {
       change.bounds = shape.bounds;
     }

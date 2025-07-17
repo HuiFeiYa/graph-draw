@@ -23,7 +23,7 @@ export interface Shape {
     shapeType: ShapeType;
     subShapeType: SubShapeType
     // graph:GraphModel
-  
+    zIndex:number
     showIcon : boolean
     icon:string
   

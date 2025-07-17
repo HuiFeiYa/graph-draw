@@ -13,7 +13,7 @@ const emit = defineEmits<{
     <div class="v-header-dropdown g-pointer g-pd-4 g-flex" :class="{ 'g-disabled': data.disabled }" >
         
             <el-dropdown trigger="click" :hide-on-click="false" placement="bottom-start" :disabled="disabled">
-                <span style="font-size: 12px;">
+                <span style="font-size: 12px;" :style="{filter: disabled ? 'grayscale(100%)' : '', opacity: disabled ? 0.5 : 1}">
                     <img style="width: 16px" :src="data.icon" />
                     <span class="_span g-m-l-4">{{ data.label }}</span>
                     <img src="/statics/header/icontriangle.svg" />

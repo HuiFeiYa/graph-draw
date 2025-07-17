@@ -94,7 +94,8 @@ function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
   if (headerMenu.disabled) return;
   activeTab.value = headerMenu.enName;
 }
-async function handleDropdownItemClick(item: { value: any }, key: string) {
+// @ts-ignore
+async function handleDropdownItemClick(item: any, key: any) {
   // 判断 lineHeight/textAlign 枚举
   if (key === 'lineHeight'  ) {
     const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(s => s.id);
@@ -119,10 +120,44 @@ async function handleDropdownItemClick(item: { value: any }, key: string) {
       shapeIds,
       styleObject
     });
-  }  else if (item.value === 'exportTemplate') {
+  } else if (item.value === 'exportTemplate') {
     exportDialogVisible.value = true
     templateName.value = ''
     return
+  } else if (key === 'layer') {
+    // zIndex 层级操作
+    const selectedShapes = uiStore.graphData.graph.selectionModel.selectedShapes;
+    if (!selectedShapes.length) return;
+    const shapeId = selectedShapes[0].id; // 只操作第一个选中的图形
+    switch (item.value) {
+      case 'moveUp':
+        await shapeService.moveZIndexUp({
+          projectId: projectStore.projectId,
+          shapeId
+        });
+        break;
+      case 'moveDown':
+        await shapeService.moveZIndexDown({
+          projectId: projectStore.projectId,
+          shapeId
+        });
+        break;
+      case 'toTop':
+        await shapeService.moveZIndexToTop({
+          projectId: projectStore.projectId,
+          shapeId
+        });
+        break;
+      case 'toBottom':
+        await shapeService.moveZIndexToBottom({
+          projectId: projectStore.projectId,
+          shapeId
+        });
+        break;
+    }
+    // 刷新图形数据
+    emitter.emit(BusEvent.REFRESH);
+    return;
   }
   emitter.emit(BusEvent.DROPDOWN_ITEM_CLICK, item)
 }

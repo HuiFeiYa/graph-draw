@@ -36,7 +36,7 @@ export interface StyleObject {
     underline?: boolean
     fontColor?: string
     lineHeight?: number
-    textAlign?: 'left' | 'center' | 'right'
+    textAlign?: 'left' | 'center' | 'right'    
 }
 
 export interface RetrospectRelationType {

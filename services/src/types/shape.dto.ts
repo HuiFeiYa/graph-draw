@@ -163,3 +163,8 @@ export class SideBarDropDto {
     shapeTargetId?: string
     moveType?: EdgeMoveType
   }
+
+export class ShapeZIndexDto extends BaseProjectDto {
+  @IsString()
+  shapeId: string;
+}

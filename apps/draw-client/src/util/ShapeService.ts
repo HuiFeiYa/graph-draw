@@ -67,5 +67,22 @@ export class ShapeService {
         await httpClient.post(API.batchUpdateShapeStyle, data)
     }
     
+    // zIndex 相关方法
+    async moveZIndexUp(data: { projectId: string, shapeId: string }) {
+        await httpClient.post(API.moveZIndexUp, data)
+    }
+    
+    async moveZIndexDown(data: { projectId: string, shapeId: string }) {
+        await httpClient.post(API.moveZIndexDown, data)
+    }
+    
+    async moveZIndexToTop(data: { projectId: string, shapeId: string }) {
+        await httpClient.post(API.moveZIndexToTop, data)
+    }
+    
+    async moveZIndexToBottom(data: { projectId: string, shapeId: string }) {
+        await httpClient.post(API.moveZIndexToBottom, data)
+    }
+    
 }
 export const shapeService = new ShapeService();
