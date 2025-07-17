@@ -19,9 +19,14 @@ export class HeaderButtonData implements MenuItem {
 export class HeaderDropdownData extends HeaderButtonData {
   declare type: 'dropdown'
   command!: (menu: MenuItem) => void
-  list!: {label: string, value: any, icon?: string}[]
+  list!: {label: string, value: any, icon?: string, width?: number, height?: number}[]
   maxWidth?: number
 }
+function disabledHandler() {
+  const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
+  return !selectedShapeLength || selectedShapeLength === 0;
+}
+
 
 /**
  * header菜单通用项
@@ -186,9 +191,9 @@ const File = [
     },
     {
       label: "字体颜色",  
-      value: "fontColor",
+      value: "colorPicker",
       icon: "statics/subHeader/fontColor.svg",
-      type: "fontColor",
+      type: "colorPicker",
       get disabled() {
         const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
         return !selectedShapeLength || selectedShapeLength === 0;
@@ -255,6 +260,77 @@ const File = [
       icon: "",
       label: "",
       type: "splitLine"
+    },
+    {
+      label: "颜色填充",
+      value: "rectFill",
+      icon: "statics/subHeader/rect-fill.svg",
+      type: "colorPicker",
+      get disabled() {
+        return disabledHandler();
+      }
+    },
+    {
+      label: "连线颜色",
+      value: "strokeColor",
+      icon: "statics/subHeader/stroke-color.svg",
+      type: "colorPicker",
+      get disabled() {
+        return disabledHandler();
+      }
+    },
+    {
+      label: "连线宽度",
+      value: "strokeWidth",
+      icon: "statics/subHeader/stroke-width.svg",
+      type: "dropdown",
+      list: [
+        {
+          label: "1px",
+          value: 1,
+        },
+        {
+          label: "2px",
+          value: 2,
+        },  
+        {
+          label: "3px",
+          value: 3,
+        },
+        {
+          label: "4px",
+          value: 4,
+        },
+        {
+          label: "5px",
+          value: 5,
+        }
+      ],
+      get disabled() { 
+        return disabledHandler();
+      }
+    },
+    {
+      label: "连线样式",
+      value: "strokeDash",
+      icon: "statics/subHeader/stroke-dash.svg",
+      type: "dropdown",
+      list: [
+        {
+          icon: "statics/subHeader/long-dash-line.svg",
+          value: "longDash",
+          width: 60
+        },
+        {
+          icon: "statics/subHeader/long-solid-line.svg",
+          value: "solid",
+          width: 60,
+          height: 1
+        }
+      ],
+      get disabled() { 
+        return disabledHandler();
+      }
     },
     {
       label: "开始箭头",

@@ -12,12 +12,23 @@ const graph = inject<GraphModel>('graph') as GraphModel ;
 const eventHandler = createEventHandler(graph,props, {
   omit: ['mouseover', 'mousemove']
 });
-// 绑定图形的操作，并将 shape 作为参数
+
+const getEdgeSize = (strokeWidth: number) => {
+  // 通用规则：基准为 strokeWidth=2 时为10，其他线宽按比例缩放
+  const baseWidth = 2;
+  const baseSize = 10;
+  const ratio = strokeWidth / baseWidth;
+  const size = baseSize * ratio;
+  return size;
+};
+
 const computedData = computed(() => {
   const shape = props.shape;
+  const strokeWidth = shape.style.strokeWidth || 2;
+  const size = getEdgeSize(strokeWidth);
   const pathBuilder = new PathBuilder({
-    distance: 10,
-    size: 10,
+    distance: size,
+    size,
     angle: 45
   });
   const keyPoints: ElbowPoint[] = props.shape.waypoint.map(item => {
@@ -45,7 +56,7 @@ const computedData = computed(() => {
     <path :d="computedData.endArrow" :stroke="computedData.style.strokeColor" :stroke-width="computedData.style.strokeWidth"
       :fill="computedData.style.arrowStyle?.fillEnd || 'none'" />
     <path :d="computedData.pathData" :stroke="computedData.style.strokeColor" :stroke-width="computedData.style.strokeWidth"
-      fill="none" />
+      fill="none" :stroke-dasharray="computedData.style.strokeDasharray" />
     <path :d="computedData.pathData" stroke="rgba(0,0,0,0)" fill="none" stroke-width="8" v-on="eventHandler" />
   </g>
 </template>

@@ -40,7 +40,7 @@ watch(() => props.defaultSelectIcon, (newVal) => {
                     <div v-for="item in data.list" class="dropdown-item" 
                     style="width: 60px; display: flex; justify-content: center;align-items: center;height: 30px;" 
                     @click="handleItemClick(item, data)">
-                        <img v-if="item.icon" style="width: 16px" :src="item.icon" />
+                        <img v-if="item.icon" :style="{width:( item.width || 16) + 'px', height: (item.height ? item.height + 'px' : 'auto')} " :src="item.icon" />
                         <span >{{ item.label }}</span>
                     </div>
                 </template>
