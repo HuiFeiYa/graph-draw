@@ -23,6 +23,7 @@
         <m-header-dropdown
           v-else-if="child.type == 'dropdown'"
           :disabled="child.disabled"
+          :default-select-icon="child.defaultSelectIcon"
           :data="child"
           @item-click="handleDropdownItemClick"
         />
@@ -97,7 +98,7 @@ function onClickHeader(headerMenu: { disabled: boolean; enName: string; }) {
 // @ts-ignore
 async function handleDropdownItemClick(item: any, key: any) {
   // 判断 lineHeight/textAlign 枚举
-  if (key === 'lineHeight'  ) {
+  if (key === 'lineHeight') {
     const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(s => s.id);
     if (!shapeIds.length) return;
     let styleObject = {
@@ -158,8 +159,34 @@ async function handleDropdownItemClick(item: any, key: any) {
     // 刷新图形数据
     emitter.emit(BusEvent.REFRESH);
     return;
+  } else if (key === 'startArrow') {
+    const selectedShapes = uiStore.graphData.graph.selectionModel.selectedShapes;
+    const shapeIds = selectedShapes.map(s => s.id);
+    await shapeService.batchUpdateShapeStyle({
+      projectId: projectStore.projectId,
+      shapeIds,
+      styleObject: {
+        arrowStyle: {
+          hasStart: item.value === 'leftSolid' ? false : true,
+          fillStart: item.value === 'leftSolid' ? 'none' : selectedShapes[0].style.strokeColor
+        }
+      }
+    });
+  } else if (key === 'endArrow') {
+    const selectedShapes = uiStore.graphData.graph.selectionModel.selectedShapes;
+    const shapeIds = selectedShapes.map(s => s.id);
+    const isSolid = item.value === 'rightSolid'
+    await shapeService.batchUpdateShapeStyle({
+      projectId: projectStore.projectId,
+      shapeIds,
+      styleObject: {
+        arrowStyle: {
+          hasEnd:  isSolid ? false : true,
+          fillEnd: isSolid ? 'none' : selectedShapes[0].style.strokeColor
+        }
+      }
+    });
   }
-  emitter.emit(BusEvent.DROPDOWN_ITEM_CLICK, item)
 }
 async function handleExportTemplate() {
   if (!templateName.value) {

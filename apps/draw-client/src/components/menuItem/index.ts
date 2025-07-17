@@ -13,6 +13,8 @@ export class HeaderButtonData implements MenuItem {
   hide?: boolean
   type?: string
   keyboard?: string
+  // 点击下拉菜单，是否要更新选中图标
+  needSelectIcon?: boolean
 }
 export class HeaderDropdownData extends HeaderButtonData {
   declare type: 'dropdown'
@@ -242,6 +244,64 @@ const File = [
           label: "右对齐",
           value: "right",
         },
+      ],
+      get disabled() {
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
+      }
+    },
+    {
+      value: "splitLine",
+      icon: "",
+      label: "",
+      type: "splitLine"
+    },
+    {
+      label: "开始箭头",
+      value: "startArrow",
+      type: "dropdown",
+      needSelectIcon: true,
+      get defaultSelectIcon() {
+        const selectedShape = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.[0]
+        return selectedShape?.style.arrowStyle?.hasStart ? 'statics/subHeader/arrow-left-fill.svg' : 'statics/subHeader/no-arrow-fill.svg'
+      },
+      list: [
+        {
+          label: "横线",
+          value: "leftSolid",
+          icon: "statics/subHeader/no-arrow-fill.svg",
+        },
+        {
+          label: "左箭头",
+          value: "leftArrow",
+          icon: "statics/subHeader/arrow-left-fill.svg",
+        }
+      ],
+      get disabled() {
+        const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length
+        return !selectedShapeLength || selectedShapeLength === 0;
+      }
+    },
+    {
+      label: "结束箭头",
+      value: "endArrow",
+      type: "dropdown",
+      needSelectIcon: true,
+      get defaultSelectIcon() {
+        const selectedShape = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.[0]
+        return selectedShape?.style.arrowStyle?.hasEnd ? 'statics/subHeader/arrow-right-fill.svg' : 'statics/subHeader/no-arrow-fill.svg'
+      },
+      list: [
+        {
+          label: "横线",
+          value: "rightSolid",
+          icon: "statics/subHeader/no-arrow-fill.svg",
+        },
+        {
+          label: "右箭头",
+          value: "rightArrow",
+          icon: "statics/subHeader/arrow-right-fill.svg",
+        }
       ],
       get disabled() {
         const selectedShapeLength = uiStore?.graphData?.graph?.selectionModel?.selectedShapes?.length

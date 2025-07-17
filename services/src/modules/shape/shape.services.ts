@@ -241,7 +241,11 @@ export class ShapeService  extends BaseService{
     })
     shape.style = {
       ...shape.style,
-      ...dto.styleObject
+      ...dto.styleObject,
+      arrowStyle: {
+        ...(shape.style.arrowStyle || {}),
+        ...(dto.styleObject.arrowStyle || {})
+      },
     };
     shape.styleChanged = true;
     await this.updateShapeChanges([shape]);
@@ -455,7 +459,14 @@ export class ShapeService  extends BaseService{
       where: { projectId, id: In(shapeIds) }
     });
     for (const shape of shapes) {
-      shape.style = { ...shape.style, ...newStyle };
+      shape.style = {
+        ...shape.style,
+        ...newStyle,
+        arrowStyle: {
+          ...(shape.style.arrowStyle || {}),
+          ...(newStyle.arrowStyle || {})
+        },
+      };
       shape.styleChanged = true;
     }
     const project = await this.stepManager.projectRep.findOne({ where: { projectId } });

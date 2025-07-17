@@ -124,65 +124,7 @@ const events = {
   [BusEvent.REFRESH]: async ()=> {
     await fretchData()
   },
-  [BusEvent.DROPDOWN_ITEM_CLICK]: async (item: {value: HeaderDropdownEnum}) => {
-    const edgeShape = uiStore.graphData.graph.selectionModel.selectedShapes.find((s: { subShapeType: SubShapeType; }) => s.subShapeType === SubShapeType.CommonEdge);
-    if (!edgeShape) return 
-    const newStyleObj: StyleObject = {
-
-    }
-    const originArrowStyle = edgeShape.style.arrowStyle || {}
-    switch(item.value) {
-      case HeaderDropdownEnum.leftLine: {
-        newStyleObj.arrowStyle = {
-          ...originArrowStyle,
-          hasStart : false,
-          fillStart: 'none'
-        }
-        break;
-      }
-      case HeaderDropdownEnum.leftSolidArrow: {
-        newStyleObj.arrowStyle = {
-          ...originArrowStyle,
-          hasStart : true,
-          fillStart: StrokeColor
-        }
-        break;
-      }
-      case HeaderDropdownEnum.lefthollowArrow: {
-        newStyleObj.arrowStyle = {
-          ...originArrowStyle,
-          hasStart : true,
-          fillStart: 'none'
-        }
-        break;
-      }
-      case HeaderDropdownEnum.rightLine: {
-        newStyleObj.arrowStyle = {
-          ...originArrowStyle,
-          hasEnd : false,
-          fillEnd: 'none'
-        }
-        break;
-      }
-      case HeaderDropdownEnum.rightSolidArrow: {
-        newStyleObj.arrowStyle = {
-          ...originArrowStyle,
-          hasEnd : true,
-          fillEnd: StrokeColor
-        }
-        break;
-      }
-      case HeaderDropdownEnum.righthollowArrow: {
-        newStyleObj.arrowStyle = {
-          ...originArrowStyle,
-          hasEnd : true,
-          fillEnd: 'none'
-        }
-        break;
-      }
-    }
-    await shapeService.updateShapeStyle({styleObject: newStyleObj, projectId: 'p1', shapeId: edgeShape.id});
-  }
+  
 };
 async function fretchData() {
   await shapeService.getAllShapes(projectStore.projectId).then(data => {

@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ResData } from 'src/utils/http/ResData';
-import { In } from 'typeorm';
 import {
   FetchAllShapeDto,
   UpdateShapeBoundsDto,
@@ -172,7 +171,7 @@ export class ShapeController {
       return new ResData(result);
     });
   }
-    @Post('zIndex/moveUp')
+  @Post('zIndex/moveUp')
   async moveUp(@Body() dto: ShapeZIndexDto) {
     return transaction({ projectId: dto.projectId }, async (stepManager) => {
       const result = await stepManager.shapeService.moveZIndexUp(dto);

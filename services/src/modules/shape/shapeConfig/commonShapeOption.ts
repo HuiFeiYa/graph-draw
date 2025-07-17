@@ -42,7 +42,7 @@ export const blockOption:Partial<ShapeOption> = {
       strokeColor: 'rgba(21,71, 146,0.5)',
       strokeWidth: 2,
       arrowStyle: {
-        hasEnd: true,
+        hasEnd: false,
         hasStart: false,
         fillEnd: 'none',
         fillStart: 'none',
