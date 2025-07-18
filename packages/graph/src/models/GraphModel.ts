@@ -171,9 +171,6 @@ export class GraphModel {
   }
   // 图形更新的时候需要更新shapeMap，否则导致使用的地方，例如预览线生成的地方展示错误
   updateShape(shape: Shape) {
-    if (!this.shapeMap.has(shape.id)) {
-      return;
-    }
     this.shapeMap.set(shape.id, shallowReactive(shape));
   }
   getShape(id: string): Shape | undefined {

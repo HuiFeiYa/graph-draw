@@ -90,14 +90,14 @@ export class StepService {
         console.warn('Change elementId is empty, skipping update:', change);
         return;
       }
-      
+      // 使用 typeorm 的 update 更新数据库数据用法
       if (change.type === ChangeType.INSERT) {
-          await this.stepManager.shapeRep.update(change.elementId, { isDelete: true });
+          await this.stepManager.shapeRep.update({id:change.elementId}, { isDelete: true });
       } else if (change.type === ChangeType.DELETE) {
-        await this.stepManager.shapeRep.update(change.elementId, { isDelete: false });
+        await this.stepManager.shapeRep.update({id: change.elementId}, { isDelete: false });
       } else if (change.type === ChangeType.UPDATE) {
         const modelKV = change.oldValue;
-        await this.stepManager.shapeRep.update(change.elementId, modelKV);
+        await this.stepManager.shapeRep.update({id: change.elementId}, modelKV);
       }
     }
 
