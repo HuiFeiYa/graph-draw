@@ -77,6 +77,12 @@ export enum StType {
   "SysML::Line" = "SysML::Line",
   "SysML::Start" = "SysML::Start",
   "SysML::Pentagon" = "SysML::Pentagon",
+  "SysML::Mark" = "SysML::Mark",
+  "SysML::Rhombus" = "SysML::Rhombus",
+  "SysML::Triangle" = "SysML::Triangle",
+  "SysML::Ellipse" = "SysML::Ellipse",
+  "SysML::Circle" = "SysML::Circle",
+  "SysML::RightAngle" = "SysML::RightAngle",
 }
 
 

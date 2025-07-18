@@ -27,6 +27,22 @@ export const modelKeyConfig: Record<string, ConfigItem> = {
   [StType["SysML::Pentagon"]]: {
     ...blockOption,
     shapeKey: ShapeKey.Pentagon,
-    subShapeType: SubShapeType.PathShape
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 100,
+      height: 100,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 100,
+      height: 100,
+      x: 0,
+      y: 0
+    }
   }
 }

@@ -107,8 +107,50 @@ export const sideBarList: SidebarKeyItem[] = [
     sidebarKey: StType["SysML::Pentagon"],
     showData: {
       name: "五边形",
-      icon: "statics/siderBar/pentagon.svg",
+      icon: "statics/popover/pentagon.svg",
     },
+  },
+  {
+    sidebarKey: StType["SysML::Mark"],
+    showData: {
+      name: "备注",
+      icon: "statics/popover/mark.svg",
+    }
+  },
+  {
+    sidebarKey: StType["SysML::Rhombus"],
+    showData: {
+      name: "菱形",
+      icon: "statics/popover/rhombus.svg",
+    }
+  },
+  {
+    sidebarKey: StType["SysML::Triangle"],
+    showData: {
+      name: "正三角形",
+      icon: "statics/popover/triangle.svg",
+    }
+  },
+  {
+    sidebarKey: StType["SysML::Ellipse"],
+    showData: {
+      name: "椭圆",
+      icon: "statics/popover/ellipse.svg",
+    }
+  },
+  {
+    sidebarKey: StType["SysML::Circle"],
+    showData: {
+      name: "圆形",
+      icon: "statics/popover/circle.svg",
+    }
+  },
+  {
+    sidebarKey: StType["SysML::RightAngle"],
+    showData: {
+      name: "直角三角形",
+      icon: "statics/popover/rightAngle.svg",
+    }
   }
 ];
 

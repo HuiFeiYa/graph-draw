@@ -150,11 +150,15 @@ const onStyleClick = async (style, idx) => {
 .collapse {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px; /* 可选：设置子元素之间的间距 */
 }
 
 .collapse-item {
   user-select: none;
-  margin-right: 4px;
+  flex: 0 0 calc(33.333% - 8px); /* 每行最多3个，减去间距 */
+  max-width: calc(33.333% - 8px); /* 限制最大宽度 */
+
 }
 
 .collapse-item span {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Shape, ShapeType, ShapeKey } from '@hfdraw/types';
+import { Shape, ShapeType, ShapeKey, IBounds } from '@hfdraw/types';
 import { computed, inject, ref } from 'vue';
 import { createEventHandler } from '../util/createEventHandler';
 import { GraphModel } from '../models/GraphModel';
@@ -45,20 +45,41 @@ const outgoingEdges = computed(() => {
   );
 });
 
-function getPolygonPath(bounds: any, sides: number): string {
-  const { absX, absY, width, height } = bounds;
-  const cx = absX + width / 2;
-  const cy = absY + height / 2;
-  const r = Math.min(width, height) / 2;
-  let path = '';
-  for (let i = 0; i < sides; i++) {
-    const angle = (Math.PI * 2 * i) / sides - Math.PI / 2;
-    const x = cx + r * Math.cos(angle);
-    const y = cy + r * Math.sin(angle);
-    path += i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`;
-  }
-  path += ' Z';
-  return path;
+function getPolygonPath(bounds: IBounds, sides: number = 5): string {
+    if (sides!== 5) {
+        throw new Error('当前仅支持生成五边形路径');
+    }
+
+    const { absX, absY, width, height } = bounds;
+    // 计算各关键位置坐标
+    const topCenterX = absX + width / 2;
+    const topCenterY = absY;
+    const bottomLeftX = absX + width / 5;
+    const bottomLeftY = absY + height;
+    const bottomRightX = absX + width * 4 / 5;
+    const bottomRightY = absY + height;
+    const leftMiddleX = absX;
+    const leftMiddleY = absY + height *2 / 5;
+    const rightMiddleX = absX + width;
+    const rightMiddleY = absY + height *2 / 5;
+
+    // 五边形顶点坐标，按顺序连接
+    const points = [
+        [topCenterX, topCenterY],    // 顶部顶点
+        [rightMiddleX, rightMiddleY], // 右边中间点
+        [bottomRightX, bottomRightY], // 右下角
+        [bottomLeftX, bottomLeftY],   // 左下角
+        [leftMiddleX, leftMiddleY]    // 左边中间点
+    ];
+
+    // 构建 SVG path 路径
+    let path = `M ${points[0][0]},${points[0][1]}`;
+    for (let i = 1; i < points.length; i++) {
+        path += ` L ${points[i][0]},${points[i][1]}`;
+    }
+    path += ' Z'; // 闭合路径
+
+    return path;
 }
 
 function getRectPath(bounds: any): string {
