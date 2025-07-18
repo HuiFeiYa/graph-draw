@@ -170,5 +170,27 @@ export const modelKeyConfig: Record<string, ConfigItem> = {
       x: 0,
       y: 0
     }
+  },
+  [StType["SysML::Text"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.Text,
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 120,
+      height: 60,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 120,
+      height: 60,
+      x: 0,
+      y: 0
+    },
+    modelName: '文本'
   }
 }

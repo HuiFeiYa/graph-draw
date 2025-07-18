@@ -83,6 +83,7 @@ export enum StType {
   "SysML::Ellipse" = "SysML::Ellipse",
   "SysML::Circle" = "SysML::Circle",
   "SysML::RightAngle" = "SysML::RightAngle",
+  "SysML::Text" = "SysML::Text",
 }
 
 

@@ -39,7 +39,7 @@
     :bounds="shape.bounds"
     :name-bounds="shape.nameBounds"
     :label="shape.modelName || ''"
-    :font-size="14"
+    :font-size="style.fontSize"
     :bold="style.bold"
     :italic="style.italic"
     :underline="style.underline"

@@ -160,6 +160,15 @@ const File = [
       type: "splitLine"
     },
     {
+      label: "",
+      icon: "",
+      value: "fontSize",
+      type: "number",
+      get disabled() { 
+        return disabledHandler();
+      }
+    },
+    {
       label: "加粗",
       value: "bold",
       icon: "statics/subHeader/bold.svg",

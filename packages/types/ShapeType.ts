@@ -31,4 +31,5 @@ export enum ShapeKey {
     Ellipse = "Ellipse",
     Circle = "Circle",
     RightAngle = "RightAngle",
+    Text = "Text",
 }

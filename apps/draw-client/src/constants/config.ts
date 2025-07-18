@@ -145,6 +145,13 @@ export const sideBarList: SidebarKeyItem[] = [
       name: "直角三角形",
       icon: "statics/popover/rightAngle.svg",
     }
+  },
+  {
+    sidebarKey: StType["SysML::Text"],
+    showData:{
+      name: "文本",
+      icon: "statics/popover/text.svg"
+    }
   }
 ];
 

@@ -44,6 +44,17 @@
             show-alpha
           />
         </div>
+        <el-input-number
+          v-else-if="child.type === 'number'"
+          style="width: 50px;"
+          :controls="false"
+          size="small"
+          :min="12"
+          :max="50"
+          :disabled="child.disabled"
+          :model-value="getSelect(child.value, 14)"
+          @change="handleFontSizeChange"
+        />
       </div>
     </div>
     <el-dialog v-model="exportDialogVisible" title="导出模板" width="300px" center  >
@@ -350,6 +361,18 @@ function getSelect( value: string, defaultValue: boolean | string | number = fal
     return firstSelectedShape.style[key];
   }
   return defaultValue;
+}
+
+function handleFontSizeChange(value: number) {
+  const shapeIds = uiStore.graphData.graph.selectionModel.selectedShapes.map(s => s.id);
+  if (!shapeIds.length) return;
+  shapeService.batchUpdateShapeStyle({
+    projectId: projectStore.projectId,
+    shapeIds,
+    styleObject: {
+      fontSize: value
+    }
+  })
 }
 watch(() => projectStore.projectId, (newVal) => {
   console.log('projectId:',newVal)

@@ -153,8 +153,6 @@ const svgPath = computed(() => {
       return getRectPath(props.shape.bounds);
     case ShapeKey.Pentagon:
       return getPolygonPath(props.shape.bounds, 5);
-    case ShapeKey.Mark:
-      return getMarkPath(props.shape.bounds);
     case ShapeKey.Rhombus:
       return getRhombusPath(props.shape.bounds);
     case ShapeKey.Triangle:
@@ -167,6 +165,8 @@ const svgPath = computed(() => {
       return getRightAnglePath(props.shape.bounds);
     case ShapeKey.Pentagon:
       return getPolygonPath(props.shape.bounds, 5);
+    case ShapeKey.Text:
+      return '';
     default:
       return getRectPath(props.shape.bounds);
   }
@@ -192,6 +192,7 @@ const svgPath = computed(() => {
     @mouseleave="handleMouseLeave"
   >
     <path
+      v-if="svgPath"
       :d="svgPath"
       :stroke="style.strokeColor"
       :stroke-width="style.strokeWidth"
@@ -203,7 +204,7 @@ const svgPath = computed(() => {
       :bounds="shape.bounds"
       :name-bounds="shape.nameBounds"
       :label="shape.modelName || ''"
-      :font-size="14"
+      :font-size="style.fontSize"
       :bold="style.bold"
       :italic="style.italic"
       :underline="style.underline"
