@@ -110,13 +110,7 @@ export const sideBarList: SidebarKeyItem[] = [
       icon: "statics/popover/pentagon.svg",
     },
   },
-  {
-    sidebarKey: StType["SysML::Mark"],
-    showData: {
-      name: "备注",
-      icon: "statics/popover/mark.svg",
-    }
-  },
+
   {
     sidebarKey: StType["SysML::Rhombus"],
     showData: {

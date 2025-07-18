@@ -44,5 +44,131 @@ export const modelKeyConfig: Record<string, ConfigItem> = {
       x: 0,
       y: 0
     }
+  },
+  [StType["SysML::Mark"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.Mark,
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 120,
+      height: 120,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 120,
+      height: 120,
+      x: 0,
+      y: 0
+    }
+  },
+  [StType["SysML::Rhombus"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.Rhombus,
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 116,
+      height: 90,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 116,
+      height: 90,
+      x: 0,
+      y: 0
+    }
+  },
+  [StType["SysML::Triangle"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.Triangle,
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 100,
+      height: 90,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 100,
+      height: 90,
+      x: 0,
+      y: 0
+    }
+  },
+  [StType["SysML::Ellipse"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.Ellipse,
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 120,
+      height: 70,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 120,
+      height: 70,
+      x: 0,
+      y: 0
+    }
+  },
+  [StType["SysML::Circle"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.Circle,
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 90,
+      height: 90,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 90,
+      height: 90,
+      x: 0,
+      y: 0
+    }
+  },
+  [StType["SysML::RightAngle"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.RightAngle,
+    subShapeType: SubShapeType.PathShape,
+    bounds: {
+      absX: 0,
+      absY: 0,
+      width: 100,
+      height: 80,
+      x: 0,
+      y: 0
+    },
+    nameBounds: {
+      absX: 0,
+      absY: 0,
+      width: 100,
+      height: 80,
+      x: 0,
+      y: 0
+    }
   }
 }

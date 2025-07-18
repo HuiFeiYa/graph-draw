@@ -45,6 +45,11 @@ const outgoingEdges = computed(() => {
   );
 });
 
+/**
+ * 五边形路径
+ * @param bounds 
+ * @param sides 
+ */
 function getPolygonPath(bounds: IBounds, sides: number = 5): string {
     if (sides!== 5) {
         throw new Error('当前仅支持生成五边形路径');
@@ -87,11 +92,83 @@ function getRectPath(bounds: any): string {
   return `M ${absX} ${absY} H ${absX + width} V ${absY + height} H ${absX} Z`;
 }
 
+
+function getRhombusPath(bounds: any): string {
+  // 菱形：对角线分别与包围盒边重合
+  const { absX, absY, width, height } = bounds;
+  const cx = absX + width / 2;
+  const cy = absY + height / 2;
+  return [
+    `M ${cx},${absY}`,
+    `L ${absX + width},${cy}`,
+    `L ${cx},${absY + height}`,
+    `L ${absX},${cy}`,
+    'Z'
+  ].join(' ');
+}
+
+function getTrianglePath(bounds: any): string {
+  // 等腰三角形，底边贴底，顶点朝上
+  const { absX, absY, width, height } = bounds;
+  return [
+    `M ${absX + width / 2},${absY}`,
+    `L ${absX + width},${absY + height}`,
+    `L ${absX},${absY + height}`,
+    'Z'
+  ].join(' ');
+}
+
+function getEllipsePath(bounds: any): string {
+  // 椭圆，外接于 bounds
+  const { absX, absY, width, height } = bounds;
+  const cx = absX + width / 2;
+  const cy = absY + height / 2;
+  return `M ${cx - width / 2},${cy} A ${width / 2} ${height / 2} 0 1 0 ${cx + width / 2},${cy} A ${width / 2} ${height / 2} 0 1 0 ${cx - width / 2},${cy}`;
+}
+
+function getCirclePath(bounds: any): string {
+  // 圆，外接于 bounds（以最小边为直径，居中）
+  const { absX, absY, width, height } = bounds;
+  const size = Math.min(width, height);
+  const cx = absX + width / 2;
+  const cy = absY + height / 2;
+  return `M ${cx - size / 2},${cy} A ${size / 2} ${size / 2} 0 1 0 ${cx + size / 2},${cy} A ${size / 2} ${size / 2} 0 1 0 ${cx - size / 2},${cy}`;
+}
+
+function getRightAnglePath(bounds: any): string {
+  // 直角三角形，直角在左下角
+  const { absX, absY, width, height } = bounds;
+  return [
+    `M ${absX},${absY + height}`,
+    `L ${absX},${absY}`,
+    `L ${absX + width},${absY + height}`,
+    'Z'
+  ].join(' ');
+}
+
 const svgPath = computed(() => {
-  if (props.shape.shapeKey === ShapeKey.Block) {
-    return getRectPath(props.shape.bounds);
-  } else if (props.shape.shapeKey === ShapeKey.Pentagon) {
-    return getPolygonPath(props.shape.bounds, 5);
+  const shapeKey = props.shape.shapeKey;
+  switch (shapeKey) {
+    case ShapeKey.Block:
+      return getRectPath(props.shape.bounds);
+    case ShapeKey.Pentagon:
+      return getPolygonPath(props.shape.bounds, 5);
+    case ShapeKey.Mark:
+      return getMarkPath(props.shape.bounds);
+    case ShapeKey.Rhombus:
+      return getRhombusPath(props.shape.bounds);
+    case ShapeKey.Triangle:
+      return getTrianglePath(props.shape.bounds);
+    case ShapeKey.Ellipse:
+      return getEllipsePath(props.shape.bounds);
+    case ShapeKey.Circle:
+      return getCirclePath(props.shape.bounds);
+    case ShapeKey.RightAngle:
+      return getRightAnglePath(props.shape.bounds);
+    case ShapeKey.Pentagon:
+      return getPolygonPath(props.shape.bounds, 5);
+    default:
+      return getRectPath(props.shape.bounds);
   }
   // 可扩展更多类型
   return props.shape.svgPath || '';

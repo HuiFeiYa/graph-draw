@@ -25,4 +25,10 @@ export enum ShapeKey {
     MindMapShape = "MindMapShape",
     StraightLine = "StraightLine",
     Pentagon = "Pentagon",
+    Mark = "Mark",
+    Rhombus = "Rhombus",
+    Triangle = "Triangle",
+    Ellipse = "Ellipse",
+    Circle = "Circle",
+    RightAngle = "RightAngle",
 }
