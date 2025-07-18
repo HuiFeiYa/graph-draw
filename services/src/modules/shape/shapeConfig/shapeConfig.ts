@@ -1,4 +1,4 @@
-import { MetaclassType, ShapeKey, StType } from "@hfdraw/types"
+import { MetaclassType, ShapeKey, StType, SubShapeType } from "@hfdraw/types"
 import { ShapeOption } from "src/types/model.type"
 import { blockOption, edgeOption, mindMapOption } from "./commonShapeOption"
 
@@ -24,9 +24,9 @@ export const modelKeyConfig: Record<string, ConfigItem> = {
     ...edgeOption,
     shapeKey: ShapeKey.StraightLine,
   },
-
-  [StType["SysML::MindMap"]]: {
-    ...mindMapOption,
-    shapeKey: ShapeKey.MindMapShape
+  [StType["SysML::Pentagon"]]: {
+    ...blockOption,
+    shapeKey: ShapeKey.Pentagon,
+    subShapeType: SubShapeType.PathShape
   }
 }

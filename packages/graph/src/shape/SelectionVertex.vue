@@ -135,10 +135,10 @@ function getCircleStyle(index: number) {
         <g v-for="shape in shapeGroup.commonShapes" :key="shape.id" >
             <!-- 蓝色虚线矩形边框 -->
             <rect 
-                :x="shape.bounds.absX - 3"
-                :y="shape.bounds.absY - 3"
-                :width="shape.bounds.width + 6"
-                :height="shape.bounds.height + 6"
+                :x="shape.bounds.absX"
+                :y="shape.bounds.absY"
+                :width="shape.bounds.width"
+                :height="shape.bounds.height"
                 fill="none"
                 stroke="rgb(0,102,204,0.63)"
                 stroke-width="1"

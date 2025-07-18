@@ -102,6 +102,13 @@ export const sideBarList: SidebarKeyItem[] = [
       name: "直线",
       icon: "statics/siderBar/line.png",
     },
+  },
+  {
+    sidebarKey: StType["SysML::Pentagon"],
+    showData: {
+      name: "五边形",
+      icon: "statics/siderBar/pentagon.svg",
+    },
   }
 ];
 

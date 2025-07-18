@@ -1,10 +1,9 @@
 import { SubShapeType } from "@hfdraw/types";
 import SymbolShapeVue from "./SymbolShape.vue";
 import CommonEdge from "./CommonEdge.vue";
-import MindMapRect from "./MindMapRect.vue";
 import { markRaw } from "vue";
 import { shapeCompManager } from "./ShapeManager";
-import MindMapLine from "./MindMapLine.vue";
+import CommonShape from "./commonShape.vue";
 export * from './ShapeManager';
 
 export const shapeComps: { key: SubShapeType; comp: any }[] = [
@@ -17,12 +16,8 @@ export const shapeComps: { key: SubShapeType; comp: any }[] = [
     comp: CommonEdge
   },
   {
-    key: SubShapeType.MindMap,
-    comp: MindMapRect
-  },
-  {
-    key: SubShapeType.MindMapLine,
-    comp: MindMapLine
+    key: SubShapeType.PathShape,
+    comp: CommonShape
   }
 ];
 
