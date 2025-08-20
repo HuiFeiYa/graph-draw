@@ -56,19 +56,27 @@ export class StepService {
         
         return step.changes;
     }
+
+
+
+
     async redoStep(projectId: string) {
       const currentStep = await this.stepManager.currentStepService.findCurrentStep(projectId);
       // 不存在 currentstep时，例如回退到最开始的时候，
+
       const steps = await this.stepManager.stepRep.find({
         where: {
           projectId,
           index: MoreThan(currentStep.stepId? currentStep.index : -1)
         },
         order: {
+          
+
           index: 'asc'
         },
         take: 1
       })
+
       // 找到redo下一个step, 应用下一个 step 的 newValue
       const nextStep = steps[0];
       if (!nextStep) {
