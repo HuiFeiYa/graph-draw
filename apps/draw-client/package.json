@@ -16,7 +16,9 @@
     "electron:build": "electron-builder",
     "build-ts": "tsc",
     "prebuild": "rimraf dist-app dist-electron ",
-    "build": "node build-with-resources.js"
+    "build": "node build-with-resources.js",
+    "test": "vitest --run",
+    "test:watch": "vitest --watch"
   },
   "build": {
     "asar": false,
@@ -60,14 +62,17 @@
   "devDependencies": {
     "@types/minimatch": "^6.0.0",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/test-utils": "^2.4.2",
     "electron": "21.0.0-beta.1",
     "electron-builder": "^25.1.8",
     "electron-rebuild": "^3.2.9",
     "fs-extra": "^11.2.0",
+    "happy-dom": "^12.10.3",
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "vite": "^6.0.1",
+    "vitest": "^2.0.5",
     "vite-plugin-electron": "^0.29.0"
   },
   "workspaces": {

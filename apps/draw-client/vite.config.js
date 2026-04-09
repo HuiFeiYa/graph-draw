@@ -25,5 +25,18 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'), // 设置 @ 别名指向 src 目录
     },
+  },
+  // Vitest 单元测试配置
+  test: {
+    environment: 'happy-dom',
+    globals: true,
+    setupFiles: [resolve(__dirname, 'src/test/setup.ts')],
+    css: true,
+    deps: {
+      inline: ['electron'],
+    },
+    coverage: {
+      reporter: ['text', 'html'],
+    },
   }
 });

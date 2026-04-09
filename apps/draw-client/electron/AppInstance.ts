@@ -1,5 +1,5 @@
 const { resolve } = require("path");
-const { app, Menu, BrowserWindow, ipcMain } = require("electron");
+import { app, Menu, BrowserWindow, ipcMain, dialog } from "electron";
 const fs = require("fs");
 const fork = require("child_process").fork;
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -10,7 +10,7 @@ const preloadFile = isDevelopment
   : resolve(__dirname, './preload/index.js'); // 生产环境：编译后的文件
 
 
-const Logger = require('./Logger');
+import Logger from './Logger';
 const logger = new Logger()
 logger.info("preloadFile------:" + preloadFile);
 logger.info('Electron Node.js 版本:'+ process.versions.node);
@@ -213,8 +213,6 @@ class AppInstance {
     });
 
     ipcMain.handle('open-file-dialog', async (event) => {
-        // 这里编写打开文件对话框的逻辑，比如使用electron的dialog模块
-        const { dialog } = require('electron');
         const result = await dialog.showOpenDialog({
             properties: ['openFile']
         });
