@@ -8,7 +8,8 @@ dist/
 dist-a
 apps/draw-client/dist-electron/
 apps/draw-client/dist-app/
-apps/draw-client/release/*
+apps/draw-client/release/
+apps/draw-client/old-release/
 
 # TypeScript build info
 *.d.ts
