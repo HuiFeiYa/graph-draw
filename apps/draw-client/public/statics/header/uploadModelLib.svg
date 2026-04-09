@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconscmxk</title>
+    <defs>
+        <linearGradient x1="50%" y1="56.8359375%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="通用菜单" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部导航-协同" transform="translate(-660.000000, -10.000000)">
+            <g id="topiconscmxk" transform="translate(660.000000, 10.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <polygon id="矩形" fill="url(#linearGradient-1)" points="1 2 14 2 14 15 1 15"></polygon>
+                <path d="M14,15 L14,14.0358887 L14,7 L15,7 L15,1 L1,1 L1,15 L11,15 L14,15 Z M2,13.9734242 L2.00164525,5.68413052 L2,2 L14,2 L14,14 L2,13.9734242 Z" id="形状" fill="#7E8DB3"></path>
+                <polygon id="路径" fill="#FFFFFF" points="13.9999979 2 2 2 2 5 13.9999979 5"></polygon>
+                <path d="M7.64583333,4.84864839 L10.3082772,8.5 L4.98338945,8.5 L7.64583333,4.84864839 Z" id="矩形" stroke="#7E8DB3"></path>
+                <polygon id="路径" fill="#2CA8FE" fill-rule="nonzero" transform="translate(13.000000, 10.500000) rotate(-90.000000) translate(-13.000000, -10.500000) " points="13.4272727 9.95454546 10.5 9.95454546 10.5 11.0454545 13.4272727 11.0454545 11.7363636 12.7363636 12.5 13.5 15.5 10.5 12.5545455 7.5 11.7909091 8.26363636"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

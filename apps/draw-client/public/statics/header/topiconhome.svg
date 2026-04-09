@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconhome</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="16" height="16"></rect>
+    </defs>
+    <g id="客户端主菜单调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="客户端主菜单调整-新增“另存为”icon" transform="translate(-16, -10)">
+            <g id="topiconhome" transform="translate(16, 10)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Background"></g>
+                <polygon id="Shape" stroke="#7E8DB3" fill="#E6EBED" mask="url(#mask-2)" points="1.4 15.3999817 1.4 7.37084961 7.99919984 1.43198242 14.6 7.37084961 14.6 15.3999817"></polygon>
+                <path d="M7.99919968,1.66399994 L14.4,5.42879984 L14.4,15.2 L1.6,15.2 L1.6,5.42879984 L7.99919968,1.66399994 M1.2,5.2 L1.2,15.6 L14.8,15.6 L14.8,5.2 L7.99919951,1.2 L1.2,5.2 Z" id="Shape" mask="url(#mask-2)"></path>
+                <path d="M9.5,10.5 L9.5,15.3713379 L6.5,15.3713379 L6.5,10.5 L9.5,10.5 Z" id="矩形" stroke="#3F87C0" fill="#2CA8FE" mask="url(#mask-2)"></path>
+                <polygon id="矩形" fill="#5C6A8E" mask="url(#mask-2)" points="6 14.9005127 10 14.9005127 10 15.8713379 6 15.8713379"></polygon>
+                <polygon id="路径" stroke="#7E8DB3" fill="#5BBCFF" fill-rule="nonzero" mask="url(#mask-2)" points="15.5734863 10 8 4.00598145 0.536621094 10 0.536621094 6.61401367 7.965578 0.516845703 15.5734863 6.61401367"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconprint</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="公共组件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部导航-文件" transform="translate(-536.000000, -10.000000)">
+            <g id="topiconprint" transform="translate(536.000000, 10.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <path d="M15.973693,11.1456308 L15.973693,6 L2.27373675e-13,6 L2.27373675e-13,14.9967638 C2.27373675e-13,15.5703602 2.27373675e-13,15.9988842 1,15.9988842 L12.1467619,15.9988842 L15,16 C15.973693,16 16,16 16,15 L15.973693,13.1869303 C15.973693,12.0930583 15.973693,11.6867269 15.973693,11.1456308 Z" id="形状" fill="#7E8DB3"></path>
+                <polygon id="路径" fill="#757B7B" points="3 5 13 5 13 6 3 6"></polygon>
+                <polygon id="路径" fill="url(#linearGradient-1)" points="1 7 1 15 15 15 15 7"></polygon>
+                <polygon id="路径" fill="#7E8DB3" points="4 1 4 8 12 8 12 1"></polygon>
+                <polygon id="路径" fill="#D5DBEA" points="2 9 2 15 14 15 14 9"></polygon>
+                <polygon id="路径" fill="#B0B4B7" points="2 7 2 8 14 8 14 7"></polygon>
+                <polygon id="路径" fill="#2CA8FE" points="3 12 3 13 13 13 13 12"></polygon>
+                <polygon id="路径" fill="#8FA0C9" points="3 13 3 14 13 14 13 13"></polygon>
+                <polygon id="路径" fill="#FFFFFF" points="5 2 5 7 11 7 11 2"></polygon>
+                <polygon id="路径" fill="#7E8DB3" points="3 7 3 11 13 11 13 7"></polygon>
+                <polygon id="路径" fill="#2CA8FE" points="4 8 4 10 12 10 12 8"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

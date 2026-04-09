@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconrecovery</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="topiconrecovery" fill-rule="nonzero">
+            <rect id="矩形" fill="#000000" opacity="0" x="3.63797881e-12" y="0" width="16" height="16"></rect>
+            <g id="编组-34">
+                <g id="编组-29">
+                    <polygon id="矩形" fill="url(#linearGradient-1)" points="1 2 15 2 15 15 1 15"></polygon>
+                    <path d="M16,16 L16,0 L0,0 L0,16 L12.1667664,16 L16,16 Z M1,14.9689948 L1.00191945,5.29815226 L1,1 L15,1 L15,15 L1,14.9689948 Z" id="形状" fill="#7E8DB3"></path>
+                </g>
+                <polygon id="形状" fill="#5BBCFF" points="14.9999975 1 1 1 1 5.00987804 14.9999975 5.00987804"></polygon>
+                <polygon id="路径" fill="#2CA8FE" points="1 5.01975607 15 5.01975607 15 6 1 6"></polygon>
+            </g>
+            <polygon id="路径" fill="#ABE6FF" points="9.58017155 3 10.5801715 3 10.5801715 4 9.58017155 4"></polygon>
+            <polygon id="路径" fill="#ABE6FF" points="11.5801715 3 12.5801715 3 12.5801715 4 11.5801715 4"></polygon>
+            <polygon id="路径" fill="#FFFFFF" points="3.58017155 3 4.58017155 3 4.58017155 4 3.58017155 4"></polygon>
+            <polygon id="路径" fill="#FFFFFF" points="5.58017155 3 6.58017155 3 6.58017155 4 5.58017155 4"></polygon>
+            <polygon id="路径" fill="#FFFFFF" points="7.58017155 3 8.58017155 3 8.58017155 4 7.58017155 4"></polygon>
+            <polygon id="形状" fill="#2CA8FE" transform="translate(8.5021, 9.75) rotate(180) translate(-8.5021, -9.75)" points="11.00415 9.5 11.00415 12 10.00415 12 10.00415 8.50830078 6.00414999 8.50830078 5.9999996 7.5 11.00415 7.5"></polygon>
+        </g>
+    </g>
+</svg>

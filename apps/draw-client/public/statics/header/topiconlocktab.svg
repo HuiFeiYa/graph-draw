@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_冻结标签页</title>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#DEDEDE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="jx">
+            <rect id="矩形" fill="#C5C5C5" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+            <path d="M10.7451394,0.552117908 L9.70361548,4.47200923 L12.7534851,9.39504345 L3.55166196,9.91037377 L6.30390696,4.41499816 L4.93653975,0.995295692 L10.7451394,0.552117908 Z" id="形状结合" stroke="#4C4C4C" fill="url(#linearGradient-1)"></path>
+            <line x1="8.00470032" y1="10.4578293" x2="8" y2="15.4073332" id="路径" stroke="#4C4C4C" stroke-linecap="round"></line>
+            <line x1="5.3670995" y1="1.98048484" x2="10.6847336" y2="1.98048484" id="路径-2" stroke="#4C4C4C"></line>
+        </g>
+    </g>
+</svg>

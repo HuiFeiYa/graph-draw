@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconcomparison</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="公共组件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部导航-分析" transform="translate(-218.000000, -10.000000)">
+            <g id="topiconcomparison" transform="translate(218.000000, 10.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <rect id="矩形" fill="url(#linearGradient-1)" x="1" y="3" width="14" height="9"></rect>
+                <path d="M1,12 L6,12 L6,13 L0,13 L0,2 L5.93933105,2 L5.93933105,3 L1,3 L1,12 Z M12,3 L11,3 L11,2 L11.9999893,2 L11.9999893,2.99997852 L12,3 Z M12.9999946,3 L12.9999946,2 L13.9999946,2 L13.9999946,2.99997852 L12.9999946,3 Z M14.9999946,3 L14.9999946,2 L15.9999946,2 L15.9999946,2.99997852 L14.9999946,3 Z M14.9999946,5 L14.9999946,4 L15.9999946,4 L15.9999946,4.99997852 L14.9999946,5 Z M14.9999946,7 L14.9999946,6 L15.9999946,6 L15.9999946,6.99997852 L14.9999946,7 Z M14.9999946,9 L14.9999946,8 L15.9999946,8 L15.9999946,8.99997852 L14.9999946,9 Z M14.9999946,11 L14.9999946,10 L15.9999946,10 L15.9999946,10.9999785 L14.9999946,11 Z M8.99999463,3 L8.99999463,2 L9.99999463,2 L9.99999463,2.99997852 L8.99999463,3 Z M12,13 L11,13 L11,12 L11.9999893,12 L11.9999893,12.9999785 L12,13 Z M12.9999946,13 L12.9999946,12 L13.9999946,12 L13.9999946,12.9999785 L12.9999946,13 Z M14.9999946,13 L14.9999946,12 L15.9999946,12 L15.9999946,12.9999785 L14.9999946,13 Z M8.99999463,13 L8.99999463,12 L9.99999463,12 L9.99999463,12.9999785 L8.99999463,13 Z" id="形状" fill="#7E8DB3" fill-rule="nonzero"></path>
+                <polygon id="路径" fill="#2EA2CB" fill-rule="nonzero" points="7 0 8 0 8 16 7.00001074 16 7.00001074 0"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

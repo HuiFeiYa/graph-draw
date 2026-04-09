@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconclose</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon尺寸调整" transform="translate(-1031, -9)" fill-rule="nonzero">
+            <g id="topiconclose" transform="translate(1031, 9)">
+                <g id="导出" opacity="0" transform="translate(8, 8) scale(-1, 1) translate(-8, -8)translate(0, 0)" fill="#000000">
+                    <rect id="矩形" x="1.46920663e-17" y="1.13535891e-22" width="16" height="16"></rect>
+                </g>
+                <polygon id="矩形" fill="url(#linearGradient-1)" points="1.00463867 0.9936523 15.0046387 0.9936523 15.0046387 14.9936523 1.00463867 14.9936523"></polygon>
+                <polygon id="路径" fill="#FF0000" opacity="0.5546875" points="5.42245701 4.47768751 11.547457 10.6026875 10.672457 11.4776875 4.54745701 5.35268751"></polygon>
+                <polygon id="路径" fill="#FF0000" opacity="0.5546875" points="10.672457 4.47768751 11.547457 5.35268751 5.42245703 11.4776875 4.54745703 10.6026875"></polygon>
+                <polygon id="形状" fill="#7E8DB3" points="16 16 0 16 0 0 16 0 16 4.26666666 14.7749399 4.26666666 14.7749399 1.15297154 1.23647836 1.15297154 1.23647836 14.8498883 14.7749399 14.8498883 14.7749399 4.26666666 16 4.26666666"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconnew</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#F4F7F9" offset="43.5246394%"></stop>
+            <stop stop-color="#E6EDF1" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="公共组件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部固定工具栏" transform="translate(-48.000000, -3.000000)">
+            <g id="topiconnew" transform="translate(48.000000, 3.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <polygon id="矩形" fill="url(#linearGradient-1)" points="2 2 10.0015869 2 13 4.36035156 13 15 2 15"></polygon>
+                <path d="M14,16 L1,16 L1,1 L10,1 L14,4 L14,5 L9.0022583,5 L9.0022583,2 L2,2 L2,15 L13.0046387,15 L13.0046387,5 L14,5 L14,16 Z M10.0015869,4 L12.4874878,4 L10.0015869,2 L10.0015869,4 Z" id="形状" fill="#7E8DB3" fill-rule="nonzero"></path>
+                <polygon id="路径" fill="#2CA8FE" points="4 9 11 9 11 10 4 10"></polygon>
+                <polygon id="路径" fill="#2CA8FE" fill-rule="nonzero" points="7 6 8 6 8 13 7 13"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_规则设置</title>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#DEDEDE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="18.182373%" x2="50%" y2="77.2186279%" id="linearGradient-2">
+            <stop stop-color="#986060" offset="0%"></stop>
+            <stop stop-color="#654040" offset="33.3212716%"></stop>
+            <stop stop-color="#000000" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-3">
+            <stop stop-color="#DEDEDE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-4">
+            <stop stop-color="#DEDEDE" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="本地变更元素及属性清单" transform="translate(-652.000000, -113.000000)">
+            <g id="下拉框" transform="translate(639.000000, 80.000000)">
+                <g id="行" transform="translate(5.000000, 29.000000)">
+                    <g id="icon_规则设置" transform="translate(8.000000, 4.000000)">
+                        <rect id="矩形" fill="#D6D6D6" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                        <path d="M12.3900095,1.5 L14.5,3.65456012 L14.5,14 L2,14.5 L1.5,2 L12.3900095,1.5 Z" id="矩形" stroke="#414F58" fill="url(#linearGradient-1)"></path>
+                        <g id="iconproperty2" transform="translate(7.000000, 5.000000)">
+                            <rect id="矩形" fill="url(#linearGradient-2)" fill-rule="nonzero" opacity="0" x="0" y="0" width="4.99997367" height="4.99893599"></rect>
+                            <path d="M1.74590038,0.638976831 C2.02563353,0.821215325 2.31830981,0.994691629 2.48156624,0.994691629 C3.15858132,0.706364989 3.21849187,0.643612669 3.25374571,0.655073572 L3.81554435,0.976922743 C3.82415023,1.61480929 3.91042563,1.80780199 4.05017895,1.94758946 C4.1896884,2.087133 4.38232928,2.17357017 4.59499723,2.17357017 C4.37946196,3.21869727 4.18647886,3.30499727 4.04670073,3.44480955 C3.90721605,3.58432832 3.82080355,3.77697877 3.82080355,3.9896642 L3.32305483,4.71893599 C2.30004902,4.40929207 2.01020389,4.61418183 1.90582859,4.70553513 L1.15205757,4.4553984 C1.16408238,3.80368025 1.07780698,3.61068755 0.938053659,3.47090008 C0.79854421,3.33135655 0.60590333,3.24491937 0.393235379,3.24491937 C0.618252925,2.19867643 0.811236022,2.11237644 0.951014152,1.97256415 C1.09049883,1.83304539 1.17691133,1.64039493 1.17691133,1.42770951 Z" id="路径" stroke="#414F58" stroke-width="0.56" fill="url(#linearGradient-3)"></path>
+                            <path d="M2.14920071,2.36419279 C2.63777317,2.21876145 2.76198954,2.27431196 2.85188903,2.36419279 C2.94176749,2.4540526 2.99732649,2.57821139 2.99732649,2.71538186 C2.99732649,2.85255233 2.94176749,2.97671112 2.85188903,3.06657092 C2.76198954,3.15645176 2.63777317,3.21200227 2.50054487,3.21200227 C2.36331657,3.21200227 2.2391002,3.15645176 2.14920071,3.06657092 C2.05932225,2.97671112 2.00376324,2.85255233 2.00376324,2.71538186 C2.00376324,2.57821139 2.05932225,2.4540526 2.14920071,2.36419279 Z" id="路径" stroke="#414F58" stroke-width="0.56" fill="url(#linearGradient-4)"></path>
+                        </g>
+                        <path d="M12.1043087,1.5 L12.1043087,3.95050773 L14.5,3.95050773 L14.5,14 L2,14.5 L1.5,2 L12.1043087,1.5 Z" id="矩形备份-2" stroke="#414F58"></path>
+                        <line x1="4" y1="12.0192193" x2="12.0000282" y2="12.0192193" id="路径-2" stroke="#414F58"></line>
+                        <line x1="3.99735166" y1="8.86311945" x2="6.5" y2="8.86311945" id="路径-2备份" stroke="#414F58"></line>
+                        <line x1="3.99997185" y1="5.35706686" x2="6.50262019" y2="5.35706686" id="路径-2备份-2" stroke="#414F58"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

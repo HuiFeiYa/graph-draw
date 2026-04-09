@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 3</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon调整" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon尺寸调整" transform="translate(-1119, -9)" fill-rule="nonzero">
+            <g id="编组-3" transform="translate(1119, 9)">
+                <rect id="矩形" fill="#000000" opacity="0" x="3.63797881e-12" y="0" width="16" height="16"></rect>
+                <polygon id="矩形" fill="url(#linearGradient-1)" points="1 1 15 1 15 15 1 15"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="4.85470843 2.5002595 6.00127862 2.5002595 6.00127862 3.64682969 4.85470843 3.64682969"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="4.85470843 4.79339989 6.00127862 4.79339989 6.00127862 7.08654028 4.85470843 7.08654028"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="6.00127862 3.64682969 7.14784882 3.64682969 7.14784882 4.79339989 6.00127862 4.79339989"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="3.70813823 3.64682969 4.85470843 3.64682969 4.85470843 4.79339989 3.70813823 4.79339989"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="6.00127862 7.08654028 7.14784882 7.08654028 7.14784882 8.23311047 6.00127862 8.23311047"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="7.14784882 7.08654028 8.29441901 7.08654028 8.29441901 8.23311047 7.14784882 8.23311047"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="8.29441901 5.93997008 9.44098921 5.93997008 9.44098921 7.08654028 8.29441901 7.08654028"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="8.29441901 8.23311047 9.44098921 8.23311047 9.44098921 9.37968067 8.29441901 9.37968067"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="9.44098921 7.08654028 10.5875594 7.08654028 10.5875594 8.23311047 9.44098921 8.23311047"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="7.14784882 9.37968067 8.29441901 9.37968067 8.29441901 10.5262509 7.14784882 10.5262509"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="3.70813823 7.08654028 4.85470843 7.08654028 4.85470843 8.23311047 3.70813823 8.23311047"></polygon>
+                <polygon id="矩形" fill="#7E8DB3" points="4.85470843 8.23311047 6.00127862 8.23311047 6.00127862 9.37968067 4.85470843 9.37968067"></polygon>
+                <path d="M16,16 L16,0 L0,0 L0,16 L12.1667664,16 L16,16 Z M1,14.9689948 L1.00191945,5.29815226 L1,1 L15,1 L15,15 L1,14.9689948 Z" id="形状" fill="#7E8DB3"></path>
+                <polygon id="路径" fill="#2CA8FE" points="6.72517598 11.7255987 4.45381904 9.45424182 3.70813823 10.2012424 5.97289623 12.4712796 7.09867629 13.5002595 8.2165376 12.4946532 12.8555961 7.83222109 12.1099152 7.08654028 7.47217658 11.7255987 7.09867629 12.102947"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

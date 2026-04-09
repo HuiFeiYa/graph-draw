@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconmd</title>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="66.8551025%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#CFCDCA" offset="0%"></stop>
+            <stop stop-color="#776A53" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="66.8551025%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#7E8DB3" offset="0%"></stop>
+            <stop stop-color="#7E8DB3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="32.0173662%" y1="37.1142251%" x2="57.7193737%" y2="109.556522%" id="linearGradient-3">
+            <stop stop-color="#786A53" offset="0%"></stop>
+            <stop stop-color="#B6B0A7" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="32.0173662%" y1="37.1142251%" x2="57.7193737%" y2="109.556522%" id="linearGradient-4">
+            <stop stop-color="#7E8DB3" offset="0%"></stop>
+            <stop stop-color="#7E8DB3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M-Design顶部菜单" transform="translate(-539.000000, -833.000000)">
+            <g id="顶部导航-工具" transform="translate(67.000000, 823.000000)">
+                <g id="topiconmd" transform="translate(472.000000, 10.000000)">
+                    <rect id="矩形" fill="#D8D8D8" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                    <polygon id="矩形" fill="#F6F7F8" points="2 1 12 1 12 11.8453369 11.0447998 12.8666667 2 13"></polygon>
+                    <g id="编组-86" transform="translate(7.000000, 6.933333) scale(-1, 1) rotate(-180.000000) translate(-7.000000, -6.933333) translate(1.000000, 0.000000)">
+                        <g id="编组-47备份-3" transform="translate(-0.000000, 0.000000)">
+                            <polygon id="Background备份-29" fill="url(#linearGradient-2)" transform="translate(11.472204, 10.418301) rotate(90.000000) translate(-11.472204, -10.418301) " points="8.47220425 9.91830065 14.4722042 9.91830065 14.4722042 10.9183007 8.47220425 10.9183007"></polygon>
+                            <polygon id="矩形备份-40" fill="#7E8DB3" transform="translate(3.586168, 0.500000) scale(1, -1) rotate(-270.000000) translate(-3.586168, -0.500000) " points="3.09175277 -2.19176653 4.08616823 -2.19727934 4.08058368 3.19176653 3.08616823 3.19727934"></polygon>
+                            <path d="M4.4952992e-13,1.2246468e-16 L0.994415451,0.0132849548 L1,12.866 L12,12.8666667 L11.9877698,13.8666667 L-4.56856157e-13,13.8666667 L0.011,12.986 L0.00558454904,12.986715 L4.4952992e-13,1.2246468e-16 Z" id="形状结合" fill="url(#linearGradient-4)"></path>
+                        </g>
+                        <path d="M8.14629136,4.87796116 L8.14070681,9.87285156 L7.14629136,9.87796116 L7.15015435,5.87696116 L4.89472403,5.87237661 L4.89215435,4.87796116 L7.22315435,4.88296116 L8.14629136,4.87796116 Z" id="形状结合" fill="#7E8DB3" transform="translate(6.519223, 7.377961) rotate(-45.000000) translate(-6.519223, -7.377961) "></path>
+                    </g>
+                    <polygon id="矩形备份-45" fill="#FF5A53" transform="translate(11.736012, 12.239216) scale(-1, 1) translate(-11.736012, -12.239216) " points="10.3554693 10.8666667 13.1165552 13.6117647 10.3554693 13.6117647"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

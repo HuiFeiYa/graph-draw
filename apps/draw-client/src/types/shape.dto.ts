@@ -1,0 +1,36 @@
+import { EdgeMoveType, IPoint, SiderbarItemKey, VertexType } from "@hfdraw/types";
+export interface SideBarDropDto {
+    point: {x:number,y:number};
+    projectId: string;
+    stType: string;
+  }
+  
+  export interface MoveShapeDto {
+    projectId: string;
+
+    shapeIds: string[]
+
+    dx: number
+  
+    dy: number
+  }
+
+  export interface ConnectShapeAndCreateDto {
+    projectId: string;
+    sourceShapeId: string;
+    index: VertexType
+    // 可以是 stType
+    modelId: string;
+    sourceConnection: [number, number],
+    targetConnection: [number, number],
+  }
+
+
+  export interface ChangeRelationshipEndsDto {
+    projectId: string
+    waypoint: IPoint[]
+    shapeId: string
+    shapeSourceId?: string
+    shapeTargetId?: string
+    moveType?: EdgeMoveType
+  }

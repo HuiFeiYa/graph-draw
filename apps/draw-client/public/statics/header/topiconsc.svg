@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconsc</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="公共组件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部导航-协同" transform="translate(-446.000000, -10.000000)">
+            <g id="topiconsc" transform="translate(446.000000, 10.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <path d="M8.22461837,2.28768737 L14.1601168,8.57115628 L10.9684865,8.57115629 L10.9684865,13.5 L5.44592591,13.5 L5.44592591,8.57115629 L1.76951285,8.57115629 L8.22461837,2.28768737 Z" id="形状" stroke="#7E8DB3" fill="url(#linearGradient-1)" transform="translate(8.000000, 8.000000) rotate(360.000000) translate(-8.000000, -8.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,86 @@
+{
+  "name": "draw-client",
+  "private": true,
+  "version": "0.0.0",
+  "description": "绘图工具使用 svg",
+  "author": "Hui Fei",
+  "type": "commonjs",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "build:client": "vite build",
+    "build:all": "pnpm run prebuild & pnpm run build-ts & vite build && pnpm run electron:build",
+    "build:server": "node scripts/build-server.js",
+    "start": "npm-run-all --sequential  build-ts dev",
+    "dev": "vite dev & electron --inspect=5858 .",
+    "electron-rebuild": "electron-rebuild -f -w better-sqlite3",
+    "electron:build": "electron-builder",
+    "build-ts": "tsc",
+    "prebuild": "rimraf dist-app dist-electron ",
+    "build": "node build-with-resources.js",
+    "test": "vitest --run",
+    "test:watch": "vitest --watch"
+  },
+  "build": {
+    "asar": false,
+    "appId": "hfdraw01",
+    "productName": "draw",
+    "directories": {
+      "output": "release/"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist-app/**/*"
+    ],
+    "win": {
+      "artifactName": "${productName}-Win-${version}-${arch}.${ext}",
+      "publisherName": "App by Troye",
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "dist/icon.png"
+    }
+  },
+  "dependencies": {
+    "@hfdraw/elbow": "workspace:^",
+    "@hfdraw/graph": "workspace:^",
+    "@hfdraw/types": "workspace:^",
+    "@hfdraw/utils": "workspace:^",
+    "axios": "^1.7.9",
+    "dayjs": "^1.11.13",
+    "element-plus": "^2.9.0",
+    "lodash": "^4.17.21",
+    "pinia": "^2.3.0",
+    "sass": "^1.82.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/minimatch": "^6.0.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/test-utils": "^2.4.2",
+    "electron": "21.0.0-beta.1",
+    "electron-builder": "^25.1.8",
+    "electron-rebuild": "^3.2.9",
+    "fs-extra": "^11.2.0",
+    "happy-dom": "^12.10.3",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "vite": "^6.0.1",
+    "vitest": "^2.0.5",
+    "vite-plugin-electron": "^0.29.0"
+  },
+  "workspaces": {
+    "nohoist": [
+      "electron"
+    ]
+  },
+  "volta": {
+    "node": "20.18.0"
+  }
+}

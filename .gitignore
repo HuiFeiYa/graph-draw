@@ -1,0 +1,107 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+dist-a
+apps/draw-client/dist-electron/
+apps/draw-client/dist-app/
+apps/draw-client/release/
+apps/draw-client/old-release/
+
+# TypeScript build info
+*.d.ts
+*.d.ts.map
+tsconfig.tsbuildinfo
+**/tsconfig.tsbuildinfo
+
+# Database files
+services/db
+**/*.db
+
+# Logs
+*.log
+logs/
+**/logs/
+
+# OS generated files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+**/.vscode/
+!.vscode/extensions.json
+.idea/
+**/.idea/
+
+# Runtime files
+nodeServer/*
+**/nodeServer/*
+
+# Electron specific
+**/electron.exe
+**/app-builder*
+
+# Build tools
+**/esbuild.exe
+**/*.iobj
+**/*.pdb
+
+# Package manager locks (keep these)
+# pnpm-lock.yaml
+# package-lock.json
+# yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+**/*.tmp
+**/*.temp
+
+# Crash dumps
+*.stackdump
+**/*.stackdump
+
+# Compiled binaries
+**/*.exe
+**/*.dll
+**/*.so
+**/*.dylib
+
+# Large media files
+**/*.mp4
+**/*.avi
+**/*.mov
+**/*.wmv
+**/*.flv
+**/*.mkv
+**/*.webm
+**/*.mp3
+**/*.wav
+**/*.flac
+**/*.aac
+**/*.ogg
+
+# Archive files
+**/*.zip
+**/*.rar
+**/*.7z
+**/*.tar
+**/*.gz
+**/*.bz2
+
+# Large images
+**/*.psd
+**/*.ai
+**/*.eps
+**/*.tiff
+**/*.tga

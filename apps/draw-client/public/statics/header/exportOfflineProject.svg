@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topicondclxxm</title>
+    <defs>
+        <linearGradient x1="50%" y1="56.8359375%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#F8FBFC" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="组件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顶部导航-协同" transform="translate(-722.000000, -10.000000)">
+            <g id="topicondclxxm" transform="translate(722.000000, 10.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <polygon id="矩形" fill="url(#linearGradient-1)" points="1 2 14 2 14 15 1 15"></polygon>
+                <path d="M15,15 L15,1 L1,1 L1,15 L11.6459206,15 L15,15 Z M2,13.9734242 L2.00164525,5.68413052 L2,2 L14,2 L14,14 L2,13.9734242 Z" id="形状" fill="#7E8DB3"></path>
+                <polygon id="路径" fill="#FFFFFF" points="13.9999979 2 2 2 2 5 13.9999979 5"></polygon>
+                <polygon id="路径" fill="#7E8DB3" points="2 5 14 5 14 6 2 6"></polygon>
+                <polygon id="路径" fill="#B8C2DB" points="11 3 12 3 12 4 11 4"></polygon>
+                <rect id="矩形" fill="url(#linearGradient-2)" x="14" y="8" width="1" height="3"></rect>
+                <polygon id="路径" fill="#2CA8FE" fill-rule="nonzero" points="9.66283292 9.45454546 6 9.45454546 6 10.5454545 9.66283292 10.5454545 7.97192383 12.2363636 8.7355602 13 11.7355602 10 8.79010565 7 8.02646929 7.76363636"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

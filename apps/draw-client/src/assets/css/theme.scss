@@ -1,0 +1,71 @@
+:root {
+    --md-fontFamily:pingfang SC,  microsoft yahei;
+    --md-text-color1:#000; // 一级标题文字原色
+    --md-text-color1:#666; // 二级标题文字颜色
+    --md-text-color2:#999; // 段落内容文字颜色
+  
+    --md-text-disabled-:#999; // 段落内容文字颜色
+  
+  
+    --md-bg-color-window-bar:#eee; // windowBar的背景颜色
+  
+    --md-bg-color-model-tree:#eee; // 模型树的背景颜色
+  
+    --md-bg-color-header:#eee; // 顶部菜单栏的背景色
+  
+    --md-bg-color-footer:#eee; // 底部栏的背景色
+  
+    --md-bg-color-active-node:blue; // 树节点选中时的颜色
+  
+    --md-bg-color--node:blue; // 树节点选中时的颜色
+  
+    --md-button-bg-color-primary:blue; // 主按钮背景颜色
+    --md-button-bg-color-primary-active:blue; // 主按钮按下时的背景颜色
+  
+  
+    --md-button-bg-color-default:black; // 主按钮背景颜色
+  
+    --md-colo: var(--md-text-color1); // 可以引用其他变量
+  
+  
+  
+  
+  
+  
+  
+  }
+  
+  // 弹窗的顶部栏背景色
+  $frame-title-bg-color: #3561a8; // #3561a8
+  $toolbar-bg-color: #ecf4ff; // #ecf4ff
+  $titlebar-bg-color: #E8EEF9;
+  $tab-gb-color: #e6f0ff;  // 代替原来的#e6f0ff
+  
+  // 弹窗的侧边导航栏背景色
+  $frame-siderbar-bg-color: #f4f8ff;  // 代替原来的#f4f8ff
+  
+  // 属性table的间隔背景色
+  $nth-of-type-bg-color: #e8eff7; // 代替原来的 #e8eff7
+  
+  // 主题色（选中的属性栏的背景色等）
+  $theme-color: #1890ff; // 代替原来的#1890ff
+  
+  // 现在button checkbox等默认色系就是蓝色，如果主题色换了，下面要打开换颜色
+  //$el-button-color: #FF8363;
+  
+  // 导航栏激活的背景色
+  $item-active-bg-color: #DCEBFD; // 代替原来的#F3F8FF
+  
+  $border-color: #EbEEF5;
+  
+  // 按钮的背景色
+  $btn-bg-color: #ECF4FF;
+  // 按钮边框border色
+  $btn-border-color: #E0E0E0;
+  
+  // 操作按钮icon的颜色（disabled状态）
+  $btn-disabled-color: #A8ABB2;
+  
+  // 操作按钮icon的颜色（active、focus状态）
+  $btn-active-color: #1890FF;
+  

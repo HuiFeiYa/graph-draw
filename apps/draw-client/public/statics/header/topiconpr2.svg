@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>topiconpr2</title>
+    <defs>
+        <linearGradient x1="50%" y1="56.8359375%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E6F1F6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#F7FAFC" offset="0%"></stop>
+            <stop stop-color="#E9F2F7" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="顶部菜单" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M-Design顶部菜单" transform="translate(-361.000000, -1822.000000)">
+            <g id="topiconpr2" transform="translate(361.000000, 1822.000000)">
+                <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="3.63797881e-12" y="0" width="16" height="16"></rect>
+                <g id="编组-34" transform="translate(0.000000, 1.000000)">
+                    <g id="编组-29">
+                        <polygon id="矩形" fill="url(#linearGradient-1)" points="1 1 14 1 14 14 1 14"></polygon>
+                        <path d="M14.8625001,14.9983263 L14.8625001,0 L0,0 L0,14.9983263 L11.3017854,14.9983263 L14.8625001,14.9983263 Z M1,14 L1.00178235,5 L1,1 L14,1 L14,14.0288544 L1,14 Z" id="形状" fill="#7E8DB3"></path>
+                    </g>
+                    <polygon id="形状" fill="#5BBCFF" points="13.9999977 1 1 1 1 4 13.9999977 4"></polygon>
+                    <polygon id="路径" fill="#2CA8FE" points="1 4 14 4 14 5 1 5"></polygon>
+                </g>
+                <polygon id="路径" fill="#ABE6FF" points="11 3 12 3 12 4 11 4"></polygon>
+                <path d="M9.18884783,15.5 L9.18884527,15.4957365 C8.52349872,15.4406784 8,14.8592033 8,14.15 C8,13.4864694 8.45824323,12.9347453 9.06216715,12.821344 C9.25371692,11.7837146 10.1277081,11 11.1769231,11 C11.9874771,11 12.6934561,11.4677275 13.0610268,12.1589103 C13.1655471,12.1366612 13.2737776,12.125 13.3846154,12.125 C14.2767677,12.125 15,12.8805195 15,13.8125 C15,14.7051731 14.3364876,15.4359562 13.4965552,15.4960116 L13.4965401,15.5 L9.18884783,15.5 Z" id="形状结合" stroke="#5C6A8E" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

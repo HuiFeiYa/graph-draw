@@ -1,0 +1,19 @@
+{
+  "name": "@hfdraw/graph",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/main.ts",
+  "exports": {
+    ".": "./src/main.ts"
+  },
+  "dependencies": {
+    "@hfdraw/elbow": "workspace:^",
+    "@hfdraw/types": "workspace:^",
+    "@hfdraw/utils": "workspace:^",
+    "lodash": "^4.17.21",
+    "vue": "3.5.13"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.19"
+  }
+}
